@@ -8,9 +8,9 @@ export default function Applications() {
 
 function renderApp(model: ApplicationModel) {
   return (
-    <div key={model.name}>
+    <div key={model.name} className="basis-1/4">
       <Image src={model.icon.src} alt={model.name} width={200} height={200} />
-      <h3>{model.title}</h3>
+      <div className="text-lg font-bold">{model.title}</div>
       <div>{model.description}</div>
       <ul>
         <li>
