@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fapplications\u002F[kind]","\u002Fsystems\u002F[kind]\u002F[element]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()

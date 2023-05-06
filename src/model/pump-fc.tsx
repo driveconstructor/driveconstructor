@@ -1,0 +1,41 @@
+import { EMachine, EMachineElement } from "./emachine";
+import { Model } from "./system";
+import { Pump, PumpElement } from "./pump";
+
+export type PumpFc = {
+  kind: "pump-fc";
+  input: {
+    pump: Pump;
+    emachine: EMachine;
+  };
+};
+
+export const PumpFcModel: Model<PumpFc> = {
+  kind: "pump-fc",
+  title: "Drive train with just variable speed drive",
+  description: (
+    <div>
+      <p>
+        This simple system topology can be used when it is possible to find a
+        motor matching speed of the pump and when both, the motor and the FC,
+        have similar voltage rating to that of the supply network (the grid).
+      </p>
+    </div>
+  ),
+  input: {
+    pump: PumpElement,
+    emachine: EMachineElement,
+  },
+  findCandidates,
+};
+
+function findCandidates(system: PumpFc) {
+  return (
+    "p-xxx2-" +
+    system.input.pump.ratedSpeed * 2 +
+    system.input.pump.type +
+    " " +
+    system.input.emachine.speed +
+    new Date()
+  );
+}
