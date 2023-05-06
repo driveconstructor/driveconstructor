@@ -1,4 +1,8 @@
-import { SystemKind, getModel, getSystemKindsWithlements } from "@/model/system";
+import {
+  SystemKind,
+  getModel,
+  getSystemKindsWithlements,
+} from "@/model/system";
 import dynamic from "next/dynamic";
 
 const Input = dynamic(() => import("./Input"), { ssr: false });
