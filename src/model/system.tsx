@@ -1,6 +1,7 @@
+import { StaticImageData } from "next/image";
 import React, { HTMLInputTypeAttribute } from "react";
-import { PumpFcModel } from "./pump-fc";
-import { WinchFcModel } from "./winch-fc";
+import { PumpFc, PumpFcModel } from "./pump-fc";
+import { WinchFc, WinchFcModel } from "./winch-fc";
 
 export type SystemParam<V = any> = {
   type: HTMLInputTypeAttribute;
@@ -32,10 +33,6 @@ const models: Record<SystemKind, SystemModel> = {
   "pump-fc": PumpFcModel,
   "winch-fc": WinchFcModel,
 };
-
-import { StaticImageData } from "next/image";
-import { PumpFc } from "./pump-fc";
-import { WinchFc } from "./winch-fc";
 
 export type System = (PumpFc | WinchFc) & {
   input: Record<string, Record<string, any>>;
