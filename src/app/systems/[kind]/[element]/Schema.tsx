@@ -11,7 +11,11 @@ export default function Schema({
 }) {
   const elements = Object.entries(model.input).map(([k, v]) => (
     <div key={k}>
-      {viewOnly ? <Element icon={v.icon} /> : <ElementButton name={k} />}
+      {viewOnly ? (
+        <Element icon={v.icon} size={60} />
+      ) : (
+        <ElementButton name={k} />
+      )}
     </div>
   ));
 

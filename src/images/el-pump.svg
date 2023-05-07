@@ -2,21 +2,21 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="200"
    height="200"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="pump_simple1.svg">
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="el-pump.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb">
   <defs
      id="defs4">
     <linearGradient
@@ -45,16 +45,19 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.255"
-     inkscape:cx="52.073733"
-     inkscape:cy="100.50487"
+     inkscape:cx="99.84639"
+     inkscape:cy="100.15361"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="838"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1">
+     inkscape:window-width="956"
+     inkscape:window-height="1157"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid2989"
@@ -71,7 +74,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -81,35 +84,35 @@
      id="layer1"
      transform="translate(0,-852.36217)">
     <path
-       sodipodi:type="arc"
        style="fill:#000000;fill-opacity:1"
        id="path2991"
-       sodipodi:cx="140"
-       sodipodi:cy="95"
-       sodipodi:rx="35"
-       sodipodi:ry="35"
+       transform="matrix(1.4285714,0,0,1.4285713,-100,816.6479)"
        d="m 175,95 a 35,35 0 1 1 -70,0 35,35 0 1 1 70,0 z"
-       transform="matrix(1.4285714,0,0,1.4285713,-100,816.6479)" />
-    <path
        sodipodi:type="arc"
+       sodipodi:ry="35"
+       sodipodi:rx="35"
+       sodipodi:cy="95"
+       sodipodi:cx="140" />
+    <path
        style="fill:#0000ff"
        id="path2992"
-       sodipodi:cx="137.5"
-       sodipodi:cy="92.5"
-       sodipodi:rx="12.5"
-       sodipodi:ry="12.5"
+       transform="translate(-38,856.36217)"
        d="m 150,92.5 c 0,6.903559 -5.59644,12.5 -12.5,12.5 -6.90356,0 -12.5,-5.596441 -12.5,-12.5 0,-6.903559 5.59644,-12.5 12.5,-12.5 6.90356,0 12.5,5.596441 12.5,12.5 z"
-       transform="translate(-38,856.36217)" />
-    <path
        sodipodi:type="arc"
+       sodipodi:ry="12.5"
+       sodipodi:rx="12.5"
+       sodipodi:cy="92.5"
+       sodipodi:cx="137.5" />
+    <path
        style="fill:url(#linearGradient3768);fill-opacity:1"
        id="path2994"
-       sodipodi:cx="45"
-       sodipodi:cy="115"
-       sodipodi:rx="20"
-       sodipodi:ry="20"
+       transform="matrix(2.25,0,0,2.25,-1.25,693.61217)"
        d="m 65,115 a 20,20 0 1 1 -40,0 20,20 0 1 1 40,0 z"
-       transform="matrix(2.25,0,0,2.25,-1.25,693.61217)" />
+       sodipodi:type="arc"
+       sodipodi:ry="20"
+       sodipodi:rx="20"
+       sodipodi:cy="115"
+       sodipodi:cx="45" />
     <rect
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.64226025;stroke-opacity:1"
        id="rect3913-5"

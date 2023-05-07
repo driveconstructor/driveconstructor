@@ -1,6 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
 import applications, { ApplicationModel } from "../model/application";
-import LinkButton from "./LinkButton";
 
 export default function Applications() {
   return <>{Object.values(applications).map(renderApp)}</>;
@@ -10,7 +10,7 @@ function renderApp(model: ApplicationModel) {
   return (
     <div
       key={model.name}
-      className="mx-2 basis-1/4 space-y-2 border border-gray-200 px-2"
+      className="mx-2 basis-1/4 space-y-2 border border-gray-200 px-2 py-2"
     >
       <Image
         className="mx-auto"
@@ -22,8 +22,12 @@ function renderApp(model: ApplicationModel) {
       <div className="text-xl">{model.title}</div>
       <div>{model.description}</div>
       <div className="flex justify-end space-x-1">
-        <LinkButton href={`/applications/${model.name}`}>Select</LinkButton>
-        <LinkButton href={model.url}>Help</LinkButton>
+        <Link className="btn" href={`/applications/${model.name}`}>
+          Select
+        </Link>
+        <Link className="btn" href={model.url}>
+          Help
+        </Link>
       </div>
     </div>
   );

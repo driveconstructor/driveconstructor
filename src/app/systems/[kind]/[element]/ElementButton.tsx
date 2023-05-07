@@ -9,12 +9,11 @@ export default function ElementButton({ name }: { name: string }) {
   const context = useContext(SystemContext);
   const router = useRouter();
 
-  const active = name == context.element ? "active" : "";
-
   return (
     <Element
       icon={context.model.input[name].icon}
-      className={active}
+      size={80}
+      active={name == context.element}
       onClick={() =>
         router.push(`/systems/${context.model.kind}/${name}?id=${context.id}`)
       }

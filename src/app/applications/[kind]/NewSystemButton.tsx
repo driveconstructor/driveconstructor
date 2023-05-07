@@ -7,18 +7,15 @@ export default function NewSystemButton({ kind }: { kind: SystemKind }) {
   const router = useRouter();
 
   return (
-    <>
-      <button
-        onClick={(e) => {
-          const model = getModel(kind);
-          const id = createSystem(model);
-          router.push(
-            `/systems/${kind}/${Object.keys(model.input)[0]}?id=${id}`
-          );
-        }}
-      >
-        New System
-      </button>
-    </>
+    <button
+      className="btn"
+      onClick={(e) => {
+        const model = getModel(kind);
+        const id = createSystem(model);
+        router.push(`/systems/${kind}/${Object.keys(model.input)[0]}?id=${id}`);
+      }}
+    >
+      New System
+    </button>
   );
 }
