@@ -1,5 +1,5 @@
-import { SystemElement } from "./system";
 import icon from "../images/el-winch.svg";
+import { SystemElement } from "./system";
 
 export type Winch = {
   torque: number;

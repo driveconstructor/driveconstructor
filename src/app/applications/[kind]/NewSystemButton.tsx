@@ -9,7 +9,6 @@ export default function NewSystemButton({ kind }: { kind: SystemKind }) {
   return (
     <>
       <button
-        className="btn btn-primary"
         onClick={(e) => {
           const model = getModel(kind);
           const id = createSystem(model);

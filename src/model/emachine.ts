@@ -1,5 +1,5 @@
-import { SystemElement } from "./system";
 import icon from "../images/el-emachine.svg";
+import { SystemElement } from "./system";
 
 const EMachineType = ["SCIM", /*'DFIM',*/ "PMSM", "SyRM"] as const;
 const ERatedPower = [

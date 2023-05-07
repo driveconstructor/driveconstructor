@@ -1,6 +1,6 @@
 import { EMachine, EMachineElement } from "./emachine";
-import { Model } from "./system";
 import { Pump, PumpElement } from "./pump";
+import { Model } from "./system";
 
 export type PumpFc = {
   kind: "pump-fc";
