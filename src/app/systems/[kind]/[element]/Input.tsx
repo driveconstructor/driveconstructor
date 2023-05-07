@@ -44,25 +44,28 @@ export default function Client({ params }: { params: Params }) {
 
   return (
     <SystemContext.Provider value={context}>
-      <div>
-        <h2>Schema:</h2>
-        <Schema model={model} />
-        <h3>Input</h3>
-        {Object.entries(model.input)
-          .filter(([k, _]) => k == params.element)
-          .flatMap(([_, v]) => Object.entries(v.params))
-          .map(([k, _]) => (
-            <div key={k}>
-              <Param
-                name={k}
-                handleChange={(v) => {
-                  setValue(updateSystem(context, k, v));
-                }}
-              ></Param>
-            </div>
-          ))}
-        <h3>Candidates</h3>
-        <Candidates />
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Schema model={model} />
+          {Object.entries(model.input)
+            .filter(([k, _]) => k == params.element)
+            .flatMap(([_, v]) => Object.entries(v.params))
+            .map(([k, _]) => (
+              <div key={k}>
+                <Param
+                  name={k}
+                  handleChange={(v) => {
+                    setValue(updateSystem(context, k, v));
+                  }}
+                ></Param>
+              </div>
+            ))}
+        </div>
+        <div className="border border-blue-500">ChartJS</div>
+        <div className="col-span-2 ">
+          <div className="text-lg">Candidates</div>
+          <Candidates />
+        </div>
       </div>
     </SystemContext.Provider>
   );

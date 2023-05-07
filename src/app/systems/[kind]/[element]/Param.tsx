@@ -24,7 +24,7 @@ export default function Param({
 
   return (
     <>
-      <legend>{name}</legend>
+      <legend className="text-lg">{name}</legend>
       {input}
     </>
   );
@@ -53,6 +53,7 @@ function renderInput(
 ) {
   return (
     <input
+      className="border-2"
       type={model.type}
       value={value}
       onChange={(e) => handleChange(e.target.value)}
