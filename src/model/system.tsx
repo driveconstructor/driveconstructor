@@ -4,6 +4,7 @@ import { PumpFc, PumpFcModel } from "./pump-fc";
 import { WinchFc, WinchFcModel } from "./winch-fc";
 
 export type SystemParam<V = any> = {
+  label: React.ReactNode,
   type: HTMLInputTypeAttribute;
   value: V;
   options?: readonly V[];

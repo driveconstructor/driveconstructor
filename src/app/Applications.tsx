@@ -3,7 +3,11 @@ import Link from "next/link";
 import applications, { ApplicationModel } from "../model/application";
 
 export default function Applications() {
-  return <>{Object.values(applications).map(renderApp)}</>;
+  return (
+    <div className="flex flex-wrap">
+      {Object.values(applications).map(renderApp)}
+    </div>
+  );
 }
 
 function renderApp(model: ApplicationModel) {

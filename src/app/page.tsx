@@ -8,9 +8,7 @@ export default function Home() {
         Discover the beauty and complexity of the world of standard components.
         Watch the complete list of tutorials on our YouTube channel.
       </div>
-      <div className="flex">
-        <Applications />
-      </div>
+      <Applications />
     </div>
   );
 }

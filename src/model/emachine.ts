@@ -18,15 +18,18 @@ export const EMachineElement: SystemElement<EMachine> = {
   icon,
   params: {
     type: {
+      label: "Type",
       type: "text",
       value: null,
       options: [null, ...EMachineType],
     },
     speed: {
+      label: "Rated power, kW",
       type: "number",
       value: 300,
     },
     ratedPower: {
+      label: "Rated synchronous speed, rpm",
       type: "number",
       value: 400,
       options: [null, ...ERatedPower],

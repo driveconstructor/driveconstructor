@@ -15,7 +15,7 @@ export default function Page({ params }: { params: { kind: string } }) {
     <div className="space-y-4">
       <h1 className="text-2xl">Select topology for your system</h1>
       <div>{model.systemHeader}</div>
-      <div className="flex">{model.systems.map(renderSystemModel)}</div>
+      <div className="flex flex-wrap">{model.systems.map(renderSystemModel)}</div>
     </div>
   );
 }
