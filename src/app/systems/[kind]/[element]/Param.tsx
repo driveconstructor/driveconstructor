@@ -23,10 +23,10 @@ export default function Param({
     : renderInput(value, paramModel, handler);
 
   return (
-    <div className="flex flex-row">
-      <label className="flex-1/2">{paramModel.label}:</label>
-      <div className="flex-1/4">{input}</div>
-    </div>
+    <>
+      <label className="text-m justify-self-end">{paramModel.label}:</label>
+      {input}
+    </>
   );
 }
 
@@ -36,17 +36,20 @@ function renderSelect(
   handleChange: ChangeHandler
 ) {
   return (
-    <select
-      className="border border-gray-300 bg-transparent"
-      value={value}
-      onChange={(e) => handleChange(e.target.value)}
-    >
-      {model.options?.map((v, i) => (
-        <option key={i} value={v || ""}>
-          {v || "<any>"}
-        </option>
-      ))}
-    </select>
+    <>
+      <select
+        className="border bg-transparent text-right"
+        value={value}
+        onChange={(e) => handleChange(e.target.value)}
+      >
+        {model.options?.map((v, i) => (
+          <option key={i} value={v || ""}>
+            {v || "<any>"}
+          </option>
+        ))}
+      </select>
+      <div></div>
+    </>
   );
 }
 
@@ -56,15 +59,19 @@ function renderInput(
   handleChange: ChangeHandler
 ) {
   return (
-    <div className="flex">
+    <>
       <input
-        className="border border-gray-300"
+        className="border text-right"
         type={model.type}
         value={value}
         onChange={(e) => handleChange(e.target.value)}
       ></input>
-      {model.type == "number" ? renderRange(0, 200, value, handleChange) : null}
-    </div>
+      {model.type == "number" ? (
+        renderRange(0, 200, value, handleChange)
+      ) : (
+        <div></div>
+      )}
+    </>
   );
 }
 
@@ -75,16 +82,17 @@ function renderRange(
   handleChange: ChangeHandler
 ) {
   return (
-    <div className="mx-2">
-      <span className="text-xs mx-2">{min}</span>
-      <input        
+    <div className="flex">
+      <div className="mx-2 text-xs">{min}</div>
+      <input
+        className="min-w-0"
         min={min}
         max={max}
         type="range"
         value={value}
         onChange={(e) => handleChange(e.target.value)}
       />
-      <span className="text-xs mx-2">{max}</span>
+      <div className="mx-2 text-xs">{max}</div>
     </div>
   );
 }

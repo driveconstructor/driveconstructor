@@ -1,3 +1,4 @@
+import PageTemplate from "@/app/PageTemplate";
 import {
   SystemKind,
   getModel,
@@ -13,10 +14,9 @@ export default function Page({ params }: { params: Params }) {
   const model = getModel(params.kind);
 
   return (
-    <div className="space-y-4">
-      <div className="text-xl">{model.title}</div>
+    <PageTemplate title={model.title} text="">
       <Input params={params} />
-    </div>
+    </PageTemplate>
   );
 }
 

@@ -1,3 +1,4 @@
+import PageTemplate from "@/app/PageTemplate";
 import Schema from "@/app/systems/[kind]/[element]/Schema";
 import applications from "@/model/application";
 import { SystemModel } from "@/model/system";
@@ -12,24 +13,24 @@ export default function Page({ params }: { params: { kind: string } }) {
   }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl">Select topology for your system</h1>
-      <div>{model.systemHeader}</div>
-      <div className="flex flex-wrap">{model.systems.map(renderSystemModel)}</div>
-    </div>
+    <PageTemplate
+      title="Select topology for your system"
+      text={model.systemHeader}
+    >
+      <div className="grid gap-2 p-4 md:grid-cols-4">
+        {model.systems.map(renderSystemModel)}
+      </div>
+    </PageTemplate>
   );
 }
 
 function renderSystemModel(model: SystemModel): React.ReactNode {
   return (
-    <div
-      key={model.kind}
-      className="mx-2 basis-1/4 space-y-2 border border-gray-200 px-2 py-2"
-    >
+    <div key={model.kind} className="border border-gray-200 p-2">
       <Schema model={model} viewOnly={true} />
       <h3 className="text-xl">{model.title}</h3>
       <div>{model.description}</div>
-      <div className="flex justify-end space-x-1">
+      <div className="m-4 flex justify-end space-x-1">
         <NewSystemButton kind={model.kind} />
         <Link className="btn" href="#tbd">
           Help

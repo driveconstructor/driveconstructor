@@ -4,7 +4,7 @@ import applications, { ApplicationModel } from "../model/application";
 
 export default function Applications() {
   return (
-    <div className="flex flex-wrap">
+    <div className="grid gap-2 p-4 md:grid-cols-4">
       {Object.values(applications).map(renderApp)}
     </div>
   );
@@ -12,10 +12,7 @@ export default function Applications() {
 
 function renderApp(model: ApplicationModel) {
   return (
-    <div
-      key={model.name}
-      className="mx-2 basis-1/4 space-y-2 border border-gray-200 px-2 py-2"
-    >
+    <div key={model.name} className="border border-gray-200 p-2">
       <Image
         className="mx-auto"
         src={model.icon.src}
@@ -25,7 +22,7 @@ function renderApp(model: ApplicationModel) {
       />
       <div className="text-xl">{model.title}</div>
       <div>{model.description}</div>
-      <div className="flex justify-end space-x-1">
+      <div className="m-4 flex justify-end space-x-1">
         <Link className="btn" href={`/applications/${model.name}`}>
           Select
         </Link>

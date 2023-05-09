@@ -12,11 +12,13 @@ export const PumpElement: SystemElement<Pump> = {
   icon,
   params: {
     type: {
+      label: "Type",
       type: "text",
       value: "centrifugal",
       options: PumpType,
     },
     ratedSpeed: {
+      label: "Rated speed, rpm",
       type: "number",
       value: 10,
     },
