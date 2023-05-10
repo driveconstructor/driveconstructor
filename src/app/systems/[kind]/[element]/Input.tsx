@@ -53,14 +53,13 @@ export default function Client({ params }: { params: Params }) {
                 .filter(([k, _]) => k == params.element)
                 .flatMap(([_, v]) => Object.entries(v.params))
                 .map(([k, _]) => (
-                  <>
-                    <Param
-                      name={k}
-                      handleChange={(v) => {
-                        setValue(updateSystem(context, k, v));
-                      }}
-                    ></Param>
-                  </>
+                  <Param
+                    key={k}
+                    name={k}
+                    handleChange={(v) => {
+                      setValue(updateSystem(context, k, v));
+                    }}
+                  ></Param>
                 ))}
             </div>
           </div>

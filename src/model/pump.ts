@@ -5,6 +5,7 @@ const PumpType = ["centrifugal", "positive displacement"] as const;
 
 export type Pump = {
   type: (typeof PumpType)[number];
+  head: number;
   ratedSpeed: number;
 };
 
@@ -16,6 +17,15 @@ export const PumpElement: SystemElement<Pump> = {
       type: "text",
       value: "centrifugal",
       options: PumpType,
+    },
+    head: {
+      label: "Head, m",
+      type: "number",
+      range: {
+        min: 0,
+        max: 1000,
+      },
+      value: 200,
     },
     ratedSpeed: {
       label: "Rated speed, rpm",

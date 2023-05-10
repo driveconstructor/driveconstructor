@@ -1,13 +1,18 @@
 import { StaticImageData } from "next/image";
-import React, { HTMLInputTypeAttribute } from "react";
+import React from "react";
 import { PumpFc, PumpFcModel } from "./pump-fc";
 import { WinchFc, WinchFcModel } from "./winch-fc";
 
+export type ParamType = "text" | "number";
+
+export type ParamRangeProps<V> = { min: V; max: V; step?: V };
+
 export type SystemParam<V = any> = {
   label: React.ReactNode;
-  type: HTMLInputTypeAttribute;
+  type: ParamType;
   value: V;
   options?: readonly V[];
+  range?: ParamRangeProps<V>;
 };
 
 export type SystemElement<T = any> = {
