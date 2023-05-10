@@ -4,6 +4,7 @@ import ParamInput from "./ParamInput";
 import ParamSelect from "./ParamSelect";
 
 export type ChangeHandler = (v: string | number | null) => void;
+export const ANY = "#any";
 
 export default function Param({
   name,
@@ -17,9 +18,26 @@ export default function Param({
   const paramModel = context.model.input[context.element].params[name];
   const value = context.system.input[context.element][name] ?? "";
 
-  const handler: ChangeHandler = (v) => {  
-    // TODO: validate
-    handleChange(v == "" ? null : paramModel.type == "number" ? Number(v) : v);
+  const handler: ChangeHandler = (v) => {
+    if (v == ANY) {
+      handleChange(null);
+    } else if (paramModel.type == "number") {
+      if (v == "") {
+        // invalid value
+        return;
+      }
+
+      const num = Number(v);
+      const range = paramModel.range;
+      if (range != null && (range.min > num || range.max < num)) {
+        // out of range
+        return;
+      }
+
+      handleChange(num);
+    } else {
+      handleChange(v);
+    }
   };
 
   const input = paramModel.options ? (

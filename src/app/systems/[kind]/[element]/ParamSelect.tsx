@@ -1,5 +1,5 @@
 import { SystemParam } from "@/model/system";
-import { ChangeHandler } from "./Param";
+import { ANY, ChangeHandler } from "./Param";
 
 export default function ParamSelect({
   value,
@@ -18,7 +18,7 @@ export default function ParamSelect({
         onChange={(e) => handler(e.target.value)}
       >
         {model.options?.map((v, i) => (
-          <option key={i} value={v ?? ""}>
+          <option key={i} value={v ?? ANY}>
             {v ?? "<any>"}
           </option>
         ))}
