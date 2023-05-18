@@ -5,11 +5,13 @@ import ParamRange from "./ParamRange";
 export default function ParamInput({
   value,
   model,
-  handler,
+  onChange,
+  onCommit,
 }: {
   value: any;
   model: SystemParam;
-  handler: ChangeHandler;
+  onChange: ChangeHandler;
+  onCommit: ChangeHandler;
 }) {
   return (
     <>
@@ -19,10 +21,18 @@ export default function ParamInput({
         min={model.range?.min}
         max={model.range?.max}
         value={value}
-        onChange={(e) => handler(e.target.value)}
+        onChange={(e) => {
+          onChange(e.target.value);
+          onCommit(e.target.value);
+        }}
       ></input>
       {model.type == "number" && model.range != null ? (
-        <ParamRange value={value} handler={handler} range={model.range} />
+        <ParamRange
+          value={value}
+          onChange={onChange}
+          onCommit={onCommit}
+          range={model.range}
+        />
       ) : (
         <div></div>
       )}

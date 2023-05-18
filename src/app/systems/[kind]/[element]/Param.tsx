@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SystemContext } from "./Input";
 import ParamInput from "./ParamInput";
 import ParamSelect from "./ParamSelect";
@@ -18,7 +18,9 @@ export default function Param({
   const paramModel = context.model.input[context.element].params[name];
   const value = context.system.input[context.element][name] ?? "";
 
-  const handler: ChangeHandler = (v) => {
+  const [inputValue, setInputValue] = useState(value);
+
+  const setValue: ChangeHandler = (v) => {
     if (v == ANY) {
       handleChange(null);
     } else if (paramModel.type == "number") {
@@ -41,9 +43,21 @@ export default function Param({
   };
 
   const input = paramModel.options ? (
-    <ParamSelect value={value} model={paramModel} handler={handler} />
+    <ParamSelect
+      value={inputValue}
+      model={paramModel}
+      onChange={(v) => {
+        setInputValue(v);
+        setValue(v);
+      }}
+    />
   ) : (
-    <ParamInput value={value} model={paramModel} handler={handler} />
+    <ParamInput
+      value={inputValue}
+      model={paramModel}
+      onChange={setInputValue}
+      onCommit={setValue}
+    />
   );
 
   return (

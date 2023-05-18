@@ -4,14 +4,16 @@ import { ChangeHandler } from "./Param";
 
 export default function Range({
   value,
-  handler,
+  onChange,
+  onCommit,
   range,
 }: {
   value: any;
-  handler: ChangeHandler;
+  onChange: ChangeHandler;
+  onCommit: ChangeHandler;
   range: ParamRangeProps<number>;
 }) {
-  const [inputValue, setInputValue] = useState(value);
+  const [sliding, setSliding] = useState(false);
 
   return (
     <div className="flex">
@@ -22,9 +24,18 @@ export default function Range({
         max={range.max}
         step={range.step}
         type="range"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onMouseUp={() => handler(inputValue)}
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value);
+          if (!sliding) {
+            onCommit(e.target.value);
+          }
+        }}
+        onMouseDown={() => setSliding(true)}
+        onMouseUp={() => {
+          setSliding(false);
+          onCommit(value);
+        }}
       />
       <div className="mx-2 text-xs">{range.max}</div>
     </div>
