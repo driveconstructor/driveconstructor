@@ -11,8 +11,9 @@ export type SystemParam<V = any> = {
   label: React.ReactNode;
   type: ParamType;
   value: V;
-  options?: readonly V[];
+  options?: V[] | string[];
   range?: ParamRangeProps<V>;
+  advanced?: true;
 };
 
 export type SystemElement<T = any> = {
@@ -43,7 +44,9 @@ const models: Record<SystemKind, SystemModel> = {
 
 export type System = (PumpFc | WinchFc) & {
   input: Record<string, Record<string, any>>;
+  showMore?: boolean;
 };
+
 export type SystemKind = System["kind"];
 
 export function getModel(kind: SystemKind): SystemModel {

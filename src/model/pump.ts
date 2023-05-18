@@ -1,12 +1,17 @@
 import icon from "../images/el-pump.svg";
 import { SystemElement } from "./system";
 
-const PumpType = ["centrifugal", "positive displacement"] as const;
+const PumpType = ["centrifugal", "positive displacement"];
 
 export type Pump = {
   type: (typeof PumpType)[number];
   head: number;
   ratedSpeed: number;
+  flow: number;
+  fluidDensity: number;
+  ratedEfficiency: number;
+  minimalSpeed: number;
+  startingTorque: number;
 };
 
 export const PumpElement: SystemElement<Pump> = {
@@ -27,10 +32,62 @@ export const PumpElement: SystemElement<Pump> = {
       },
       value: 200,
     },
+    flow: {
+      label: "Flow, l/s",
+      type: "number",
+      range: {
+        min: 0,
+        max: 500,
+      },
+      value: 50,
+    },
+    fluidDensity: {
+      label: "Fluid",
+      type: "number",
+      range: {
+        min: 500,
+        max: 3200,
+      },
+      value: 1000,
+      advanced: true,
+    },
+    ratedEfficiency: {
+      label: "Rated efficiency, %",
+      type: "number",
+      range: {
+        min: 0,
+        max: 100,
+      },
+      value: 81,
+    },
     ratedSpeed: {
       label: "Rated speed, rpm",
       type: "number",
-      value: 10,
+      range: {
+        min: 1,
+        max: 3500,
+      },
+      value: 1450,
+    },
+    minimalSpeed: {
+      label: "Minimal speed, rpm",
+      type: "number",
+      range: {
+        min: 0,
+        max: 3500,
+      },
+      value: 0,
+    },
+    startingTorque: {
+      label: "Starting torque as *T_rated",
+      type: "number",
+      range: {
+        min: 0,
+        max: 20,
+      },
+      value: 0.0,
+      options: [...Array(21)].map((_, i) => (i * 0.1).toFixed(1)),
+      advanced: true,
     },
   },
 };

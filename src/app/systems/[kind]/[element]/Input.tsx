@@ -56,6 +56,7 @@ export default function Client({ params }: { params: Params }) {
               {Object.entries(model.input)
                 .filter(([k, _]) => k == params.element)
                 .flatMap(([_, v]) => Object.entries(v.params))
+                .filter(([_, v]) => value.showMore || v.advanced == null)
                 .map(([k, _]) => (
                   <Param
                     key={k}
@@ -66,6 +67,16 @@ export default function Client({ params }: { params: Params }) {
                   ></Param>
                 ))}
             </div>
+          </div>
+          <div className="flex p-2">
+            <div
+              className="btn flex-none"
+              onClick={() => setValue({ ...value, showMore: !value.showMore })}
+            >
+              {value.showMore ? "Less..." : "More..."}
+            </div>
+            <div className="grow" />
+            <div className="btn flex-none">Show report</div>
           </div>
         </div>
         <div className="border border-blue-500">ChartJS</div>

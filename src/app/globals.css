@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .btn {
-  @apply rounded-lg border border-gray-400 px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900;
+  @apply rounded-lg border border-gray-400 px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 cursor-pointer;
 }

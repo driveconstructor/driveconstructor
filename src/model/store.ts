@@ -34,7 +34,7 @@ export function createSystem(model: SystemModel): string {
   }, {});
 
   const id = "draft_" + kind;
-  saveSystem(id, { kind, input } as System);
+  saveSystem(id, { kind, input, showMore: false } as System);
   return id;
 }
 
