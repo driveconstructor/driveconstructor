@@ -6,7 +6,11 @@ import {
   saveSystem,
   updateSystem,
 } from "@/model/store";
-import { getModel, getSystemKindsWithlements } from "@/model/system";
+import {
+  customizeModel,
+  getModel,
+  getSystemKindsWithlements,
+} from "@/model/system";
 import { useSearchParams } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import Param from "./Param";
@@ -37,7 +41,7 @@ export default function Client({ params }: { params: Params }) {
 
   const context: SystemContextType = {
     id,
-    model,
+    model: customizeModel(model, value),
     element: params.element,
     system: value,
   };

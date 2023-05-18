@@ -17,6 +17,7 @@ export type SystemParam<V = any> = {
 
 export type SystemElement<T = any> = {
   icon: StaticImageData;
+  customize?: (model: SystemElement<T>, value: T) => SystemElement<T>;
   params: {
     [P in keyof T]: SystemParam<T[P]>;
   };
@@ -60,4 +61,18 @@ export function getSystemKindsWithlements() {
       return { kind: model.kind, element: k };
     })
   );
+}
+
+export function customizeModel<T extends System>(
+  model: SystemModel,
+  system: T
+): SystemModel {
+  const input = Object.entries(model.input).reduce((o, [k, v]) => {
+    const customized = v.customize
+      ? v.customize(model.input[k], system.input[k])
+      : model.input[k];
+    return { ...o, [k]: customized };
+  }, {});
+
+  return { ...model, input };
 }

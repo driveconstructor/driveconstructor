@@ -1,3 +1,6 @@
+import iconPMSM from "../images/el-emachine-pmsm.svg";
+import iconSCIM from "../images/el-emachine-scim.svg";
+import iconSyRM from "../images/el-emachine-syrm.svg";
 import icon from "../images/el-emachine.svg";
 import { SystemElement } from "./system";
 
@@ -34,5 +37,17 @@ export const EMachineElement: SystemElement<EMachine> = {
       value: 400,
       options: [null, ...ERatedPower],
     },
+  },
+  customize: (model, value) => {
+    switch (value.type) {
+      case "SCIM":
+        return { ...model, icon: iconSCIM };
+      case "PMSM":
+        return { ...model, icon: iconPMSM };
+      case "SyRM":
+        return { ...model, icon: iconSyRM };
+    }
+
+    return model;
   },
 };
