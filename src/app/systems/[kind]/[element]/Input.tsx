@@ -25,7 +25,7 @@ function Candidates() {
 
 export const SystemContext = createContext({} as SystemContextType);
 
-export default function Client({ params }: { params: Params }) {
+export default function Input({ params }: { params: Params }) {
   const model = getModel(params.kind);
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
