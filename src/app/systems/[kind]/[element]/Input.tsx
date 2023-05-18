@@ -13,6 +13,7 @@ import {
 } from "@/model/system";
 import { useSearchParams } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import Chart from "./Chart";
 import Param from "./Param";
 import Schema from "./Schema";
 import { Params } from "./page";
@@ -79,7 +80,9 @@ export default function Client({ params }: { params: Params }) {
             <div className="btn flex-none">Show report</div>
           </div>
         </div>
-        <div className="border border-blue-500">ChartJS</div>
+        <div>
+          <Chart />
+        </div>
       </div>
       <div className="col-span-2">
         <div className="text-lg">Candidates</div>
