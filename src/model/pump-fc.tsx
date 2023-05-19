@@ -33,7 +33,7 @@ function findCandidates(system: PumpFc) {
     system.input.pump.ratedSpeed * 2 +
     system.input.pump.type +
     " " +
-    system.input.emachine.speed +
+    system.input.emachine.efficiencyClass +
     new Date()
   );
 }

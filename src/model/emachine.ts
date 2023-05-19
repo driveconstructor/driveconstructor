@@ -2,6 +2,7 @@ import iconPMSM from "../images/el-emachine-pmsm.svg";
 import iconSCIM from "../images/el-emachine-scim.svg";
 import iconSyRM from "../images/el-emachine-syrm.svg";
 import icon from "../images/el-emachine.svg";
+import { EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
 
 const EMachineType = ["SCIM", /*'DFIM',*/ "PMSM", "SyRM"] as const;
@@ -10,11 +11,15 @@ const ERatedPower = [
   132, 160, 200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900,
   1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000, 5000,
 ];
+const EfficiencyClass = ["IE2", "IE3", "IE4"] as const;
 
 export type EMachine = {
   type: (typeof EMachineType)[number] | null;
-  speed: number;
   ratedPower: number | null;
+  efficiencyClass: (typeof EfficiencyClass)[number] | null;
+  altitude: number;
+  ambientTemperature: number;
+  coolantTemperature: number;
 };
 
 export const EMachineElement: SystemElement<EMachine> = {
@@ -26,17 +31,20 @@ export const EMachineElement: SystemElement<EMachine> = {
       value: null,
       options: [null, ...EMachineType],
     },
-    speed: {
-      label: "Rated power, kW",
-      type: "number",
-      value: 300,
-    },
     ratedPower: {
-      label: "Rated synchronous speed, rpm",
+      label: "Rated power, kW",
       type: "number",
       value: 400,
       options: [null, ...ERatedPower],
     },
+    efficiencyClass: {
+      label: "Efficiency class",
+      type: "text",
+      options: [null, ...EfficiencyClass],
+      value: null,
+      advanced: true,
+    },
+    ...EnvironmentModel,
   },
   customize: (model, value) => {
     switch (value.type) {
