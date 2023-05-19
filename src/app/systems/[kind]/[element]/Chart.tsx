@@ -1,8 +1,27 @@
-import ChartJS from "chart.js/auto";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { SystemContext } from "./Input";
 
-let chart: ChartJS | null = null;
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function Chart() {
   const context = useContext(SystemContext);
@@ -17,32 +36,22 @@ export default function Chart() {
     { year: 2016, count: context.system.input.pump.head * 2 },
   ];
 
-  useEffect(() => {
-    if (chart != null) {
-      chart.destroy();
-    }
-
-    chart = new ChartJS(
-      document.getElementById("chartjs") as HTMLCanvasElement,
-      {
-        type: "line",
-        data: {
-          labels: data.map((row) => row.year),
-          datasets: [
-            {
-              label: "Acquisitions by year",
-              data: data.map((row) => row.count),
-            },
-          ],
-        },
-        options: {
-          animation: {
-            duration: 0,
+  return (
+    <Line
+      data={{
+        labels: data.map((row) => row.year),
+        datasets: [
+          {
+            label: "Acquisitions by year",
+            data: data.map((row) => row.count),
           },
+        ],
+      }}
+      options={{
+        animation: {
+          duration: 0,
         },
-      }
-    );
-  }, [data]);
-
-  return <canvas id="chartjs" />;
+      }}
+    />
+  );
 }
