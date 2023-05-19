@@ -44,6 +44,7 @@ const models: Record<SystemKind, SystemModel> = {
 
 export type System = (PumpFc | WinchFc) & {
   input: Record<string, Record<string, any>>;
+  candidates?: string;
   showMore?: boolean;
 };
 

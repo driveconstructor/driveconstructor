@@ -34,7 +34,8 @@ export function createSystem(model: SystemModel): string {
   }, {});
 
   const id = "draft_" + kind;
-  saveSystem(id, { kind, input, showMore: false } as System);
+  const system = { kind, input, showMore: false } as System;
+  saveSystem(id, withCandidates(model, system));
   return id;
 }
 
@@ -43,7 +44,7 @@ export function updateSystem(
   paramName: string,
   value: any
 ): System {
-  return {
+  const updated: System = {
     ...context.system,
     input: {
       ...context.system.input,
@@ -53,4 +54,13 @@ export function updateSystem(
       },
     },
   } as System;
+
+  return withCandidates(context.model, updated);
+}
+
+function withCandidates(model: SystemModel, system: System): System {
+  return {
+    ...system,
+    candidates: model.findCandidates(system),
+  };
 }
