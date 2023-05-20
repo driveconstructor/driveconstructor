@@ -10,7 +10,7 @@ const ERatedPower = [
   1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110,
   132, 160, 200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900,
   1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000, 5000,
-];
+] as const;
 const EfficiencyClass = ["IE2", "IE3", "IE4"] as const;
 const EMachineMounting = ["B3", "B5", "B35"] as const;
 const EMachineCooling = ["IC411", "IC416", "IC71W"] as const;
@@ -19,7 +19,7 @@ const EMachineFrameMaterial = ["steel", "aluminum", "cast iron"] as const;
 const ShaftHeight = [
   56, 63, 71, 80, 90, 100, 112, 132, 160, 180, 200, 225, 250, 280, 315, 355,
   400, 450, 500, 560, 630, 710,
-];
+] as const;
 
 export type EMachine = {
   type: (typeof EMachineType)[number] | null;
@@ -93,7 +93,7 @@ export const EMachineElement: SystemElement<EMachine> = {
         min: 56,
         max: 710,
       },
-      options: ShaftHeight,
+      options: [...ShaftHeight],
       value: 56,
       advanced: true,
     },

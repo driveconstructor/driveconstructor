@@ -35,6 +35,7 @@ export default function Input({ params }: { params: Params }) {
 
   const system = getSystem(id);
   const [value, setValue] = useState(system);
+  const [errors, setErrors] = useState([] as string[]);
 
   useEffect(() => {
     saveSystem(id, value);
@@ -49,6 +50,7 @@ export default function Input({ params }: { params: Params }) {
 
   return (
     <SystemContext.Provider value={context}>
+      <div>Error: {errors}</div>
       <div className="grid gap-2 lg:grid-cols-2">
         <div>
           <Schema model={model} />
@@ -63,7 +65,14 @@ export default function Input({ params }: { params: Params }) {
                     key={k}
                     name={k}
                     handleChange={(v) => {
-                      setValue(updateSystem(context, k, v));
+                      const updated = updateSystem(context, k, v);
+                      const errors = context.model.validate
+                        ? context.model.validate(updated)
+                        : [];
+                      setErrors(errors);
+                      if (errors.length == 0) {
+                        setValue(updated);
+                      }
                     }}
                   ></Param>
                 ))}

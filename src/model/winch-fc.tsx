@@ -27,8 +27,13 @@ export const WinchFcModel: Model<WinchFc> = {
     emachine: EMachineElement,
   },
   findCandidates,
+  loadGraph,
 };
 
 function findCandidates(system: WinchFc) {
   return "w-" + (system.input.winch.ratedSpeed + system.input.winch.torque);
+}
+
+function loadGraph(system: WinchFc) {
+  return [];
 }

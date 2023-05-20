@@ -26,24 +26,16 @@ ChartJS.register(
 export default function Chart() {
   const context = useContext(SystemContext);
 
-  const data = [
-    { year: 2010, count: context.system.input.pump.head },
-    { year: 2011, count: context.system.input.pump.head + 3 },
-    { year: 2012, count: context.system.input.pump.head + 13 },
-    { year: 2013, count: context.system.input.pump.head + 33 },
-    { year: 2014, count: context.system.input.pump.head + 33 },
-    { year: 2015, count: context.system.input.pump.head + 13 },
-    { year: 2016, count: context.system.input.pump.head * 2 },
-  ];
+  const data = context.model.loadGraph(context.system);
 
   return (
     <Line
       data={{
-        labels: data.map((row) => row.year),
+        labels: data.map((row) => Math.round(row.speed)),
         datasets: [
           {
             label: "Acquisitions by year",
-            data: data.map((row) => row.count),
+            data: data.map((row) => row.torque),
           },
         ],
       }}

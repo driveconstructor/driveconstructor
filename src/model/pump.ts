@@ -1,7 +1,7 @@
 import icon from "../images/el-pump.svg";
 import { SystemElement } from "./system";
 
-const PumpType = ["centrifugal", "positive displacement"];
+const PumpType = ["centrifugal", "positive displacement"] as const;
 
 export type Pump = {
   type: (typeof PumpType)[number];
@@ -21,7 +21,7 @@ export const PumpElement: SystemElement<Pump> = {
       label: "Type",
       type: "text",
       value: "centrifugal",
-      options: PumpType,
+      options: [...PumpType],
     },
     head: {
       label: "Head, m",
@@ -91,3 +91,15 @@ export const PumpElement: SystemElement<Pump> = {
     },
   },
 };
+
+export function calculatePump(pump: Pump) {
+  const flowM3h = (pump.flow * 3600) / 1000;
+  const powerOnShaft =
+    (flowM3h * pump.fluidDensity * 9.81 * pump.head) /
+    (pump.ratedEfficiency * 3.6 * 10000);
+
+  const ratedTorque = (powerOnShaft * 9.55) / pump.ratedSpeed;
+  const torqueOverload = ratedTorque * pump.startingTorque;
+
+  return { powerOnShaft, ratedTorque, torqueOverload };
+}

@@ -34,6 +34,8 @@ export type Model<T extends System> = {
   };
 
   findCandidates: (system: T) => string;
+  loadGraph: (system: T) => { speed: number; torque: number }[];
+  validate?: (system: T) => string[];
 };
 
 export type SystemModel = Model<any>;
