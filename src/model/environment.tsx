@@ -1,8 +1,15 @@
 import { SystemParam } from "./system";
 
-type EnironmentParam = "altitude" | "ambientTemperature" | "coolantTemperature";
+export type Environment = {
+  altitude: number;
+  ambientTemperature: number;
+  coolantTemperature: number;
+};
 
-export const EnvironmentModel: Record<EnironmentParam, SystemParam<number>> = {
+export const EnvironmentModel: Record<
+  keyof Environment,
+  SystemParam<number>
+> = {
   altitude: {
     label: "Altitude, m",
     type: "number",

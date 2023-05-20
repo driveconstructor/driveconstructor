@@ -20,7 +20,7 @@ import { Params } from "./page";
 
 function Candidates() {
   const context = useContext(SystemContext);
-  return <div>Candidate: {context.system.candidates}</div>;
+  return <div>Candidates: {context.system.candidates}</div>;
 }
 
 export const SystemContext = createContext({} as SystemContextType);

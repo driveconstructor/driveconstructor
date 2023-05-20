@@ -28,12 +28,5 @@ export const PumpFcModel: Model<PumpFc> = {
 };
 
 function findCandidates(system: PumpFc) {
-  return (
-    "p-xxx2-" +
-    system.input.pump.ratedSpeed * 2 +
-    system.input.pump.type +
-    " " +
-    system.input.emachine.efficiencyClass +
-    new Date()
-  );
+  return JSON.stringify(system.input) + " " + new Date();
 }
