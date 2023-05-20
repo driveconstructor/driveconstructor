@@ -11,7 +11,8 @@ export type SystemParam<V = any> = {
   label: React.ReactNode;
   type: ParamType;
   value: V;
-  options?: V[] | string[];
+  options?: V[] | (string | null)[];
+  optionLabels?: (React.ReactNode | null)[];
   range?: ParamRangeProps<V>;
   advanced?: true;
 };

@@ -21,7 +21,7 @@ export default function ParamSelect({
       >
         {model.options?.map((v, i) => (
           <option key={i} value={v ?? ANY}>
-            {v ?? "<any>"}
+            {(model.optionLabels ? model.optionLabels[i] : v) ?? "<any>"}
           </option>
         ))}
       </select>

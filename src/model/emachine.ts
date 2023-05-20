@@ -12,11 +12,20 @@ const ERatedPower = [
   1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000, 5000,
 ];
 const EfficiencyClass = ["IE2", "IE3", "IE4"] as const;
+const EMachineMounting = ["B3", "B5", "B35"] as const;
+const EMachineCooling = ["IC411", "IC416", "IC71W"] as const;
+const EMachineProtection = ["IP21/23", "IP54/55"] as const;
+const InsulationClass = ["B", "H", "F"] as const;
+const EMachineFrameMaterial = ["steel", "aluminum", "cast iron"] as const;
 
 export type EMachine = {
   type: (typeof EMachineType)[number] | null;
   ratedPower: number | null;
+  cooling: (typeof EMachineCooling)[keyof typeof EMachineCooling] | null;
+  protection: (typeof EMachineProtection)[number] | null;
+  frameMaterial: (typeof EMachineFrameMaterial)[number] | null;
   efficiencyClass: (typeof EfficiencyClass)[number] | null;
+  mounting: (typeof EMachineMounting)[number] | null;
   altitude: number;
   ambientTemperature: number;
   coolantTemperature: number;
@@ -37,11 +46,42 @@ export const EMachineElement: SystemElement<EMachine> = {
       value: 400,
       options: [null, ...ERatedPower],
     },
+    cooling: {
+      label: "Cooling",
+      type: "text",
+      options: [null, ...EMachineCooling],
+      optionLabels: [
+        null,
+        "self-ventilation",
+        "air forced ventilation",
+        "water cooled",
+      ],
+      value: "IC411",
+    },
+    protection: {
+      label: "Protection",
+      type: "text",
+      options: [null, ...EMachineProtection],
+      value: "IP21/23",
+    },
+    frameMaterial: {
+      label: "Frame material",
+      type: "text",
+      options: [null, ...EMachineFrameMaterial],
+      value: "cast iron",
+    },
     efficiencyClass: {
       label: "Efficiency class",
       type: "text",
       options: [null, ...EfficiencyClass],
       value: null,
+      advanced: true,
+    },
+    mounting: {
+      label: "Mounting",
+      type: "text",
+      options: [null, ...EMachineMounting],
+      value: "B3",
       advanced: true,
     },
     ...EnvironmentModel,
