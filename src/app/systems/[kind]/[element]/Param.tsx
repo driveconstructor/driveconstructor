@@ -68,7 +68,7 @@ export default function Param({
 
   return (
     <>
-      <label className="text-m justify-self-end">{paramModel.label}:</label>
+      <label className="justify-self-end text-sm">{paramModel.label}:</label>
       {input}
     </>
   );

@@ -28,7 +28,7 @@ export const PumpFcModel: Model<PumpFc> = {
     pump: PumpElement,
     emachine: EMachineElement,
     cable: CableElement,
-    fconvertor: FConvertorElement,
+    fconvertor: FConvertorElement(["2Q-2L-VSC-6p", "4Q-2L-VSC"]),
   },
   findCandidates,
   loadGraph,
