@@ -1,3 +1,4 @@
+import { Cable, CableElement } from "./cable";
 import { EMachine, EMachineElement } from "./emachine";
 import { Pump, PumpElement, calculatePump } from "./pump";
 import { Model } from "./system";
@@ -7,6 +8,7 @@ export type PumpFc = {
   input: {
     pump: Pump;
     emachine: EMachine;
+    cable: Cable;
   };
 };
 
@@ -23,6 +25,7 @@ export const PumpFcModel: Model<PumpFc> = {
   input: {
     pump: PumpElement,
     emachine: EMachineElement,
+    cable: CableElement,
   },
   findCandidates,
   loadGraph,
