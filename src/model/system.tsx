@@ -19,6 +19,7 @@ export type SystemParam<V = any> = {
 
 export type SystemElement<T = any> = {
   icon: StaticImageData;
+  iconWidth?: number;
   customize?: (model: SystemElement<T>, value: T) => SystemElement<T>;
   params: {
     [P in keyof T]: SystemParam<T[P]>;

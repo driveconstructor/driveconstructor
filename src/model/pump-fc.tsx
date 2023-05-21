@@ -1,5 +1,6 @@
 import { Cable, CableElement } from "./cable";
 import { EMachine, EMachineElement } from "./emachine";
+import { FConvertor, FConvertorElement } from "./fconvertor";
 import { Pump, PumpElement, calculatePump } from "./pump";
 import { Model } from "./system";
 
@@ -9,6 +10,7 @@ export type PumpFc = {
     pump: Pump;
     emachine: EMachine;
     cable: Cable;
+    fconvertor: FConvertor;
   };
 };
 
@@ -26,6 +28,7 @@ export const PumpFcModel: Model<PumpFc> = {
     pump: PumpElement,
     emachine: EMachineElement,
     cable: CableElement,
+    fconvertor: FConvertorElement,
   },
   findCandidates,
   loadGraph,

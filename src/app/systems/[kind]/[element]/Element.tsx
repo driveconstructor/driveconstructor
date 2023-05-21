@@ -2,12 +2,14 @@ import Image, { StaticImageData } from "next/image";
 
 export default function Element({
   icon,
-  size,
+  width,
+  height,
   active,
   onClick,
 }: {
   icon: StaticImageData;
-  size: number;
+  width: number;
+  height: number;
   active?: boolean;
   onClick?: () => void;
 }) {
@@ -18,7 +20,7 @@ export default function Element({
         onClick ? "" : "cursor-default"
       }`}
     >
-      <Image src={icon.src} alt="element" width={size} height={size} />
+      <Image src={icon.src} alt="element" width={width} height={height} />
     </button>
   );
 }
