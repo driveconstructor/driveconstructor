@@ -13,7 +13,7 @@ import {
 } from "@/model/system";
 import { useSearchParams } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
-import Chart from "./Chart";
+import Chart from "./LoadGraph";
 import Param from "./Param";
 import Schema from "./Schema";
 import { Params } from "./page";

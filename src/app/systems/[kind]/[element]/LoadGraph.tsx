@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-export default function Chart() {
+export default function LoadGraph() {
   const context = useContext(SystemContext);
 
   const data = context.model.loadGraph(context.system);
@@ -34,14 +34,28 @@ export default function Chart() {
         labels: data.map((row) => Math.round(row.speed)),
         datasets: [
           {
-            label: "Acquisitions by year",
-            data: data.map((row) => row.torque),
+            label: Object.keys(context.model.input)[0],
+            data: data.map((row) => row.torque * 1000),
           },
         ],
       }}
       options={{
         animation: {
           duration: 0,
+        },
+        scales: {
+          x: {
+            title: {
+              text: "Speed (rpm)",
+              display: true,
+            },
+          },
+          y: {
+            title: {
+              text: "Torque (Nm)",
+              display: true,
+            },
+          },
         },
       }}
     />
