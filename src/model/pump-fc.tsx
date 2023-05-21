@@ -64,7 +64,6 @@ function loadGraph(system: PumpFc) {
 }
 
 function validate(system: PumpFc): string[] {
-  console.log("xxx");
   const result = [];
   const pump = system.input.pump;
   if (pump.minimalSpeed > pump.ratedSpeed) {

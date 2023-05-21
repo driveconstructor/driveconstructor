@@ -36,6 +36,8 @@ export default function Input({ params }: { params: Params }) {
   const system = getSystem(id);
   const [value, setValue] = useState(system);
   const [errors, setErrors] = useState([] as string[]);
+  // error state change counter - used to reset the state
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     saveSystem(id, value);
@@ -50,7 +52,10 @@ export default function Input({ params }: { params: Params }) {
 
   return (
     <SystemContext.Provider value={context}>
-      <div>Error: {errors}</div>
+      <div className="text-red-600">
+        {errors.length != 0 ? errors : null}
+        &nbsp;
+      </div>
       <div className="grid gap-2 lg:grid-cols-2">
         <div>
           <Schema model={model} />
@@ -62,7 +67,7 @@ export default function Input({ params }: { params: Params }) {
                 .filter(([_, v]) => value.showMore || v.advanced == null)
                 .map(([k, _]) => (
                   <Param
-                    key={k}
+                    key={k + counter}
                     name={k}
                     handleChange={(v) => {
                       const updated = updateSystem(context, k, v);
@@ -72,8 +77,11 @@ export default function Input({ params }: { params: Params }) {
                       setErrors(errors);
                       if (errors.length == 0) {
                         setValue(updated);
+                      } else {
+                        setCounter(counter + 1);
                       }
                     }}
+                    resetErrors={() => setErrors([])}
                   ></Param>
                 ))}
             </div>

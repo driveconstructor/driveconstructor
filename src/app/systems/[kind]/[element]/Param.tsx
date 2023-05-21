@@ -9,9 +9,11 @@ export const ANY = "#any";
 export default function Param({
   name,
   handleChange,
+  resetErrors,
 }: {
   name: string;
   handleChange: ChangeHandler;
+  resetErrors: () => void;
 }) {
   const context = useContext(SystemContext);
 
@@ -47,6 +49,7 @@ export default function Param({
       value={inputValue}
       model={paramModel}
       onChange={(v) => {
+        resetErrors();
         setInputValue(v);
         setValue(v);
       }}
@@ -55,7 +58,10 @@ export default function Param({
     <ParamInput
       value={inputValue}
       model={paramModel}
-      onChange={setInputValue}
+      onChange={(v) => {
+        resetErrors();
+        setInputValue(v);
+      }}
       onCommit={setValue}
     />
   );
