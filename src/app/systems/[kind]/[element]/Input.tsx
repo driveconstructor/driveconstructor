@@ -20,7 +20,9 @@ import { Params } from "./page";
 
 function Candidates() {
   const context = useContext(SystemContext);
-  return <div>Candidates: {context.system.candidates}</div>;
+  return (
+    <div className="break-all">Candidates: {context.system.candidates}</div>
+  );
 }
 
 export const SystemContext = createContext({} as SystemContextType);
@@ -60,7 +62,7 @@ export default function Input({ params }: { params: Params }) {
         <div>
           <Schema model={model} />
           <div className="border p-2">
-            <div className="grid gap-2 md:grid-cols-3">
+            <div className="grid gap-2 lg:grid-cols-3">
               {Object.entries(model.input)
                 .filter(([k, _]) => k == params.element)
                 .flatMap(([_, v]) => Object.entries(v.params))
@@ -97,13 +99,13 @@ export default function Input({ params }: { params: Params }) {
             <div className="btn flex-none">Show report</div>
           </div>
         </div>
-        <div>
+        <div className="border border-blue-400">
           <Chart />
         </div>
-      </div>
-      <div className="col-span-2">
-        <div className="text-lg">Candidates</div>
-        <Candidates />
+        <div className="border border-blue-400 lg:col-span-2">
+          <div className="text-lg">Candidates</div>
+          <Candidates />
+        </div>
       </div>
     </SystemContext.Provider>
   );
