@@ -53,8 +53,13 @@ export type FConvertor = {
   protection: (typeof FConverterProtection)[number];
 } & Environment;
 
-export function FConvertorElement(
-  types: (typeof FConverterType)[number][]
+export const NoTrafoFConvertorElement = FConvertorElement([
+  "2Q-2L-VSC-6p",
+  "4Q-2L-VSC",
+]);
+
+function FConvertorElement(
+  types: FConvertorTypeAlias[]
 ): SystemElement<FConvertor> {
   return {
     icon,

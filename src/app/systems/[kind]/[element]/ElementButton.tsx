@@ -10,15 +10,21 @@ export default function ElementButton({ name }: { name: string }) {
   const router = useRouter();
 
   const model = context.model.input[name];
+  const dummy = Object.keys(model.params).length == 0;
 
   return (
     <Element
       icon={model.icon}
       width={model.iconWidth ?? 80}
       height={80}
-      active={name == context.element}
-      onClick={() =>
-        router.push(`/systems/${context.model.kind}/${name}?id=${context.id}`)
+      active={dummy ? undefined : name == context.element}
+      onClick={
+        dummy
+          ? undefined
+          : () =>
+              router.push(
+                `/systems/${context.model.kind}/${name}?id=${context.id}`
+              )
       }
     />
   );

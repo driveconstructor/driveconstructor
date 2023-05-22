@@ -99,15 +99,21 @@ export const EMachineElement: SystemElement<EMachine> = {
     },
   },
   customize: (model, value) => {
-    switch (value.type) {
-      case "SCIM":
-        return { ...model, icon: iconSCIM };
-      case "PMSM":
-        return { ...model, icon: iconPMSM };
-      case "SyRM":
-        return { ...model, icon: iconSyRM };
+    if (value.type == null) {
+      return model;
     }
 
-    return model;
+    return { ...model, icon: customizeIcon(value.type) };
   },
 };
+
+function customizeIcon(type: (typeof EMachineType)[number]) {
+  switch (type) {
+    case "SCIM":
+      return iconSCIM;
+    case "PMSM":
+      return iconPMSM;
+    case "SyRM":
+      return iconSyRM;
+  }
+}

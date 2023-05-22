@@ -1,7 +1,9 @@
 import { Cable, CableElement } from "./cable";
 import { EMachine, EMachineElement } from "./emachine";
-import { FConvertor, FConvertorElement } from "./fconvertor";
+import { FConvertor, NoTrafoFConvertorElement } from "./fconvertor";
+import { Grid, GridElement } from "./grid";
 import { Pump, PumpElement, calculatePump } from "./pump";
+import { SwitchElement } from "./switch";
 import { Model } from "./system";
 
 export type PumpFc = {
@@ -11,6 +13,8 @@ export type PumpFc = {
     emachine: EMachine;
     cable: Cable;
     fconvertor: FConvertor;
+    switch: {};
+    grid: Grid;
   };
 };
 
@@ -28,7 +32,9 @@ export const PumpFcModel: Model<PumpFc> = {
     pump: PumpElement,
     emachine: EMachineElement,
     cable: CableElement,
-    fconvertor: FConvertorElement(["2Q-2L-VSC-6p", "4Q-2L-VSC"]),
+    fconvertor: NoTrafoFConvertorElement,
+    switch: SwitchElement,
+    grid: GridElement,
   },
   findCandidates,
   loadGraph,

@@ -16,8 +16,8 @@ export default function Element({
   return (
     <button
       onClick={onClick}
-      className={`border ${active ? "bg-slate-100" : ""} ${
-        onClick ? "" : "cursor-default"
+      className={`border ${active ? "border-blue-400 bg-slate-100" : ""} ${
+        onClick ? " hover:border-blue-400" : "cursor-default"
       }`}
     >
       <Image src={icon.src} alt="element" width={width} height={height} />
