@@ -84,3 +84,7 @@ function validate(system: PumpFc): string[] {
 
   return result;
 }
+
+export const ForTesting = {
+  loadGraph,
+};
