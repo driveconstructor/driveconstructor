@@ -3,11 +3,13 @@ import { useState } from "react";
 import { ChangeHandler } from "./Param";
 
 export default function Range({
+  id,
   value,
   onChange,
   onCommit,
   range,
 }: {
+  id: string;
   value: any;
   onChange: ChangeHandler;
   onCommit: ChangeHandler;
@@ -19,6 +21,7 @@ export default function Range({
     <div className="flex">
       <div className="mx-2 text-xs">{range.min}</div>
       <input
+        id={id}
         className="min-w-0"
         min={range.min}
         max={range.max}

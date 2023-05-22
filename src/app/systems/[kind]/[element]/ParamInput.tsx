@@ -3,11 +3,13 @@ import { ChangeHandler } from "./Param";
 import ParamRange from "./ParamRange";
 
 export default function ParamInput({
+  id,
   value,
   model,
   onChange,
   onCommit,
 }: {
+  id: string;
   value: any;
   model: SystemParam;
   onChange: ChangeHandler;
@@ -16,6 +18,7 @@ export default function ParamInput({
   return (
     <>
       <input
+        id={id}
         className="border text-right"
         type={model.type}
         min={model.range?.min}
@@ -28,6 +31,7 @@ export default function ParamInput({
       ></input>
       {model.type == "number" && model.range != null ? (
         <ParamRange
+          id={id}
           value={value}
           onChange={onChange}
           onCommit={onCommit}

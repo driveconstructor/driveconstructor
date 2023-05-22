@@ -2,10 +2,12 @@ import { SystemParam } from "@/model/system";
 import { ANY, ChangeHandler } from "./Param";
 
 export default function ParamSelect({
+  id,
   value,
   model,
   onChange,
 }: {
+  id: string;
   value: string | number;
   model: SystemParam;
   onChange: ChangeHandler;
@@ -13,6 +15,7 @@ export default function ParamSelect({
   return (
     <>
       <select
+        id={id}
         className="border bg-transparent text-right"
         value={value}
         onChange={(e) => {

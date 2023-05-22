@@ -46,6 +46,7 @@ export default function Param({
 
   const input = paramModel.options ? (
     <ParamSelect
+      id={name}
       value={inputValue}
       model={paramModel}
       onChange={(v) => {
@@ -56,6 +57,7 @@ export default function Param({
     />
   ) : (
     <ParamInput
+      id={name}
       value={inputValue}
       model={paramModel}
       onChange={(v) => {
@@ -68,7 +70,9 @@ export default function Param({
 
   return (
     <>
-      <label className="justify-self-end text-sm">{paramModel.label}:</label>
+      <label className="justify-self-end text-sm" htmlFor={name}>
+        {paramModel.label}:
+      </label>
       {input}
     </>
   );
