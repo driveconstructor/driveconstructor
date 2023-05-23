@@ -1,5 +1,5 @@
 import PageTemplate from "@/app/PageTemplate";
-import Schema from "@/app/systems/[kind]/[element]/Schema";
+import Schema from "@/app/systems/[kind]/Schema";
 import applications from "@/model/application";
 import { SystemModel } from "@/model/system";
 import Link from "next/link";
@@ -27,7 +27,7 @@ export default function Page({ params }: { params: { kind: string } }) {
 function renderSystemModel(model: SystemModel): React.ReactNode {
   return (
     <div key={model.kind} className="border border-gray-200 p-2">
-      <Schema model={model} viewOnly={true} />
+      <Schema model={model} />
       <h3 className="text-xl">{model.title}</h3>
       <div>{model.description}</div>
       <div className="m-4 flex justify-end space-x-1">

@@ -16,9 +16,10 @@ export default function Param({
   resetErrors: () => void;
 }) {
   const context = useContext(SystemContext);
+  const element = context.system.element;
 
-  const paramModel = context.model.input[context.element].params[name];
-  const value = context.system.input[context.element][name] ?? "";
+  const paramModel = context.model.input[element].params[name];
+  const value = context.system.input[element][name] ?? "";
 
   const [inputValue, setInputValue] = useState(value);
 

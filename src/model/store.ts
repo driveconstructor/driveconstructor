@@ -19,7 +19,6 @@ export type SystemContextType = {
   model: SystemModel;
   id: string;
   system: System;
-  element: string;
 };
 
 export function createSystem(model: SystemModel): string {
@@ -34,7 +33,12 @@ export function createSystem(model: SystemModel): string {
   }, {});
 
   const id = "draft_" + kind;
-  const system = { kind, input, showMore: false } as System;
+  const system = {
+    kind,
+    input,
+    showMore: false,
+    element: Object.keys(model.input)[0],
+  } as System;
   saveSystem(id, withCandidates(model, system));
   return id;
 }
@@ -48,8 +52,8 @@ export function updateSystem(
     ...context.system,
     input: {
       ...context.system.input,
-      [context.element]: {
-        ...context.system.input[context.element],
+      [context.system.element]: {
+        ...context.system.input[context.system.element],
         [paramName]: value,
       },
     },

@@ -12,7 +12,7 @@ export default function NewSystemButton({ kind }: { kind: SystemKind }) {
       onClick={(e) => {
         const model = getModel(kind);
         const id = createSystem(model);
-        router.push(`/systems/${kind}/${Object.keys(model.input)[0]}?id=${id}`);
+        router.push(`/systems/${kind}?id=${id}`);
       }}
     >
       New System

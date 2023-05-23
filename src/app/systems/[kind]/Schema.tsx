@@ -4,16 +4,16 @@ import ElementButton from "./ElementButton";
 
 export default function Schema({
   model,
-  viewOnly = false,
+  onSelect,
 }: {
   model: SystemModel;
-  viewOnly?: boolean;
+  onSelect?: (e: string) => void;
 }) {
   const elements = Object.entries(model.input).map(([k, v]) =>
-    viewOnly ? (
-      <Element key={k} icon={v.icon} width={60} height={60} />
+    onSelect ? (
+      <ElementButton key={k} name={k} onSelect={onSelect} />
     ) : (
-      <ElementButton key={k} name={k} />
+      <Element key={k} icon={v.icon} width={60} height={60} />
     )
   );
 

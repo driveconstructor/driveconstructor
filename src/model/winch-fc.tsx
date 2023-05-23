@@ -1,8 +1,8 @@
 import { EMachine, EMachineElement } from "./emachine";
-import { Model } from "./system";
+import { BaseSystem, Model } from "./system";
 import { Winch, WinchElement } from "./winch";
 
-export type WinchFc = {
+export type WinchFc = BaseSystem & {
   kind: "winch-fc";
   input: {
     winch: Winch;

@@ -6,17 +6,12 @@ import {
   saveSystem,
   updateSystem,
 } from "@/model/store";
-import {
-  customizeModel,
-  getModel,
-  getSystemKindsWithlements,
-} from "@/model/system";
+import { SystemKind, customizeModel, getModel } from "@/model/system";
 import { useSearchParams } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import Chart from "./LoadGraph";
 import Param from "./Param";
 import Schema from "./Schema";
-import { Params } from "./page";
 
 function Candidates() {
   const context = useContext(SystemContext);
@@ -27,8 +22,8 @@ function Candidates() {
 
 export const SystemContext = createContext({} as SystemContextType);
 
-export default function Input({ params }: { params: Params }) {
-  const model = getModel(params.kind);
+export default function Input({ kind }: { kind: SystemKind }) {
+  const model = getModel(kind);
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   if (id == null) {
@@ -48,7 +43,6 @@ export default function Input({ params }: { params: Params }) {
   const context: SystemContextType = {
     id,
     model: customizeModel(model, value),
-    element: params.element,
     system: value,
   };
 
@@ -60,11 +54,16 @@ export default function Input({ params }: { params: Params }) {
       </div>
       <div className="grid gap-2 md:grid-cols-2">
         <div>
-          <Schema model={model} />
+          <Schema
+            model={model}
+            onSelect={(element) => {
+              setValue({ ...value, element });
+            }}
+          />
           <div className="border p-2">
             <div className="grid gap-2 md:grid-cols-3">
               {Object.entries(model.input)
-                .filter(([k, _]) => k == params.element)
+                .filter(([k, _]) => k == value.element)
                 .flatMap(([_, v]) => Object.entries(v.params))
                 .filter(([_, v]) => value.showMore || v.advanced == null)
                 .map(([k, _]) => (
@@ -109,8 +108,4 @@ export default function Input({ params }: { params: Params }) {
       </div>
     </SystemContext.Provider>
   );
-}
-
-export function generateStaticParams(): Params[] {
-  return getSystemKindsWithlements();
 }

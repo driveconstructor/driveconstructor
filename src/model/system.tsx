@@ -46,10 +46,15 @@ const models: Record<SystemKind, SystemModel> = {
   "winch-fc": WinchFcModel,
 };
 
-export type System = (PumpFc | WinchFc) & {
-  input: Record<string, Record<string, any>>;
+export type BaseSystem = {
+  element: string;
   candidates?: string;
   showMore?: boolean;
+};
+
+export type System = (PumpFc | WinchFc) & {
+  // to make type script access different types for systems
+  input: Record<string, Record<string, any>>;
 };
 
 export type SystemKind = System["kind"];
@@ -63,12 +68,10 @@ export function getModel(kind: SystemKind): SystemModel {
   throw new Error(`unknown system kind: ${kind}`);
 }
 
-export function getSystemKindsWithlements() {
-  return Object.entries(models).flatMap(([_, model]) =>
-    Object.keys(model.input).map((k) => {
-      return { kind: model.kind, element: k };
-    })
-  );
+export function getSystemKinds() {
+  return Object.keys(models).map((k) => {
+    return { kind: k as SystemKind };
+  });
 }
 
 export function customizeModel<T extends System>(
