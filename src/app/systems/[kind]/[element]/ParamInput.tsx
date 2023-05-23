@@ -19,7 +19,7 @@ export default function ParamInput({
     <>
       <input
         id={id}
-        className="border text-right"
+        className="border text-left"
         type={model.type}
         min={model.range?.min}
         max={model.range?.max}

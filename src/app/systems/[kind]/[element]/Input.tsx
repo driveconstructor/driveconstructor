@@ -58,11 +58,11 @@ export default function Input({ params }: { params: Params }) {
         {errors.length != 0 ? errors : null}
         &nbsp;
       </div>
-      <div className="grid gap-2 lg:grid-cols-2">
+      <div className="grid gap-2 md:grid-cols-2">
         <div>
           <Schema model={model} />
           <div className="border p-2">
-            <div className="grid gap-2 lg:grid-cols-3">
+            <div className="grid gap-2 md:grid-cols-3">
               {Object.entries(model.input)
                 .filter(([k, _]) => k == params.element)
                 .flatMap(([_, v]) => Object.entries(v.params))
@@ -102,7 +102,7 @@ export default function Input({ params }: { params: Params }) {
         <div className="border border-blue-400">
           <Chart />
         </div>
-        <div className="border border-blue-400 lg:col-span-2">
+        <div className="border border-blue-400 md:col-span-2">
           <div className="text-lg">Candidates</div>
           <Candidates />
         </div>

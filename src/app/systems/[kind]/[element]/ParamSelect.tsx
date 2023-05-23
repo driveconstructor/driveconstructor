@@ -16,7 +16,7 @@ export default function ParamSelect({
     <>
       <select
         id={id}
-        className="border bg-transparent text-right"
+        className="border bg-transparent text-left"
         value={value}
         onChange={(e) => {
           onChange(e.target.value);

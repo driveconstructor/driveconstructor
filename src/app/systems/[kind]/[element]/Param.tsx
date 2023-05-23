@@ -70,7 +70,7 @@ export default function Param({
 
   return (
     <>
-      <label className="justify-self-end text-sm" htmlFor={name}>
+      <label className="text-sm" htmlFor={name}>
         {paramModel.label}:
       </label>
       {input}
