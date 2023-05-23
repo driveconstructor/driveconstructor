@@ -48,15 +48,12 @@ export default function Input({ kind }: { kind: SystemKind }) {
 
   return (
     <SystemContext.Provider value={context}>
-      <div className="text-red-600">
-        {errors.length != 0 ? errors : null}
-        &nbsp;
-      </div>
       <div className="grid gap-2 md:grid-cols-2">
         <div>
           <Schema
             model={model}
             onSelect={(element) => {
+              setErrors([]);
               setValue({ ...value, element });
             }}
           />
@@ -96,6 +93,10 @@ export default function Input({ kind }: { kind: SystemKind }) {
             </div>
             <div className="grow" />
             <div className="btn flex-none">Show report</div>
+          </div>
+          <div className="text-red-600">
+            {errors.length != 0 ? errors : null}
+            &nbsp;
           </div>
         </div>
         <div className="border border-blue-400">
