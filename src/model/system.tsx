@@ -34,7 +34,7 @@ export type Model<T extends System> = {
     [E in keyof T["input"]]: SystemElement<T["input"][E]>;
   };
 
-  findCandidates: (system: T) => string;
+  findCandidates: (system: T) => T["candidates"];
   loadGraph: (system: T) => { speed: number; torque: number }[];
   validate?: (system: T) => string[];
 };
@@ -48,8 +48,7 @@ const models: Record<SystemKind, SystemModel> = {
 
 export type BaseSystem = {
   element: string;
-  candidates?: string;
-  showMore?: boolean;
+  showMore: boolean;
 };
 
 export type System = (PumpFc | WinchFc) & {

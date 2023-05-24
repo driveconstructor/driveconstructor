@@ -1,5 +1,5 @@
 import { Cable, CableElement } from "./cable";
-import { EMachine, EMachineElement } from "./emachine";
+import { EMachine, EMachineComponent, EMachineElement } from "./emachine";
 import { FConvertor, NoTrafoFConvertorElement } from "./fconvertor";
 import { Grid, GridElement } from "./grid";
 import { Pump, PumpElement, calculatePump } from "./pump";
@@ -15,6 +15,12 @@ export type PumpFc = BaseSystem & {
     fconvertor: FConvertor;
     switch: {};
     grid: Grid;
+  };
+  candidates: {
+    emachine: EMachineComponent[];
+  };
+  components: {
+    emachine: EMachineComponent | null;
   };
 };
 
@@ -42,7 +48,7 @@ export const PumpFcModel: Model<PumpFc> = {
 };
 
 function findCandidates(system: PumpFc) {
-  return JSON.stringify(system.input) + " " + new Date();
+  return { emachine: [{ designation: JSON.stringify(system.input) }] };
 }
 
 function loadGraph(system: PumpFc) {

@@ -2,6 +2,7 @@ import iconPMSM from "../images/el-emachine-pmsm.svg";
 import iconSCIM from "../images/el-emachine-scim.svg";
 import iconSyRM from "../images/el-emachine-syrm.svg";
 import icon from "../images/el-emachine.svg";
+import { ComponentModel } from "./component";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
 
@@ -117,3 +118,18 @@ function customizeIcon(type: (typeof EMachineType)[number]) {
       return iconSyRM;
   }
 }
+
+export type EMachineComponent = {
+  designation: string;
+};
+
+export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
+  kind: "emachine",
+  title: "Electric machine",
+  params: {
+    designation: {
+      label: "Designation",
+      render: (v) => v,
+    },
+  },
+};

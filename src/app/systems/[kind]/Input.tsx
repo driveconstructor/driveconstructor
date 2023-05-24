@@ -8,17 +8,11 @@ import {
 } from "@/model/store";
 import { SystemKind, customizeModel, getModel } from "@/model/system";
 import { useSearchParams } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import Candidates from "./Candidates";
 import Chart from "./LoadGraph";
 import Param from "./Param";
 import Schema from "./Schema";
-
-function Candidates() {
-  const context = useContext(SystemContext);
-  return (
-    <div className="break-all">Candidates: {context.system.candidates}</div>
-  );
-}
 
 export const SystemContext = createContext({} as SystemContextType);
 
