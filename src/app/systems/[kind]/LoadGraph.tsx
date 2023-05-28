@@ -35,7 +35,7 @@ export default function LoadGraph() {
         datasets: [
           {
             label: Object.keys(context.model.input)[0],
-            data: data.map((row) => row.torque * 1000),
+            data: data.map((row) => row.torque),
           },
         ],
       }}
