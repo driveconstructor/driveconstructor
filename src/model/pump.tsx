@@ -97,8 +97,8 @@ export function calculatePump(pump: Pump) {
   const powerOnShaft =
     (flowM3h * pump.fluidDensity * 9.81 * pump.head) /
     (pump.ratedEfficiency * 3.6 * 10000);
-  
-  const ratedTorque = 1000 * (powerOnShaft * 9.55) / pump.ratedSpeed;
+
+  const ratedTorque = (1000 * (powerOnShaft * 9.55)) / pump.ratedSpeed;
   const torqueOverload = ratedTorque * pump.startingTorque;
 
   return { powerOnShaft, ratedTorque, torqueOverload };
