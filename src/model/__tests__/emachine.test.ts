@@ -1,4 +1,4 @@
-import { filterBySpeed } from "../emachine-sizing";
+import { findTypeSpeedAndTorque, findVoltageY } from "../emachine-sizing";
 import { Pump, calculatePump } from "../pump";
 
 const pump: Pump = {
@@ -12,10 +12,22 @@ const pump: Pump = {
   startingTorque: 0,
 };
 
-describe("emachine", () => {
-  test("sizing", () => {
-    const v = calculatePump(pump);
+const mechanism = calculatePump(pump);
 
-    expect(filterBySpeed(pump.ratedSpeed, v.ratedTorque)).toHaveLength(9);
+describe("emachine", () => {
+  test("typeSpeedAndTorque", () => {
+    expect(
+      findTypeSpeedAndTorque(pump.ratedSpeed, mechanism.ratedTorque)
+    ).toHaveLength(9);
+  });
+
+  test("voltage", () => {
+    const v1 = findVoltageY(0, 400);
+    expect(v1.min).toBeCloseTo(360);
+    expect(v1.max).toBeCloseTo(440);
+
+    const v2 = findVoltageY(4000, 400);
+    expect(v2.min).toBeCloseTo(594);
+    expect(v2.max).toBeCloseTo(726);
   });
 });

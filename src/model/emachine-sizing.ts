@@ -12,7 +12,7 @@ type FilteredBySpeed = {
   ratedTorque: number;
 };
 
-export function filterBySpeed(
+export function findTypeSpeedAndTorque(
   mechanismSpeed: number,
   mechanismTorque: number
 ): FilteredBySpeed[] {
@@ -26,8 +26,6 @@ export function filterBySpeed(
         const ratedTorque = 1000 * (ratedPower / ratedSpeed) * 9.55;
 
         const result = { type, ratedPower, speed, ratedSpeed, ratedTorque };
-
-        //   console.log(result);
         return { type, ratedPower, speed, ratedSpeed, ratedTorque };
       }).filter(
         (o) =>
@@ -37,4 +35,26 @@ export function filterBySpeed(
       )
     )
   );
+}
+
+type VoltageY = {
+  min: number;
+  max: number;
+};
+
+const LowVoltage = [400, 660] as const;
+
+const MediumVoltage = [3300, 6600, 10000] as const;
+
+const Voltage = [...LowVoltage, ...MediumVoltage];
+
+export function findVoltageY(altitude: number, voltage: number): VoltageY {
+  const derating = altitude > 2000 ? 1 - 0.00015 * (altitude - 2000) : 1;
+  const deratedVoltage = voltage / derating;
+
+  const result = [...Voltage].sort(
+    (a, b) => Math.abs(a - deratedVoltage) - Math.abs(b - deratedVoltage)
+  )[0];
+
+  return { min: result * 0.9, max: result * 1.1 };
 }
