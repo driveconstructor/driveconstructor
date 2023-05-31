@@ -2,7 +2,6 @@ import iconPMSM from "../images/el-emachine-pmsm.svg";
 import iconSCIM from "../images/el-emachine-scim.svg";
 import iconSyRM from "../images/el-emachine-syrm.svg";
 import icon from "../images/el-emachine.svg";
-import { ComponentModel } from "./component";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
 
@@ -12,12 +11,16 @@ export const ERatedPower = [
   132, 160, 200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900,
   1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000, 5000,
 ] as const;
-const EfficiencyClass = ["IE2", "IE3", "IE4"] as const;
-const EMachineMounting = ["B3", "B5", "B35"] as const;
-const EMachineCooling = ["IC411", "IC416", "IC71W"] as const;
-const EMachineProtection = ["IP21/23", "IP54/55"] as const;
-const EMachineFrameMaterial = ["steel", "aluminum", "cast iron"] as const;
-const ShaftHeight = [
+export const EfficiencyClass = ["IE2", "IE3", "IE4"] as const;
+export const EMachineMounting = ["B3", "B5", "B35"] as const;
+export const EMachineCooling = ["IC411", "IC416", "IC71W"] as const;
+export const EMachineProtection = ["IP21/23", "IP54/55"] as const;
+export const EMachineFrameMaterial = [
+  "steel",
+  "aluminum",
+  "cast iron",
+] as const;
+export const ShaftHeight = [
   56, 63, 71, 80, 90, 100, 112, 132, 160, 180, 200, 225, 250, 280, 315, 355,
   400, 450, 500, 560, 630, 710,
 ] as const;
@@ -118,18 +121,3 @@ function customizeIcon(type: (typeof EMachineType)[number]) {
       return iconSyRM;
   }
 }
-
-export type EMachineComponent = {
-  designation: string;
-};
-
-export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
-  kind: "emachine",
-  title: "Electric machine",
-  params: {
-    designation: {
-      label: "Designation",
-      render: (v) => v,
-    },
-  },
-};

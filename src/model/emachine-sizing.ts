@@ -1,10 +1,10 @@
 import { EMachineType, ERatedPower } from "./emachine";
 
-const ERatedSynchSpeed = [
+export const ERatedSynchSpeed = [
   3000, 1500, 1000, 750, 600, 500, 400, 300, 200, 100,
 ] as const;
 
-type FilteredBySpeed = {
+export type TypeSpeedAndTorque = {
   type: (typeof EMachineType)[number];
   ratedPower: (typeof ERatedPower)[number];
   speed: (typeof ERatedSynchSpeed)[number];
@@ -15,7 +15,7 @@ type FilteredBySpeed = {
 export function findTypeSpeedAndTorque(
   mechanismSpeed: number,
   mechanismTorque: number
-): FilteredBySpeed[] {
+): TypeSpeedAndTorque[] {
   return ERatedSynchSpeed.filter(
     (speed) => speed > mechanismSpeed / 1.2
   ).flatMap((speed) =>
@@ -37,24 +37,28 @@ export function findTypeSpeedAndTorque(
   );
 }
 
-type VoltageY = {
+export type VoltageY = {
+  value: (typeof Voltage)[number];
   min: number;
   max: number;
 };
 
-const LowVoltage = [400, 660] as const;
+export const LowVoltage = [400, 660] as const;
 
-const MediumVoltage = [3300, 6600, 10000] as const;
+export const MediumVoltage = [3300, 6600, 10000] as const;
 
-const Voltage = [...LowVoltage, ...MediumVoltage];
+export const Voltage = [...LowVoltage, ...MediumVoltage];
 
-export function findVoltageY(altitude: number, voltage: number): VoltageY {
+export function findVoltageY(
+  altitude: number,
+  systemVoltage: number
+): VoltageY {
   const derating = altitude > 2000 ? 1 - 0.00015 * (altitude - 2000) : 1;
-  const deratedVoltage = voltage / derating;
+  const deratedVoltage = systemVoltage / derating;
 
-  const result = [...Voltage].sort(
+  const value = [...Voltage].sort(
     (a, b) => Math.abs(a - deratedVoltage) - Math.abs(b - deratedVoltage)
   )[0];
 
-  return { min: result * 0.9, max: result * 1.1 };
+  return { min: value * 0.9, value, max: value * 1.1 };
 }

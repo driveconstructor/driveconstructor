@@ -37,7 +37,7 @@ function Param({ param, value }: { param: ComponentParam; value: any }) {
   return (
     <>
       <div>{param.label}: </div>
-      <div>{param.render(value)}</div>
+      <div>{param.render ? param.render(value) : value}</div>
     </>
   );
 }

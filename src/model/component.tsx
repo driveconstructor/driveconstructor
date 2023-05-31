@@ -1,8 +1,8 @@
-import { EMachineComponentModel } from "./emachine";
+import { EMachineComponentModel } from "./emachine-component";
 
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
-  render: (value: T) => React.ReactNode;
+  render?: (value: T) => React.ReactNode;
 };
 
 export type ComponentModel<T = any> = {
