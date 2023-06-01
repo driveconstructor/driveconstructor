@@ -22,7 +22,7 @@ function Candidate({ kind, value }: { kind: string; value: any }) {
   return (
     <div>
       <div className="text-lg text-gray-500">{model.title}</div>
-      <div>
+      <div className="grid grid-cols-4 md:grid-cols-8">
         {Object.keys(model.params).map((k, i) => (
           <div key={i}>
             <Param param={model.params[k]} value={value[k]} />
@@ -35,9 +35,9 @@ function Candidate({ kind, value }: { kind: string; value: any }) {
 
 function Param({ param, value }: { param: ComponentParam; value: any }) {
   return (
-    <>
-      <div>{param.label}: </div>
-      <div>{param.render ? param.render(value) : value}</div>
-    </>
+    <div className="p-1">
+      <div className="text-sm">{param.label}:</div>
+      <div className="border">{param.render ? param.render(value) : value}</div>
+    </div>
   );
 }
