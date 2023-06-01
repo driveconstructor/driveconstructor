@@ -1,4 +1,6 @@
-import { EMachine, EMachineComponent, EMachineElement } from "./emachine";
+import { Components } from "./component";
+import { EMachine, EMachineElement } from "./emachine";
+import { EMachineComponent } from "./emachine-component";
 import { BaseSystem, Model } from "./system";
 import { Winch, WinchElement } from "./winch";
 
@@ -36,8 +38,8 @@ export const WinchFcModel: Model<WinchFc> = {
   loadGraph,
 };
 
-function findCandidates(system: WinchFc) {
-  return { emachine: [{ designation: JSON.stringify(system.input) }] };
+function findCandidates(system: WinchFc): Components {
+  return { emachine: [] };
 }
 
 function loadGraph(system: WinchFc) {

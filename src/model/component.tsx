@@ -1,4 +1,7 @@
-import { EMachineComponentModel } from "./emachine-component";
+import {
+  EMachineComponent,
+  EMachineComponentModel,
+} from "./emachine-component";
 
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
@@ -21,3 +24,7 @@ export function getComponentModel(kind: string): ComponentModel {
 
   return result;
 }
+
+export type Components = {
+  emachine: EMachineComponent[];
+};

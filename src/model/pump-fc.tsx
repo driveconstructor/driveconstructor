@@ -1,4 +1,5 @@
 import { Cable, CableElement } from "./cable";
+import { Components } from "./component";
 import { EMachine, EMachineElement } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
 import { FConvertor, NoTrafoFConvertorElement } from "./fconvertor";
@@ -6,10 +7,6 @@ import { Grid, GridElement } from "./grid";
 import { Pump, PumpElement, calculatePump } from "./pump";
 import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
-
-type Components = {
-  emachine: EMachineComponent[];
-};
 
 export type PumpFc = BaseSystem & {
   kind: "pump-fc";
