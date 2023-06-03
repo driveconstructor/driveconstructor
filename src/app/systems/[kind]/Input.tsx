@@ -29,6 +29,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
   const [errors, setErrors] = useState([] as string[]);
   // error state change counter - used to reset the state
   const [counter, setCounter] = useState(0);
+  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     saveSystem(id, value);
@@ -56,7 +57,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
               {Object.entries(model.input)
                 .filter(([k, _]) => k == value.element)
                 .flatMap(([_, v]) => Object.entries(v.params))
-                .filter(([_, v]) => value.showMore || v.advanced == null)
+                .filter(([_, v]) => showMore || !v.advanced)
                 .map(([k, _]) => (
                   <Param
                     key={k + counter}
@@ -81,9 +82,9 @@ export default function Input({ kind }: { kind: SystemKind }) {
           <div className="flex p-2">
             <div
               className="btn flex-none"
-              onClick={() => setValue({ ...value, showMore: !value.showMore })}
+              onClick={() => setShowMore(!showMore)}
             >
-              {value.showMore ? "Less..." : "More..."}
+              {showMore ? "Less..." : "More..."}
             </div>
             <div className="grow" />
             <div className="btn flex-none">Show report</div>

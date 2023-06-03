@@ -66,57 +66,70 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     ratedSpeed: {
       label: "Rated speed, rpm",
     },
-    ratedSynchSpeed: {
-      label: "Rated synchronous speed, rpm",
-    },
-    maximumSpeed: {
-      label: "Maximum speed, rpm",
-    },
     ratedVoltageY: {
       label: "Voltage, V",
       render: (v) => `${v.min}-${v.max}`,
     },
+    ratedSynchSpeed: {
+      label: "Rated synchronous speed, rpm",
+      advanced: true,
+    },
+    maximumSpeed: {
+      label: "Maximum speed, rpm",
+      advanced: true,
+    },
     efficiencyClass: {
       label: "Efficiency class",
+      advanced: true,
     },
     efficiency100: {
       label: "Efficiency @100% load",
     },
     efficiency75: {
       label: "Efficiency @75% load",
+      advanced: true,
     },
     efficiency50: {
       label: "Efficiency @50% load",
+      advanced: true,
     },
     efficiency25: {
       label: "Efficiency @25% load",
+      advanced: true,
     },
     ratedCurrent: {
       label: "Rated current, A",
     },
     ratedTorque: {
       label: "Working current, A",
+      advanced: true,
     },
     workingCurrent: {
       label: "Rated torque, Nm",
+      advanced: true,
     },
     torqueOverload: {
       label: "Torque overload",
+      advanced: true,
     },
     cosFi100: {
       label: "cos_fi @ rated load",
+      advanced: true,
     },
     cosFi75: {
       label: "cos_fi @ 75% load",
+      advanced: true,
     },
     cosFi50: {
       label: "cos_fi @ 50% load",
+      advanced: true,
     },
     cooling: {
       label: "Cooling",
     },
     mounting: {
       label: "Mounting",
+      advanced: true,
     },
     protection: {
       label: "Protection",
@@ -126,18 +139,22 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     },
     shaftHeight: {
       label: "Shaft height, mm",
+      advanced: true,
     },
     outerDiameter: {
       label: "Outer diameter, m",
+      advanced: true,
     },
     length: {
       label: "Axial length, m",
+      advanced: true,
     },
     volume: {
       label: "Volume, m3",
     },
     momentOfInertia: {
       label: "Moment of inertia, kgm2",
+      advanced: true,
     },
     footPrint: {
       label: "Footprint, m2",

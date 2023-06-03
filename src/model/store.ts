@@ -36,7 +36,6 @@ export function createSystem(model: SystemModel): string {
   const system = {
     kind,
     input,
-    showMore: false,
     element: Object.keys(model.input)[0],
   } as System;
   saveSystem(id, withCandidates(model, system));

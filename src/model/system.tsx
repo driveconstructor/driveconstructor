@@ -48,7 +48,6 @@ const models: Record<SystemKind, SystemModel> = {
 
 export type BaseSystem = {
   element: string;
-  showMore: boolean;
 };
 
 export type System = (PumpFc | WinchFc) & {

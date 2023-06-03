@@ -5,6 +5,7 @@ import {
 
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
+  advanced?: boolean;
   render?: (value: T) => React.ReactNode;
 };
 
