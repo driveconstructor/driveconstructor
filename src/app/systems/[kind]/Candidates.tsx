@@ -34,7 +34,11 @@ function Candidate({ kind, values }: { kind: string; values: any[] }) {
         {values.map((v, i) => (
           <div
             key={i}
-            className="border hover:border-blue-400"
+            className={
+              selected == i
+                ? "border border-blue-400 bg-slate-50"
+                : "border hover:border-blue-400"
+            }
             onClick={() => setSelected(i)}
           >
             <div className="grid grid-cols-4 md:grid-cols-8">
