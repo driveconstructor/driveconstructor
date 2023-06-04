@@ -18,17 +18,27 @@ export default function Candidates() {
 function Candidate({ kind, values }: { kind: string; values: any[] }) {
   console.log(values);
   const model = getComponentModel(kind);
+  const hasAdvanced = Boolean(
+    Object.entries(model.params).find(([k, v]) => v.advanced)?.length
+  );
   const [showMore, setShowMore] = useState(false);
-  const [selected, setSelected] = useState(-1);
+  const [selected, setSelected] = useState(values.length == 1 ? 0 : -1);
 
   return (
     <>
       <div className="flex p-2">
         <div className="text-lg text-gray-500">{model.title}</div>
-        <div className="grow" />
-        <div className="btn flex-none" onClick={() => setShowMore(!showMore)}>
-          {showMore ? "Less..." : "More..."}
-        </div>
+        {hasAdvanced ? (
+          <>
+            <div className="grow" />
+            <div
+              className="btn flex-none"
+              onClick={() => setShowMore(!showMore)}
+            >
+              {showMore ? "Less..." : "More..."}
+            </div>
+          </>
+        ) : null}
       </div>
       <div>
         {values.map((v, i) => (

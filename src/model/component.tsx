@@ -1,3 +1,4 @@
+import { CableComponent, CableComponentModel } from "./cable-component";
 import {
   EMachineComponent,
   EMachineComponentModel,
@@ -18,7 +19,7 @@ export type ComponentModel<T = any> = {
 };
 
 export function getComponentModel(kind: string): ComponentModel {
-  const result = [EMachineComponentModel].find((m) => m.kind == kind);
+  const result = [EMachineComponentModel, CableComponentModel].find((m) => m.kind == kind);
   if (!result) {
     throw new Error("Component is not found: " + kind);
   }
@@ -28,4 +29,5 @@ export function getComponentModel(kind: string): ComponentModel {
 
 export type Components = {
   emachine: EMachineComponent[];
+  cable: CableComponent[]
 };

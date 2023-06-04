@@ -117,6 +117,18 @@ function findCandidates(system: PumpFc): Components {
         designation: "IM-132-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
       },
     ],
+    cable: [
+      {
+        // 30	1021	copper	150	1	1	0.65	99.51	34.03	1.83	0.004477	0.000129	CU-3x150-01kV
+        length: 30,
+        price: 1021,
+        material: "copper",
+        crossSection: 150,
+        voltage: 1,
+        numberOfRuns: 1,
+        designation: "CU-3x150-01kV",
+      },
+    ],
   };
 }
 
