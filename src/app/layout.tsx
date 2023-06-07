@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="container mx-auto">
+        <div className="container mx-auto flex h-screen flex-col justify-between">
           <nav className="flex space-x-4">
             <NavItem href="/" className="text-xl">
               Drive Consructor
@@ -45,7 +45,10 @@ export default function RootLayout({
             <NavItem href="/mysystems">My systems</NavItem>
             <NavItem href="/about">About</NavItem>
           </nav>
-          {children}
+          <main className="mb-auto"> {children}</main>
+          <footer className="my-2 flex justify-end">
+            drive constructor 2018-2023 (c)
+          </footer>
         </div>
       </body>
     </html>

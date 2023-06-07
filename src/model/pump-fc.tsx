@@ -127,6 +127,12 @@ function findCandidates(system: PumpFc): Components {
         voltage: 1,
         numberOfRuns: 1,
         designation: "CU-3x150-01kV",
+        efficiency100: 111,
+        pricePerMeter: 22,
+        losses: 33,
+        reactancePerHz: 1,
+        resistancePerMeter: 3,
+        voltageDrop: 3,
       },
     ],
   };
