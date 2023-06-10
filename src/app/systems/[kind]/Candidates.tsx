@@ -1,4 +1,5 @@
 import { ComponentParam, getComponentModel } from "@/model/component";
+import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
 import { SystemContext } from "./Input";
 
@@ -16,19 +17,31 @@ export default function Candidates() {
 }
 
 function Candidate({ kind, values }: { kind: string; values: any[] }) {
-  console.log(values);
   const model = getComponentModel(kind);
   const hasAdvanced = Boolean(
     Object.entries(model.params).find(([k, v]) => v.advanced)?.length
   );
   const [showMore, setShowMore] = useState(false);
   const [selected, setSelected] = useState(values.length == 1 ? 0 : -1);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <>
       <div className="flex p-2">
-        <div className="text-lg text-gray-500">{model.title}</div>
-        {hasAdvanced ? (
+        <div
+          onClick={() => setCollapsed(!collapsed)}
+          className="flex flex-nowrap hover:cursor-pointer"
+        >
+          {collapsed ? (
+            <ChevronRightIcon className="h-6 text-gray-500" />
+          ) : (
+            <ChevronDownIcon className="h-6 text-gray-500" />
+          )}
+          <div className="text-lg text-gray-500">
+            {model.title + (collapsed ? `(${values.length})` : "")}
+          </div>
+        </div>
+        {!collapsed && hasAdvanced ? (
           <>
             <div className="grow" />
             <div
@@ -41,30 +54,32 @@ function Candidate({ kind, values }: { kind: string; values: any[] }) {
         ) : null}
       </div>
       <div>
-        {values.map((v, i) => (
-          <div
-            key={i}
-            className={
-              selected == i
-                ? "border border-blue-400 bg-slate-50"
-                : "border hover:border-blue-400"
-            }
-            onClick={() => setSelected(i)}
-          >
-            <div className="grid grid-cols-4 md:grid-cols-8">
-              <div className="justify-self-center">
-                Selected <input type="radio" checked={selected == i} />
+        {values
+          .filter(() => !collapsed)
+          .map((v, i) => (
+            <div
+              key={i}
+              className={
+                selected == i
+                  ? "border border-blue-400 bg-slate-50"
+                  : "border hover:border-blue-400"
+              }
+              onClick={() => setSelected(i)}
+            >
+              <div className="grid grid-cols-4 md:grid-cols-8">
+                <div className="justify-self-center">
+                  Selected <input type="radio" checked={selected == i} />
+                </div>
+                {Object.keys(model.params)
+                  .filter((k) => showMore || !model.params[k].advanced)
+                  .map((k, i) => (
+                    <div key={i}>
+                      <Param param={model.params[k]} value={v[k]} />
+                    </div>
+                  ))}
               </div>
-              {Object.keys(model.params)
-                .filter((k) => showMore || !model.params[k].advanced)
-                .map((k, i) => (
-                  <div key={i}>
-                    <Param param={model.params[k]} value={v[k]} />
-                  </div>
-                ))}
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </>
   );
