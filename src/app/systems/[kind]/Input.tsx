@@ -98,7 +98,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
           <Chart />
         </div>
         <div className="md:col-span-2">
-          <div className="text-lg">Candidates</div>
+          <div className="text-2xl">Candidates</div>
           <Candidates />
         </div>
       </div>
