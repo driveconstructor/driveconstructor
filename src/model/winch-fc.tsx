@@ -1,6 +1,9 @@
-import { Components } from "./component";
-import { EMachine, EMachineElement } from "./emachine";
+import { CableElement } from "./cable";
+import { EMachineElement } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
+import { NoTrafoFConvertorElement } from "./fconvertor";
+import { GridElement } from "./grid";
+import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
 import { Winch, WinchElement } from "./winch";
 
@@ -8,7 +11,6 @@ export type WinchFc = BaseSystem & {
   kind: "winch-fc";
   input: {
     winch: Winch;
-    emachine: EMachine;
   };
   candidates: {
     emachine: EMachineComponent[];
@@ -33,15 +35,9 @@ export const WinchFcModel: Model<WinchFc> = {
   input: {
     winch: WinchElement,
     emachine: EMachineElement,
+    cable: CableElement,
+    fconvertor: NoTrafoFConvertorElement,
+    switch: SwitchElement,
+    grid: GridElement,
   },
-  findCandidates,
-  loadGraph,
 };
-
-function findCandidates(system: WinchFc): Components {
-  return { emachine: [], cable: [], fconvertor: [] };
-}
-
-function loadGraph(system: WinchFc) {
-  return [];
-}

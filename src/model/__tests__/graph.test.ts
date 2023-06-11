@@ -1,6 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
+import { loadGraph } from "../load-graph";
 import { Pump } from "../pump";
-import { ForTesting, PumpFc } from "../pump-fc";
+import { PumpFc } from "../pump-fc";
 
 const pump: Pump = {
   type: "centrifugal",
@@ -15,8 +16,8 @@ const pump: Pump = {
 
 describe("graph", () => {
   test("pump-fc load graph", () => {
-    expect(ForTesting.loadGraph({ input: { pump } } as PumpFc)).toHaveLength(
-      16
-    );
+    expect(
+      loadGraph({ kind: "pump-fc", input: { pump } } as PumpFc)
+    ).toHaveLength(16);
   });
 });

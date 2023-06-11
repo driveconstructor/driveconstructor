@@ -1,3 +1,4 @@
+import { findCandidates } from "./sizing";
 import { System, SystemModel } from "./system";
 
 const prefix = "dc-v1.system.";
@@ -38,7 +39,7 @@ export function createSystem(model: SystemModel): string {
     input,
     element: Object.keys(model.input)[0],
   } as System;
-  saveSystem(id, withCandidates(model, system));
+  saveSystem(id, withCandidates(system));
   return id;
 }
 
@@ -58,12 +59,12 @@ export function updateSystem(
     },
   } as System;
 
-  return withCandidates(context.model, updated);
+  return withCandidates(updated);
 }
 
-function withCandidates(model: SystemModel, system: System): System {
+function withCandidates(system: System): System {
   return {
     ...system,
-    candidates: model.findCandidates(system),
+    candidates: findCandidates(system),
   };
 }

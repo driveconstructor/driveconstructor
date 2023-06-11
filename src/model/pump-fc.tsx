@@ -1,10 +1,10 @@
-import { Cable, CableElement } from "./cable";
+import { CableElement } from "./cable";
 import { Components } from "./component";
-import { EMachine, EMachineElement } from "./emachine";
+import { EMachineElement } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
-import { FConvertor, NoTrafoFConvertorElement } from "./fconvertor";
-import { Grid, GridElement } from "./grid";
-import { Pump, PumpElement, calculatePump } from "./pump";
+import { NoTrafoFConvertorElement } from "./fconvertor";
+import { GridElement } from "./grid";
+import { Pump, PumpElement } from "./pump";
 import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
 
@@ -12,11 +12,6 @@ export type PumpFc = BaseSystem & {
   kind: "pump-fc";
   input: {
     pump: Pump;
-    emachine: EMachine;
-    cable: Cable;
-    fconvertor: FConvertor;
-    switch: {};
-    grid: Grid;
   };
   candidates: Components;
   components: {
@@ -42,159 +37,8 @@ export const PumpFcModel: Model<PumpFc> = {
     switch: SwitchElement,
     grid: GridElement,
   },
-  findCandidates,
-  loadGraph,
   validate,
 };
-
-function findCandidates(system: PumpFc): Components {
-  return {
-    emachine: [
-      {
-        type: "SCIM",
-        price: 25093,
-        ratedPower: 132,
-        ratedSpeed: 1488,
-        ratedSynchSpeed: 1500,
-        maximumSpeed: 1800,
-        ratedVoltageY: { min: 360, max: 440, value: 400 },
-        efficiencyClass: "IE4",
-        efficiency100: 96.7,
-        efficiency75: 96.67,
-        efficiency50: 95.01,
-        efficiency25: 90.03,
-        ratedCurrent: 257.89,
-        ratedTorque: 236.62,
-        workingCurrent: 847.42,
-        torqueOverload: 2.5,
-        cosFi100: 0.764,
-        cosFi75: 0.7258,
-        cosFi50: 0.6876,
-        cooling: "IC411",
-        mounting: "B3",
-        protection: "IP21/23",
-        frameMaterial: "cast iron",
-        shaftHeight: 280,
-        outerDiameter: 0.56,
-        length: 1.12,
-        volume: 0.2759,
-        momentOfInertia: 5.01,
-        footPrint: 0.6272,
-        weight: 961.34,
-        designation: "IM-132-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
-      },
-      {
-        type: "SyRM",
-        price: 25093,
-        ratedPower: 132,
-        ratedSpeed: 1488,
-        ratedSynchSpeed: 1500,
-        maximumSpeed: 1800,
-        ratedVoltageY: { min: 360, max: 440, value: 400 },
-        efficiencyClass: "IE4",
-        efficiency100: 96.7,
-        efficiency75: 96.67,
-        efficiency50: 95.01,
-        efficiency25: 90.03,
-        ratedCurrent: 257.89,
-        ratedTorque: 236.62,
-        workingCurrent: 847.42,
-        torqueOverload: 2.5,
-        cosFi100: 0.764,
-        cosFi75: 0.7258,
-        cosFi50: 0.6876,
-        cooling: "IC411",
-        mounting: "B3",
-        protection: "IP21/23",
-        frameMaterial: "cast iron",
-        shaftHeight: 280,
-        outerDiameter: 0.56,
-        length: 1.12,
-        volume: 0.2759,
-        momentOfInertia: 5.01,
-        footPrint: 0.6272,
-        weight: 961.34,
-        designation: "IM-132-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
-      },
-    ],
-    cable: [
-      {
-        // 30	1021	copper	150	1	1	0.65	99.51	34.03	1.83	0.004477	0.000129	CU-3x150-01kV
-        length: 30,
-        price: 1021,
-        material: "copper",
-        crossSection: 150,
-        voltage: 1,
-        numberOfRuns: 1,
-        designation: "CU-3x150-01kV",
-        efficiency100: 111,
-        pricePerMeter: 22,
-        losses: 33,
-        reactancePerHz: 1,
-        resistancePerMeter: 3,
-        voltageDrop: 3,
-      },
-    ],
-    fconvertor: [
-      {
-        cooling: "air",
-        cosFi100: 1,
-        currentHO: 22,
-        currentLO: 33,
-        depth: 1,
-        designation: "XXXX",
-        efficiency100: 1,
-        efficiency25: 0.5,
-        efficiency50: 0.25,
-        efficiency75: 0.1,
-        footprint: 11,
-        gridSideFilterDesignation: "AAA",
-        machineSideFilterDesignation: "BBB",
-        height: 12,
-        mounting: "floor",
-        price: 444,
-        protection: "IP21/31",
-        ratedPower: 22,
-        type: "2Q-3L-NPC-VSC",
-        voltage: { min: 1, max: 2, value: 400 },
-        volume: 1,
-        weight: 2,
-        width: 11,
-        workingVoltage: 1,
-      },
-    ],
-  };
-}
-
-function loadGraph(system: PumpFc) {
-  const pump = system.input.pump;
-  const calcuated = calculatePump(pump);
-
-  const numberOfPoints = Math.round(
-    (1 - pump.minimalSpeed / pump.ratedSpeed) * 15
-  );
-  const maximumSpeed = pump.ratedSpeed;
-
-  const result = [];
-  for (let i = 0; i <= numberOfPoints; i++) {
-    const speed =
-      ((maximumSpeed - pump.minimalSpeed) * i) / numberOfPoints +
-      pump.minimalSpeed;
-    if (pump.type == "positive displacement") {
-      if (pump.minimalSpeed <= speed && speed <= maximumSpeed) {
-        result.push({ speed, torque: calcuated.ratedTorque });
-      }
-    } else {
-      // n^2 /  ratedSpeed^2 x ratedTorque
-      const torque =
-        (Math.pow(speed, 2) * calcuated.ratedTorque) /
-        Math.pow(pump.ratedSpeed, 2);
-      result.push({ speed, torque });
-    }
-  }
-
-  return result;
-}
 
 function validate(system: PumpFc): string[] {
   const result = [];
@@ -205,7 +49,3 @@ function validate(system: PumpFc): string[] {
 
   return result;
 }
-
-export const ForTesting = {
-  loadGraph,
-};

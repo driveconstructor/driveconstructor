@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { SystemContext } from "./Input";
 
+import { loadGraph } from "@/model/load-graph";
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -26,7 +27,7 @@ ChartJS.register(
 export default function LoadGraph() {
   const context = useContext(SystemContext);
 
-  const data = context.model.loadGraph(context.system);
+  const data = loadGraph(context.system);
 
   return (
     <Line

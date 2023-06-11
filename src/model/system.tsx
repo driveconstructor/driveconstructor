@@ -1,5 +1,9 @@
 import { StaticImageData } from "next/image";
 import React from "react";
+import { Cable } from "./cable";
+import { EMachine } from "./emachine";
+import { FConvertor } from "./fconvertor";
+import { Grid } from "./grid";
 import { PumpFc, PumpFcModel } from "./pump-fc";
 import { WinchFc, WinchFcModel } from "./winch-fc";
 
@@ -34,8 +38,8 @@ export type Model<T extends System> = {
     [E in keyof T["input"]]: SystemElement<T["input"][E]>;
   };
 
-  findCandidates: (system: T) => T["candidates"];
-  loadGraph: (system: T) => { speed: number; torque: number }[];
+  //  findCandidates: (system: T) => T["candidates"];
+  //  loadGraph: (system: T) => { speed: number; torque: number }[];
   validate?: (system: T) => string[];
 };
 
@@ -48,6 +52,13 @@ const models: Record<SystemKind, SystemModel> = {
 
 export type BaseSystem = {
   element: string;
+  input: {
+    emachine: EMachine;
+    cable: Cable;
+    fconvertor: FConvertor;
+    switch: {};
+    grid: Grid;
+  };
 };
 
 export type System = (PumpFc | WinchFc) & {
