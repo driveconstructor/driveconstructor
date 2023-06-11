@@ -43,7 +43,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
 
   return (
     <SystemContext.Provider value={context}>
-      <div className="grid gap-2 md:grid-cols-2">
+      <div className="grid gap-2 lg:grid-cols-2">
         <div>
           <Schema
             model={model}
@@ -53,7 +53,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
             }}
           />
           <div className="border p-2">
-            <div className="grid gap-2 md:grid-cols-3">
+            <div className="grid gap-2 lg:grid-cols-3">
               {Object.entries(model.input)
                 .filter(([k, _]) => k == value.element)
                 .flatMap(([_, v]) => Object.entries(v.params))
@@ -97,7 +97,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
         <div className="border border-blue-400">
           <Chart />
         </div>
-        <div className="md:col-span-2">
+        <div className="lg:col-span-2">
           <div className="text-2xl">Candidates</div>
           <Candidates />
         </div>

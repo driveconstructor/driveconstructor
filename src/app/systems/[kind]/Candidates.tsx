@@ -66,7 +66,7 @@ function Candidate({ kind, values }: { kind: string; values: any[] }) {
               }
               onClick={() => setSelected(i)}
             >
-              <div className="grid grid-cols-4 md:grid-cols-8">
+              <div className="grid grid-cols-4 lg:grid-cols-8">
                 <div className="justify-self-center">
                   Selected <input type="radio" checked={selected == i} />
                 </div>

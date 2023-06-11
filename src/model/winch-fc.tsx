@@ -39,7 +39,7 @@ export const WinchFcModel: Model<WinchFc> = {
 };
 
 function findCandidates(system: WinchFc): Components {
-  return { emachine: [], cable: [] };
+  return { emachine: [], cable: [], fconvertor: [] };
 }
 
 function loadGraph(system: WinchFc) {

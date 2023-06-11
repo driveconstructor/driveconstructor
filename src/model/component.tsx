@@ -3,6 +3,10 @@ import {
   EMachineComponent,
   EMachineComponentModel,
 } from "./emachine-component";
+import {
+  FConvertorComponent,
+  FConvertorComponentModel,
+} from "./fconvertor-component";
 
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
@@ -19,9 +23,11 @@ export type ComponentModel<T = any> = {
 };
 
 export function getComponentModel(kind: string): ComponentModel {
-  const result = [EMachineComponentModel, CableComponentModel].find(
-    (m) => m.kind == kind
-  );
+  const result = [
+    EMachineComponentModel,
+    CableComponentModel,
+    FConvertorComponentModel,
+  ].find((m) => m.kind == kind);
   if (!result) {
     throw new Error("Component is not found: " + kind);
   }
@@ -32,4 +38,5 @@ export function getComponentModel(kind: string): ComponentModel {
 export type Components = {
   emachine: EMachineComponent[];
   cable: CableComponent[];
+  fconvertor: FConvertorComponent[];
 };

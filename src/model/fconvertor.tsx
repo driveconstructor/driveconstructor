@@ -12,11 +12,11 @@ import { StaticImageData } from "next/image";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
 
-const FConverterMounting = ["wall", "floor"] as const;
+export const FConverterMounting = ["wall", "floor"] as const;
 
-const FConverterProtection = ["IP21/31", "IP54/55"] as const;
+export const FConverterProtection = ["IP21/31", "IP54/55"] as const;
 
-const FConverterType = [
+export const FConverterType = [
   "2Q-2L-VSC-6p",
   "2Q-2L-VSC-12p",
   "2Q-3L-NPC-VSC",
@@ -26,22 +26,22 @@ const FConverterType = [
   "4Q-ML-SCHB-VSC",
 ] as const;
 
-const FConverterPower = [
+export const FConverterPower = [
   0.75, 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90,
   110, 132, 160, 200, 250, 315, 355, 400, 450, 500, 630, 710, 800, 900, 1000,
   1120, 1250, 1400, 1600, 1800, 2000, 2200, 2500, 2800, 3000, 3300, 3600, 3800,
   4000, 4500, 4700, 5000, 5200, 5500,
 ] as const;
 
-const FConverterCooling = ["air", "water"] as const;
+export const FConverterCooling = ["air", "water"] as const;
 
-const GridSideFilter = ["no", "choke", "sin", "choke+RFI"] as const;
+export const GridSideFilter = ["no", "choke", "sin", "choke+RFI"] as const;
 
-const MachineSideFilter = ["no", "choke", "du/dt", "sin"] as const;
+export const MachineSideFilter = ["no", "choke", "du/dt", "sin"] as const;
 
-type FConvertorTypeAlias = (typeof FConverterType)[number];
-type GridSideFilterAlias = (typeof GridSideFilter)[number];
-type MachineSideFilterAlias = (typeof MachineSideFilter)[number];
+export type FConvertorTypeAlias = (typeof FConverterType)[number];
+export type GridSideFilterAlias = (typeof GridSideFilter)[number];
+export type MachineSideFilterAlias = (typeof MachineSideFilter)[number];
 
 export type FConvertor = {
   type: FConvertorTypeAlias;
