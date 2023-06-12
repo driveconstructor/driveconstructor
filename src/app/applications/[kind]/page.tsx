@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { kind: string } }) {
       title="Select topology for your system"
       text={model.systemHeader}
     >
-      <div className="grid gap-2 p-4 lg:grid-cols-4">
+      <div className="grid gap-2 p-4 md:grid-cols-2 lg:grid-cols-4">
         {model.systems.map(renderSystemModel)}
       </div>
     </PageTemplate>
@@ -26,11 +26,12 @@ export default function Page({ params }: { params: { kind: string } }) {
 
 function renderSystemModel(model: SystemModel): React.ReactNode {
   return (
-    <div key={model.kind} className="border border-gray-200 p-2">
+    <div key={model.kind} className="flex flex-col border border-gray-200 p-2">
       <Schema model={model} />
-      <h3 className="text-xl">{model.title}</h3>
+      <h3 className="py-4 text-xl">{model.title}</h3>
       <div>{model.description}</div>
-      <div className="m-4 flex justify-end space-x-1">
+      <div className="grow"></div>
+      <div className="flex justify-end space-x-1 self-end p-2">
         <NewSystemButton kind={model.kind} />
         <Link className="btn" href="#tbd">
           Help
