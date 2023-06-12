@@ -1,6 +1,6 @@
 import { CableElement } from "./cable";
+import { BaseCandidates, BaseComponents } from "./component";
 import { EMachineElement } from "./emachine";
-import { EMachineComponent } from "./emachine-component";
 import { NoTrafoFConvertorElement } from "./fconvertor";
 import { GridElement } from "./grid";
 import { SwitchElement } from "./switch";
@@ -12,12 +12,8 @@ export type WinchFc = BaseSystem & {
   input: {
     winch: Winch;
   };
-  candidates: {
-    emachine: EMachineComponent[];
-  };
-  components: {
-    emachine: EMachineComponent | null;
-  };
+  candidates: BaseCandidates;
+  components: BaseComponents;
 };
 
 export const WinchFcModel: Model<WinchFc> = {

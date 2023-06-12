@@ -1,7 +1,7 @@
-import { Components } from "./component";
+import { BaseCandidates } from "./component";
 import { System } from "./system";
 
-export function findCandidates(system: System): Components {
+export function findCandidates(system: System): BaseCandidates {
   return {
     emachine: [
       {

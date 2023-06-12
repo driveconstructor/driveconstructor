@@ -4,8 +4,8 @@ import { Cable } from "./cable";
 import { EMachine } from "./emachine";
 import { FConvertor } from "./fconvertor";
 import { Grid } from "./grid";
-import { PumpFc, PumpFcModel } from "./pump-fc";
-import { WinchFc, WinchFcModel } from "./winch-fc";
+import { PumpFc, PumpFcModel, PumpGbFc, PumpGbFcModel } from "./pump-system";
+import { WinchFc, WinchFcModel } from "./winch-system";
 
 export type ParamType = "text" | "number";
 
@@ -38,17 +38,12 @@ export type Model<T extends System> = {
     [E in keyof T["input"]]: SystemElement<T["input"][E]>;
   };
 
-  //  findCandidates: (system: T) => T["candidates"];
-  //  loadGraph: (system: T) => { speed: number; torque: number }[];
   validate?: (system: T) => string[];
 };
 
 export type SystemModel = Model<any>;
 
-const models: Record<SystemKind, SystemModel> = {
-  "pump-fc": PumpFcModel,
-  "winch-fc": WinchFcModel,
-};
+const Models = [PumpFcModel, PumpGbFcModel, WinchFcModel] as const;
 
 export type BaseSystem = {
   element: string;
@@ -61,7 +56,7 @@ export type BaseSystem = {
   };
 };
 
-export type System = (PumpFc | WinchFc) & {
+export type System = (PumpFc | PumpGbFc | WinchFc) & {
   // to make type script access different types for systems
   input: Record<string, Record<string, any>>;
 };
@@ -69,7 +64,7 @@ export type System = (PumpFc | WinchFc) & {
 export type SystemKind = System["kind"];
 
 export function getModel(kind: SystemKind): SystemModel {
-  const result = models[kind];
+  const result = Models.find((m) => m.kind == kind);
   if (result != null) {
     return result;
   }
@@ -78,8 +73,8 @@ export function getModel(kind: SystemKind): SystemModel {
 }
 
 export function getSystemKinds() {
-  return Object.keys(models).map((k) => {
-    return { kind: k as SystemKind };
+  return Models.map((m) => {
+    return { kind: m.kind };
   });
 }
 

@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { kind: string } }) {
       title="Select topology for your system"
       text={model.systemHeader}
     >
-      <div className="grid gap-2 p-4 md:grid-cols-4">
+      <div className="grid gap-2 p-4 lg:grid-cols-4">
         {model.systems.map(renderSystemModel)}
       </div>
     </PageTemplate>

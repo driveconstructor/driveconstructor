@@ -35,8 +35,12 @@ export function getComponentModel(kind: string): ComponentModel {
   return result;
 }
 
-export type Components = {
-  emachine: EMachineComponent[];
-  cable: CableComponent[];
-  fconvertor: FConvertorComponent[];
+export type BaseComponents = {
+  emachine: EMachineComponent;
+  cable: CableComponent;
+  fconvertor: FConvertorComponent;
+};
+
+export type BaseCandidates = {
+  [P in keyof BaseComponents]: BaseComponents[P][];
 };

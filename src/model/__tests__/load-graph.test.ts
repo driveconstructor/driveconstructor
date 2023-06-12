@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import { loadGraph } from "../load-graph";
 import { Pump } from "../pump";
-import { PumpFc } from "../pump-fc";
+import { PumpFc } from "../pump-system";
 
 const pump: Pump = {
   type: "centrifugal",
