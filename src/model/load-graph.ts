@@ -1,11 +1,23 @@
 import { calculatePump } from "./pump";
+import { PumpFc, PumpGbFc } from "./pump-system";
 import { System } from "./system";
+import { WinchFc } from "./winch-system";
 
-export function loadGraph(system: System) {
-  if (system.kind != "pump-fc") {
-    throw new Error();
+export type GraphPoint = { speed: number; torque: number };
+
+export function loadGraph(system: System): GraphPoint[] {
+  switch (system.kind) {
+    case "pump-fc":
+    case "pump-gb-fc":
+      return pumpLoadGraph(system);
+    case "winch-fc":
+      return winchLoadGraph(system);
   }
 
+  //throw new Error("Usupported system kind: " + system.kind);
+}
+
+function pumpLoadGraph(system: PumpFc | PumpGbFc) {
   const pump = system.input.pump;
   const calcuated = calculatePump(pump);
 
@@ -14,7 +26,7 @@ export function loadGraph(system: System) {
   );
   const maximumSpeed = pump.ratedSpeed;
 
-  const result = [];
+  const result: GraphPoint[] = [];
   for (let i = 0; i <= numberOfPoints; i++) {
     const speed =
       ((maximumSpeed - pump.minimalSpeed) * i) / numberOfPoints +
@@ -31,6 +43,30 @@ export function loadGraph(system: System) {
       result.push({ speed, torque });
     }
   }
+
+  return result;
+}
+
+function winchLoadGraph(system: WinchFc) {
+  const result: GraphPoint[] = []; //[[], []];
+
+  const numberOfPoints = 10;
+  const winch = system.input.winch;
+
+  /* for (let i = 0; i <= numberOfPoints; i++) {
+    const speed =
+      winch.minimalSpeed +
+      ((winch.ratedSpeed - winch.minimalSpeed) * i) / numberOfPoints;
+
+    const torque = (winch.forceOnLine * winch.speedOfLine * 9.55) / speed;
+    const torqueOverload = torque * (1 + winch.overloadAmplitude / 100);
+
+    result[0].push({ speed, torque: torque * (winch.dutyCorrection || 1) });
+    result[1].push({
+      speed,
+      torque: torqueOverload * (winch.dutyCorrection || 1),
+    });
+  }*/
 
   return result;
 }

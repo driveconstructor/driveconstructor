@@ -93,3 +93,12 @@ function Param({ param, value }: { param: ComponentParam; value: any }) {
     </div>
   );
 }
+
+/**
+ *     <div className="p-4">
+      <div className="absolute mx-2 p-2 text-xs">{param.label}:</div>
+      <div className="m-4 border p-2">
+        {param.render ? param.render(value) : value}
+      </div>
+    </div>
+ */
