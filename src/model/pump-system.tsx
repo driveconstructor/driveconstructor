@@ -69,7 +69,13 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
     </div>
   ),
   input: {
-    pump: PumpElement,
+    pump: {
+      ...PumpElement,
+      params: {
+        ...PumpElement.params,
+        ratedSpeed: { ...PumpElement.params.ratedSpeed, value: 100 },
+      },
+    },
     gear: GearboxElement,
     emachine: EMachineElement,
     cable: CableElement,
