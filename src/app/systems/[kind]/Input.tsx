@@ -17,7 +17,6 @@ import Schema from "./Schema";
 export const SystemContext = createContext({} as SystemContextType);
 
 export default function Input({ kind }: { kind: SystemKind }) {
-  const model = getModel(kind);
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   if (id == null) {
@@ -37,7 +36,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
 
   const context: SystemContextType = {
     id,
-    model: customizeModel(model, value),
+    model: customizeModel(getModel(kind), value),
     system: value,
   };
 
@@ -46,7 +45,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
       <div className="grid gap-2 lg:grid-cols-2">
         <div>
           <Schema
-            model={model}
+            model={context.model}
             onSelect={(element) => {
               setErrors([]);
               setValue({ ...value, element });
@@ -54,10 +53,11 @@ export default function Input({ kind }: { kind: SystemKind }) {
           />
           <div className="border p-2">
             <div className="grid gap-2 lg:grid-cols-3">
-              {Object.entries(model.input)
+              {Object.entries(context.model.input)
                 .filter(([k, _]) => k == value.element)
                 .flatMap(([_, v]) => Object.entries(v.params))
                 .filter(([_, v]) => showMore || !v.advanced)
+                .filter(([_, v]) => !v.hidden)
                 .map(([k, _]) => (
                   <Param
                     key={k + counter}

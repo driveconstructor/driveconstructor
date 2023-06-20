@@ -68,7 +68,12 @@ function Candidate({ kind, values }: { kind: string; values: any[] }) {
             >
               <div className="grid grid-cols-4 lg:grid-cols-8">
                 <div className="justify-self-center">
-                  Selected <input type="radio" checked={selected == i} />
+                  Selected{" "}
+                  <input
+                    type="radio"
+                    checked={selected == i}
+                    onChange={() => setSelected(i)}
+                  />
                 </div>
                 {Object.keys(model.params)
                   .filter((k) => showMore || !model.params[k].advanced)

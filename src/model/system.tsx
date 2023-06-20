@@ -19,6 +19,7 @@ export type SystemParam<V = any> = {
   optionLabels?: (React.ReactNode | null)[];
   range?: ParamRangeProps<V>;
   advanced?: true;
+  hidden?: boolean;
 };
 
 export type SystemElement<T = any> = {

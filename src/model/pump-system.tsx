@@ -77,7 +77,13 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
       },
     },
     gear: GearboxElement,
-    emachine: EMachineElement,
+    emachine: {
+      ...EMachineElement,
+      params: {
+        ...EMachineElement.params,
+        type: { ...EMachineElement.params.type, value: "PMSM" },
+      },
+    },
     cable: CableElement,
     fconvertor: NoTrafoFConvertorElement,
     switch: SwitchElement,
