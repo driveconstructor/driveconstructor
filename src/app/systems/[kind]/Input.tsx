@@ -26,7 +26,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
   const system = getSystem(id);
   const [value, setValue] = useState(system);
   const [errors, setErrors] = useState([] as string[]);
-  // error state change counter - used to reset the state
+  // state change counter - used to reset the state
   const [counter, setCounter] = useState(0);
   const [showMore, setShowMore] = useState(false);
 
@@ -51,7 +51,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
               setValue({ ...value, element });
             }}
           />
-          <div className="border p-2">
+          <div key={counter} className="border p-2">
             <div className="grid gap-2 lg:grid-cols-3">
               {Object.entries(context.model.input)
                 .filter(([k, _]) => k == value.element)
@@ -60,7 +60,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 .filter(([_, v]) => !v.hidden)
                 .map(([k, _]) => (
                   <Param
-                    key={k + counter}
+                    key={context.system.element + "." + k + "." + counter}
                     name={k}
                     handleChange={(v) => {
                       const updated = updateSystem(context, k, v);
@@ -70,9 +70,9 @@ export default function Input({ kind }: { kind: SystemKind }) {
                       setErrors(errors);
                       if (errors.length == 0) {
                         setValue(updated);
-                      } else {
-                        setCounter(counter + 1);
                       }
+                      // force re-render since the system may have changed
+                      setCounter(counter + 1);
                     }}
                     resetErrors={() => setErrors([])}
                   ></Param>

@@ -1,5 +1,5 @@
 import icon from "../images/el-gearbox.svg";
-import { SystemElement, SystemParam } from "./system";
+import { System, SystemElement, SystemParam } from "./system";
 
 export const StageType = ["worm", "helical", "planetary", "bevel"] as const;
 type StageTypeAlias = (typeof StageType)[number];
@@ -7,6 +7,19 @@ type StageTypeAlias = (typeof StageType)[number];
 export const SecondaryStageType: StageTypeAlias[] = ["helical", "planetary"];
 
 export const NumberOfStages = [1, 2, 3] as const;
+
+export type Gearbox = {
+  numberOfStages: (typeof NumberOfStages)[number];
+
+  stage1Type: StageTypeAlias;
+  stage1Ratio: number;
+
+  stage2Type: StageTypeAlias;
+  stage2Ratio: number;
+
+  stage3Type: StageTypeAlias;
+  stage3Ratio: number;
+};
 
 const GearRatiosByType = {
   worm: {
@@ -31,39 +44,70 @@ const GearRatiosByType = {
   },
 };
 
-export type Gearbox = {
-  numberOfStages: (typeof NumberOfStages)[number];
-
-  stage1Type: StageTypeAlias;
-  stage1Ratio: number;
-  stage2Type: StageTypeAlias;
-  stage2Ratio: number;
-  stage3Type: StageTypeAlias;
-  stage3Ratio: number;
-};
-
-function StageTypeParam(
+function StageParams(
   i: number,
-  options: readonly StageTypeAlias[]
-): SystemParam<StageTypeAlias> {
-  return {
-    type: "text",
-    label: `Stage ${i} type`,
-    options: [...options],
-    value: "helical",
-  };
+  type: StageTypeAlias,
+  options: readonly StageTypeAlias[],
+  hidden: boolean
+): [SystemParam<StageTypeAlias>, SystemParam<number>] {
+  return [
+    {
+      type: "text",
+      label: `Stage ${i} type`,
+      options: [...options],
+      value: type,
+      hidden,
+      updateSystem: (system, value) => {
+        const result = {
+          ...system,
+          input: {
+            ...system.input,
+            gearbox: {
+              ...system.input.gearbox,
+              [`stage${i}Ratio`]: GearRatiosByType[value].value,
+            },
+          },
+        } as System;
+        console.log(JSON.stringify(result.input.gearbox));
+        return result;
+      },
+    },
+    {
+      type: "number",
+      label: `Stage ${i} ratio`,
+      value: GearRatiosByType[type].value,
+      range: {
+        min: GearRatiosByType[type].min,
+        max: GearRatiosByType[type].max,
+        step: 0.5,
+      },
+      hidden,
+    },
+  ];
 }
 
-function StageRatioParam(i: number): SystemParam<number> {
+function GearboxElementParams(numberOfStages: number, type: StageTypeAlias[]) {
+  const [stage1Type, stage1Ratio] = StageParams(1, type[0], StageType, false);
+  const [stage2Type, stage2Ratio] = StageParams(
+    2,
+    type[1],
+    SecondaryStageType,
+    numberOfStages <= 1
+  );
+  const [stage3Type, stage3Ratio] = StageParams(
+    3,
+    type[2],
+    SecondaryStageType,
+    numberOfStages <= 2
+  );
+
   return {
-    type: "number",
-    label: `Stage ${i} ratio`,
-    value: 3,
-    range: {
-      min: 1.5,
-      max: 100,
-      step: 0.5,
-    },
+    stage1Type,
+    stage1Ratio,
+    stage2Type,
+    stage2Ratio,
+    stage3Type,
+    stage3Ratio,
   };
 }
 
@@ -76,51 +120,19 @@ export const GearboxElement: SystemElement<Gearbox> = {
       value: 1,
       options: [...NumberOfStages],
     },
-    stage1Type: StageTypeParam(1, StageType),
-    stage1Ratio: StageRatioParam(1),
-    stage2Type: StageTypeParam(2, SecondaryStageType),
-    stage2Ratio: StageRatioParam(2),
-    stage3Type: StageTypeParam(3, SecondaryStageType),
-    stage3Ratio: StageRatioParam(3),
+    ...GearboxElementParams(1, ["helical", "helical", "helical"]),
   },
-  customize(model, value) {
-    if (value.stage1Type == "worm") {
-      return {
-        ...model,
-        params: {
-          ...model.params,
-          numberOfStages: { ...model.params.numberOfStages, options: [1] },
-          stage2Ratio: { ...model.params.stage2Ratio, hidden: true },
-          stage2Type: { ...model.params.stage2Type, hidden: true },
-          stage3Ratio: { ...model.params.stage3Ratio, hidden: true },
-          stage3Type: { ...model.params.stage3Type, hidden: true },
-        },
-      };
-    }
-
-    switch (value.numberOfStages) {
-      case 1:
-        return {
-          ...model,
-          params: {
-            ...model.params,
-            stage2Ratio: { ...model.params.stage2Ratio, hidden: true },
-            stage2Type: { ...model.params.stage2Type, hidden: true },
-            stage3Ratio: { ...model.params.stage3Ratio, hidden: true },
-            stage3Type: { ...model.params.stage3Type, hidden: true },
-          },
-        };
-      case 2:
-        return {
-          ...model,
-          params: {
-            ...model.params,
-            stage3Ratio: { ...model.params.stage3Ratio, hidden: true },
-            stage3Type: { ...model.params.stage3Type, hidden: true },
-          },
-        };
-    }
-
-    return model;
+  customize: (model, value) => {
+    return {
+      ...model,
+      params: {
+        ...model.params,
+        ...GearboxElementParams(value.numberOfStages, [
+          value.stage1Type,
+          value.stage2Type,
+          value.stage3Type,
+        ]),
+      },
+    };
   },
 };

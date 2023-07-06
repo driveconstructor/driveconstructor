@@ -20,6 +20,7 @@ export type SystemParam<V = any> = {
   range?: ParamRangeProps<V>;
   advanced?: true;
   hidden?: boolean;
+  updateSystem?: (system: System, value: V) => System;
 };
 
 export type SystemElement<T = any> = {
@@ -81,11 +82,11 @@ export function getSystemKinds() {
 
 export function customizeModel<T extends System>(
   model: SystemModel,
-  system: T
+  value: T
 ): SystemModel {
   const input = Object.entries(model.input).reduce((o, [k, v]) => {
     const customized = v.customize
-      ? v.customize(model.input[k], system.input[k])
+      ? v.customize(model.input[k], value.input[k])
       : model.input[k];
     return { ...o, [k]: customized };
   }, {});

@@ -52,7 +52,7 @@ export type PumpGbFc = BaseSystem & {
   kind: "pump-gb-fc";
   input: {
     pump: Pump;
-    gear: Gearbox;
+    gearbox: Gearbox;
   };
   candidates: BaseCandidates;
   components: BaseComponents;
@@ -76,7 +76,7 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
         ratedSpeed: { ...PumpElement.params.ratedSpeed, value: 100 },
       },
     },
-    gear: GearboxElement,
+    gearbox: GearboxElement,
     emachine: {
       ...EMachineElement,
       params: {

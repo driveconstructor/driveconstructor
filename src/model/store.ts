@@ -59,7 +59,10 @@ export function updateSystem(
     },
   } as System;
 
-  return withCandidates(updated);
+  const updateSystem =
+    context.model.input[context.system.element].params[paramName].updateSystem;
+
+  return withCandidates(updateSystem ? updateSystem(updated, value) : updated);
 }
 
 function withCandidates(system: System): System {

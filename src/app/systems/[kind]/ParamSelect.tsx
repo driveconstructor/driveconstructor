@@ -12,6 +12,7 @@ export default function ParamSelect({
   model: SystemParam;
   onChange: ChangeHandler;
 }) {
+  console.log(value + " " + model.options);
   return (
     <>
       <select
