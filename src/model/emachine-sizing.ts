@@ -14,10 +14,10 @@ export type TypeSpeedAndTorque = {
 
 export function findTypeSpeedAndTorque(
   mechanismSpeed: number,
-  mechanismTorque: number
+  mechanismTorque: number,
 ): TypeSpeedAndTorque[] {
   return ERatedSynchSpeed.filter(
-    (speed) => speed > mechanismSpeed / 1.2
+    (speed) => speed > mechanismSpeed / 1.2,
   ).flatMap((speed) =>
     EMachineType.flatMap((type) =>
       ERatedPower.map((ratedPower) => {
@@ -31,9 +31,9 @@ export function findTypeSpeedAndTorque(
         (o) =>
           o.ratedSpeed <= mechanismSpeed * 2 &&
           o.ratedTorque >= mechanismTorque &&
-          o.ratedTorque < mechanismTorque / 0.6
-      )
-    )
+          o.ratedTorque < mechanismTorque / 0.6,
+      ),
+    ),
   );
 }
 
@@ -51,13 +51,13 @@ export const Voltage = [...LowVoltage, ...MediumVoltage];
 
 export function findVoltageY(
   altitude: number,
-  systemVoltage: number
+  systemVoltage: number,
 ): VoltageY {
   const derating = altitude > 2000 ? 1 - 0.00015 * (altitude - 2000) : 1;
   const deratedVoltage = systemVoltage / derating;
 
   const value = [...Voltage].sort(
-    (a, b) => Math.abs(a - deratedVoltage) - Math.abs(b - deratedVoltage)
+    (a, b) => Math.abs(a - deratedVoltage) - Math.abs(b - deratedVoltage),
   )[0];
 
   return { min: value * 0.9, value, max: value * 1.1 };

@@ -19,7 +19,7 @@ export default function Candidates() {
 function Candidate({ kind, values }: { kind: string; values: any[] }) {
   const model = getComponentModel(kind);
   const hasAdvanced = Boolean(
-    Object.entries(model.params).find(([k, v]) => v.advanced)?.length
+    Object.entries(model.params).find(([k, v]) => v.advanced)?.length,
   );
   const [showMore, setShowMore] = useState(false);
   const [selected, setSelected] = useState(values.length == 1 ? 0 : -1);

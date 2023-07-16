@@ -14,7 +14,7 @@ export default function Schema({
       <ElementButton key={k} name={k} onSelect={onSelect} />
     ) : (
       <Element key={k} icon={v.icon} width={60} height={60} />
-    )
+    ),
   );
 
   return (

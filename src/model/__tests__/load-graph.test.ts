@@ -17,7 +17,7 @@ const pump: Pump = {
 describe("graph", () => {
   test("pump-fc load graph", () => {
     expect(
-      loadGraph({ kind: "pump-fc", input: { pump } } as PumpFc)
+      loadGraph({ kind: "pump-fc", input: { pump } } as PumpFc),
     ).toHaveLength(16);
   });
 });

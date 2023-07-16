@@ -46,7 +46,7 @@ export function createSystem(model: SystemModel): string {
 export function updateSystem(
   context: SystemContextType,
   paramName: string,
-  value: any
+  value: any,
 ): System {
   const updated: System = {
     ...context.system,

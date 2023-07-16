@@ -59,7 +59,7 @@ export const NoTrafoFConvertorElement = FConvertorElement([
 ]);
 
 function FConvertorElement(
-  types: FConvertorTypeAlias[]
+  types: FConvertorTypeAlias[],
 ): SystemElement<FConvertor> {
   return {
     icon,

@@ -22,7 +22,7 @@ function pumpLoadGraph(system: PumpFc | PumpGbFc) {
   const calcuated = calculatePump(pump);
 
   const numberOfPoints = Math.round(
-    (1 - pump.minimalSpeed / pump.ratedSpeed) * 15
+    (1 - pump.minimalSpeed / pump.ratedSpeed) * 15,
   );
   const maximumSpeed = pump.ratedSpeed;
 

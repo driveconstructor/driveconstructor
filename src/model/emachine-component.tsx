@@ -170,7 +170,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
 
 export function generate(
   tst: TypeSpeedAndTorque,
-  voltageY: VoltageY
+  voltageY: VoltageY,
 ): EMachineComponent[] {
   return [];
 }

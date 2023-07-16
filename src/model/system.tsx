@@ -82,7 +82,7 @@ export function getSystemKinds() {
 
 export function customizeModel<T extends System>(
   model: SystemModel,
-  value: T
+  value: T,
 ): SystemModel {
   const input = Object.entries(model.input).reduce((o, [k, v]) => {
     const customized = v.customize

@@ -48,7 +48,7 @@ function StageParams(
   i: number,
   type: StageTypeAlias,
   options: readonly StageTypeAlias[],
-  hidden: boolean
+  hidden: boolean,
 ): [SystemParam<StageTypeAlias>, SystemParam<number>] {
   return [
     {
@@ -92,13 +92,13 @@ function GearboxElementParams(numberOfStages: number, type: StageTypeAlias[]) {
     2,
     type[1],
     SecondaryStageType,
-    numberOfStages <= 1
+    numberOfStages <= 1,
   );
   const [stage3Type, stage3Ratio] = StageParams(
     3,
     type[2],
     SecondaryStageType,
-    numberOfStages <= 2
+    numberOfStages <= 2,
   );
 
   return {
