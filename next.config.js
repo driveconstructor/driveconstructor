@@ -2,7 +2,7 @@
 const nextConfig = {
   output: "export",
   trailingSlash: true,
-  basePath: "/driveconstructor"
+  basePath: process.env.CI ? "/driveconstructor" : "",
 };
 
 module.exports = nextConfig;
