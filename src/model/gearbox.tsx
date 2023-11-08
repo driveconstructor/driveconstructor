@@ -68,7 +68,6 @@ function StageParams(
             },
           },
         } as System;
-        console.log(JSON.stringify(result.input.gearbox));
         return result;
       },
     },
