@@ -1,5 +1,5 @@
 import { calculatePump } from "./pump";
-import { PumpFc, PumpGbFc } from "./pump-system";
+import { PumpFc, PumpFcTrSystem, PumpGbFc } from "./pump-system";
 import { System } from "./system";
 import { WinchFc } from "./winch-system";
 
@@ -9,15 +9,16 @@ export function loadGraph(system: System): GraphPoint[] {
   switch (system.kind) {
     case "pump-fc":
     case "pump-gb-fc":
+    case "pump-fc-tr":
       return pumpLoadGraph(system);
     case "winch-fc":
       return winchLoadGraph(system);
+    default:
+      throw new Error("Usupported system kind");
   }
-
-  //throw new Error("Usupported system kind: " + system.kind);
 }
 
-function pumpLoadGraph(system: PumpFc | PumpGbFc) {
+function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTrSystem) {
   const pump = system.input.pump;
   const calcuated = calculatePump(pump);
 

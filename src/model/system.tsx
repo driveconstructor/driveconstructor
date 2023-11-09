@@ -4,7 +4,14 @@ import { Cable } from "./cable";
 import { EMachine } from "./emachine";
 import { FConvertor } from "./fconvertor";
 import { Grid } from "./grid";
-import { PumpFc, PumpFcModel, PumpGbFc, PumpGbFcModel } from "./pump-system";
+import {
+  PumpFc,
+  PumpFcModel,
+  PumpFcTrModel,
+  PumpFcTrSystem,
+  PumpGbFc,
+  PumpGbFcModel,
+} from "./pump-system";
 import { WinchFc, WinchFcModel } from "./winch-system";
 
 export type ParamType = "text" | "number";
@@ -45,7 +52,12 @@ export type Model<T extends System> = {
 
 export type SystemModel = Model<any>;
 
-const Models = [PumpFcModel, PumpGbFcModel, WinchFcModel] as const;
+const Models = [
+  PumpFcModel,
+  PumpGbFcModel,
+  PumpFcTrModel,
+  WinchFcModel,
+] as const;
 
 export type BaseSystem = {
   element: string;
@@ -58,7 +70,7 @@ export type BaseSystem = {
   };
 };
 
-export type System = (PumpFc | PumpGbFc | WinchFc) & {
+export type System = (PumpFc | PumpGbFc | PumpFcTrSystem | WinchFc) & {
   // to make type script access different types for systems
   input: Record<string, Record<string, any>>;
 };

@@ -2,7 +2,7 @@ import { StaticImageData } from "next/image";
 import React from "react";
 import appPump from "../images/app-pump.svg";
 import appWinch from "../images/app-winch.svg";
-import { PumpFcModel, PumpGbFcModel } from "./pump-system";
+import { PumpFcModel, PumpFcTrModel, PumpGbFcModel } from "./pump-system";
 import { SystemModel } from "./system";
 import { WinchFcModel } from "./winch-system";
 
@@ -35,7 +35,7 @@ const applications: ApplicationModel[] = [
         in certain cases it can be just a manual connector with fuses.
       </div>
     ),
-    systems: [PumpFcModel, PumpGbFcModel /*, "PumpFcTr", "PumpGbFcTr"*/],
+    systems: [PumpFcModel, PumpGbFcModel, PumpFcTrModel /*"PumpGbFcTr"*/],
     url: "/docs/TextBook/Applications/Pump_type.html  ",
   },
   {

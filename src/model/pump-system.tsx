@@ -7,6 +7,7 @@ import { GridElement } from "./grid";
 import { Pump, PumpElement } from "./pump";
 import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
+import { Trafo, TrafoElement } from "./trafo";
 
 export type PumpFc = BaseSystem & {
   kind: "pump-fc";
@@ -90,4 +91,35 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
     grid: GridElement,
   },
   validate,
+};
+
+export type PumpFcTrSystem = BaseSystem & {
+  kind: "pump-fc-tr";
+  input: {
+    pump: Pump;
+    trafo: Trafo;
+  };
+  candidates: BaseCandidates;
+  components: BaseComponents;
+};
+
+export const PumpFcTrModel: Model<PumpFcTrSystem> = {
+  kind: "pump-fc-tr",
+  title: "Drive train with voltage step down",
+  description: (
+    <div>
+      In this solution the transformer is used for matching the voltage in the
+      grid and FC&apos;s rated voltage and/or for galvanic insulation. It is
+      possible to find a motor matching speed of the pump without any gearbox.
+    </div>
+  ),
+  input: {
+    pump: PumpElement,
+    emachine: EMachineElement,
+    cable: CableElement,
+    fconvertor: NoTrafoFConvertorElement,
+    trafo: TrafoElement,
+    switch: SwitchElement,
+    grid: GridElement,
+  },
 };

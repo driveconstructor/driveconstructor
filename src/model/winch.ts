@@ -33,6 +33,7 @@ export const WinchElement: SystemElement<Winch> = {
       range: {
         min: 0.1,
         max: 1.8,
+        step: 0.1,
       },
       value: 0.3,
       label: "Drum diameter (empty), m",
@@ -40,8 +41,9 @@ export const WinchElement: SystemElement<Winch> = {
     fullDrumDiameter: {
       type: "number",
       range: {
-        min: 0.11,
+        min: 0.1,
         max: 2,
+        step: 0.1,
       },
       value: 0.5,
       label: "Drum diameter (full), m",
@@ -51,6 +53,7 @@ export const WinchElement: SystemElement<Winch> = {
       range: {
         min: 0.1,
         max: 100,
+        step: 0.1,
       },
       value: 10,
       label: "Force on the line (rated), kN",
@@ -60,6 +63,7 @@ export const WinchElement: SystemElement<Winch> = {
       range: {
         min: 0.5,
         max: 20,
+        step: 0.5,
       },
       value: 3,
       label: "Speed of the line (rated), m/s",
