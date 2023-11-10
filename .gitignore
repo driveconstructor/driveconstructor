@@ -10,3 +10,6 @@ out/
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Editor
+.vscode/
