@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Drive Constructor",
-  description: "Online educuation tool for electrical engineering students",
+  description: "Online education tool for electrical engineering students",
 };
 
 function NavItem({
@@ -40,14 +40,14 @@ export default function RootLayout({
         <div className="container mx-auto flex h-screen flex-col justify-between">
           <nav className="flex space-x-4">
             <NavItem href="/" className="text-xl">
-              Drive Consructor
+              Drive Constructor
             </NavItem>
             <NavItem href="/mysystems">My systems</NavItem>
             <NavItem href="/about">About</NavItem>
           </nav>
           <main className="mb-auto"> {children}</main>
           <footer className="my-2 flex justify-end">
-            drive constructor 2018-2023 (c)
+            drive constructor 2018-2024 (c)
           </footer>
         </div>
       </body>
