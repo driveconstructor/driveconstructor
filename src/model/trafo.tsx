@@ -1,24 +1,27 @@
 import { Environment } from "./environment";
 import { SystemElement } from "./system";
 import icon from "../images/el-trafo.svg";
+import icon3w from "../images/el-trafo-3-winding.svg";
+import iconMw from "../images/el-trafo-multi-winding.svg";
+import { StaticImageData } from "next/image";
 
 export const Power = [
   75, 93, 100, 112.5, 118, 145, 150, 160, 175, 190, 220, 225, 240, 250, 275,
   300, 315, 330, 400, 440, 500, 550, 630, 660, 750, 800, 1000, 1250, 1500, 1600,
   2000, 2500, 3150, 3750, 5000, 7500, 10000, 12000, 15000,
 ] as const;
-export const Winding = ["2-winding", "3-winding", "multi-winding"];
-export const Integration = ["stand-alone", "integrated"];
+export const Winding = ["2-winding", "3-winding", "multi-winding"] as const;
+export const Integration = ["stand-alone", "integrated"] as const;
 export const DryOil = ["dry", "oil-immersed"] as const;
-export const Cooling = ["air", "water"];
-export const Protection = ["IP21/23", "IP54/55"];
 
 export type PowerTypeAlias = (typeof Power)[number];
+export type TypeIIAlias = (typeof DryOil)[number];
+export type TypeIIIAlias = (typeof Winding)[number];
 
 export type Trafo = {
   ratedPower: PowerTypeAlias | null;
-  //typeII: string;
-  //typeIII: (typeof DryOil)[number];
+  typeII: TypeIIAlias;
+  typeIII: TypeIIIAlias;
 }; // & Environment;
 
 export const TrafoElement: SystemElement<Trafo> = {
@@ -30,5 +33,34 @@ export const TrafoElement: SystemElement<Trafo> = {
       value: null,
       options: [null, ...Power],
     },
+    typeII: {
+      label: "Dry or oil-immersed",
+      type: "text",
+      value: "dry",
+      options: [...DryOil],
+    },
+    typeIII: {
+      label: "Windings",
+      type: "text",
+      value: "2-winding",
+      options: [...Winding],
+    },
+  },
+  customize(model, system) {
+    return {
+      ...model,
+      icon: customizeIcon(system.typeIII),
+    };
   },
 };
+
+function customizeIcon(type: TypeIIIAlias): StaticImageData {
+  switch (type) {
+    case "3-winding":
+      return icon3w;
+    case "multi-winding":
+      return iconMw;
+    default:
+      return icon;
+  }
+}

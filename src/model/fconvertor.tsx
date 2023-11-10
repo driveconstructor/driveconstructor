@@ -58,6 +58,8 @@ export const NoTrafoFConvertorElement = FConvertorElement([
   "4Q-2L-VSC",
 ]);
 
+export const TrafoFConvertorElement = FConvertorElement([...FConverterType]);
+
 function FConvertorElement(
   types: FConvertorTypeAlias[],
 ): SystemElement<FConvertor> {

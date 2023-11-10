@@ -1,7 +1,7 @@
 import { CableElement } from "./cable";
 import { BaseCandidates, BaseComponents } from "./component";
 import { EMachineElement } from "./emachine";
-import { NoTrafoFConvertorElement } from "./fconvertor";
+import { NoTrafoFConvertorElement, TrafoFConvertorElement } from "./fconvertor";
 import { Gearbox, GearboxElement } from "./gearbox";
 import { GridElement } from "./grid";
 import { Pump, PumpElement } from "./pump";
@@ -117,7 +117,7 @@ export const PumpFcTrModel: Model<PumpFcTrSystem> = {
     pump: PumpElement,
     emachine: EMachineElement,
     cable: CableElement,
-    fconvertor: NoTrafoFConvertorElement,
+    fconvertor: TrafoFConvertorElement,
     trafo: TrafoElement,
     switch: SwitchElement,
     grid: GridElement,
