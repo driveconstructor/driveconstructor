@@ -19,8 +19,8 @@ export default function ParamInput({
     <>
       <input
         id={id}
-        className="border text-left"
-        type={model.type}
+        className={"border text-left" + (model.disabled ? " bg-gray-100" : "")}
+        type={model.disabled ? "text" : model.type}
         min={model.range?.min}
         max={model.range?.max}
         value={value}
@@ -28,6 +28,7 @@ export default function ParamInput({
           onChange(e.target.value);
           onCommit(e.target.value);
         }}
+        disabled={model.disabled}
       ></input>
       {model.type == "number" && model.range != null ? (
         <ParamRange

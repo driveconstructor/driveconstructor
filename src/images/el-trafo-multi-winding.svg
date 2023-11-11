@@ -266,12 +266,12 @@
        d="m 205,45 a 25,25 0 1 1 -50,0 25,25 0 1 1 50,0 z"
        transform="matrix(0.1,0,0,-0.10344818,22,986.43113)" />
     <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.38729751;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.387298;stroke-opacity:1"
        id="rect3913-5-2"
        width="20"
        height="2.9999874"
-       x="1.3322676e-015"
-       y="949.36218" />
+       x="1.3322676e-15"
+       y="951.36218" />
     <rect
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.38729751;stroke-opacity:1"
        id="rect3913-5-2-7"

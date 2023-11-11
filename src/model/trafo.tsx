@@ -19,6 +19,7 @@ export type TypeIIAlias = (typeof DryOil)[number];
 export type TypeIIIAlias = (typeof Winding)[number];
 
 export type Trafo = {
+  sideVoltageHV: number;
   ratedPower: PowerTypeAlias | null;
   typeII: TypeIIAlias;
   typeIII: TypeIIIAlias;
@@ -27,23 +28,32 @@ export type Trafo = {
 export const TrafoElement: SystemElement<Trafo> = {
   icon,
   params: {
+    sideVoltageHV: {
+      type: "number",
+      label: "Voltage (HV)",
+      value: 400,
+      disabled: true, // set by grid.voltage
+    },
     ratedPower: {
       label: "Rated power, kVA",
       type: "number",
       value: null,
       options: [null, ...Power],
+      advanced: true,
     },
     typeII: {
       label: "Dry or oil-immersed",
       type: "text",
       value: "dry",
       options: [...DryOil],
+      advanced: true,
     },
     typeIII: {
       label: "Windings",
       type: "text",
       value: "2-winding",
       options: [...Winding],
+      advanced: true,
     },
   },
   customize(model, system) {

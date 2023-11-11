@@ -27,6 +27,7 @@ export type SystemParam<V = any> = {
   range?: ParamRangeProps<V>;
   advanced?: true;
   hidden?: boolean;
+  disabled?: boolean;
   updateSystem?: (system: System, value: V) => System;
 };
 

@@ -18,6 +18,7 @@ export default function ParamSelect({
         id={id}
         className="border bg-transparent text-left"
         value={value}
+        disabled={model.disabled}
         onChange={(e) => {
           onChange(e.target.value);
         }}

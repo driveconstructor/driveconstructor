@@ -1,5 +1,5 @@
 import icon from "../images/el-grid.svg";
-import { SystemElement } from "./system";
+import { System, SystemElement } from "./system";
 
 export type Grid = {
   voltage: number;
@@ -18,6 +18,23 @@ export const GridElement: SystemElement<Grid> = {
         max: 11000,
       },
       value: 400,
+      updateSystem: (system, value) => {
+        if (system.input.trafo) {
+          const result = {
+            ...system,
+            input: {
+              ...system.input,
+              trafo: {
+                ...system.input.trafo,
+                sideVoltageHV: value,
+              },
+            },
+          };
+          return result as System;
+        }
+
+        return system;
+      },
     },
     frequency: {
       label: "Frequency (Hz)",
