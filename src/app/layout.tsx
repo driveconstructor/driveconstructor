@@ -29,6 +29,8 @@ function NavItem({
   );
 }
 
+const version = `2.0-${process.env.GITHUB_SHA?.substring(0, 6) ?? "abcdefg"}`;
+
 export default function RootLayout({
   children,
 }: {
@@ -46,9 +48,9 @@ export default function RootLayout({
             <NavItem href="/about">About</NavItem>
           </nav>
           <main className="mb-auto"> {children}</main>
-          <footer className="my-2 flex justify-end text-sm">
-            drive constructor 2018-2024 (c) | revision &lt;
-            {process.env.GITHUB_SHA}&gt;
+          <footer className="my-2 flex justify-end">
+            <div>drive constructor 2018-2024 (c)</div>
+            <div className="my-1 text-xs">&nbsp; version: {version}</div>
           </footer>
         </div>
       </body>
