@@ -1,18 +1,12 @@
 import { StaticImageData } from "next/image";
 import React from "react";
+import applications from "./application";
 import { Cable } from "./cable";
 import { EMachine } from "./emachine";
 import { FConvertor } from "./fconvertor";
 import { Grid } from "./grid";
-import {
-  PumpFc,
-  PumpFcModel,
-  PumpFcTrModel,
-  PumpFcTrSystem,
-  PumpGbFc,
-  PumpGbFcModel,
-} from "./pump-system";
-import { WinchFc, WinchFcModel } from "./winch-system";
+import { PumpFc, PumpFcTr, PumpGbFc } from "./pump-system";
+import { WinchFc } from "./winch-system";
 
 export type ParamType = "text" | "number";
 
@@ -53,12 +47,7 @@ export type Model<T extends System> = {
 
 export type SystemModel = Model<any>;
 
-const Models = [
-  PumpFcModel,
-  PumpGbFcModel,
-  PumpFcTrModel,
-  WinchFcModel,
-] as const;
+const models = applications.flatMap((a) => a.systems);
 
 export type BaseSystem = {
   element: string;
@@ -71,7 +60,7 @@ export type BaseSystem = {
   };
 };
 
-export type System = (PumpFc | PumpGbFc | PumpFcTrSystem | WinchFc) & {
+export type System = (PumpFc | PumpGbFc | PumpFcTr | WinchFc) & {
   // to make type script access different types for systems
   input: Record<string, Record<string, any>>;
 };
@@ -79,7 +68,7 @@ export type System = (PumpFc | PumpGbFc | PumpFcTrSystem | WinchFc) & {
 export type SystemKind = System["kind"];
 
 export function getModel(kind: SystemKind): SystemModel {
-  const result = Models.find((m) => m.kind == kind);
+  const result = models.find((m) => m.kind == kind);
   if (result != null) {
     return result;
   }
@@ -88,7 +77,7 @@ export function getModel(kind: SystemKind): SystemModel {
 }
 
 export function getSystemKinds() {
-  return Models.map((m) => {
+  return models.map((m) => {
     return { kind: m.kind };
   });
 }

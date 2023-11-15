@@ -93,7 +93,7 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
   validate,
 };
 
-export type PumpFcTrSystem = BaseSystem & {
+export type PumpFcTr = BaseSystem & {
   kind: "pump-fc-tr";
   input: {
     pump: Pump;
@@ -103,7 +103,7 @@ export type PumpFcTrSystem = BaseSystem & {
   components: BaseComponents;
 };
 
-export const PumpFcTrModel: Model<PumpFcTrSystem> = {
+export const PumpFcTrModel: Model<PumpFcTr> = {
   kind: "pump-fc-tr",
   title: "Drive train with voltage step down",
   description: (

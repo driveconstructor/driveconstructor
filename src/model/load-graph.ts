@@ -1,5 +1,5 @@
 import { calculatePump } from "./pump";
-import { PumpFc, PumpFcTrSystem, PumpGbFc } from "./pump-system";
+import { PumpFc, PumpFcTr, PumpGbFc } from "./pump-system";
 import { System } from "./system";
 import { WinchFc } from "./winch-system";
 
@@ -14,13 +14,13 @@ export function loadGraph(system: System): GraphPoint[] {
     case "winch-fc":
       return winchLoadGraph(system);
     default:
-      throw new Error("Usupported system kind");
+      throw new Error("Unsupported system kind");
   }
 }
 
-function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTrSystem) {
+function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr) {
   const pump = system.input.pump;
-  const calcuated = calculatePump(pump);
+  const calculated = calculatePump(pump);
 
   const numberOfPoints = Math.round(
     (1 - pump.minimalSpeed / pump.ratedSpeed) * 15,
@@ -34,12 +34,12 @@ function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTrSystem) {
       pump.minimalSpeed;
     if (pump.type == "positive displacement") {
       if (pump.minimalSpeed <= speed && speed <= maximumSpeed) {
-        result.push({ speed, torque: calcuated.ratedTorque });
+        result.push({ speed, torque: calculated.ratedTorque });
       }
     } else {
       // n^2 /  ratedSpeed^2 x ratedTorque
       const torque =
-        (Math.pow(speed, 2) * calcuated.ratedTorque) /
+        (Math.pow(speed, 2) * calculated.ratedTorque) /
         Math.pow(pump.ratedSpeed, 2);
       result.push({ speed, torque });
     }
