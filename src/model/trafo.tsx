@@ -1,9 +1,21 @@
-import { Environment } from "./environment";
-import { SystemElement } from "./system";
-import icon from "../images/el-trafo.svg";
+import { StaticImageData } from "next/image";
 import icon3w from "../images/el-trafo-3-winding.svg";
 import iconMw from "../images/el-trafo-multi-winding.svg";
-import { StaticImageData } from "next/image";
+import icon from "../images/el-trafo.svg";
+import { SystemElement } from "./system";
+import { VoltageY } from "./emachine-sizing";
+export const TrafoVoltageHV = [
+  "2200-2500",
+  "2500-2800",
+  "2800-3200",
+  "3200-3400",
+  "3400-4100",
+  "4100-4300",
+  "4300-5800",
+  "5800-6800",
+  "6800-9000",
+  "9000-12000",
+] as const;
 
 export const Power = [
   75, 93, 100, 112.5, 118, 145, 150, 160, 175, 190, 220, 225, 240, 250, 275,
@@ -13,11 +25,23 @@ export const Power = [
 export const Winding = ["2-winding", "3-winding", "multi-winding"] as const;
 export const Integration = ["stand-alone", "integrated"] as const;
 export const DryOil = ["dry", "oil-immersed"] as const;
+export const VoltageLV = [
+  "380-440",
+  "650-700",
+  "2200-2550",
+  "2950-3450",
+  "3750-4350",
+  "5400-6300",
+  "6300-6900",
+  "9000-9900",
+  "9900-11500",
+] as const;
 
 export type PowerTypeAlias = (typeof Power)[number];
 export type TypeIIAlias = (typeof DryOil)[number];
 export type TypeIIIAlias = (typeof Winding)[number];
 export type TypeIVAlias = (typeof Integration)[number];
+export type VoltageLVAlias = (typeof VoltageLV)[number];
 
 export type Trafo = {
   sideVoltageHV: number;
@@ -25,7 +49,8 @@ export type Trafo = {
   typeII: TypeIIAlias;
   typeIII: TypeIIIAlias;
   typeIV: TypeIVAlias;
-  // ratio: number;
+  ratio: number;
+  sideVoltageLV: VoltageLVAlias;
 }; // & Environment;
 
 export const TrafoElement: SystemElement<Trafo> = {
@@ -65,20 +90,20 @@ export const TrafoElement: SystemElement<Trafo> = {
       value: "stand-alone",
       advanced: true,
     },
-    /*ratio: {
-      type: Number,
-      required: false,
-      ui: {
-        order: 4,
-        label: 'Transformation ratio',
-        readOnly: true,
-        help: 'Ratio between voltages on the sides of the transformer',
-        url: '/docs/TextBook/System_components/T_power_voltages_and_ratio.html',
-        getValue: function () {
-          return this.input.trafo.ratioCalc ? this.input.trafo.ratioCalc.toFixed(2) : undefined;
-        }
-      }
-    }*/
+    ratio: {
+      label: "Transformation ratio",
+      type: "number",
+      disabled: true,
+      advanced: true,
+      value: -1, // calculated
+    },
+    sideVoltageLV: {
+      label: "Voltage (LV)",
+      type: "text",
+      options: [...VoltageLV],
+      value: "650-700",
+      advanced: true,
+    },
   },
   customize(model, system) {
     return {
@@ -98,41 +123,3 @@ function customizeIcon(type: TypeIIIAlias): StaticImageData {
       return icon;
   }
 }
-
-/*ratioCalc: function () {
-  const trafo = this.input.trafo;
-
-  const value = TrafoVoltageHV
-    .map(s => s.split('-'))
-    .find(a => Number(a[0]) <= this.input.grid.voltage
-      && Number(a[1]) >= this.input.grid.voltage);
-
-  const minRatio = this.input.grid.voltage / trafo.sideVoltageLVMinCalc;
-  const maxRatio = this.input.grid.voltage / trafo.sideVoltageLVMaxCalc;
-
-  return (1 + Number(trafo.tappings)) * (maxRatio + minRatio) / 2;
-},
-
-sideVoltageLVMaxCalc: function () {
-  if (this.input.trafo.sideVoltageLVMax) {
-    return this.input.trafo.sideVoltageLVMax;
-  } else {
-    return this.input.fconverter.gridSideVoltageMax
-      ? this.input.fconverer.gridSideVoltageMax
-      : 700;
-  }
-},
-
-sideVoltageLVMinCalc: function () {
-  if (this.input.trafo.sideVoltageLVMin) {
-    return this.input.trafo.sideVoltageLVMin;
-  } else {
-    return this.input.fconverter.gridSideVoltageMin
-      ? this.input.fconverer.gridSideVoltageMin
-      : 650;
-  }
-}
-
-export function updateTrafo(trafo: Trafo, gridVoltage: number): Trafo {
-  return {...trafo, sideVoltageHV};
-}*/

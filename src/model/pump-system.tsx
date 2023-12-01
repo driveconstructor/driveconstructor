@@ -7,7 +7,8 @@ import { GridElement } from "./grid";
 import { Pump, PumpElement } from "./pump";
 import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
-import { Trafo, TrafoElement } from "./trafo";
+import { Trafo, TrafoElement, TrafoVoltageHV } from "./trafo";
+import { splitRange } from "./utils";
 
 export type PumpFc = BaseSystem & {
   kind: "pump-fc";
@@ -123,6 +124,21 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
     grid: GridElement,
   },
   postUpdate: (system) => {
+    const trafo = system.input.trafo;
+    const grid = system.input.grid;
+
+    const sideVoltageLVMinCalc = 1;
+    const sideVoltageLVMaxCalc = 2;
+
+    const voltage = TrafoVoltageHV.map(splitRange).find(
+      (r) => r.min <= grid.voltage && r.max >= grid.voltage,
+    );
+
+    const minRatio = grid.voltage / voltage?.min;
+    const maxRatio = grid.voltage / voltage?.max;
+
+    const ratio = ((1 + Number(trafo.tappings)) * (maxRatio + minRatio)) / 2;
+
     return {
       ...system,
       input: {
@@ -130,6 +146,7 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
         trafo: {
           ...system.input.trafo,
           sideVoltageHV: system.input.grid.voltage,
+          ratio,
         },
       },
     };

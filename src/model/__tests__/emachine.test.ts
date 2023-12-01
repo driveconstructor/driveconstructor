@@ -1,3 +1,4 @@
+import { describe, expect, test } from "@jest/globals";
 import { findTypeSpeedAndTorque, findVoltageY } from "../emachine-sizing";
 import { Pump, calculatePump } from "../pump";
 
