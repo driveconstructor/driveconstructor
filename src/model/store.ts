@@ -43,7 +43,7 @@ export function createSystem(model: SystemModel): string {
   return id;
 }
 
-export function updateSystem(
+export function postUpdate(
   context: SystemContextType,
   paramName: string,
   value: any,
@@ -59,10 +59,14 @@ export function updateSystem(
     },
   } as System;
 
-  const updateSystem =
-    context.model.input[context.system.element].params[paramName].updateSystem;
+  const updated1 =
+    context.model.input[context.system.element].params[paramName].postUpdate?.(
+      updated,
+      value,
+    ) ?? updated;
+  const updated2 = context.model.postUpdate?.(updated1) ?? updated1;
 
-  return withCandidates(updateSystem ? updateSystem(updated, value) : updated);
+  return withCandidates(updated2);
 }
 
 function withCandidates(system: System): System {

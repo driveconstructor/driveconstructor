@@ -18,23 +18,6 @@ export const GridElement: SystemElement<Grid> = {
         max: 11000,
       },
       value: 400,
-      updateSystem: (system, value) => {
-        if (system.input.trafo) {
-          const result = {
-            ...system,
-            input: {
-              ...system.input,
-              trafo: {
-                ...system.input.trafo,
-                sideVoltageHV: value,
-              },
-            },
-          };
-          return result as System;
-        }
-
-        return system;
-      },
     },
     frequency: {
       label: "Frequency (Hz)",

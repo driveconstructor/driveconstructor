@@ -57,7 +57,7 @@ function StageParams(
       options: [...options],
       value: type,
       hidden,
-      updateSystem: (system, value) => {
+      postUpdate: (system, value) => {
         const result = {
           ...system,
           input: {

@@ -122,4 +122,16 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
     switch: SwitchElement,
     grid: GridElement,
   },
+  postUpdate: (system) => {
+    return {
+      ...system,
+      input: {
+        ...system.input,
+        trafo: {
+          ...system.input.trafo,
+          sideVoltageHV: system.input.grid.voltage,
+        },
+      },
+    };
+  },
 };
