@@ -51,6 +51,7 @@ export type Trafo = {
   typeIV: TypeIVAlias;
   ratio: number;
   sideVoltageLV: VoltageLVAlias;
+  tappings: number;
 }; // & Environment;
 
 export const TrafoElement: SystemElement<Trafo> = {
@@ -95,13 +96,22 @@ export const TrafoElement: SystemElement<Trafo> = {
       type: "number",
       disabled: true,
       advanced: true,
-      value: -1, // calculated
+      value: -1,
+      precision: 2,
     },
     sideVoltageLV: {
       label: "Voltage (LV)",
       type: "text",
       options: [...VoltageLV],
       value: "650-700",
+      advanced: true,
+    },
+    tappings: {
+      label: "Tappings",
+      type: "text",
+      options: [0, 0.05, 0.025, -0.05, -0.025],
+      optionLabels: ["0", "+5%", "+2.5%", "-2.5%", "-5%"],
+      value: 0,
       advanced: true,
     },
   },

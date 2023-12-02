@@ -4,7 +4,7 @@ import {
   SystemContextType,
   getSystem,
   saveSystem,
-  postUpdate,
+  updateParam,
 } from "@/model/store";
 import { SystemKind, customizeModel, getModel } from "@/model/system";
 import { useSearchParams } from "next/navigation";
@@ -63,7 +63,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                     key={context.system.element + "." + k + "." + counter}
                     name={k}
                     handleChange={(v) => {
-                      const updated = postUpdate(context, k, v);
+                      const updated = updateParam(context, k, v);
                       const errors = context.model.validate
                         ? context.model.validate(updated)
                         : [];

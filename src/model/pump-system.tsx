@@ -123,19 +123,14 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
     switch: SwitchElement,
     grid: GridElement,
   },
-  postUpdate: (system) => {
+  update: (system) => {
     const trafo = system.input.trafo;
     const grid = system.input.grid;
 
-    const sideVoltageLVMinCalc = 1;
-    const sideVoltageLVMaxCalc = 2;
+    const voltageLV = splitRange(trafo.sideVoltageLV);
 
-    const voltage = TrafoVoltageHV.map(splitRange).find(
-      (r) => r.min <= grid.voltage && r.max >= grid.voltage,
-    );
-
-    const minRatio = grid.voltage / voltage?.min;
-    const maxRatio = grid.voltage / voltage?.max;
+    const minRatio = grid.voltage / voltageLV.min;
+    const maxRatio = grid.voltage / voltageLV.max;
 
     const ratio = ((1 + Number(trafo.tappings)) * (maxRatio + minRatio)) / 2;
 
@@ -144,8 +139,8 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
       input: {
         ...system.input,
         trafo: {
-          ...system.input.trafo,
-          sideVoltageHV: system.input.grid.voltage,
+          ...trafo,
+          sideVoltageHV: grid.voltage,
           ratio,
         },
       },

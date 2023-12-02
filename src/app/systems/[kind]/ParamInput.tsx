@@ -23,7 +23,7 @@ export default function ParamInput({
         type={model.disabled ? "text" : model.type}
         min={model.range?.min}
         max={model.range?.max}
-        value={value}
+        value={model.precision ? value?.toFixed(model.precision) : value}
         onChange={(e) => {
           onChange(e.target.value);
           onCommit(e.target.value);

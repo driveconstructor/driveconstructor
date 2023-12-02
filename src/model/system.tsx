@@ -22,7 +22,8 @@ export type SystemParam<V = any> = {
   advanced?: true;
   hidden?: boolean;
   disabled?: boolean;
-  postUpdate?: (system: System, value: V) => System;
+  precision?: number;
+  update?: (system: System, value: V) => System;
 };
 
 export type SystemElement<T = any> = {
@@ -43,7 +44,7 @@ export type Model<T extends System> = {
   };
 
   validate?: (system: T) => string[];
-  postUpdate?: (system: T) => T;
+  update?: (system: T) => T;
 };
 
 export type SystemModel = Model<any>;
