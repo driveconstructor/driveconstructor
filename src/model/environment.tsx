@@ -6,10 +6,7 @@ export type Environment = {
   coolantTemperature: number;
 };
 
-export const EnvironmentModel: Record<
-  keyof Environment,
-  SystemParam<number>
-> = {
+export const EnvironmentModel: Record<keyof Environment, SystemParam<any>> = {
   altitude: {
     label: "Altitude, m",
     type: "number",

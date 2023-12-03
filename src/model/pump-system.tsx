@@ -121,7 +121,13 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
     fconvertor: TrafoFConvertorElement,
     trafo: TrafoElement,
     switch: SwitchElement,
-    grid: GridElement,
+    grid: {
+      ...GridElement,
+      params: {
+        ...GridElement.params,
+        voltage: { ...GridElement.params.voltage, value: 6000 },
+      },
+    },
   },
   update: (system) => {
     const trafo = system.input.trafo;

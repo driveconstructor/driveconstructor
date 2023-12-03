@@ -2,8 +2,12 @@ import { StaticImageData } from "next/image";
 import icon3w from "../images/el-trafo-3-winding.svg";
 import iconMw from "../images/el-trafo-multi-winding.svg";
 import icon from "../images/el-trafo.svg";
+import {
+  CoolingProtection,
+  CoolingProtectionModel,
+} from "./cooling-protection";
+import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
-import { VoltageY } from "./emachine-sizing";
 export const TrafoVoltageHV = [
   "2200-2500",
   "2500-2800",
@@ -44,31 +48,46 @@ export type TypeIVAlias = (typeof Integration)[number];
 export type VoltageLVAlias = (typeof VoltageLV)[number];
 
 export type Trafo = {
-  sideVoltageHV: number;
   ratedPower: PowerTypeAlias | null;
+  sideVoltageHV: number;
   typeII: TypeIIAlias;
   typeIII: TypeIIIAlias;
   typeIV: TypeIVAlias;
   ratio: number;
   sideVoltageLV: VoltageLVAlias;
   tappings: number;
-}; // & Environment;
+} & CoolingProtection &
+  Environment;
 
 export const TrafoElement: SystemElement<Trafo> = {
   icon,
   params: {
-    sideVoltageHV: {
-      type: "number",
-      label: "Voltage (HV)",
-      value: 400,
-      disabled: true, // set by grid.voltage
-    },
     ratedPower: {
       label: "Rated power, kVA",
       type: "number",
       value: null,
       options: [null, ...Power],
       advanced: true,
+    },
+    sideVoltageHV: {
+      type: "number",
+      label: "Voltage (HV)",
+      value: 400,
+      disabled: true, // set by grid.voltage
+    },
+    ratio: {
+      label: "Transformation ratio",
+      type: "number",
+      disabled: true,
+      advanced: true,
+      value: -1,
+      precision: 2,
+    },
+    sideVoltageLV: {
+      label: "Voltage (LV)",
+      type: "text",
+      options: [...VoltageLV],
+      value: "650-700",
     },
     typeII: {
       label: "Dry or oil-immersed",
@@ -91,21 +110,6 @@ export const TrafoElement: SystemElement<Trafo> = {
       value: "stand-alone",
       advanced: true,
     },
-    ratio: {
-      label: "Transformation ratio",
-      type: "number",
-      disabled: true,
-      advanced: true,
-      value: -1,
-      precision: 2,
-    },
-    sideVoltageLV: {
-      label: "Voltage (LV)",
-      type: "text",
-      options: [...VoltageLV],
-      value: "650-700",
-      advanced: true,
-    },
     tappings: {
       label: "Tappings",
       type: "text",
@@ -114,6 +118,8 @@ export const TrafoElement: SystemElement<Trafo> = {
       value: 0,
       advanced: true,
     },
+    ...CoolingProtectionModel,
+    ...EnvironmentModel,
   },
   customize(model, system) {
     return {

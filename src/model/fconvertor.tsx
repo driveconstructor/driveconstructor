@@ -11,10 +11,12 @@ import icon_4Q_ML_SCHB_VSC from "../images/el-fconverter-4Q-ML-SCHB-VSC.svg";
 import { StaticImageData } from "next/image";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
+import {
+  CoolingProtection,
+  CoolingProtectionModel,
+} from "./cooling-protection";
 
 export const FConverterMounting = ["wall", "floor"] as const;
-
-export const FConverterProtection = ["IP21/31", "IP54/55"] as const;
 
 export const FConverterType = [
   "2Q-2L-VSC-6p",
@@ -33,8 +35,6 @@ export const FConverterPower = [
   4000, 4500, 4700, 5000, 5200, 5500,
 ] as const;
 
-export const FConverterCooling = ["air", "water"] as const;
-
 export const GridSideFilter = ["no", "choke", "sin", "choke+RFI"] as const;
 
 export const MachineSideFilter = ["no", "choke", "du/dt", "sin"] as const;
@@ -48,10 +48,9 @@ export type FConvertor = {
   ratedPower: (typeof FConverterPower)[number] | null;
   gridSideFilter: GridSideFilterAlias;
   machineSideFilter: MachineSideFilterAlias;
-  cooling: (typeof FConverterCooling)[number];
   mounting: (typeof FConverterMounting)[number] | null;
-  protection: (typeof FConverterProtection)[number];
-} & Environment;
+} & CoolingProtection &
+  Environment;
 
 export const NoTrafoFConvertorElement = FConvertorElement([
   "2Q-2L-VSC-6p",
@@ -98,19 +97,7 @@ function FConvertorElement(
         options: [null, ...FConverterMounting],
         value: null,
       },
-      protection: {
-        label: "Protection",
-        type: "text",
-        options: [...FConverterProtection],
-        value: "IP21/31",
-        advanced: true,
-      },
-      cooling: {
-        label: "Cooling",
-        type: "text",
-        options: [...FConverterCooling],
-        value: "air",
-      },
+      ...CoolingProtectionModel,
       ...EnvironmentModel,
     },
     customize(model, system) {

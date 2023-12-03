@@ -39,7 +39,7 @@ export function createSystem(model: SystemModel): string {
     input,
     element: Object.keys(model.input)[0],
   } as System;
-  saveSystem(id, withCandidates(system));
+  saveSystem(id, withCandidates(model.update?.(system) ?? system));
   return id;
 }
 

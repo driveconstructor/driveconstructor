@@ -1,10 +1,9 @@
 import { ComponentModel } from "./component";
+import { Cooling, Protection } from "./cooling-protection";
 import { VoltageY } from "./emachine-sizing";
 import {
-  FConverterCooling,
   FConverterMounting,
   FConverterPower,
-  FConverterProtection,
   FConvertorTypeAlias,
 } from "./fconvertor";
 
@@ -29,8 +28,8 @@ export type FConvertorComponent = {
   volume: number;
   ratedPower: (typeof FConverterPower)[number];
   mounting: (typeof FConverterMounting)[number];
-  cooling: (typeof FConverterCooling)[number];
-  protection: (typeof FConverterProtection)[number];
+  cooling: (typeof Cooling)[number];
+  protection: (typeof Protection)[number];
   designation: string;
   type: FConvertorTypeAlias;
 };

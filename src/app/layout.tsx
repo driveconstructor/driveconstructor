@@ -29,7 +29,9 @@ function NavItem({
   );
 }
 
-const version = `2.0-${process.env.GITHUB_SHA?.substring(0, 6) ?? "abcdefg"}`;
+const version = `${process.env.npm_package_version}-${
+  process.env.GITHUB_SHA?.substring(0, 6) ?? "abcdefg"
+}`;
 
 export default function RootLayout({
   children,
@@ -50,7 +52,9 @@ export default function RootLayout({
           <main className="mb-auto"> {children}</main>
           <footer className="my-2 flex justify-end">
             <div>drive constructor 2018-2024 (c)</div>
-            <div className="my-1 text-xs">&nbsp; version: {version}</div>
+            <div className="my-1 text-xs">
+              &nbsp; version: {version}. built at: {new Date().toISOString()}
+            </div>
           </footer>
         </div>
       </body>
