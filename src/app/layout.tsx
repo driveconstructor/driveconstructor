@@ -30,7 +30,7 @@ function NavItem({
 }
 
 const version = `${process.env.npm_package_version}-${
-  process.env.GITHUB_SHA?.substring(0, 6) ?? "abcdefg"
+  process.env.GITHUB_SHA?.substring(0, 6) ?? "snapshot"
 }`;
 
 export default function RootLayout({
@@ -51,7 +51,7 @@ export default function RootLayout({
           </nav>
           <main className="mb-auto"> {children}</main>
           <footer className="my-2 flex justify-end">
-            <div>drive constructor 2018-2024 (c)</div>
+            <div>drive constructor 2015-2024 (c)</div>
             <div className="my-1 text-xs">
               &nbsp; version: {version}. built at: {new Date().toISOString()}
             </div>
