@@ -46,8 +46,6 @@ export default function RootLayout({
             <NavItem href="/" className="text-xl">
               Drive Constructor
             </NavItem>
-            <NavItem href="/mysystems">My systems</NavItem>
-            <NavItem href="/about">About</NavItem>
           </nav>
           <main className="mb-auto"> {children}</main>
           <footer className="my-2 flex justify-end">
