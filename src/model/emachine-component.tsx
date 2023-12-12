@@ -1,5 +1,14 @@
 import { ComponentModel } from "./component";
 import {
+  DesignationParam,
+  FootPrintParam,
+  MountingParam,
+  PriceParam,
+  VolumeParam,
+  WeightParam,
+} from "./component-params";
+import { CoolingParam, ProtectionParam } from "./cooling-protection";
+import {
   EMachineCooling,
   EMachineFrameMaterial,
   EMachineMounting,
@@ -57,9 +66,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     type: {
       label: "Type",
     },
-    price: {
-      label: "Price, EUR",
-    },
+    ...PriceParam,
     ratedPower: {
       label: "Rated power, kW",
     },
@@ -124,16 +131,9 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
       label: "cos_fi @ 50% load",
       advanced: true,
     },
-    cooling: {
-      label: "Cooling",
-    },
-    mounting: {
-      label: "Mounting",
-      advanced: true,
-    },
-    protection: {
-      label: "Protection",
-    },
+    ...CoolingParam,
+    mounting: { ...MountingParam.mounting, advanced: true },
+    ...ProtectionParam,
     frameMaterial: {
       label: "Frame material",
     },
@@ -149,22 +149,14 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
       label: "Axial length, m",
       advanced: true,
     },
-    volume: {
-      label: "Volume, m3",
-    },
+    ...VolumeParam,
     momentOfInertia: {
       label: "Moment of inertia, kgm2",
       advanced: true,
     },
-    footPrint: {
-      label: "Footprint, m2",
-    },
-    weight: {
-      label: "Weight, kg",
-    },
-    designation: {
-      label: "Designation",
-    },
+    ...FootPrintParam,
+    ...WeightParam,
+    ...DesignationParam,
   },
 };
 

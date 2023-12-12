@@ -8,19 +8,31 @@ export type CoolingProtection = {
   protection: (typeof Cooling)[number];
 };
 
+export const ProtectionParam = {
+  protection: {
+    label: "Protection",
+  },
+};
+
+export const CoolingParam = {
+  cooling: {
+    label: "Cooling",
+  },
+};
+
 export const CoolingProtectionModel: Record<
   keyof CoolingProtection,
   SystemParam<any>
 > = {
   protection: {
-    label: "Protection",
+    ...ProtectionParam.protection,
     type: "text",
     options: [...Protection],
     value: "IP21/31",
     advanced: true,
   },
   cooling: {
-    label: "Cooling",
+    ...CoolingParam.cooling,
     type: "text",
     options: [...Cooling],
     value: "air",

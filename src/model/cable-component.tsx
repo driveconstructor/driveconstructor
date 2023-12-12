@@ -1,5 +1,12 @@
-import { Cable } from "./cable";
+import {
+  Cable,
+  CrossSectionParam,
+  LengthParam,
+  MaterialParam,
+  NumberOfRunsParam,
+} from "./cable";
 import { ComponentModel } from "./component";
+import { DesignationParam, PriceParam } from "./component-params";
 
 export type CableComponent = Cable & {
   voltage: number;
@@ -17,21 +24,11 @@ export const CableComponentModel: ComponentModel<CableComponent> = {
   kind: "cable",
   title: "Cable",
   params: {
-    length: {
-      label: "Length (m)",
-    },
-    price: {
-      label: "Price",
-    },
-    numberOfRuns: {
-      label: "Number of runs",
-    },
-    crossSection: {
-      label: "Cross-section of phase conductor (mm2)",
-    },
-    material: {
-      label: "Conductor material",
-    },
+    ...LengthParam,
+    ...PriceParam,
+    ...NumberOfRunsParam,
+    ...CrossSectionParam,
+    ...MaterialParam,
     voltage: {
       label: "Voltage rating (kV)",
     },
@@ -44,9 +41,7 @@ export const CableComponentModel: ComponentModel<CableComponent> = {
     pricePerMeter: {
       label: "Price per meter",
     },
-    designation: {
-      label: "Designation",
-    },
+    ...DesignationParam,
     voltageDrop: {
       label: "Voltage drop",
     },

@@ -15,11 +15,35 @@ export type Cable = {
   numberOfRuns: (typeof NumberOfRuns)[number] | null;
 };
 
+export const LengthParam = {
+  length: {
+    label: "Length (m)",
+  },
+};
+
+export const NumberOfRunsParam = {
+  numberOfRuns: {
+    label: "Number of runs",
+  },
+};
+
+export const MaterialParam = {
+  material: {
+    label: "Conductor material",
+  },
+};
+
+export const CrossSectionParam = {
+  crossSection: {
+    label: "Cross-section of phase conductor (mm2)",
+  },
+};
+
 export const CableElement: SystemElement<Cable> = {
   icon,
   params: {
     length: {
-      label: "Length (m)",
+      ...LengthParam.length,
       type: "number",
       range: {
         min: 0,
@@ -28,21 +52,21 @@ export const CableElement: SystemElement<Cable> = {
       value: 30,
     },
     numberOfRuns: {
-      label: "Number of runs",
+      ...NumberOfRunsParam.numberOfRuns,
       type: "number",
       options: [null, ...NumberOfRuns],
       optionLabels: ["auto", ...NumberOfRuns],
       value: null,
     },
     crossSection: {
-      label: "Cross-section of phase conductor (mm2)",
+      ...CrossSectionParam.crossSection,
       type: "number",
       value: null,
       options: [null, ...CrossSection],
       optionLabels: ["auto", ...CrossSection],
     },
     material: {
-      label: "Conductor material",
+      ...MaterialParam.material,
       type: "text",
       options: [...Material],
       value: "copper",
