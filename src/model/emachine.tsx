@@ -2,6 +2,7 @@ import iconPMSM from "../images/el-emachine-pmsm.svg";
 import iconSCIM from "../images/el-emachine-scim.svg";
 import iconSyRM from "../images/el-emachine-syrm.svg";
 import icon from "../images/el-emachine.svg";
+import { CoolingParam, ProtectionParam } from "./cooling-protection";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
 
@@ -52,7 +53,7 @@ export const EMachineElement: SystemElement<EMachine> = {
       options: [null, ...ERatedPower],
     },
     cooling: {
-      label: "Cooling",
+      ...CoolingParam.cooling,
       type: "text",
       options: [null, ...EMachineCooling],
       optionLabels: [
@@ -64,7 +65,7 @@ export const EMachineElement: SystemElement<EMachine> = {
       value: "IC411",
     },
     protection: {
-      label: "Protection",
+      ...ProtectionParam.protection,
       type: "text",
       options: [null, ...EMachineProtection],
       value: "IP21/23",
