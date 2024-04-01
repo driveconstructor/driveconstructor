@@ -6,7 +6,7 @@ import { Gearbox, GearboxElement } from "./gearbox";
 import { GridElement } from "./grid";
 import { Pump, PumpElement } from "./pump";
 import { SwitchElement } from "./switch";
-import { BaseSystem, Model } from "./system";
+import { BaseSystem, Model, SystemModel } from "./system";
 import { Trafo, TrafoElement, TrafoVoltageHV } from "./trafo";
 import { splitRange } from "./utils";
 
@@ -94,6 +94,30 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
   validate,
 };
 
+function updateTrSystem<T extends PumpFcTr | PumpGbFcTr>(system: T): T {
+  const trafo = system.input.trafo;
+  const grid = system.input.grid;
+
+  const voltageLV = splitRange(trafo.sideVoltageLV);
+
+  const minRatio = grid.voltage / voltageLV.min;
+  const maxRatio = grid.voltage / voltageLV.max;
+
+  const ratio = ((1 + Number(trafo.tappings)) * (maxRatio + minRatio)) / 2;
+
+  return {
+    ...system,
+    input: {
+      ...system.input,
+      trafo: {
+        ...trafo,
+        sideVoltageHV: grid.voltage,
+        ratio,
+      },
+    },
+  };
+}
+
 export type PumpFcTr = BaseSystem & {
   kind: "pump-fc-tr";
   input: {
@@ -110,8 +134,8 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
   description: (
     <div>
       In this solution the transformer is used for matching the voltage in the
-      grid and FC&apos;s rated voltage and/or for galvanic insulation. It is
-      possible to find a motor matching speed of the pump without any gearbox.
+      grid and FC's rated voltage and/or for galvanic insulation. It is possible
+      to find a motor matching speed of the pump without any gearbox.
     </div>
   ),
   input: {
@@ -152,4 +176,44 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
       },
     };
   },
+};
+
+export type PumpGbFcTr = BaseSystem & {
+  kind: "pump-gb-fc-tr";
+  input: {
+    pump: Pump;
+    gearbox: Gearbox;
+    trafo: Trafo;
+  };
+  candidates: BaseCandidates;
+  components: BaseComponents;
+};
+
+export const PumpGbFcTrModel: Model<PumpGbFcTr> = {
+  kind: "pump-gb-fc-tr",
+  title: "Drive train with voltage step-down and speed gearing",
+  description: (
+    <div>
+      This solution can be used when the pump has too low rated speed to be
+      matched by an electric motor, and the transformer is used for matching the
+      voltage in the grid and FC's and/or for galvanic insulation.
+    </div>
+  ),
+  input: {
+    pump: PumpElement,
+    gearbox: GearboxElement,
+    emachine: EMachineElement,
+    cable: CableElement,
+    fconvertor: TrafoFConvertorElement,
+    trafo: TrafoElement,
+    switch: SwitchElement,
+    grid: {
+      ...GridElement,
+      params: {
+        ...GridElement.params,
+        voltage: { ...GridElement.params.voltage, value: 6000 },
+      },
+    },
+  },
+  update: updateTrSystem,
 };

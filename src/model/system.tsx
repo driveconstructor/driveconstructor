@@ -5,7 +5,7 @@ import { Cable } from "./cable";
 import { EMachine } from "./emachine";
 import { FConvertor } from "./fconvertor";
 import { Grid } from "./grid";
-import { PumpFc, PumpFcTr, PumpGbFc } from "./pump-system";
+import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { WinchFc } from "./winch-system";
 
 export type ParamType = "text" | "number";
@@ -62,7 +62,7 @@ export type BaseSystem = {
   };
 };
 
-export type System = (PumpFc | PumpGbFc | PumpFcTr | WinchFc) & {
+export type System = (PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr | WinchFc) & {
   // to make type script access different types for systems
   input: Record<string, Record<string, any>>;
 };

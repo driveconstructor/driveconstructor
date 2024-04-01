@@ -1,5 +1,5 @@
 import { calculatePump } from "./pump";
-import { PumpFc, PumpFcTr, PumpGbFc } from "./pump-system";
+import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { System } from "./system";
 import { WinchFc } from "./winch-system";
 
@@ -10,6 +10,7 @@ export function loadGraph(system: System): GraphPoint[] {
     case "pump-fc":
     case "pump-gb-fc":
     case "pump-fc-tr":
+    case "pump-gb-fc-tr":
       return pumpLoadGraph(system);
     case "winch-fc":
       return winchLoadGraph(system);
@@ -18,7 +19,7 @@ export function loadGraph(system: System): GraphPoint[] {
   }
 }
 
-function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr) {
+function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
   const pump = system.input.pump;
   const calculated = calculatePump(pump);
 
