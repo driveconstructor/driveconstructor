@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("PumpFc", async ({ page }) => {
-  await page.goto("localhost:8000");
+  await page.goto("/");
 
   await page.getByText("Pumps").locator("..").getByText("Select").click();
   await page
