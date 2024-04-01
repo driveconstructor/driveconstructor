@@ -37,6 +37,12 @@ export type EMachine = {
   shaftHeight: (typeof ShaftHeight)[number];
 } & Environment;
 
+export const RatedPowerParam = {
+  ratedPower: {
+    label: "Rated power, kW",
+  },
+};
+
 export const EMachineElement: SystemElement<EMachine> = {
   icon,
   params: {
@@ -47,7 +53,7 @@ export const EMachineElement: SystemElement<EMachine> = {
       options: [null, ...EMachineType],
     },
     ratedPower: {
-      label: "Rated power, kW",
+      ...RatedPowerParam.ratedPower,
       type: "number",
       value: 400,
       options: [null, ...ERatedPower],

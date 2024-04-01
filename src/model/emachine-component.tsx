@@ -16,6 +16,7 @@ import {
   EMachineType,
   ERatedPower,
   EfficiencyClass,
+  RatedPowerParam,
 } from "./emachine";
 import {
   ERatedSynchSpeed,
@@ -67,9 +68,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
       label: "Type",
     },
     ...PriceParam,
-    ratedPower: {
-      label: "Rated power, kW",
-    },
+    ...RatedPowerParam,
     ratedSpeed: {
       label: "Rated speed, rpm",
     },
