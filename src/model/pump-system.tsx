@@ -134,8 +134,8 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
   description: (
     <div>
       In this solution the transformer is used for matching the voltage in the
-      grid and FC's rated voltage and/or for galvanic insulation. It is possible
-      to find a motor matching speed of the pump without any gearbox.
+      grid and FC&apos;s rated voltage and/or for galvanic insulation. It is
+      possible to find a motor matching speed of the pump without any gearbox.
     </div>
   ),
   input: {
@@ -196,7 +196,7 @@ export const PumpGbFcTrModel: Model<PumpGbFcTr> = {
     <div>
       This solution can be used when the pump has too low rated speed to be
       matched by an electric motor, and the transformer is used for matching the
-      voltage in the grid and FC's and/or for galvanic insulation.
+      voltage in the grid and FC&apos;s and/or for galvanic insulation.
     </div>
   ),
   input: {
