@@ -47,6 +47,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Install playwright dependencies
+        run: npx playwright install --with-deps
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
