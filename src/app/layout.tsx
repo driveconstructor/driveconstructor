@@ -51,7 +51,7 @@ export default function RootLayout({
           <footer className="my-2 flex justify-end">
             <div>drive constructor 2015-2024 (c)</div>
             <div className="my-1 text-xs">
-              &nbsp; version: {version}. built at: {new Date().toISOString()}
+              &nbsp; version: {version}. built at: {process.env.build_at}
             </div>
           </footer>
         </div>
