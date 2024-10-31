@@ -1,15 +1,21 @@
 import PageTemplate from "@/app/PageTemplate";
 import { SystemKind, getModel, getSystemKinds } from "@/model/system";
-import dynamic from "next/dynamic";
+import Input from "./Input";
+import { Suspense } from "react";
 
-const Input = dynamic(() => import("./Input"), { ssr: false });
-
-export default function Page({ params }: { params: { kind: SystemKind } }) {
-  const model = getModel(params.kind);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ kind: SystemKind }>;
+}) {
+  const kind = (await params).kind;
+  const model = getModel(kind);
 
   return (
     <PageTemplate title={model.title} text="">
-      <Input kind={params.kind} />
+      <Suspense>
+        <Input kind={kind} />
+      </Suspense>
     </PageTemplate>
   );
 }

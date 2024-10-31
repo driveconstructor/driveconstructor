@@ -6,10 +6,15 @@ import Link from "next/link";
 import React from "react";
 import NewSystemButton from "./NewSystemButton";
 
-export default function Page({ params }: { params: { kind: string } }) {
-  const model = applications.find((a) => a.name == params.kind);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ kind: string }>;
+}) {
+  const kind = (await params).kind;
+  const model = applications.find((a) => a.name == kind);
   if (model == null) {
-    throw new Error(`${params.kind} is not found`);
+    throw new Error(`${kind} is not found`);
   }
 
   return (
