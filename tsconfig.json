@@ -24,11 +24,12 @@
     }
   },
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/ignoretsx"
+    "next-env.d.ts",
+    "src/app/ignoretsx",
+    "out/driveconstructor/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

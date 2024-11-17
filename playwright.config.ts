@@ -71,7 +71,8 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: "npm run serve",
-    url: "http://127.0.0.1:3000" + (process.env.CI ? "/driveconstructor" : ""),
+    url: "http://127.0.0.1:3000/driveconstructor",
     reuseExistingServer: !process.env.CI,
+    stdout: "pipe",
   },
 });
