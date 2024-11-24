@@ -26,7 +26,13 @@ export function findTypeSpeedAndTorque(
         const ratedTorque = 1000 * (ratedPower / ratedSpeed) * 9.55;
 
         const result = { type, ratedPower, speed, ratedSpeed, ratedTorque };
-        return { type, ratedPower, speed, ratedSpeed, ratedTorque };
+        return {
+          type,
+          ratedPower,
+          speed,
+          ratedSpeed: Math.round(ratedSpeed),
+          ratedTorque: Math.round(ratedTorque),
+        };
       }).filter(
         (o) =>
           o.ratedSpeed <= mechanismSpeed * 2 &&

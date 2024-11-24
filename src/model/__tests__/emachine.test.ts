@@ -17,9 +17,12 @@ const mechanism = calculatePump(pump);
 
 describe("emachine", () => {
   test("typeSpeedAndTorque", () => {
-    expect(
-      findTypeSpeedAndTorque(pump.ratedSpeed, mechanism.ratedTorque),
-    ).toHaveLength(9);
+    const result = findTypeSpeedAndTorque(
+      pump.ratedSpeed,
+      mechanism.ratedTorque,
+    );
+    console.log(JSON.stringify(result, null, 2));
+    expect(result).toHaveLength(9);
   });
 
   test("voltage", () => {
