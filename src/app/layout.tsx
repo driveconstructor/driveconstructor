@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import "./globals.css";
 
+export const revalidate = false;
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
