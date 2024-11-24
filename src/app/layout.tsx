@@ -3,7 +3,6 @@ import Link from "next/link";
 import React from "react";
 import "./globals.css";
 
-export const revalidate = false;
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -50,7 +49,7 @@ export default function RootLayout({
           </nav>
           <main className="mb-auto"> {children}</main>
           <footer className="my-2 flex justify-end">
-            <div>drive constructor 2015-2025 (c)</div>
+            <div>drive constructor 2015-2024 (c)</div>
             <div className="my-1 text-xs">
               &nbsp; version: {version}. built at: {process.env.build_at}
             </div>
