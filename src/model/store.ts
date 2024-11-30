@@ -67,20 +67,24 @@ export function updateParam(
     ) ?? withParamValue;
   const withModelUpdate =
     context.model.update?.(withParamUpdate) ?? withParamUpdate;
+  const withoutComponents = { ...withModelUpdate, components: {} };
 
-  return withCandidates(withModelUpdate);
+  return withCandidates(withoutComponents);
 }
 
 function withCandidates(system: System): System {
   const candidates = findCandidates(system);
   const components = Object.entries(candidates)
-    .filter(([_, v]) => v.length == 1)
-    .reduce((a, [k, v]) => {
-      return {
-        ...a,
-        [k]: v[0],
-      };
-    }, {} as BaseComponents);
+    .filter(([_, candidate]) => candidate.length == 1)
+    .reduce(
+      (a, [name, candidate]) => {
+        return {
+          ...a,
+          [name]: candidate[0],
+        };
+      },
+      { ...system.components },
+    );
   return {
     ...system,
     candidates,

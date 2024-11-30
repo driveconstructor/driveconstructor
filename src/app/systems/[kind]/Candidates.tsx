@@ -3,18 +3,30 @@ import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
 import { SystemContext } from "./Input";
 
-export default function Candidates() {
+export default function Candidates({
+  onSelect,
+}: {
+  onSelect: (k: string, v: any) => void;
+}) {
   const context = useContext(SystemContext);
   return (
     <div className="break-all">
       {Object.entries(context.system.candidates).map(([k, v]) => {
-        const selectedIndex = v.findIndex(
+        const selected = v.findIndex(
           (c) =>
             c.designation == (context.system.components as any)[k]?.designation,
         );
         return (
           <div key={k}>
-            <Candidate kind={k} values={v} selectedIndex={selectedIndex} />
+            <Candidate
+              kind={k}
+              values={v}
+              selected={selected}
+              setSelected={(i) => {
+                console.log(i);
+                onSelect(k, v[i]);
+              }}
+            />
           </div>
         );
       })}
@@ -25,18 +37,19 @@ export default function Candidates() {
 function Candidate({
   kind,
   values,
-  selectedIndex,
+  selected,
+  setSelected,
 }: {
   kind: string;
   values: any[];
-  selectedIndex: number;
+  selected: number;
+  setSelected: (i: number) => void;
 }) {
   const model = getComponentModel(kind);
   const hasAdvanced = Boolean(
     Object.entries(model.params).find(([k, v]) => v.advanced)?.length,
   );
   const [showMore, setShowMore] = useState(false);
-  const [selected, setSelected] = useState(selectedIndex);
   const [collapsed, setCollapsed] = useState(false);
 
   return (

@@ -68,7 +68,7 @@ export function findCandidates(system: System): BaseCandidates {
         momentOfInertia: 5.01,
         footPrint: 0.6272,
         weight: 961.34,
-        designation: "IM-132-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
+        designation: "YM-132-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
       },
     ],
     cable: [

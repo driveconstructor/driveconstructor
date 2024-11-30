@@ -99,7 +99,16 @@ export default function Input({ kind }: { kind: SystemKind }) {
         </div>
         <div className="lg:col-span-2">
           <div className="text-2xl">Candidates</div>
-          <Candidates />
+          <Candidates
+            onSelect={(name, candidate) => {
+              const system = {
+                ...context.system,
+                components: { ...context.system.components, [name]: candidate },
+              };
+
+              setValue(system);
+            }}
+          />
         </div>
       </div>
     </SystemContext.Provider>
