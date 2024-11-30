@@ -7,22 +7,36 @@ export default function Candidates() {
   const context = useContext(SystemContext);
   return (
     <div className="break-all">
-      {Object.entries(context.system.candidates).map(([k, v]) => (
-        <div key={k}>
-          <Candidate kind={k} values={v} />
-        </div>
-      ))}
+      {Object.entries(context.system.candidates).map(([k, v]) => {
+        const selectedIndex = v.findIndex(
+          (c) =>
+            c.designation == (context.system.components as any)[k]?.designation,
+        );
+        return (
+          <div key={k}>
+            <Candidate kind={k} values={v} selectedIndex={selectedIndex} />
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-function Candidate({ kind, values }: { kind: string; values: any[] }) {
+function Candidate({
+  kind,
+  values,
+  selectedIndex,
+}: {
+  kind: string;
+  values: any[];
+  selectedIndex: number;
+}) {
   const model = getComponentModel(kind);
   const hasAdvanced = Boolean(
     Object.entries(model.params).find(([k, v]) => v.advanced)?.length,
   );
   const [showMore, setShowMore] = useState(false);
-  const [selected, setSelected] = useState(values.length == 1 ? 0 : -1);
+  const [selected, setSelected] = useState(selectedIndex);
   const [collapsed, setCollapsed] = useState(false);
 
   return (

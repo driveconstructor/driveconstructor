@@ -1,3 +1,4 @@
+import { BaseComponents } from "./component";
 import { findCandidates } from "./sizing";
 import { System, SystemModel } from "./system";
 
@@ -48,7 +49,7 @@ export function updateParam(
   paramName: string,
   value: any,
 ): System {
-  const updated: System = {
+  const withParamValue: System = {
     ...context.system,
     input: {
       ...context.system.input,
@@ -59,19 +60,30 @@ export function updateParam(
     },
   } as System;
 
-  const updated1 =
+  const withParamUpdate =
     context.model.input[context.system.element].params[paramName].update?.(
-      updated,
+      withParamValue,
       value,
-    ) ?? updated;
-  const updated2 = context.model.update?.(updated1) ?? updated1;
+    ) ?? withParamValue;
+  const withModelUpdate =
+    context.model.update?.(withParamUpdate) ?? withParamUpdate;
 
-  return withCandidates(updated2);
+  return withCandidates(withModelUpdate);
 }
 
 function withCandidates(system: System): System {
+  const candidates = findCandidates(system);
+  const components = Object.entries(candidates)
+    .filter(([_, v]) => v.length == 1)
+    .reduce((a, [k, v]) => {
+      return {
+        ...a,
+        [k]: v[0],
+      };
+    }, {} as BaseComponents);
   return {
     ...system,
-    candidates: findCandidates(system),
+    candidates,
+    components,
   };
 }
