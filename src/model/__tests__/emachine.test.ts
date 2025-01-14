@@ -1,6 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
-import { findTypeSpeedAndTorque, findVoltageY } from "../emachine-sizing";
+import { combine, findTypeSpeedAndTorque, findVoltageY } from "../emachine-sizing";
 import { Pump, calculatePump } from "../pump";
+import { EMachineCooling, EMachineFrameMaterial } from "../emachine";
 
 const pump: Pump = {
   type: "centrifugal",
@@ -33,5 +34,16 @@ describe("emachine", () => {
     const v2 = findVoltageY(4000, 400);
     expect(v2.min).toBeCloseTo(594);
     expect(v2.max).toBeCloseTo(726);
+  });
+
+  test("combinations", () => {
+    const tstList = findTypeSpeedAndTorque(
+      pump.ratedSpeed,
+      mechanism.ratedTorque,
+    );
+
+    const voltage = findVoltageY(0, 400);
+
+    console.log(combine(tstList, voltage))
   });
 });

@@ -1,4 +1,12 @@
-import { EMachineType, ERatedPower } from "./emachine";
+import { Protection } from "./cooling-protection";
+import {
+  EMachineCooling,
+  EMachineFrameMaterial,
+  EMachineMounting,
+  EMachineProtection,
+  EMachineType,
+  ERatedPower,
+} from "./emachine";
 
 export const ERatedSynchSpeed = [
   3000, 1500, 1000, 750, 600, 500, 400, 300, 200, 100,
@@ -67,4 +75,25 @@ export function findVoltageY(
   )[0];
 
   return { min: value * 0.9, value, max: value * 1.1 };
+}
+
+export function combine(tstList: TypeSpeedAndTorque[], voltage: VoltageY) {
+  EMachineCooling.forEach((cooling) => {
+    EMachineFrameMaterial.forEach((frameMaterial) => {
+      EMachineMounting.forEach((mountung) => {
+        EMachineProtection.forEach((protection) => {
+          tstList.forEach((tst) => {
+            console.log({
+              cooling,
+              frameMaterial,
+              mountung,
+              protection,
+              ...tst,
+              voltage,
+            });
+          });
+        });
+      });
+    });
+  });
 }
