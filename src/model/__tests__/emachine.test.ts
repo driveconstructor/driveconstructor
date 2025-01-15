@@ -1,5 +1,9 @@
 import { describe, expect, test } from "@jest/globals";
-import { combine, findTypeSpeedAndTorque, findVoltageY } from "../emachine-sizing";
+import {
+  emachineCatalog,
+  findTypeSpeedAndTorque,
+  findVoltageY,
+} from "../emachine-sizing";
 import { Pump, calculatePump } from "../pump";
 import { EMachineCooling, EMachineFrameMaterial } from "../emachine";
 
@@ -22,7 +26,7 @@ describe("emachine", () => {
       pump.ratedSpeed,
       mechanism.ratedTorque,
     );
-    console.log(JSON.stringify(result, null, 2));
+    //console.log(JSON.stringify(result, null, 2));
     expect(result).toHaveLength(9);
   });
 
@@ -36,14 +40,14 @@ describe("emachine", () => {
     expect(v2.max).toBeCloseTo(726);
   });
 
-  test("combinations", () => {
+  test("catalog", () => {
     const tstList = findTypeSpeedAndTorque(
       pump.ratedSpeed,
       mechanism.ratedTorque,
     );
 
     const voltage = findVoltageY(0, 400);
-
-    console.log(combine(tstList, voltage))
+    const catalog = emachineCatalog(tstList, voltage);
+    expect(catalog).toHaveLength(1458);
   });
 });
