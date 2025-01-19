@@ -8,6 +8,7 @@ import {
   EMachineType,
   ERatedPower,
 } from "./emachine";
+import { EMachineComponent } from "./emachine-component";
 
 export const ERatedSynchSpeed = [
   3000, 1500, 1000, 750, 600, 500, 400, 300, 200, 100,
@@ -19,6 +20,12 @@ export type TypeSpeedAndTorque = {
   ratedSynchSpeed: (typeof ERatedSynchSpeed)[number];
   ratedSpeed: number;
   ratedTorque: number;
+};
+
+export type Mechanism = {
+  powerOnShaft: number;
+  ratedTorque: number;
+  torqueOverload: number;
 };
 
 export function findTypeSpeedAndTorque(
@@ -87,23 +94,68 @@ export function findVoltageY(
 
 export function emachineCatalog(
   tstList: TypeSpeedAndTorque[],
-  ratedVoltage: VoltageY,
-) {
+  ratedVoltageY: VoltageY,
+): any {
   return EMachineCooling.flatMap((cooling) =>
     EMachineFrameMaterial.flatMap((frameMaterial) =>
       EMachineMounting.flatMap((mountung) =>
         EMachineProtection.flatMap((protection) =>
-          EfficiencyClass.flatMap((efficiency) =>
+          EfficiencyClass.flatMap((efficiencyClass) =>
             tstList.map((tst) => {
+              const price = 10;
+              const maximumSpeed = tst.ratedSynchSpeed * 1.2;
+              const cosFi100 = 1;
+              const cosFi75 = 1;
+              const cosFi50 = 1;
+              const efficiency100 = 1;
+              const efficiency75 = 1;
+              const efficiency50 = 1;
+              const efficiency25 = 1;
+              const ratedCurrent =
+                (tst.ratedPower * 1000) /
+                (((Math.sqrt(3) * ratedVoltageY.value * efficiency100) / 100) *
+                  cosFi100);
+              const workingCurrent = null;
+              const torqueOverload = null;
+              const mounting = null;
+              const shaftHeight = null;
+              const outerDiameter = null;
+              const length = null;
+              const volume = null;
+              const momentOfInertia = null;
+              const footPrint = null;
+              const weight = null;
+              const designation = null;
+
               return {
+                price,
+                maximumSpeed,
+                efficiencyClass,
+                efficiency100,
+                efficiency75,
+                efficiency50,
+                efficiency25,
+                ratedCurrent,
+                workingCurrent,
+                torqueOverload,
+                cosFi100,
+                cosFi75,
+                cosFi50,
+                mounting,
+                shaftHeight,
+                outerDiameter,
+                length,
+                volume,
+                momentOfInertia,
+                footPrint,
+                weight,
+                designation,
                 cooling,
                 frameMaterial,
                 mountung,
                 protection,
                 ...tst,
-                efficiency,
-                ratedVoltage,
-                maximumSpeed: tst.ratedSynchSpeed * 1.2,
+                ratedVoltageY,
               };
             }),
           ),
