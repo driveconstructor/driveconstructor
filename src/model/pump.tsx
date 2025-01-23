@@ -1,5 +1,6 @@
 import icon from "../images/el-pump.svg";
-import { SystemElement } from "./system";
+import { PumpFc } from "./pump-system";
+import { System, SystemElement } from "./system";
 
 const PumpType = ["centrifugal", "positive displacement"] as const;
 
@@ -12,6 +13,10 @@ export type Pump = {
   ratedEfficiency: number;
   minimalSpeed: number;
   startingTorque: number;
+  // calculated
+  powerOnShaft: number;
+  ratedTorque: number;
+  torqueOverload: number;
 };
 
 export const PumpElement: SystemElement<Pump> = {
@@ -88,6 +93,29 @@ export const PumpElement: SystemElement<Pump> = {
       value: 0.0,
       options: [...Array(21)].map((_, i) => (i * 0.1).toFixed(1)),
       advanced: true,
+    },
+    powerOnShaft: {
+      value: function (pump: Pump): number {
+        const flowM3h = (pump.flow * 3600) / 1000;
+        const powerOnShaft =
+          (flowM3h * pump.fluidDensity * 9.81 * pump.head) /
+          (pump.ratedEfficiency * 3.6 * 10000);
+
+        return powerOnShaft;
+      },
+    },
+    ratedTorque: {
+      value: function (pump: Pump): number {
+        const ratedTorque =
+          (1000 * (pump.powerOnShaft * 9.55)) / pump.ratedSpeed;
+
+        return ratedTorque;
+      },
+    },
+    torqueOverload: {
+      value: function (pump: Pump): number {
+        return pump.ratedTorque * pump.startingTorque;
+      },
     },
   },
 };

@@ -22,12 +22,6 @@ export type TypeSpeedAndTorque = {
   ratedTorque: number;
 };
 
-export type Mechanism = {
-  powerOnShaft: number;
-  ratedTorque: number;
-  torqueOverload: number;
-};
-
 export function findTypeSpeedAndTorque(
   mechanismSpeed: number,
   mechanismTorque: number,

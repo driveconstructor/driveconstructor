@@ -12,10 +12,10 @@ export type ParamType = "text" | "number";
 
 export type ParamRangeProps<V> = { min: V; max: V; step?: V };
 
-export type SystemParam<V = any> = {
-  label: React.ReactNode;
-  type: ParamType;
-  value: V;
+export type SystemParam<V = any, E = any> = {
+  label?: React.ReactNode;
+  type?: ParamType;
+  value: V | ((element: E) => number);
   options?: V[] | (string | null)[];
   optionLabels?: (React.ReactNode | null)[];
   range?: ParamRangeProps<V>;
@@ -31,7 +31,7 @@ export type SystemElement<T = any> = {
   iconWidth?: number;
   customize?: (model: SystemElement<T>, value: T) => SystemElement<T>;
   params: {
-    [P in keyof T]: SystemParam<T[P]>;
+    [P in keyof T]: SystemParam<T[P], T>;
   };
 };
 

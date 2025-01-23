@@ -67,7 +67,13 @@ export function updateParam(
     ) ?? withParamValue;
   const withModelUpdate =
     context.model.update?.(withParamUpdate) ?? withParamUpdate;
-  const withoutComponents = { ...withModelUpdate, components: {} };
+
+  const withCalculatedParams = calculatedParams(
+    context.model,
+    withModelUpdate,
+  ) as any;
+
+  const withoutComponents = { ...withCalculatedParams, components: {} };
 
   return withCandidates(withoutComponents);
 }
@@ -90,4 +96,23 @@ function withCandidates(system: System): System {
     candidates,
     components,
   };
+}
+
+function calculatedParams(model: SystemModel, system: System): System {
+  const input = Object.entries(model.input).reduce((a, [e, p]) => {
+    return {
+      ...a,
+      [e]: Object.entries(p.params).reduce((b, [k, v]) => {
+        return {
+          ...b,
+          [k]: typeof v.value == "function" ? v.value(b) : system.input[e][k],
+        };
+      }, {}),
+    };
+  }, {});
+
+  return {
+    ...system,
+    input,
+  } as System;
 }
