@@ -71,7 +71,12 @@ export default function Param({
 
   return (
     <>
-      <label className="text-sm" htmlFor={name}>
+      <label
+        className={
+          "text-sm" + (paramModel.value == "function") ? " text-gray-500" : ""
+        }
+        htmlFor={name}
+      >
         {paramModel.label}:
       </label>
       {input}

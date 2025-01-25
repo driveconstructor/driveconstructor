@@ -15,20 +15,25 @@ export default function ParamInput({
   onChange: ChangeHandler;
   onCommit: ChangeHandler;
 }) {
+  const disabled = model.disabled || typeof model.value == "function";
   return (
     <>
       <input
         id={id}
-        className={"border text-left" + (model.disabled ? " bg-gray-100" : "")}
-        type={model.disabled ? "text" : model.type}
+        className={"border text-left" + (disabled ? " text-gray-500" : "")}
+        type={disabled ? "text" : model.type}
         min={model.range?.min}
         max={model.range?.max}
-        value={model.precision ? value?.toFixed(model.precision) : value}
+        value={
+          typeof model.precision == "number"
+            ? value?.toFixed(model.precision)
+            : value
+        }
         onChange={(e) => {
           onChange(e.target.value);
           onCommit(e.target.value);
         }}
-        disabled={model.disabled}
+        disabled={disabled}
       ></input>
       {model.type == "number" && model.range != null ? (
         <ParamRange

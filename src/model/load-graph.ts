@@ -21,8 +21,7 @@ export function loadGraph(system: System): GraphPoint[] {
 
 function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
   const pump = system.input.pump;
-  const calculated = calculatePump(pump);
-
+ 
   const numberOfPoints = Math.round(
     (1 - pump.minimalSpeed / pump.ratedSpeed) * 15,
   );
@@ -35,12 +34,12 @@ function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
       pump.minimalSpeed;
     if (pump.type == "positive displacement") {
       if (pump.minimalSpeed <= speed && speed <= maximumSpeed) {
-        result.push({ speed, torque: calculated.ratedTorque });
+        result.push({ speed, torque: pump.ratedTorque });
       }
     } else {
       // n^2 /  ratedSpeed^2 x ratedTorque
       const torque =
-        (Math.pow(speed, 2) * calculated.ratedTorque) /
+        (Math.pow(speed, 2) * pump.ratedTorque) /
         Math.pow(pump.ratedSpeed, 2);
       result.push({ speed, torque });
     }

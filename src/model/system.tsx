@@ -13,8 +13,8 @@ export type ParamType = "text" | "number";
 export type ParamRangeProps<V> = { min: V; max: V; step?: V };
 
 export type SystemParam<V = any, E = any> = {
-  label?: React.ReactNode;
-  type?: ParamType;
+  label: React.ReactNode;
+  type: ParamType;
   value: V | ((element: E) => number);
   options?: V[] | (string | null)[];
   optionLabels?: (React.ReactNode | null)[];

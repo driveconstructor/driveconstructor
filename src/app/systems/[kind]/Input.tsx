@@ -58,7 +58,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 .flatMap(([_, v]) => Object.entries(v.params))
                 .filter(([_, v]) => showMore || !v.advanced)
                 .filter(([_, v]) => !v.hidden)
-                .filter(([_, v]) => v.type && v.label)
+                .filter(([_, v]) => showMore || typeof v.value != "function")
                 .map(([k, _]) => (
                   <Param
                     key={context.system.element + "." + k + "." + counter}

@@ -95,6 +95,9 @@ export const PumpElement: SystemElement<Pump> = {
       advanced: true,
     },
     powerOnShaft: {
+      label: "Power on shaft, kW",
+      type: "number",
+      precision: 0,
       value: function (pump: Pump): number {
         const flowM3h = (pump.flow * 3600) / 1000;
         const powerOnShaft =
@@ -105,6 +108,9 @@ export const PumpElement: SystemElement<Pump> = {
       },
     },
     ratedTorque: {
+      label: "Rated torque, Nm",
+      type: "number",
+      precision: 0,
       value: function (pump: Pump): number {
         const ratedTorque =
           (1000 * (pump.powerOnShaft * 9.55)) / pump.ratedSpeed;
@@ -113,6 +119,9 @@ export const PumpElement: SystemElement<Pump> = {
       },
     },
     torqueOverload: {
+      label: "Torque overload, Nm",
+      type: "number",
+      precision: 0,
       value: function (pump: Pump): number {
         return pump.ratedTorque * pump.startingTorque;
       },

@@ -29,7 +29,7 @@ export function createSystem(model: SystemModel): string {
     return {
       ...a,
       [e]: Object.entries(p.params).reduce((b, [k, v]) => {
-        return { ...b, [k]: v.value };
+        return { ...b, [k]: typeof v.value == "function" ? v.value(b) : v.value };
       }, {}),
     };
   }, {});
