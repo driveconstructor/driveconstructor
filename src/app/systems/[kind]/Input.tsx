@@ -29,6 +29,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
   // state change counter - used to reset the state
   const [counter, setCounter] = useState(0);
   const [showMore, setShowMore] = useState(false);
+  const [showCalculated, setShowCalculated] = useState(false);
 
   useEffect(() => {
     saveSystem(id, value);
@@ -58,7 +59,9 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 .flatMap(([_, v]) => Object.entries(v.params))
                 .filter(([_, v]) => showMore || !v.advanced)
                 .filter(([_, v]) => !v.hidden)
-                .filter(([_, v]) => showMore || typeof v.value != "function")
+                .filter(
+                  ([_, v]) => showCalculated || typeof v.value != "function",
+                )
                 .map(([k, _]) => (
                   <Param
                     key={context.system.element + "." + k + "." + counter}
@@ -80,12 +83,18 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 ))}
             </div>
           </div>
-          <div className="flex p-2">
+          <div className="flex p-2 gap-5">
             <div
               className="btn flex-none"
               onClick={() => setShowMore(!showMore)}
             >
               {showMore ? "Less..." : "More..."}
+            </div>
+            <div
+              className="btn flex-none"
+              onClick={() => setShowCalculated(!showCalculated)}
+            >
+              {showCalculated ? "Hide calculated..." : "Show calculated..."}
             </div>
             <div className="grow" />
             <div className="btn flex-none">Show report</div>
