@@ -128,15 +128,3 @@ export const PumpElement: SystemElement<Pump> = {
     },
   },
 };
-
-export function calculatePump(pump: Pump) {
-  const flowM3h = (pump.flow * 3600) / 1000;
-  const powerOnShaft =
-    (flowM3h * pump.fluidDensity * 9.81 * pump.head) /
-    (pump.ratedEfficiency * 3.6 * 10000);
-
-  const ratedTorque = (1000 * (powerOnShaft * 9.55)) / pump.ratedSpeed;
-  const torqueOverload = ratedTorque * pump.startingTorque;
-
-  return { powerOnShaft, ratedTorque, torqueOverload };
-}

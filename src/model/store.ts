@@ -23,16 +23,31 @@ export type SystemContextType = {
   system: System;
 };
 
-export function createSystem(model: SystemModel): string {
-  const kind = model.kind;
-  const input = Object.entries(model.input).reduce((a, [e, p]) => {
+export function initOrUpdateSystemInput(
+  model: SystemModel,
+  input?: Record<string, any>,
+) {
+  return Object.entries(model.input).reduce((a, [e, p]) => {
     return {
       ...a,
       [e]: Object.entries(p.params).reduce((b, [k, v]) => {
-        return { ...b, [k]: typeof v.value == "function" ? v.value(b) : v.value };
+        return {
+          ...b,
+          [k]:
+            typeof v.value == "function"
+              ? v.value(b)
+              : input
+                ? input[e][k]
+                : v.value,
+        };
       }, {}),
     };
   }, {});
+}
+
+export function createSystem(model: SystemModel): string {
+  const kind = model.kind;
+  const input = initOrUpdateSystemInput(model);
 
   const id = "draft_" + kind;
   const system = {
@@ -68,10 +83,11 @@ export function updateParam(
   const withModelUpdate =
     context.model.update?.(withParamUpdate) ?? withParamUpdate;
 
-  const withCalculatedParams = calculatedParams(
-    context.model,
-    withModelUpdate,
-  ) as any;
+  const input = initOrUpdateSystemInput(context.model, withModelUpdate.input);
+  const withCalculatedParams = {
+    ...withModelUpdate,
+    input,
+  } as any;
 
   const withoutComponents = { ...withCalculatedParams, components: {} };
 
@@ -96,23 +112,4 @@ function withCandidates(system: System): System {
     candidates,
     components,
   };
-}
-
-function calculatedParams(model: SystemModel, system: System): System {
-  const input = Object.entries(model.input).reduce((a, [e, p]) => {
-    return {
-      ...a,
-      [e]: Object.entries(p.params).reduce((b, [k, v]) => {
-        return {
-          ...b,
-          [k]: typeof v.value == "function" ? v.value(b) : system.input[e][k],
-        };
-      }, {}),
-    };
-  }, {});
-
-  return {
-    ...system,
-    input,
-  } as System;
 }

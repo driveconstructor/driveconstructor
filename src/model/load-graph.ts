@@ -1,4 +1,3 @@
-import { calculatePump } from "./pump";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { System } from "./system";
 import { WinchFc } from "./winch-system";
@@ -21,7 +20,7 @@ export function loadGraph(system: System): GraphPoint[] {
 
 function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
   const pump = system.input.pump;
- 
+
   const numberOfPoints = Math.round(
     (1 - pump.minimalSpeed / pump.ratedSpeed) * 15,
   );
@@ -39,8 +38,7 @@ function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
     } else {
       // n^2 /  ratedSpeed^2 x ratedTorque
       const torque =
-        (Math.pow(speed, 2) * pump.ratedTorque) /
-        Math.pow(pump.ratedSpeed, 2);
+        (Math.pow(speed, 2) * pump.ratedTorque) / Math.pow(pump.ratedSpeed, 2);
       result.push({ speed, torque });
     }
   }

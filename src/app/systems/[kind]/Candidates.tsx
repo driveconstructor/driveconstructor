@@ -47,7 +47,7 @@ function Candidate({
 }) {
   const model = getComponentModel(kind);
   const hasAdvanced = Boolean(
-    Object.entries(model.params).find(([k, v]) => v.advanced)?.length,
+    Object.entries(model.params).find(([_, v]) => v.advanced)?.length,
   );
   const [showMore, setShowMore] = useState(false);
   const [collapsed, setCollapsed] = useState(false);

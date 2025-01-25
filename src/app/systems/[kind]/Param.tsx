@@ -73,7 +73,8 @@ export default function Param({
     <>
       <label
         className={
-          "text-sm" + (paramModel.value == "function") ? " text-gray-500" : ""
+          "text-sm" +
+          (typeof paramModel.value == "function" ? " text-gray-500" : "")
         }
         htmlFor={name}
       >

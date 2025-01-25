@@ -4,28 +4,15 @@ import {
   findTypeSpeedAndTorque,
   findVoltageY,
 } from "../emachine-sizing";
-import { Pump, calculatePump } from "../pump";
-import { EMachineCooling, EMachineFrameMaterial } from "../emachine";
+import { PumpFc, PumpFcModel } from "../pump-system";
+import { initOrUpdateSystemInput } from "../store";
+//import { EMachineCooling, EMachineFrameMaterial } from "../emachine";
 
-const pump: Pump = {
-  type: "centrifugal",
-  head: 200,
-  flow: 50,
-  fluidDensity: 1000,
-  ratedEfficiency: 81,
-  ratedSpeed: 1450,
-  minimalSpeed: 0,
-  startingTorque: 0,
-};
-
-const mechanism = calculatePump(pump);
+const pump = (initOrUpdateSystemInput(PumpFcModel) as PumpFc["input"]).pump;
 
 describe("emachine", () => {
   test("typeSpeedAndTorque", () => {
-    const result = findTypeSpeedAndTorque(
-      pump.ratedSpeed,
-      mechanism.ratedTorque,
-    );
+    const result = findTypeSpeedAndTorque(pump.ratedSpeed, pump.ratedTorque);
     //console.log(JSON.stringify(result, null, 2));
     expect(result).toHaveLength(9);
   });
@@ -41,10 +28,7 @@ describe("emachine", () => {
   });
 
   test("catalog", () => {
-    const tstList = findTypeSpeedAndTorque(
-      pump.ratedSpeed,
-      mechanism.ratedTorque,
-    );
+    const tstList = findTypeSpeedAndTorque(pump.ratedSpeed, pump.ratedTorque);
 
     const voltage = findVoltageY(0, 400);
     const catalog = emachineCatalog(tstList, voltage);

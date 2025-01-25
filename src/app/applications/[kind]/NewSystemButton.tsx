@@ -9,7 +9,7 @@ export default function NewSystemButton({ kind }: { kind: SystemKind }) {
   return (
     <button
       className="btn"
-      onClick={(e) => {
+      onClick={() => {
         const model = getModel(kind);
         const id = createSystem(model);
         router.push(`/systems/${kind}?id=${id}`);
