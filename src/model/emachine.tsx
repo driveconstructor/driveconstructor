@@ -35,6 +35,9 @@ export type EMachine = {
   efficiencyClass: (typeof EfficiencyClass)[number] | null;
   mounting: (typeof EMachineMounting)[number] | null;
   shaftHeight: (typeof ShaftHeight)[number];
+  // calculated
+  overallTorqueDerating: number;
+  voltageDerating: number;
 } & Environment;
 
 export const RatedPowerParam = {
@@ -107,6 +110,44 @@ export const EMachineElement: SystemElement<EMachine> = {
       options: [...ShaftHeight],
       value: 56,
       advanced: true,
+    },
+    overallTorqueDerating: {
+      label: "Overal torque derating",
+      type: "number",
+      value: (em) => {
+        const deratingA =
+          em.altitude > 1000 ? 1 - 0.00008 * (em.altitude - 1000) : 1;
+        let deratingC = 1;
+        let deratingT = 1;
+
+        if (em.cooling == "IC411" || em.cooling == "IC416") {
+          if (em.ambientTemperature > 40) {
+            deratingT = 1 - 0.008 * (em.ambientTemperature - 40);
+          }
+        } else if (em.cooling === "IC71W") {
+          if (em.coolantTemperature > 35) {
+            deratingC = 1 - 0.008 * (em.coolantTemperature - 35);
+          } else {
+            deratingC = 1 + 0.008 * (em.coolantTemperature - 35);
+          }
+          if (em.ambientTemperature > 40) {
+            deratingT = 1 - 0.004 * (em.ambientTemperature - 40);
+          } else {
+            deratingT = 1 + 0.004 * (em.ambientTemperature - 40);
+          }
+        }
+
+        const derating1 = deratingA * deratingC;
+        const derating2 = deratingA * deratingT;
+
+        return derating1 <= derating2 ? derating1 : derating2;
+      },
+    },
+    voltageDerating: {
+      label: "Voltage derating",
+      type: "number",
+      value: (em) =>
+        em.altitude > 2000 ? 1 - 0.00015 * (em.altitude - 2000) : 1,
     },
   },
   customize: (model, value) => {

@@ -83,7 +83,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 ))}
             </div>
           </div>
-          <div className="flex p-2 gap-5">
+          <div className="flex p-2 gap-2">
             <div
               className="btn flex-none"
               onClick={() => setShowMore(!showMore)}
