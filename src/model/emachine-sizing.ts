@@ -1,6 +1,6 @@
-import { Protection } from "./cooling-protection";
 import {
   EfficiencyClass,
+  EMachine,
   EMachineCooling,
   EMachineFrameMaterial,
   EMachineMounting,
@@ -9,12 +9,14 @@ import {
   ERatedPower,
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
+import { emachinDesignation } from "./emachine-utils";
+import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
   3000, 1500, 1000, 750, 600, 500, 400, 300, 200, 100,
 ] as const;
 
-export type TypeSpeedAndTorque = {
+export type TypeSpeedTorque = {
   type: (typeof EMachineType)[number];
   ratedPower: (typeof ERatedPower)[number];
   ratedSynchSpeed: (typeof ERatedSynchSpeed)[number];
@@ -23,26 +25,20 @@ export type TypeSpeedAndTorque = {
 };
 
 export function findTypeSpeedAndTorque(
+  type: (typeof EMachineType)[number] | null,
   mechanismSpeed: number,
   mechanismTorque: number,
-): TypeSpeedAndTorque[] {
+): TypeSpeedTorque[] {
   return ERatedSynchSpeed.filter(
     (speed) => speed > mechanismSpeed / 1.2,
   ).flatMap((ratedSynchSpeed) =>
-    EMachineType.flatMap((type) =>
+    EMachineType.filter((t) => type == null || t == type).flatMap((type) =>
       ERatedPower.map((ratedPower) => {
         const slip = 0.053 * Math.pow(ratedPower, -0.38);
         const ratedSpeed =
           type == "SCIM" ? ratedSynchSpeed * (1 - slip) : ratedSynchSpeed;
         const ratedTorque = 1000 * (ratedPower / ratedSpeed) * 9.55;
 
-        const result = {
-          type,
-          ratedPower,
-          ratedSynchSpeed,
-          ratedSpeed,
-          ratedTorque,
-        };
         return {
           type,
           ratedPower,
@@ -60,44 +56,21 @@ export function findTypeSpeedAndTorque(
   );
 }
 
-export type VoltageY = {
-  value: (typeof Voltage)[number];
-  min: number;
-  max: number;
-};
-
-export const LowVoltage = [400, 660] as const;
-
-export const MediumVoltage = [3300, 6600, 10000] as const;
-
-export const Voltage = [...LowVoltage, ...MediumVoltage];
-
-export function findVoltageY(
-  altitude: number,
-  systemVoltage: number,
-): VoltageY {
-  const derating = altitude > 2000 ? 1 - 0.00015 * (altitude - 2000) : 1;
-  const deratedVoltage = systemVoltage / derating;
-
-  const value = [...Voltage].sort(
-    (a, b) => Math.abs(a - deratedVoltage) - Math.abs(b - deratedVoltage),
-  )[0];
-
-  return { min: value * 0.9, value, max: value * 1.1 };
-}
-
 export function emachineCatalog(
-  tstList: TypeSpeedAndTorque[],
+  em: EMachine,
+  typeSpeedTorqueList: TypeSpeedTorque[],
   ratedVoltageY: VoltageY,
-): any {
-  return EMachineCooling.flatMap((cooling) =>
+): EMachineComponent[] {
+  return EMachineCooling.filter(
+    (c) => em.cooling == null || c == em.cooling,
+  ).flatMap((cooling) =>
     EMachineFrameMaterial.flatMap((frameMaterial) =>
-      EMachineMounting.flatMap((mountung) =>
+      EMachineMounting.flatMap((mounting) =>
         EMachineProtection.flatMap((protection) =>
           EfficiencyClass.flatMap((efficiencyClass) =>
-            tstList.map((tst) => {
+            typeSpeedTorqueList.map((typeSpeedTorque) => {
               const price = 10;
-              const maximumSpeed = tst.ratedSynchSpeed * 1.2;
+              const maximumSpeed = typeSpeedTorque.ratedSynchSpeed * 1.2;
               const cosFi100 = 1;
               const cosFi75 = 1;
               const cosFi50 = 1;
@@ -106,20 +79,29 @@ export function emachineCatalog(
               const efficiency50 = 1;
               const efficiency25 = 1;
               const ratedCurrent =
-                (tst.ratedPower * 1000) /
+                (typeSpeedTorque.ratedPower * 1000) /
                 (((Math.sqrt(3) * ratedVoltageY.value * efficiency100) / 100) *
                   cosFi100);
-              const workingCurrent = null;
-              const torqueOverload = null;
-              const mounting = null;
-              const shaftHeight = null;
-              const outerDiameter = null;
-              const length = null;
-              const volume = null;
-              const momentOfInertia = null;
-              const footPrint = null;
-              const weight = null;
-              const designation = null;
+              const workingCurrent = 0;
+              const torqueOverload = 0;
+              const shaftHeight = 0;
+              const outerDiameter = 0;
+              const length = 1;
+              const volume = 0;
+              const momentOfInertia = 0;
+              const footPrint = 0;
+              const weight = 0;
+
+              const designation = emachinDesignation(
+                typeSpeedTorque,
+                ratedVoltageY,
+                shaftHeight,
+                cooling,
+                protection,
+                frameMaterial,
+                mounting,
+                efficiencyClass,
+              );
 
               return {
                 price,
@@ -146,9 +128,8 @@ export function emachineCatalog(
                 designation,
                 cooling,
                 frameMaterial,
-                mountung,
                 protection,
-                ...tst,
+                ...typeSpeedTorque,
                 ratedVoltageY,
               };
             }),

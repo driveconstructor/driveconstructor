@@ -20,7 +20,7 @@ import {
 } from "./emachine";
 import {
   ERatedSynchSpeed,
-  TypeSpeedAndTorque,
+  TypeSpeedTorque,
   VoltageY,
 } from "./emachine-sizing";
 
@@ -160,7 +160,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
 };
 
 export function generate(
-  tst: TypeSpeedAndTorque,
+  tst: TypeSpeedTorque,
   voltageY: VoltageY,
 ): EMachineComponent[] {
   return [];
