@@ -82,7 +82,7 @@ export function emachineCatalog(
               const cosFi100 = 1;
               const cosFi75 = 1;
               const cosFi50 = 1;
-              const efficiency100 = 1;
+              const efficiency100 = 100;
               const efficiency75 = 1;
               const efficiency50 = 1;
               const efficiency25 = 1;

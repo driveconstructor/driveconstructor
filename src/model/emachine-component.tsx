@@ -71,7 +71,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     },
     ratedVoltageY: {
       label: "Voltage, V",
-      render: (v) => `${v.min}-${v.max}`,
+      render: (v) => `${v.min.toFixed(0)}-${v.max.toFixed(0)}`,
     },
     ratedSynchSpeed: {
       label: "Rated synchronous speed, rpm",
@@ -155,10 +155,3 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     ...DesignationParam,
   },
 };
-
-export function generate(
-  tst: TypeSpeedTorque,
-  voltageY: VoltageY,
-): EMachineComponent[] {
-  return [];
-}

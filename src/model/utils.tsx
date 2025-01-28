@@ -1,5 +1,3 @@
-import assert from "assert";
-
 export type Range = {
   min: number;
   max: number;
@@ -18,4 +16,10 @@ export function splitRange(value: string): Range {
   }
 
   return result;
+}
+
+export function closest(array: number[], value: number): number {
+  return array.reduce((prev, curr) =>
+    Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev,
+  );
 }

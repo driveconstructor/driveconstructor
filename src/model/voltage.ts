@@ -1,3 +1,5 @@
+import { closest } from "./utils";
+
 export type VoltageY = {
   value: (typeof Voltage)[number];
   min: number;
@@ -12,9 +14,7 @@ export const MediumVoltage = [3300, 6600, 10000] as const;
 export const Voltage = [...LowVoltage, ...MediumVoltage];
 
 export function findVoltageY(deratedVoltage: number): VoltageY {
-  const value = [...Voltage].sort(
-    (a, b) => Math.abs(a - deratedVoltage) - Math.abs(b - deratedVoltage),
-  )[0];
+  const value = closest(Voltage, deratedVoltage) as (typeof Voltage)[number];
 
   const type = LowVoltage.findIndex((v) => v == value) != -1 ? "LV" : "MV";
 
