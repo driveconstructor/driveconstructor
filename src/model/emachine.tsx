@@ -34,7 +34,7 @@ export type EMachine = {
   frameMaterial: (typeof EMachineFrameMaterial)[number] | null;
   efficiencyClass: (typeof EfficiencyClass)[number] | null;
   mounting: (typeof EMachineMounting)[number] | null;
-  shaftHeight: (typeof ShaftHeight)[number];
+  shaftHeight: (typeof ShaftHeight)[number] | null;
   // calculated
   overallTorqueDerating: number;
   voltageDerating: number;
@@ -52,13 +52,13 @@ export const EMachineElement: SystemElement<EMachine> = {
     type: {
       label: "Type",
       type: "text",
-      value: null,
+      value: "SCIM",
       options: [null, ...EMachineType],
     },
     ratedPower: {
       ...RatedPowerParam.ratedPower,
       type: "number",
-      value: 400,
+      value: null,
       options: [null, ...ERatedPower],
     },
     cooling: {
@@ -89,7 +89,7 @@ export const EMachineElement: SystemElement<EMachine> = {
       label: "Efficiency class",
       type: "text",
       options: [null, ...EfficiencyClass],
-      value: null,
+      value: "IE4",
       advanced: true,
     },
     mounting: {
@@ -107,8 +107,8 @@ export const EMachineElement: SystemElement<EMachine> = {
         min: 56,
         max: 710,
       },
-      options: [...ShaftHeight],
-      value: 56,
+      options: [null, ...ShaftHeight],
+      value: null,
       advanced: true,
     },
     overallTorqueDerating: {

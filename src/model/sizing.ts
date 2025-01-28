@@ -28,10 +28,14 @@ export function findCandidates(system: System): BaseCandidates {
     system.input.grid.voltage / system.input.emachine.voltageDerating;
   const voltageY = findVoltageY(deratedVoltage);
 
-  const emachine = emachineCatalog(system.input.emachine,typeSpeedAndTorqueList, voltageY)
+  const emachine = emachineCatalog(
+    system.input.emachine,
+    typeSpeedAndTorqueList,
+    voltageY,
+  )
     .sort(
       (a, b) =>
-        a.ratedSynchSpeed - b.ratedSpeed ||
+        a.ratedSynchSpeed - b.ratedSynchSpeed ||
         a.type.localeCompare(b.type) ||
         a.ratedPower - b.ratedPower,
     )

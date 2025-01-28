@@ -64,10 +64,18 @@ export function emachineCatalog(
   return EMachineCooling.filter(
     (c) => em.cooling == null || c == em.cooling,
   ).flatMap((cooling) =>
-    EMachineFrameMaterial.flatMap((frameMaterial) =>
-      EMachineMounting.flatMap((mounting) =>
-        EMachineProtection.flatMap((protection) =>
-          EfficiencyClass.flatMap((efficiencyClass) =>
+    EMachineFrameMaterial.filter(
+      (fm) => em.frameMaterial == null || fm == em.frameMaterial,
+    ).flatMap((frameMaterial) =>
+      EMachineMounting.filter(
+        (m) => em.mounting == null || m == em.mounting,
+      ).flatMap((mounting) =>
+        EMachineProtection.filter(
+          (p) => em.protection == null || p == em.protection,
+        ).flatMap((protection) =>
+          EfficiencyClass.filter(
+            (ec) => em.efficiencyClass == null || ec == em.efficiencyClass,
+          ).flatMap((efficiencyClass) =>
             typeSpeedTorqueList.map((typeSpeedTorque) => {
               const price = 10;
               const maximumSpeed = typeSpeedTorque.ratedSynchSpeed * 1.2;

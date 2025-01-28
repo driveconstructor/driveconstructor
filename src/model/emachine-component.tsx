@@ -18,11 +18,8 @@ import {
   EfficiencyClass,
   RatedPowerParam,
 } from "./emachine";
-import {
-  ERatedSynchSpeed,
-  TypeSpeedTorque,
-  VoltageY,
-} from "./emachine-sizing";
+import { ERatedSynchSpeed, TypeSpeedTorque } from "./emachine-sizing";
+import { VoltageY } from "./voltage";
 
 export const InsulationClass = ["B", "H", "F"];
 
