@@ -1,11 +1,11 @@
 import { ComponentModel } from "./component";
 import { Cooling, Protection } from "./cooling-protection";
-import { VoltageY } from "./emachine-sizing";
 import {
   FConverterMounting,
   FConverterPower,
   FConvertorTypeAlias,
 } from "./fconvertor";
+import { VoltageY } from "./voltage";
 
 export type FConvertorComponent = {
   voltage: VoltageY;
