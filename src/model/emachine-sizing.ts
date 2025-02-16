@@ -9,7 +9,7 @@ import {
   ERatedPower,
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
-import { emachinDesignation } from "./emachine-utils";
+import { emachinDesignation, getCosFi } from "./emachine-utils";
 import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
@@ -79,9 +79,9 @@ export function emachineCatalog(
             typeSpeedTorqueList.map((typeSpeedTorque) => {
               const price = 10;
               const maximumSpeed = typeSpeedTorque.ratedSynchSpeed * 1.2;
-              const cosFi100 = 1;
-              const cosFi75 = 1;
-              const cosFi50 = 1;
+              const cosFi100 = getCosFi(typeSpeedTorque, 1);
+              const cosFi75 = getCosFi(typeSpeedTorque, 0.95);
+              const cosFi50 = getCosFi(typeSpeedTorque, 0.9);
               const efficiency100 = 100;
               const efficiency75 = 1;
               const efficiency50 = 1;

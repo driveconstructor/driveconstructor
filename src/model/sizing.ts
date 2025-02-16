@@ -1,7 +1,20 @@
 import { BaseCandidates } from "./component";
+import { EMachineComponent } from "./emachine-component";
 import { emachineCatalog, findTypeSpeedAndTorque } from "./emachine-sizing";
 import { System } from "./system";
 import { findVoltageY } from "./voltage";
+
+function distinctSyncSpeedAndType(emachines: EMachineComponent[]) {
+  const set = new Set();
+  return emachines.filter((em) => {
+    const key = em.ratedSynchSpeed + em.type;
+    if (set.has(key)) {
+      return false;
+    }
+    set.add(key);
+    return true;
+  });
+}
 
 export function findCandidates(system: System): BaseCandidates {
   let mechanismSpeed;
@@ -28,11 +41,13 @@ export function findCandidates(system: System): BaseCandidates {
     system.input.grid.voltage / system.input.emachine.voltageDerating;
   const voltageY = findVoltageY(deratedVoltage);
 
-  const emachine = emachineCatalog(
+  const catalog = emachineCatalog(
     system.input.emachine,
     typeSpeedAndTorqueList,
     voltageY,
-  )
+  );
+
+  const emachine = distinctSyncSpeedAndType(catalog)
     .sort(
       (a, b) =>
         a.ratedSynchSpeed - b.ratedSynchSpeed ||

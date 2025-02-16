@@ -102,6 +102,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     },
     ratedCurrent: {
       label: "Rated current, A",
+      render: (v) => v.toFixed(0),
     },
     ratedTorque: {
       label: "Rated torque, Nm",
