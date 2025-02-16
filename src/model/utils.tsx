@@ -23,3 +23,9 @@ export function closest(array: number[], value: number): number {
     Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev,
   );
 }
+
+export function round(v: number): number {
+  const r = (v: number, n: number) => parseFloat(v.toFixed(n));
+
+  return v < 1 ? r(v, 4) : r(v, 0);
+}

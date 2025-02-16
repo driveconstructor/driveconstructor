@@ -10,6 +10,7 @@ import {
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
 import { emachinDesignation, getCosFi } from "./emachine-utils";
+import { round } from "./utils";
 import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
@@ -86,10 +87,12 @@ export function emachineCatalog(
               const efficiency75 = 1;
               const efficiency50 = 1;
               const efficiency25 = 1;
-              const ratedCurrent =
+              const ratedCurrent = round(
                 (typeSpeedTorque.ratedPower * 1000) /
-                (((Math.sqrt(3) * ratedVoltageY.value * efficiency100) / 100) *
-                  cosFi100);
+                  (((Math.sqrt(3) * ratedVoltageY.value * efficiency100) /
+                    100) *
+                    cosFi100),
+              );
               const workingCurrent = 0;
               const torqueOverload = 0;
               const shaftHeight = 0;
