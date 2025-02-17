@@ -114,6 +114,7 @@ export const EMachineElement: SystemElement<EMachine> = {
     overallTorqueDerating: {
       label: "Overal torque derating",
       type: "number",
+      precision: 4,
       value: (em) => {
         const deratingA =
           em.altitude > 1000 ? 1 - 0.00008 * (em.altitude - 1000) : 1;
@@ -146,6 +147,7 @@ export const EMachineElement: SystemElement<EMachine> = {
     voltageDerating: {
       label: "Voltage derating",
       type: "number",
+      precision: 4,
       value: (em) =>
         em.altitude > 2000 ? 1 - 0.00015 * (em.altitude - 2000) : 1,
     },

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { emachineCatalog, findTypeSpeedAndTorque } from "../emachine-sizing";
+import { emachineCatalog, findTypeSpeedTorque } from "../emachine-sizing";
 import { PumpFc, PumpFcModel } from "../pump-system";
 import { initOrUpdateSystemInput } from "../store";
 import { findVoltageY } from "../voltage";

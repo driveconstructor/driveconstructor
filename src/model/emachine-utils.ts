@@ -1,8 +1,5 @@
-import { EMachine } from "./emachine";
-import { EMachineComponent } from "./emachine-component";
 import { TypeSpeedTorque } from "./emachine-sizing";
-import { round } from "./utils";
-import { LowVoltage, MediumVoltage, Voltage, VoltageY } from "./voltage";
+import { VoltageY } from "./voltage";
 
 export function emachinDesignation(
   typeSpeedTorque: TypeSpeedTorque,
@@ -78,18 +75,4 @@ export function emachinDesignation(
   result.push(mounting);
   result.push(efficiencyClass);
   return result.join("-");
-}
-
-export function getCosFi(typeSpeedTorque: TypeSpeedTorque, k: number): number {
-  if (typeSpeedTorque.type == "SCIM" || typeSpeedTorque.type == "SyRM") {
-    const coeff = 0.09 * Math.pow(typeSpeedTorque.ratedSpeed, 0.28);
-    const inpower = 114 * Math.pow(typeSpeedTorque.ratedSpeed, -1.19);
-    return round(
-      coeff * Math.pow(typeSpeedTorque.ratedPower, inpower) * (k ? k : 1),
-    );
-  } else if ((typeSpeedTorque.type = "PMSM")) {
-    return 0.95;
-  }
-
-  throw new Error("unsupported type");
 }

@@ -9,8 +9,8 @@ import {
   ERatedPower,
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
-import { emachinDesignation, getCosFi } from "./emachine-utils";
-import { round } from "./utils";
+import { emachinDesignation } from "./emachine-utils";
+import { Mechanism } from "./sizing";
 import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
@@ -23,15 +23,15 @@ export type TypeSpeedTorque = {
   ratedSynchSpeed: (typeof ERatedSynchSpeed)[number];
   ratedSpeed: number;
   ratedTorque: number;
+  mechanism: Mechanism;
 };
 
-export function findTypeSpeedAndTorque(
+export function findTypeSpeedTorque(
   type: (typeof EMachineType)[number] | null,
-  mechanismSpeed: number,
-  mechanismTorque: number,
+  mechanism: Mechanism,
 ): TypeSpeedTorque[] {
   return ERatedSynchSpeed.filter(
-    (speed) => speed > mechanismSpeed / 1.2,
+    (speed) => speed > mechanism.ratedSpeed / 1.2,
   ).flatMap((ratedSynchSpeed) =>
     EMachineType.filter((t) => type == null || t == type).flatMap((type) =>
       ERatedPower.map((ratedPower) => {
@@ -44,14 +44,15 @@ export function findTypeSpeedAndTorque(
           type,
           ratedPower,
           ratedSynchSpeed,
-          ratedSpeed: Math.round(ratedSpeed),
-          ratedTorque: Math.round(ratedTorque),
+          ratedSpeed,
+          ratedTorque,
+          mechanism,
         };
       }).filter(
         (o) =>
-          o.ratedSpeed <= mechanismSpeed * 2 &&
-          o.ratedTorque >= mechanismTorque &&
-          o.ratedTorque < mechanismTorque / 0.6,
+          o.ratedSpeed <= mechanism.ratedSpeed * 2 &&
+          o.ratedTorque >= mechanism.ratedTorque &&
+          o.ratedTorque < mechanism.ratedTorque / 0.6,
       ),
     ),
   );
@@ -87,13 +88,16 @@ export function emachineCatalog(
               const efficiency75 = 1;
               const efficiency50 = 1;
               const efficiency25 = 1;
-              const ratedCurrent = round(
-                (typeSpeedTorque.ratedPower * 1000) /
-                  (((Math.sqrt(3) * ratedVoltageY.value * efficiency100) /
-                    100) *
-                    cosFi100),
+              const ratedCurrent = getRatedCurrent(
+                typeSpeedTorque,
+                ratedVoltageY,
+                efficiency100,
+                cosFi100,
               );
-              const workingCurrent = 0;
+              const workingCurrent = getWorkingCurrent(
+                typeSpeedTorque,
+                ratedCurrent,
+              );
               const torqueOverload = 0;
               const shaftHeight = 0;
               const outerDiameter = 0;
@@ -149,4 +153,51 @@ export function emachineCatalog(
       ),
     ),
   );
+}
+
+function getCosFi(typeSpeedTorque: TypeSpeedTorque, k: number): number {
+  if (typeSpeedTorque.type == "SCIM" || typeSpeedTorque.type == "SyRM") {
+    const coeff = 0.09 * Math.pow(typeSpeedTorque.ratedSpeed, 0.28);
+    const inpower = 114 * Math.pow(typeSpeedTorque.ratedSpeed, -1.19);
+    return coeff * Math.pow(typeSpeedTorque.ratedPower, inpower) * (k ? k : 1);
+  } else if ((typeSpeedTorque.type = "PMSM")) {
+    return 0.95;
+  }
+
+  throw new Error("unsupported type");
+}
+
+function getRatedCurrent(
+  typeSpeedTorque: TypeSpeedTorque,
+  ratedVoltageY: VoltageY,
+  efficiency100: number,
+  cosFi100: number,
+) {
+  return (
+    (typeSpeedTorque.ratedPower * 1000) /
+    (((Math.sqrt(3) * ratedVoltageY.value * efficiency100) / 100) * cosFi100)
+  );
+}
+
+function getWorkingCurrent(
+  typeSpeedTorque: TypeSpeedTorque,
+  ratedCurrent: number,
+): number {
+  if (
+    typeSpeedTorque.ratedSpeed * 1.05 <
+    typeSpeedTorque.mechanism.ratedSpeed
+  ) {
+    return (
+      ((((ratedCurrent * typeSpeedTorque.mechanism.powerOnShaft) /
+        typeSpeedTorque.mechanism.ratedSpeed) *
+        9.55) /
+        typeSpeedTorque.ratedTorque) *
+      1000
+    );
+  } else {
+    return (
+      (ratedCurrent * typeSpeedTorque.mechanism.powerOnShaft) /
+      typeSpeedTorque.ratedPower
+    );
+  }
 }

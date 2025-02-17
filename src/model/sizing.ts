@@ -1,8 +1,14 @@
 import { BaseCandidates } from "./component";
 import { EMachineComponent } from "./emachine-component";
-import { emachineCatalog, findTypeSpeedAndTorque } from "./emachine-sizing";
+import { emachineCatalog, findTypeSpeedTorque } from "./emachine-sizing";
 import { System } from "./system";
 import { findVoltageY } from "./voltage";
+
+export type Mechanism = {
+  ratedSpeed: number;
+  ratedTorque: number;
+  powerOnShaft: number;
+};
 
 function distinctSyncSpeedAndType(emachines: EMachineComponent[]) {
   const set = new Set();
@@ -17,8 +23,7 @@ function distinctSyncSpeedAndType(emachines: EMachineComponent[]) {
 }
 
 export function findCandidates(system: System): BaseCandidates {
-  let mechanismSpeed;
-  let mechanismTorque;
+  let mechanism: Mechanism;
 
   if (
     system.kind == "pump-fc" ||
@@ -26,16 +31,18 @@ export function findCandidates(system: System): BaseCandidates {
     system.kind == "pump-gb-fc" ||
     system.kind == "pump-gb-fc-tr"
   ) {
-    mechanismSpeed = system.input.pump.ratedSpeed;
-    mechanismTorque = system.input.pump.ratedTorque;
+    mechanism = {
+      ratedSpeed: system.input.pump.ratedSpeed,
+      ratedTorque: system.input.pump.ratedTorque,
+      powerOnShaft: system.input.pump.powerOnShaft,
+    };
   } else {
     throw new Error("Unsupported");
   }
 
-  const typeSpeedAndTorqueList = findTypeSpeedAndTorque(
+  const typeSpeedAndTorqueList = findTypeSpeedTorque(
     system.input.emachine.type,
-    mechanismSpeed,
-    mechanismTorque,
+    mechanism,
   );
   const deratedVoltage =
     system.input.grid.voltage / system.input.emachine.voltageDerating;

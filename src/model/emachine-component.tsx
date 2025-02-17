@@ -87,17 +87,21 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     },
     efficiency100: {
       label: "Efficiency @100% load",
+      precision: 4,
     },
     efficiency75: {
       label: "Efficiency @75% load",
+      precision: 4,
       advanced: true,
     },
     efficiency50: {
       label: "Efficiency @50% load",
+      precision: 4,
       advanced: true,
     },
     efficiency25: {
       label: "Efficiency @25% load",
+      precision: 4,
       advanced: true,
     },
     ratedCurrent: {
@@ -108,7 +112,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
       advanced: true,
     },
     workingCurrent: {
-      label: "Rated torque, Nm",
+      label: "Working current, A",
       advanced: true,
     },
     torqueOverload: {
@@ -118,14 +122,17 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     cosFi100: {
       label: "cos_fi @ rated load",
       advanced: true,
+      precision: 4,
     },
     cosFi75: {
       label: "cos_fi @ 75% load",
       advanced: true,
+      precision: 4,
     },
     cosFi50: {
       label: "cos_fi @ 50% load",
       advanced: true,
+      precision: 4,
     },
     ...CoolingParam,
     mounting: { ...MountingParam.mounting, advanced: true },

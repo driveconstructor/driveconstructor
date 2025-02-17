@@ -24,8 +24,6 @@ export function closest(array: number[], value: number): number {
   );
 }
 
-export function round(v: number): number {
-  const r = (v: number, n: number) => parseFloat(v.toFixed(n));
-
-  return v < 1 ? r(v, 4) : r(v, 0);
+export function round(value: number, precision?: number): number {
+  return parseFloat(value.toFixed(precision));
 }

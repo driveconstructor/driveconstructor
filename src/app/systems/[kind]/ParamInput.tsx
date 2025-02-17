@@ -1,6 +1,7 @@
 import { SystemParam } from "@/model/system";
 import { ChangeHandler } from "./Param";
 import ParamRange from "./ParamRange";
+import { round } from "@/model/utils";
 
 export default function ParamInput({
   id,
@@ -24,11 +25,7 @@ export default function ParamInput({
         type={disabled ? "text" : model.type}
         min={model.range?.min}
         max={model.range?.max}
-        value={
-          typeof model.precision == "number"
-            ? value?.toFixed(model.precision)
-            : value
-        }
+        value={typeof value == "number" ? round(value, model.precision) : value}
         onChange={(e) => {
           onChange(e.target.value);
           onCommit(e.target.value);

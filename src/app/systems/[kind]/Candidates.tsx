@@ -2,6 +2,7 @@ import { ComponentParam, getComponentModel } from "@/model/component";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
 import { SystemContext } from "./Input";
+import { round } from "@/model/utils";
 
 export default function Candidates({
   onSelect,
@@ -117,11 +118,17 @@ function Candidate({
   );
 }
 
-function Param({ param, value }: { param: ComponentParam; value: any }) {
+function Param({ param: model, value }: { param: ComponentParam; value: any }) {
   return (
     <div className="p-1">
-      <div className="text-sm">{param.label}:</div>
-      <div className="border">{param.render ? param.render(value) : value}</div>
+      <div className="text-sm">{model.label}:</div>
+      <div className="border">
+        {model.render
+          ? model.render(value)
+          : typeof value == "number"
+            ? round(value, model.precision)
+            : value}
+      </div>
     </div>
   );
 }

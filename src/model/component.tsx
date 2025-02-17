@@ -11,6 +11,7 @@ import {
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
   advanced?: boolean;
+  precision?: number;
   render?: (value: T) => React.ReactNode;
 };
 
