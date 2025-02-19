@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     "next-env.d.ts",
     "src/app/ignoretsx",
-    "out/driveconstructor/types/**/*.ts"
+    "out/driveconstructor/types/**/*.ts",
+    "src/model/emachine-efficiency.js"
   ],
   "exclude": ["node_modules"]
 }

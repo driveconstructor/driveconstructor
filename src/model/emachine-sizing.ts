@@ -9,6 +9,7 @@ import {
   ERatedPower,
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
+import { getEfficiency100, getPartialEfficiency } from "./emachine-efficiency";
 import { emachinDesignation } from "./emachine-utils";
 import { Mechanism } from "./sizing";
 import { VoltageY } from "./voltage";
@@ -84,10 +85,17 @@ export function emachineCatalog(
               const cosFi100 = getCosFi(typeSpeedTorque, 1);
               const cosFi75 = getCosFi(typeSpeedTorque, 0.95);
               const cosFi50 = getCosFi(typeSpeedTorque, 0.9);
-              const efficiency100 = 100;
-              const efficiency75 = 1;
-              const efficiency50 = 1;
-              const efficiency25 = 1;
+              const efficiency100 = getEfficiency100(
+                typeSpeedTorque,
+                efficiencyClass,
+              );
+              const efficiency75 = getPartialEfficiency(0.75, efficiency100);
+              const efficiency50 = getPartialEfficiency(0.5, efficiency100);
+              const efficiency25 =
+                typeSpeedTorque.type == "PMSM"
+                  ? 0.987 * efficiency100
+                  : 0.931 * efficiency100;
+
               const ratedCurrent = getRatedCurrent(
                 typeSpeedTorque,
                 ratedVoltageY,

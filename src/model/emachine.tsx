@@ -13,6 +13,7 @@ export const ERatedPower = [
   1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000, 5000,
 ] as const;
 export const EfficiencyClass = ["IE2", "IE3", "IE4"] as const;
+export type EfficiencyClassType = (typeof EfficiencyClass)[number];
 export const EMachineMounting = ["B3", "B5", "B35"] as const;
 export const EMachineCooling = ["IC411", "IC416", "IC71W"] as const;
 export const EMachineProtection = ["IP21/23", "IP54/55"] as const;
@@ -32,7 +33,7 @@ export type EMachine = {
   cooling: (typeof EMachineCooling)[number] | null;
   protection: (typeof EMachineProtection)[number] | null;
   frameMaterial: (typeof EMachineFrameMaterial)[number] | null;
-  efficiencyClass: (typeof EfficiencyClass)[number] | null;
+  efficiencyClass: EfficiencyClassType | null;
   mounting: (typeof EMachineMounting)[number] | null;
   shaftHeight: (typeof ShaftHeight)[number] | null;
   // calculated
