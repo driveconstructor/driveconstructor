@@ -13,6 +13,7 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { getEMachineLoadGraphData } from "@/model/emachine-graph";
 
 ChartJS.register(
   CategoryScale,
@@ -27,18 +28,29 @@ ChartJS.register(
 export default function LoadGraph() {
   const context = useContext(SystemContext);
 
-  const data = loadGraph(context.system);
+  const loadData = loadGraph(context.system);
+  const datasets = [
+    {
+      label: Object.keys(context.model.input)[0],
+      data: loadData.map((row) => row.torque),
+    },
+  ];
+
+  if (context.system.candidates.emachine) {
+    context.system.candidates.emachine.forEach((em) => {
+      const emLoadData = getEMachineLoadGraphData(em);
+      datasets.push({
+        label: em.designation,
+        data: emLoadData.map((row) => row.torque),
+      });
+    });
+  }
 
   return (
     <Line
       data={{
-        labels: data.map((row) => Math.round(row.speed)),
-        datasets: [
-          {
-            label: Object.keys(context.model.input)[0],
-            data: data.map((row) => row.torque),
-          },
-        ],
+        labels: loadData.map((row) => Math.round(row.speed)),
+        datasets,
       }}
       options={{
         animation: {
