@@ -4,6 +4,7 @@ import { SystemContext } from "./Input";
 import { loadGraph } from "@/model/load-graph";
 import {
   CategoryScale,
+  ChartDataset,
   Chart as ChartJS,
   Legend,
   LineElement,
@@ -29,19 +30,28 @@ export default function LoadGraph() {
   const context = useContext(SystemContext);
 
   const loadData = loadGraph(context.system);
-  const datasets = [
+  const datasets: ChartDataset<"line">[] = [
     {
       label: Object.keys(context.model.input)[0],
       data: loadData.map((row) => row.torque),
     },
   ];
 
-  if (context.system.candidates.emachine) {
-    context.system.candidates.emachine.forEach((em) => {
+  const colors = ["blue", "green", "brown", "olive", "red", "orange"];
+
+  const emachines = context.system.components.emachine
+    ? [context.system.components.emachine]
+    : context.system.candidates.emachine;
+
+  if (emachines) {
+    emachines.forEach((em, index) => {
       const emLoadData = getEMachineLoadGraphData(em);
+      const color = colors[index % colors.length];
       datasets.push({
         label: em.designation,
         data: emLoadData.map((row) => row.torque),
+        backgroundColor: color,
+        borderColor: color,
       });
     });
   }

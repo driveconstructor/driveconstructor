@@ -27,9 +27,3 @@ export function closest(array: number[], value: number): number {
 export function round(value: number, precision?: number): number {
   return parseFloat(value.toFixed(precision));
 }
-
-export function hash(s: string) {
-  return (
-    s.split("").reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0)
-  );
-}
