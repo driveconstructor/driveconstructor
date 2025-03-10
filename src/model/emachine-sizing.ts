@@ -33,7 +33,7 @@ export type TypeSpeedTorque = {
 };
 
 export function findTypeSpeedTorque(
-  type: EMachineTypeAlias,
+  type: EMachineTypeAlias | null,
   mechanism: Mechanism,
 ): TypeSpeedTorque[] {
   return ERatedSynchSpeed.filter(
