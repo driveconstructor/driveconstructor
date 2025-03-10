@@ -34,6 +34,8 @@ export type EMachineProtectionType = (typeof EMachineProtection)[number];
 
 export type EMachineTypeAlias = (typeof EMachineType)[number];
 
+export type EMachineMountingType = (typeof EMachineMounting)[number];
+
 export type EMachine = {
   type: EMachineTypeAlias | null;
   ratedPower: (typeof ERatedPower)[number] | null;
@@ -41,7 +43,7 @@ export type EMachine = {
   protection: EMachineProtectionType | null;
   frameMaterial: EMachineFrameMaterialType | null;
   efficiencyClass: EfficiencyClassType | null;
-  mounting: (typeof EMachineMounting)[number] | null;
+  mounting: EMachineMountingType | null;
   shaftHeight: (typeof ShaftHeight)[number] | null;
   // calculated
   overallTorqueDerating: number;

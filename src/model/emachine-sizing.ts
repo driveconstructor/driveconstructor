@@ -7,6 +7,7 @@ import {
   EMachineFrameMaterial,
   EMachineFrameMaterialType,
   EMachineMounting,
+  EMachineMountingType,
   EMachineProtection,
   EMachineProtectionType,
   EMachineType,
@@ -85,7 +86,6 @@ export function emachineCatalog(
             (ec) => em.efficiencyClass == null || ec == em.efficiencyClass,
           ).flatMap((efficiencyClass) =>
             typeSpeedTorqueList.map((typeSpeedTorque) => {
-              const price = 10;
               const maximumSpeed = typeSpeedTorque.ratedSynchSpeed * 1.2;
               const cosFi100 = getCosFi(typeSpeedTorque, 1);
               const cosFi75 = getCosFi(typeSpeedTorque, 0.95);
@@ -125,6 +125,15 @@ export function emachineCatalog(
                 protection,
                 efficiencyClass,
                 frameMaterial,
+              );
+              const price = getPrice(
+                ratedVoltageY,
+                typeSpeedTorque,
+                weight,
+                protection,
+                frameMaterial,
+                mounting,
+                efficiencyClass,
               );
 
               const designation = emachinDesignation(
@@ -298,5 +307,94 @@ function getWeight(
     K13 *
     Math.pow(typeSpeedTorque.ratedPower / 1000, 0.8) *
     Math.pow(400 / Math.pow(typeSpeedTorque.ratedSpeed, 0.9) + 1, 1.43)
+  );
+}
+
+function getK3(type: EMachineTypeAlias) {
+  switch (type) {
+    case "SCIM":
+      return 1;
+    case "PMSM":
+      return 1.2;
+    case "SyRM":
+      return 1;
+  }
+}
+
+function getK5(protection: EMachineProtectionType) {
+  switch (protection) {
+    case "IP54/55":
+      return 1;
+    case "IP21/23":
+      return 0.97;
+  }
+}
+
+function getK6(frameMaterial: EMachineFrameMaterialType) {
+  switch (frameMaterial) {
+    case "cast iron":
+      return 0.95;
+    case "steel":
+      return 1;
+    case "aluminum":
+      return 1.2;
+  }
+}
+
+function getK7(mounting: EMachineMountingType) {
+  switch (mounting) {
+    case "B3":
+      return 1;
+    case "B5":
+      return 1.02;
+    case "B35":
+      return 1.05;
+  }
+}
+
+function getPriceIncrease(
+  ratedPower: number,
+  efficiencyClass: EfficiencyClassType,
+) {
+  const priceIncrease = 40 - 36 * Math.pow(ratedPower / 1300, 0.5);
+  switch (efficiencyClass) {
+    case "IE2":
+      return 0;
+    case "IE3":
+      return priceIncrease;
+    case "IE4":
+      return priceIncrease * 1.7;
+  }
+}
+
+function getPrice(
+  ratedVoltageY: VoltageY,
+  typeSpeedTorque: TypeSpeedTorque,
+  weight: number,
+  protection: EMachineProtectionType,
+  frameMaterial: EMachineFrameMaterialType,
+  mounting: EMachineMountingType,
+  efficiencyClass: EfficiencyClassType,
+) {
+  const K11 = ratedVoltageY.value > 1000 ? 30 : 20;
+  const a = ratedVoltageY.value > 1000 ? 0.8 : 0.9;
+  const K9 = typeSpeedTorque.ratedSynchSpeed === 1500 ? 0.95 : 1;
+  const price =
+    1000 *
+    K11 *
+    getK3(typeSpeedTorque.type) *
+    getK5(protection) *
+    getK6(frameMaterial) *
+    getK7(mounting) *
+    K9 *
+    Math.pow(weight / 1000, a);
+  return (
+    price +
+    (price *
+      Math.max(
+        0,
+        getPriceIncrease(typeSpeedTorque.ratedPower, efficiencyClass),
+      )) /
+      100
   );
 }
