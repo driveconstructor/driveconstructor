@@ -22,17 +22,24 @@ export const EMachineFrameMaterial = [
   "aluminum",
   "cast iron",
 ] as const;
+export type EMachineFrameMaterialType = (typeof EMachineFrameMaterial)[number];
 export const ShaftHeight = [
   56, 63, 71, 80, 90, 100, 112, 132, 160, 180, 200, 225, 250, 280, 315, 355,
   400, 450, 500, 560, 630, 710,
 ] as const;
 
+export type EMachineCoolingType = (typeof EMachineCooling)[number];
+
+export type EMachineProtectionType = (typeof EMachineProtection)[number];
+
+export type EMachineTypeAlias = (typeof EMachineType)[number];
+
 export type EMachine = {
-  type: (typeof EMachineType)[number] | null;
+  type: EMachineTypeAlias | null;
   ratedPower: (typeof ERatedPower)[number] | null;
-  cooling: (typeof EMachineCooling)[number] | null;
-  protection: (typeof EMachineProtection)[number] | null;
-  frameMaterial: (typeof EMachineFrameMaterial)[number] | null;
+  cooling: EMachineCoolingType | null;
+  protection: EMachineProtectionType | null;
+  frameMaterial: EMachineFrameMaterialType | null;
   efficiencyClass: EfficiencyClassType | null;
   mounting: (typeof EMachineMounting)[number] | null;
   shaftHeight: (typeof ShaftHeight)[number] | null;

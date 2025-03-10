@@ -1,11 +1,16 @@
 import {
   EfficiencyClass,
+  EfficiencyClassType,
   EMachine,
   EMachineCooling,
+  EMachineCoolingType,
   EMachineFrameMaterial,
+  EMachineFrameMaterialType,
   EMachineMounting,
   EMachineProtection,
+  EMachineProtectionType,
   EMachineType,
+  EMachineTypeAlias,
   ERatedPower,
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
@@ -19,7 +24,7 @@ export const ERatedSynchSpeed = [
 ] as const;
 
 export type TypeSpeedTorque = {
-  type: (typeof EMachineType)[number];
+  type: EMachineTypeAlias;
   ratedPower: (typeof ERatedPower)[number];
   ratedSynchSpeed: (typeof ERatedSynchSpeed)[number];
   ratedSpeed: number;
@@ -28,7 +33,7 @@ export type TypeSpeedTorque = {
 };
 
 export function findTypeSpeedTorque(
-  type: (typeof EMachineType)[number] | null,
+  type: EMachineTypeAlias,
   mechanism: Mechanism,
 ): TypeSpeedTorque[] {
   return ERatedSynchSpeed.filter(
@@ -113,7 +118,14 @@ export function emachineCatalog(
               const volume = 0;
               const momentOfInertia = 0;
               const footPrint = 0;
-              const weight = 0;
+              const weight = getWeight(
+                ratedVoltageY,
+                typeSpeedTorque,
+                cooling,
+                protection,
+                efficiencyClass,
+                frameMaterial,
+              );
 
               const designation = emachinDesignation(
                 typeSpeedTorque,
@@ -208,4 +220,83 @@ function getWorkingCurrent(
       typeSpeedTorque.ratedPower
     );
   }
+}
+
+function getK2(type: EMachineTypeAlias) {
+  switch (type) {
+    case "SCIM":
+      return 1;
+    case "PMSM":
+      return 0.8;
+    case "SyRM":
+      return 0.9;
+  }
+}
+
+function getK8(
+  cooling: EMachineCoolingType,
+  protection: EMachineProtectionType,
+) {
+  switch (cooling) {
+    case "IC411":
+    case "IC416":
+      switch (protection) {
+        case "IP54/55":
+          return 1;
+        case "IP21/23":
+          return 0.8;
+      }
+      break;
+    case "IC71W":
+      return 0.7;
+  }
+}
+
+function getK12(efficiencyClass: EfficiencyClassType) {
+  switch (efficiencyClass) {
+    // case null: return 1.12; !?
+    case "IE2":
+      return 1;
+    case "IE3":
+      return 1.12;
+    case "IE4":
+      return 1.15;
+  }
+}
+
+function getK13(frameMaterial: EMachineFrameMaterialType) {
+  switch (frameMaterial) {
+    case "cast iron":
+      return 1;
+    case "steel":
+      return 0.95;
+    case "aluminum":
+      return 0.7;
+  }
+}
+
+function getWeight(
+  ratedVoltageY: VoltageY,
+  typeSpeedTorque: TypeSpeedTorque,
+  cooling: EMachineCoolingType,
+  protection: EMachineProtectionType,
+  efficiencyClass: EfficiencyClassType,
+  frameMaterial: EMachineFrameMaterialType,
+) {
+  const K1 = ratedVoltageY.value > 1000 ? 3 : 2.8;
+  const K2 = getK2(typeSpeedTorque.type);
+  const K8 = getK8(cooling, protection);
+  const K12 = getK12(efficiencyClass);
+  const K13 = getK13(frameMaterial);
+
+  return (
+    1000 *
+    K1 *
+    K2 *
+    K8 *
+    K12 *
+    K13 *
+    Math.pow(typeSpeedTorque.ratedPower / 1000, 0.8) *
+    Math.pow(400 / Math.pow(typeSpeedTorque.ratedSpeed, 0.9) + 1, 1.43)
+  );
 }
