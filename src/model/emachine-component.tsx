@@ -1,7 +1,7 @@
 import { ComponentModel } from "./component";
 import {
   DesignationParam,
-  FootPrintParam,
+  FootprintParam,
   MountingParam,
   PriceParam,
   VolumeParam,
@@ -52,7 +52,7 @@ export type EMachineComponent = {
   length: number;
   volume: number;
   momentOfInertia: number;
-  footPrint: number;
+  footprint: number;
   weight: number;
   designation: string;
 };
@@ -118,6 +118,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     torqueOverload: {
       label: "Torque overload",
       advanced: true,
+      precision: 2,
     },
     cosFi100: {
       label: "cos_fi @ rated load",
@@ -147,17 +148,20 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     outerDiameter: {
       label: "Outer diameter, m",
       advanced: true,
+      precision: 2,
     },
     length: {
       label: "Axial length, m",
       advanced: true,
+      precision: 2,
     },
     ...VolumeParam,
     momentOfInertia: {
       label: "Moment of inertia, kgm2",
       advanced: true,
+      precision: 2,
     },
-    ...FootPrintParam,
+    ...FootprintParam,
     ...WeightParam,
     ...DesignationParam,
   },

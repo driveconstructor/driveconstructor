@@ -114,10 +114,6 @@ export function emachineCatalog(
                 ratedCurrent,
               );
               const torqueOverload = getTorqueOverload(typeSpeedTorque.type);
-              const outerDiameter = 0;
-              const length = 1;
-              const momentOfInertia = 0;
-              const footPrint = 0;
               const weight = getWeight(
                 ratedVoltageY,
                 typeSpeedTorque,
@@ -152,6 +148,15 @@ export function emachineCatalog(
                 efficiencyClass,
               );
 
+              const outerDiameter = (shaftHeight / 1000) * 2;
+              const length =
+                volume / ((3.1416 * Math.pow(outerDiameter, 2)) / 4);
+              const momentOfInertia = getMomentOfInertia(
+                typeSpeedTorque.ratedPower,
+                weight,
+              );
+              const footprint = length * outerDiameter;
+
               return {
                 price,
                 maximumSpeed,
@@ -172,7 +177,7 @@ export function emachineCatalog(
                 length,
                 volume,
                 momentOfInertia,
-                footPrint,
+                footprint,
                 weight,
                 designation,
                 cooling,
@@ -418,4 +423,9 @@ function getShaftHeight(ratedPower: number, volume: number) {
   const DtoLcurve = 1.4 + 0.2 * Math.pow(ratedPower, 0.2);
   const SHapprox = 0.5 * Math.pow(((volume / DtoLcurve) * 4) / 3.1416, 1 / 3);
   return closest(ShaftHeight, SHapprox * 1000);
+}
+
+function getMomentOfInertia(ratedPower: number, weight: number) {
+  const K = 30 * Math.pow(ratedPower, -0.4);
+  return 1e-5 * K * Math.pow(weight, 1.7);
 }

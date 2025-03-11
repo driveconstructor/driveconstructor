@@ -7,24 +7,28 @@ export const WeightParam = {
 export const DepthParam = {
   depth: {
     label: "Depth, m",
+    precision: 2,
   },
 };
 
 export const HeightParam = {
   height: {
     label: "Height, m",
+    precision: 2,
   },
 };
 
 export const WidthParam = {
   width: {
     label: "Width, m",
+    precision: 2,
   },
 };
 
-export const FootPrintParam = {
-  footPrint: {
+export const FootprintParam = {
+  footprint: {
     label: "Footprint, m2",
+    precision: 2,
   },
 };
 
