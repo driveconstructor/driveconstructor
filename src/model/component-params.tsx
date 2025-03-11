@@ -31,6 +31,7 @@ export const FootPrintParam = {
 export const VolumeParam = {
   volume: {
     label: "Volume, m3",
+    precision: 2,
   },
 };
 

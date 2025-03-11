@@ -13,11 +13,13 @@ import {
   EMachineType,
   EMachineTypeAlias,
   ERatedPower,
+  ShaftHeight,
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
 import { getEfficiency100, getPartialEfficiency } from "./emachine-efficiency";
 import { emachinDesignation } from "./emachine-utils";
 import { Mechanism } from "./sizing";
+import { closest } from "./utils";
 import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
@@ -111,11 +113,9 @@ export function emachineCatalog(
                 typeSpeedTorque,
                 ratedCurrent,
               );
-              const torqueOverload = 0;
-              const shaftHeight = 0;
+              const torqueOverload = getTorqueOverload(typeSpeedTorque.type);
               const outerDiameter = 0;
               const length = 1;
-              const volume = 0;
               const momentOfInertia = 0;
               const footPrint = 0;
               const weight = getWeight(
@@ -125,6 +125,11 @@ export function emachineCatalog(
                 protection,
                 efficiencyClass,
                 frameMaterial,
+              );
+              const volume = weight / 3500;
+              const shaftHeight = getShaftHeight(
+                typeSpeedTorque.ratedPower,
+                volume,
               );
               const price = getPrice(
                 ratedVoltageY,
@@ -397,4 +402,20 @@ function getPrice(
       )) /
       100
   );
+}
+
+function getTorqueOverload(type: EMachineTypeAlias) {
+  switch (type) {
+    case "SCIM":
+      return 2.4;
+    case "PMSM":
+    case "SyRM":
+      return 1.5;
+  }
+}
+
+function getShaftHeight(ratedPower: number, volume: number) {
+  const DtoLcurve = 1.4 + 0.2 * Math.pow(ratedPower, 0.2);
+  const SHapprox = 0.5 * Math.pow(((volume / DtoLcurve) * 4) / 3.1416, 1 / 3);
+  return closest(ShaftHeight, SHapprox * 1000);
 }
