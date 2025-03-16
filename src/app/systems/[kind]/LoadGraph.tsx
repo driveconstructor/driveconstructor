@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { SystemContext } from "./Input";
 
-import { loadGraph } from "@/model/load-graph";
+import { loadGraph, GraphPoint } from "@/model/load-graph";
 import {
   CategoryScale,
   ChartDataset,
@@ -9,6 +9,7 @@ import {
   Legend,
   LineElement,
   LinearScale,
+  Point,
   PointElement,
   Title,
   Tooltip,
@@ -30,10 +31,13 @@ export default function LoadGraph() {
   const context = useContext(SystemContext);
 
   const loadData = loadGraph(context.system);
+  const toPoint = (row: GraphPoint) => {
+    return { x: Math.round(row.speed), y: Math.round(row.torque) };
+  };
   const datasets: ChartDataset<"line">[] = [
     {
       label: Object.keys(context.model.input)[0],
-      data: loadData.map((row) => row.torque),
+      data: loadData.map(toPoint),
     },
   ];
 
@@ -49,7 +53,7 @@ export default function LoadGraph() {
       const color = colors[index % colors.length];
       datasets.push({
         label: em.designation,
-        data: emLoadData.map((row) => row.torque),
+        data: emLoadData.map(toPoint),
         backgroundColor: color,
         borderColor: color,
       });
@@ -59,7 +63,6 @@ export default function LoadGraph() {
   return (
     <Line
       data={{
-        labels: loadData.map((row) => Math.round(row.speed)),
         datasets,
       }}
       options={{
@@ -68,6 +71,7 @@ export default function LoadGraph() {
         },
         scales: {
           x: {
+            type: "linear",
             title: {
               text: "Speed (rpm)",
               display: true,
@@ -83,4 +87,22 @@ export default function LoadGraph() {
       }}
     />
   );
+}
+
+function getSpeedPoints(maximumSpeed: number, ratedSpeed?: number) {
+  const numberOfPoints = 15;
+  const result = [];
+  for (let i = 0; i <= numberOfPoints; i++) {
+    const speed = (maximumSpeed * i) / numberOfPoints;
+    result.push(speed);
+  }
+
+  if (ratedSpeed) {
+    result.push(ratedSpeed, ratedSpeed / 2);
+  }
+
+  return result
+    .filter((v, i, a) => a.indexOf(v) === i)
+    .sort((a, b) => a - b)
+    .map((s) => Math.round(s));
 }

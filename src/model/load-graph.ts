@@ -2,9 +2,9 @@ import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { System } from "./system";
 import { WinchFc } from "./winch-system";
 
-export type LoadGraphPoint = { speed: number; torque: number };
+export type GraphPoint = { speed: number; torque: number };
 
-export function loadGraph(system: System): LoadGraphPoint[] {
+export function loadGraph(system: System): GraphPoint[] {
   switch (system.kind) {
     case "pump-fc":
     case "pump-gb-fc":
@@ -26,7 +26,7 @@ function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
   );
   const maximumSpeed = pump.ratedSpeed;
 
-  const result: LoadGraphPoint[] = [];
+  const result: GraphPoint[] = [];
   for (let i = 0; i <= numberOfPoints; i++) {
     const speed =
       ((maximumSpeed - pump.minimalSpeed) * i) / numberOfPoints +
@@ -47,7 +47,7 @@ function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
 }
 
 function winchLoadGraph(system: WinchFc) {
-  const result: LoadGraphPoint[] = []; //[[], []];
+  const result: GraphPoint[] = []; //[[], []];
 
   const numberOfPoints = 10;
   const winch = system.input.winch;

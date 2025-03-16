@@ -1,10 +1,9 @@
 import { EMachineComponent } from "./emachine-component";
 import { TypeSpeedTorque } from "./emachine-sizing";
 import { Gearbox } from "./gearbox";
+import { GraphPoint } from "./load-graph";
 
-export type EMachinGraphPoint = {
-  speed: number;
-  torque: number;
+export type EMachinGraphPoint = GraphPoint & {
   torqueOverload: number;
 };
 
