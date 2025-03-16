@@ -8,6 +8,8 @@ export type Mechanism = {
   ratedSpeed: number;
   ratedTorque: number;
   powerOnShaft: number;
+  minimalSpeed: number;
+  linear: boolean;
 };
 
 function distinctSyncSpeedAndType(emachines: EMachineComponent[]) {
@@ -35,6 +37,10 @@ export function findCandidates(system: System): BaseCandidates {
       ratedSpeed: system.input.pump.ratedSpeed,
       ratedTorque: system.input.pump.ratedTorque,
       powerOnShaft: system.input.pump.powerOnShaft,
+      minimalSpeed: system.input.pump.minimalSpeed,
+      linear:
+        system.input.emachine.cooling == "IC411" &&
+        system.input.pump.type == "positive displacement",
     };
   } else {
     throw new Error("Unsupported");

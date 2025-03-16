@@ -61,7 +61,11 @@ export function findTypeSpeedTorque(
         (o) =>
           o.ratedSpeed <= mechanism.ratedSpeed * 2 &&
           o.ratedTorque >= mechanism.ratedTorque &&
-          o.ratedTorque < mechanism.ratedTorque / 0.6,
+          o.ratedTorque < mechanism.ratedTorque / 0.6 &&
+          (!mechanism.linear ||
+            (o.ratedTorque / o.ratedSpeed) * mechanism.minimalSpeed +
+              o.ratedTorque / 2 >
+              mechanism.ratedTorque),
       ),
     ),
   );
