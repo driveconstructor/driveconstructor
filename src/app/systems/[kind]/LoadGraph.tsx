@@ -32,7 +32,7 @@ export default function LoadGraph() {
 
   const loadData = loadGraph(context.system);
   const toPoint = (row: GraphPoint) => {
-    return { x: Math.round(row.speed), y: Math.round(row.torque) };
+    return { x: row.speed, y: row.torque };
   };
   const datasets: ChartDataset<"line">[] = [
     {

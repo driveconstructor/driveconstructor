@@ -32,6 +32,7 @@ export type TypeSpeedTorque = {
   ratedSynchSpeed: (typeof ERatedSynchSpeed)[number];
   ratedSpeed: number;
   ratedTorque: number;
+  maximumSpeed: number;
   mechanism: Mechanism;
 };
 
@@ -39,15 +40,14 @@ export function findTypeSpeedTorque(
   type: EMachineTypeAlias | null,
   mechanism: Mechanism,
 ): TypeSpeedTorque[] {
-  return ERatedSynchSpeed.filter(
-    (speed) => speed > mechanism.ratedSpeed / 1.2,
-  ).flatMap((ratedSynchSpeed) =>
+  return ERatedSynchSpeed.flatMap((ratedSynchSpeed) =>
     EMachineType.filter((t) => type == null || t == type).flatMap((type) =>
       ERatedPower.map((ratedPower) => {
         const slip = 0.053 * Math.pow(ratedPower, -0.38);
         const ratedSpeed =
           type == "SCIM" ? ratedSynchSpeed * (1 - slip) : ratedSynchSpeed;
         const ratedTorque = 1000 * (ratedPower / ratedSpeed) * 9.55;
+        const maximumSpeed = ratedSynchSpeed * 1.2;
 
         return {
           type,
@@ -55,13 +55,17 @@ export function findTypeSpeedTorque(
           ratedSynchSpeed,
           ratedSpeed,
           ratedTorque,
+          maximumSpeed,
           mechanism,
         };
       }).filter(
         (o) =>
+          o.maximumSpeed >= mechanism.ratedSpeed &&
           o.ratedSpeed <= mechanism.ratedSpeed * 2 &&
           o.ratedTorque >= mechanism.ratedTorque &&
           o.ratedTorque < mechanism.ratedTorque / 0.6 &&
+          o.ratedTorque * o.ratedSpeed >=
+            mechanism.ratedSpeed * mechanism.ratedTorque &&
           (!mechanism.linear ||
             (o.ratedTorque / o.ratedSpeed) * mechanism.minimalSpeed +
               o.ratedTorque / 2 >
@@ -92,7 +96,6 @@ export function emachineCatalog(
             (ec) => em.efficiencyClass == null || ec == em.efficiencyClass,
           ).flatMap((efficiencyClass) =>
             typeSpeedTorqueList.map((typeSpeedTorque) => {
-              const maximumSpeed = typeSpeedTorque.ratedSynchSpeed * 1.2;
               const cosFi100 = getCosFi(typeSpeedTorque, 1);
               const cosFi75 = getCosFi(typeSpeedTorque, 0.95);
               const cosFi50 = getCosFi(typeSpeedTorque, 0.9);
@@ -163,7 +166,6 @@ export function emachineCatalog(
 
               return {
                 price,
-                maximumSpeed,
                 efficiencyClass,
                 efficiency100,
                 efficiency75,
