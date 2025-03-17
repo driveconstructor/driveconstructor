@@ -9,29 +9,29 @@ import {
 } from "./component-params";
 import { CoolingParam, ProtectionParam } from "./cooling-protection";
 import {
-  EMachineCooling,
-  EMachineFrameMaterial,
-  EMachineMounting,
-  EMachineProtection,
-  EMachineType,
+  EMachineCoolingType,
+  EMachineFrameMaterialType,
+  EMachineMountingType,
+  EMachineProtectionType,
+  EMachineTypeAlias,
   ERatedPower,
-  EfficiencyClass,
+  EfficiencyClassType,
   RatedPowerParam,
 } from "./emachine";
-import { ERatedSynchSpeed, TypeSpeedTorque } from "./emachine-sizing";
+import { ERatedSynchSpeed } from "./emachine-sizing";
 import { VoltageY } from "./voltage";
 
 export const InsulationClass = ["B", "H", "F"];
 
 export type EMachineComponent = {
-  type: (typeof EMachineType)[number];
+  type: EMachineTypeAlias;
   price: number;
   ratedPower: (typeof ERatedPower)[number];
   ratedSpeed: number;
   ratedSynchSpeed: (typeof ERatedSynchSpeed)[number];
   maximumSpeed: number;
   ratedVoltageY: VoltageY;
-  efficiencyClass: (typeof EfficiencyClass)[number];
+  efficiencyClass: EfficiencyClassType | null;
   efficiency100: number;
   efficiency75: number;
   efficiency50: number;
@@ -43,10 +43,10 @@ export type EMachineComponent = {
   cosFi100: number;
   cosFi75: number;
   cosFi50: number;
-  mounting: (typeof EMachineMounting)[number];
-  cooling: (typeof EMachineCooling)[number];
-  protection: (typeof EMachineProtection)[number];
-  frameMaterial: (typeof EMachineFrameMaterial)[number];
+  mounting: EMachineMountingType;
+  cooling: EMachineCoolingType;
+  protection: EMachineProtectionType;
+  frameMaterial: EMachineFrameMaterialType;
   shaftHeight: number;
   outerDiameter: number;
   length: number;

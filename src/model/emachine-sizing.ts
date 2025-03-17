@@ -17,7 +17,7 @@ import {
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
 import { getEfficiency100, getPartialEfficiency } from "./emachine-efficiency";
-import { emachinDesignation } from "./emachine-utils";
+import { emachinDesignation, emachineTypeFilter } from "./emachine-utils";
 import { Mechanism } from "./sizing";
 import { closest } from "./utils";
 import { VoltageY } from "./voltage";
@@ -80,124 +80,131 @@ export function emachineCatalog(
   typeSpeedTorqueList: TypeSpeedTorque[],
   ratedVoltageY: VoltageY,
 ): EMachineComponent[] {
-  return EMachineCooling.filter(
-    (c) => em.cooling == null || c == em.cooling,
-  ).flatMap((cooling) =>
-    EMachineFrameMaterial.filter(
-      (fm) => em.frameMaterial == null || fm == em.frameMaterial,
-    ).flatMap((frameMaterial) =>
-      EMachineMounting.filter(
-        (m) => em.mounting == null || m == em.mounting,
-      ).flatMap((mounting) =>
-        EMachineProtection.filter(
-          (p) => em.protection == null || p == em.protection,
-        ).flatMap((protection) =>
-          EfficiencyClass.filter(
-            (ec) => em.efficiencyClass == null || ec == em.efficiencyClass,
-          ).flatMap((efficiencyClass) =>
-            typeSpeedTorqueList.map((typeSpeedTorque) => {
-              const cosFi100 = getCosFi(typeSpeedTorque, 1);
-              const cosFi75 = getCosFi(typeSpeedTorque, 0.95);
-              const cosFi50 = getCosFi(typeSpeedTorque, 0.9);
-              const efficiency100 = getEfficiency100(
-                typeSpeedTorque,
-                efficiencyClass,
-              );
-              const efficiency75 = getPartialEfficiency(0.75, efficiency100);
-              const efficiency50 = getPartialEfficiency(0.5, efficiency100);
-              const efficiency25 =
-                typeSpeedTorque.type == "PMSM"
-                  ? 0.987 * efficiency100
-                  : 0.931 * efficiency100;
+  return EMachineCooling.filter((c) => em.cooling == null || c == em.cooling)
+    .flatMap((cooling) =>
+      EMachineFrameMaterial.filter(
+        (fm) => em.frameMaterial == null || fm == em.frameMaterial,
+      ).flatMap((frameMaterial) =>
+        EMachineMounting.filter(
+          (m) => em.mounting == null || m == em.mounting,
+        ).flatMap((mounting) =>
+          EMachineProtection.filter(
+            (p) => em.protection == null || p == em.protection,
+          ).flatMap((protection) =>
+            [...EfficiencyClass, null]
+              .filter(
+                (ec) => em.efficiencyClass == null || ec == em.efficiencyClass,
+              )
+              .flatMap((efficiencyClass) =>
+                typeSpeedTorqueList.map((typeSpeedTorque) => {
+                  const cosFi100 = getCosFi(typeSpeedTorque, 1);
+                  const cosFi75 = getCosFi(typeSpeedTorque, 0.95);
+                  const cosFi50 = getCosFi(typeSpeedTorque, 0.9);
+                  const efficiency100 = getEfficiency100(
+                    typeSpeedTorque,
+                    efficiencyClass,
+                  );
+                  const efficiency75 = getPartialEfficiency(
+                    0.75,
+                    efficiency100,
+                  );
+                  const efficiency50 = getPartialEfficiency(0.5, efficiency100);
+                  const efficiency25 =
+                    typeSpeedTorque.type == "PMSM"
+                      ? 0.987 * efficiency100
+                      : 0.931 * efficiency100;
 
-              const ratedCurrent = getRatedCurrent(
-                typeSpeedTorque,
-                ratedVoltageY,
-                efficiency100,
-                cosFi100,
-              );
-              const workingCurrent = getWorkingCurrent(
-                typeSpeedTorque,
-                ratedCurrent,
-              );
-              const torqueOverload = getTorqueOverload(typeSpeedTorque.type);
-              const weight = getWeight(
-                ratedVoltageY,
-                typeSpeedTorque,
-                cooling,
-                protection,
-                efficiencyClass,
-                frameMaterial,
-              );
-              const volume = weight / 3500;
-              const shaftHeight = getShaftHeight(
-                typeSpeedTorque.ratedPower,
-                volume,
-              );
-              const price = getPrice(
-                ratedVoltageY,
-                typeSpeedTorque,
-                weight,
-                protection,
-                frameMaterial,
-                mounting,
-                efficiencyClass,
-              );
+                  const ratedCurrent = getRatedCurrent(
+                    typeSpeedTorque,
+                    ratedVoltageY,
+                    efficiency100,
+                    cosFi100,
+                  );
+                  const workingCurrent = getWorkingCurrent(
+                    typeSpeedTorque,
+                    ratedCurrent,
+                  );
+                  const torqueOverload = getTorqueOverload(
+                    typeSpeedTorque.type,
+                  );
+                  const weight = getWeight(
+                    ratedVoltageY,
+                    typeSpeedTorque,
+                    cooling,
+                    protection,
+                    efficiencyClass,
+                    frameMaterial,
+                  );
+                  const volume = weight / 3500;
+                  const shaftHeight = getShaftHeight(
+                    typeSpeedTorque.ratedPower,
+                    volume,
+                  );
+                  const price = getPrice(
+                    ratedVoltageY,
+                    typeSpeedTorque,
+                    weight,
+                    protection,
+                    frameMaterial,
+                    mounting,
+                    efficiencyClass,
+                  );
 
-              const designation = emachinDesignation(
-                typeSpeedTorque,
-                ratedVoltageY,
-                shaftHeight,
-                cooling,
-                protection,
-                frameMaterial,
-                mounting,
-                efficiencyClass,
-              );
+                  const designation = emachinDesignation(
+                    typeSpeedTorque,
+                    ratedVoltageY,
+                    shaftHeight,
+                    cooling,
+                    protection,
+                    frameMaterial,
+                    mounting,
+                    efficiencyClass,
+                  );
 
-              const outerDiameter = (shaftHeight / 1000) * 2;
-              const length =
-                volume / ((3.1416 * Math.pow(outerDiameter, 2)) / 4);
-              const momentOfInertia = getMomentOfInertia(
-                typeSpeedTorque.ratedPower,
-                weight,
-              );
-              const footprint = length * outerDiameter;
+                  const outerDiameter = (shaftHeight / 1000) * 2;
+                  const length =
+                    volume / ((3.1416 * Math.pow(outerDiameter, 2)) / 4);
+                  const momentOfInertia = getMomentOfInertia(
+                    typeSpeedTorque.ratedPower,
+                    weight,
+                  );
+                  const footprint = length * outerDiameter;
 
-              return {
-                price,
-                efficiencyClass,
-                efficiency100,
-                efficiency75,
-                efficiency50,
-                efficiency25,
-                ratedCurrent,
-                workingCurrent,
-                torqueOverload,
-                cosFi100,
-                cosFi75,
-                cosFi50,
-                mounting,
-                shaftHeight,
-                outerDiameter,
-                length,
-                volume,
-                momentOfInertia,
-                footprint,
-                weight,
-                designation,
-                cooling,
-                frameMaterial,
-                protection,
-                ...typeSpeedTorque,
-                ratedVoltageY,
-              };
-            }),
+                  return {
+                    price,
+                    efficiencyClass,
+                    efficiency100,
+                    efficiency75,
+                    efficiency50,
+                    efficiency25,
+                    ratedCurrent,
+                    workingCurrent,
+                    torqueOverload,
+                    cosFi100,
+                    cosFi75,
+                    cosFi50,
+                    mounting,
+                    shaftHeight,
+                    outerDiameter,
+                    length,
+                    volume,
+                    momentOfInertia,
+                    footprint,
+                    weight,
+                    designation,
+                    cooling,
+                    frameMaterial,
+                    protection,
+                    ...typeSpeedTorque,
+                    ratedVoltageY,
+                  };
+                }),
+              ),
           ),
         ),
       ),
-    ),
-  );
+    )
+    .filter(emachineTypeFilter);
 }
 
 function getCosFi(typeSpeedTorque: TypeSpeedTorque, k: number): number {
@@ -277,9 +284,10 @@ function getK8(
   }
 }
 
-function getK12(efficiencyClass: EfficiencyClassType) {
+function getK12(efficiencyClass: EfficiencyClassType | null) {
   switch (efficiencyClass) {
-    // case null: return 1.12; !?
+    case null:
+      return 1.12;
     case "IE2":
       return 1;
     case "IE3":
@@ -305,7 +313,7 @@ function getWeight(
   typeSpeedTorque: TypeSpeedTorque,
   cooling: EMachineCoolingType,
   protection: EMachineProtectionType,
-  efficiencyClass: EfficiencyClassType,
+  efficiencyClass: EfficiencyClassType | null,
   frameMaterial: EMachineFrameMaterialType,
 ) {
   const K1 = ratedVoltageY.value > 1000 ? 3 : 2.8;
@@ -370,10 +378,11 @@ function getK7(mounting: EMachineMountingType) {
 
 function getPriceIncrease(
   ratedPower: number,
-  efficiencyClass: EfficiencyClassType,
+  efficiencyClass: EfficiencyClassType | null,
 ) {
   const priceIncrease = 40 - 36 * Math.pow(ratedPower / 1300, 0.5);
   switch (efficiencyClass) {
+    case null:
     case "IE2":
       return 0;
     case "IE3":
@@ -390,7 +399,7 @@ function getPrice(
   protection: EMachineProtectionType,
   frameMaterial: EMachineFrameMaterialType,
   mounting: EMachineMountingType,
-  efficiencyClass: EfficiencyClassType,
+  efficiencyClass: EfficiencyClassType | null,
 ) {
   const K11 = ratedVoltageY.value > 1000 ? 30 : 20;
   const a = ratedVoltageY.value > 1000 ? 0.8 : 0.9;

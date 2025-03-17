@@ -1,3 +1,5 @@
+import { EMachine } from "./emachine";
+import { EMachineComponent } from "./emachine-component";
 import { TypeSpeedTorque } from "./emachine-sizing";
 import { VoltageY } from "./voltage";
 
@@ -9,7 +11,7 @@ export function emachinDesignation(
   protection: string,
   frameMaterial: string,
   mounting: string,
-  efficiencyClass: string,
+  efficiencyClass: string | null,
 ) {
   const result: string[] = [];
   switch (typeSpeedTorque.type) {
@@ -73,6 +75,126 @@ export function emachinDesignation(
 
   result.push(typeSpeedTorque.ratedSynchSpeed.toFixed(0));
   result.push(mounting);
-  result.push(efficiencyClass);
+  result.push(efficiencyClass ? efficiencyClass : "any");
   return result.join("-");
+}
+
+export function emachineTypeFilter(em: EMachineComponent): boolean {
+  switch (em.type) {
+    case "SCIM": {
+      if (
+        em.ratedVoltageY.type == "LV" &&
+        !em.efficiencyClass &&
+        em.ratedPower <= 375
+      ) {
+        return false;
+      }
+
+      if (
+        em.ratedVoltageY.type == "LV" &&
+        em.ratedPower > 375 &&
+        em.efficiencyClass
+      ) {
+        return false;
+      }
+
+      if (em.ratedPower > 90 && em.frameMaterial == "aluminum") {
+        return false;
+      }
+
+      if (
+        em.ratedVoltageY.type == "MV" &&
+        (em.efficiencyClass || em.frameMaterial == "aluminum")
+      ) {
+        return false;
+      }
+
+      if (
+        em.ratedSynchSpeed >= 1000 &&
+        em.ratedSynchSpeed <= 3000 &&
+        em.ratedVoltageY.type == "LV" &&
+        em.ratedPower >= 1.1 &&
+        em.ratedPower <= 2000
+      ) {
+        return true;
+      }
+
+      if (
+        em.ratedVoltageY.type == "MV" &&
+        em.ratedPower >= 200 &&
+        em.ratedPower <= 5000
+      ) {
+        return true;
+      }
+
+      if (
+        em.ratedSynchSpeed == 750 &&
+        em.ratedVoltageY.type == "LV" &&
+        em.ratedPower >= 1.1 &&
+        em.ratedPower <= 1000
+      ) {
+        return true;
+      }
+
+      if (
+        em.ratedSynchSpeed == 600 &&
+        em.ratedVoltageY.type == "LV" &&
+        em.ratedPower >= 1.1 &&
+        em.ratedPower <= 500
+      ) {
+        return true;
+      }
+
+      if (
+        em.ratedSynchSpeed == 500 &&
+        em.ratedVoltageY.type == "LV" &&
+        em.ratedPower >= 1.1 &&
+        em.ratedPower <= 300
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+    case "PMSM": {
+      if (em.efficiencyClass != "IE4" || em.frameMaterial != "cast iron") {
+        return false;
+      }
+
+      if (
+        em.ratedVoltageY.type == "LV" &&
+        em.ratedPower >= 1.1 &&
+        em.ratedPower <= 2000
+      ) {
+        return true;
+      }
+
+      if (
+        em.ratedVoltageY.type == "MV" &&
+        em.ratedPower >= 300 &&
+        em.ratedPower <= 5000
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+    case "SyRM":
+      if (em.efficiencyClass != "IE4" || em.frameMaterial == "steel") {
+        return false;
+      }
+
+      if (
+        em.ratedSynchSpeed >= 1000 &&
+        em.ratedSynchSpeed <= 3000 &&
+        em.ratedVoltageY.type == "LV" &&
+        em.ratedPower >= 1.1 &&
+        em.ratedPower <= 300
+      ) {
+        return true;
+      }
+      return false;
+  }
+
+  throw new Error("Unsupporeted type");
 }

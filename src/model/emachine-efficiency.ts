@@ -9,10 +9,14 @@ const efficiencies = json as Record<
 
 export function getEfficiency100(
   typeSpeedTorque: TypeSpeedTorque,
-  efficiencyClass: EfficiencyClassType,
+  efficiencyClass: EfficiencyClassType | null,
 ) {
   const ratedPower = typeSpeedTorque.ratedPower.toString();
-  if (efficiencies[ratedPower] && efficiencies[ratedPower][efficiencyClass]) {
+  if (
+    efficiencyClass &&
+    efficiencies[ratedPower] &&
+    efficiencies[ratedPower][efficiencyClass]
+  ) {
     const ratedSynchSpeed = Math.max(1000, typeSpeedTorque.ratedSynchSpeed);
     const ratedEfficiency =
       efficiencies[ratedPower][efficiencyClass][ratedSynchSpeed];
