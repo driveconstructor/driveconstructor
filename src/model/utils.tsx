@@ -27,3 +27,7 @@ export function closest(array: number[], value: number): number {
 export function round(value: number, precision?: number): number {
   return parseFloat(value.toFixed(precision));
 }
+
+export function valueDifference(a: number, b: number): number {
+  return (Math.abs(b - a) * 2) / (b + a);
+}

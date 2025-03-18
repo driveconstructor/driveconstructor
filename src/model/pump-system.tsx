@@ -8,7 +8,7 @@ import { Pump, PumpElement } from "./pump";
 import { SwitchElement } from "./switch";
 import { BaseSystem, Model, SystemModel } from "./system";
 import { Trafo, TrafoElement, TrafoVoltageHV } from "./trafo";
-import { splitRange } from "./utils";
+import { splitRange, valueDifference } from "./utils";
 
 export type PumpFc = BaseSystem & {
   kind: "pump-fc";
@@ -24,6 +24,20 @@ function validate(system: PumpFc | PumpGbFc) {
   const pump = system.input.pump;
   if (pump.minimalSpeed > pump.ratedSpeed) {
     result.push("The minimal speed may be not greater than the rated speed!");
+  }
+
+  const emachine = system.input.emachine;
+  const difference =
+    emachine.ratedPower == null
+      ? null
+      : valueDifference(pump.powerOnShaft * 1.1, emachine.ratedPower as number);
+
+  if (difference != null && difference > 0.2) {
+    result.push(
+      'Power of the pump and the motor do not match! \
+      Either adjust power of the motor or set it to "any". Alternatively \
+      check inputs for the pump.',
+    );
   }
 
   return result;

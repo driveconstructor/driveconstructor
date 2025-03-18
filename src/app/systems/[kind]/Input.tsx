@@ -13,6 +13,7 @@ import Candidates from "./Candidates";
 import Graph from "./Graph";
 import Param from "./Param";
 import Schema from "./Schema";
+import Errors from "./Errors";
 
 export const SystemContext = createContext({} as SystemContextType);
 
@@ -28,6 +29,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
   const [errors, setErrors] = useState([] as string[]);
   const [showMore, setShowMore] = useState(false);
   const [showCalculated, setShowCalculated] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     saveSystem(id, value);
@@ -62,7 +64,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 )
                 .map(([k, _]) => (
                   <Param
-                    key={context.system.element + "." + k}
+                    key={context.system.element + "." + k + "." + counter}
                     name={k}
                     handleChange={(v) => {
                       const updated = updateParam(context, k, v);
@@ -95,15 +97,20 @@ export default function Input({ kind }: { kind: SystemKind }) {
             <div className="grow" />
             <div className="btn flex-none">Show report</div>
           </div>
-          <div className="text-red-600">
-            {errors.length != 0 ? errors : null}
-            &nbsp;
+          <div hidden={errors.length == 0}>
+            <Errors
+              errors={errors}
+              handleDismissClick={() => {
+                setCounter(counter + 1);
+                setErrors([]);
+              }}
+            ></Errors>
           </div>
         </div>
-        <div className="border border-blue-400">
+        <div hidden={errors.length != 0}>
           <Graph />
         </div>
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2" hidden={errors.length != 0}>
           <div className="text-2xl">Candidates</div>
           <Candidates
             onSelect={(name, candidate) => {

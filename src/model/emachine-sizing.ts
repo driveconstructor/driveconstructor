@@ -204,7 +204,9 @@ export function emachineCatalog(
         ),
       ),
     )
-    .filter(emachineTypeFilter);
+    .filter(emachineTypeFilter)
+    .filter((ec) => em.ratedPower == null || ec.ratedPower == em.ratedPower)
+    .filter((ec) => em.shaftHeight == null || ec.shaftHeight == em.shaftHeight);
 }
 
 function getCosFi(typeSpeedTorque: TypeSpeedTorque, k: number): number {
