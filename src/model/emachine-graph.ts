@@ -1,7 +1,5 @@
 import { EMachineComponent } from "./emachine-component";
-import { TypeSpeedTorque } from "./emachine-sizing";
-import { Gearbox } from "./gearbox";
-import { GraphPoint } from "./load-graph";
+import { GraphPoint } from "./graph-data";
 
 export type EMachinGraphPoint = GraphPoint & {
   torqueOverload: number;
@@ -21,7 +19,7 @@ function getSpeedPoints(emachine: EMachineComponent) {
   return result.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b);
 }
 
-export function getEMachineLoadGraphData(emachine: EMachineComponent) {
+export function emachineGraphData(emachine: EMachineComponent) {
   const gearRatio = 1; // gearbox ? gearbox.gearRatio : 1;
   const speedPoints = getSpeedPoints(emachine).map((s) => s / gearRatio);
 

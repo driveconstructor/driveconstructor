@@ -4,21 +4,21 @@ import { WinchFc } from "./winch-system";
 
 export type GraphPoint = { speed: number; torque: number };
 
-export function loadGraph(system: System): GraphPoint[] {
+export function systemGraphData(system: System): GraphPoint[] {
   switch (system.kind) {
     case "pump-fc":
     case "pump-gb-fc":
     case "pump-fc-tr":
     case "pump-gb-fc-tr":
-      return pumpLoadGraph(system);
+      return pumpGraphData(system);
     case "winch-fc":
-      return winchLoadGraph(system);
+      return winchGraphData(system);
     default:
       throw new Error("Unsupported system kind");
   }
 }
 
-function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
+function pumpGraphData(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
   const pump = system.input.pump;
 
   const numberOfPoints = Math.round(
@@ -46,7 +46,7 @@ function pumpLoadGraph(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
   return result;
 }
 
-function winchLoadGraph(system: WinchFc) {
+function winchGraphData(system: WinchFc) {
   const result: GraphPoint[] = []; //[[], []];
 
   const numberOfPoints = 10;

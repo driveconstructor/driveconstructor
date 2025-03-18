@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { SystemContext } from "./Input";
 
-import { loadGraph, GraphPoint } from "@/model/load-graph";
+import { emachineGraphData } from "@/model/emachine-graph";
+import { GraphPoint, systemGraphData } from "@/model/graph-data";
 import {
   CategoryScale,
   ChartDataset,
@@ -9,13 +10,11 @@ import {
   Legend,
   LineElement,
   LinearScale,
-  Point,
   PointElement,
   Title,
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { getEMachineLoadGraphData } from "@/model/emachine-graph";
 
 ChartJS.register(
   CategoryScale,
@@ -27,17 +26,17 @@ ChartJS.register(
   Legend,
 );
 
-export default function LoadGraph() {
+export default function Graph() {
   const context = useContext(SystemContext);
 
-  const loadData = loadGraph(context.system);
+  const graphData = systemGraphData(context.system);
   const toPoint = (row: GraphPoint) => {
     return { x: row.speed, y: row.torque };
   };
   const datasets: ChartDataset<"line">[] = [
     {
       label: Object.keys(context.model.input)[0],
-      data: loadData.map(toPoint),
+      data: graphData.map(toPoint),
     },
   ];
 
@@ -49,11 +48,11 @@ export default function LoadGraph() {
 
   if (emachines) {
     emachines.forEach((em, index) => {
-      const emLoadData = getEMachineLoadGraphData(em);
+      const emGraphData = emachineGraphData(em);
       const color = colors[index % colors.length];
       datasets.push({
         label: em.designation,
-        data: emLoadData.map(toPoint),
+        data: emGraphData.map(toPoint),
         backgroundColor: color,
         borderColor: color,
       });
@@ -68,6 +67,11 @@ export default function LoadGraph() {
       options={{
         animation: {
           duration: 0,
+        },
+        plugins: {
+          legend: {
+            position: "bottom",
+          },
         },
         scales: {
           x: {
@@ -87,22 +91,4 @@ export default function LoadGraph() {
       }}
     />
   );
-}
-
-function getSpeedPoints(maximumSpeed: number, ratedSpeed?: number) {
-  const numberOfPoints = 15;
-  const result = [];
-  for (let i = 0; i <= numberOfPoints; i++) {
-    const speed = (maximumSpeed * i) / numberOfPoints;
-    result.push(speed);
-  }
-
-  if (ratedSpeed) {
-    result.push(ratedSpeed, ratedSpeed / 2);
-  }
-
-  return result
-    .filter((v, i, a) => a.indexOf(v) === i)
-    .sort((a, b) => a - b)
-    .map((s) => Math.round(s));
 }

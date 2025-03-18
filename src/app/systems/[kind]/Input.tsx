@@ -10,7 +10,7 @@ import { SystemKind, customizeModel, getModel } from "@/model/system";
 import { useSearchParams } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import Candidates from "./Candidates";
-import Chart from "./LoadGraph";
+import Graph from "./Graph";
 import Param from "./Param";
 import Schema from "./Schema";
 
@@ -101,7 +101,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
           </div>
         </div>
         <div className="border border-blue-400">
-          <Chart />
+          <Graph />
         </div>
         <div className="lg:col-span-2">
           <div className="text-2xl">Candidates</div>
