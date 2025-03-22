@@ -37,9 +37,9 @@ export function getComponentModel(kind: string): ComponentModel {
 }
 
 export type BaseComponents = {
-  emachine: EMachineComponent;
-  cable: CableComponent;
-  fconvertor: FConvertorComponent;
+  emachine?: EMachineComponent;
+  cable?: CableComponent;
+  fconvertor?: FConvertorComponent;
 };
 
 export type BaseCandidates = {

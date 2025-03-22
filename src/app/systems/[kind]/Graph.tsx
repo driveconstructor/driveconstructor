@@ -47,16 +47,18 @@ export default function Graph() {
     : context.system.candidates.emachine;
 
   if (emachines) {
-    emachines.forEach((em, index) => {
-      const emGraphData = emachineGraphData(em);
-      const color = colors[index % colors.length];
-      datasets.push({
-        label: em.designation,
-        data: emGraphData.map(toPoint),
-        backgroundColor: color,
-        borderColor: color,
+    emachines
+      .filter((em) => typeof em != "undefined")
+      .forEach((em, index) => {
+        const emGraphData = emachineGraphData(em);
+        const color = colors[index % colors.length];
+        datasets.push({
+          label: em.designation,
+          data: emGraphData.map(toPoint),
+          backgroundColor: color,
+          borderColor: color,
+        });
       });
-    });
   }
 
   return (

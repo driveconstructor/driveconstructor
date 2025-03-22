@@ -15,7 +15,8 @@ export default function Candidates({
       {Object.entries(context.system.candidates).map(([k, v]) => {
         const selected = v.findIndex(
           (c) =>
-            c.designation == (context.system.components as any)[k]?.designation,
+            c?.designation ==
+            (context.system.components as any)[k]?.designation,
         );
         return (
           <div key={k}>
@@ -23,10 +24,7 @@ export default function Candidates({
               kind={k}
               values={v}
               selected={selected}
-              setSelected={(i) => {
-                console.log(i);
-                onSelect(k, v[i]);
-              }}
+              setSelected={(i) => onSelect(k, v[i])}
             />
           </div>
         );
@@ -69,7 +67,7 @@ function Candidate({
             {model.title + (collapsed ? `(${values.length})` : "")}
           </div>
         </div>
-        {!collapsed && hasAdvanced ? (
+        {!collapsed && hasAdvanced && values.length != 0 ? (
           <>
             <div className="grow" />
             <div

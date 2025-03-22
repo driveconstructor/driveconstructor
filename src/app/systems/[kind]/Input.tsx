@@ -14,6 +14,7 @@ import Graph from "./Graph";
 import Param from "./Param";
 import Schema from "./Schema";
 import Errors from "./Errors";
+import { withCandidates } from "@/model/sizing";
 
 export const SystemContext = createContext({} as SystemContextType);
 
@@ -119,7 +120,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 components: { ...context.system.components, [name]: candidate },
               };
 
-              setValue(system);
+              setValue(withCandidates(system));
             }}
           />
         </div>

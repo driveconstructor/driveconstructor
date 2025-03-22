@@ -1,5 +1,5 @@
 import { BaseComponents } from "./component";
-import { findCandidates } from "./sizing";
+import { withCandidates } from "./sizing";
 import { System, SystemModel } from "./system";
 
 const prefix = "dc-v1.system.";
@@ -89,27 +89,11 @@ export function updateParam(
     input,
   } as any;
 
-  const withoutComponents = { ...withCalculatedParams, components: {} };
+  const withoutComponents = {
+    ...withCalculatedParams,
+    candidates: {},
+    components: {},
+  };
 
   return withCandidates(withoutComponents);
-}
-
-function withCandidates(system: System): System {
-  const candidates = findCandidates(system);
-  const components = Object.entries(candidates)
-    .filter(([_, candidate]) => candidate.length == 1)
-    .reduce(
-      (a, [name, candidate]) => {
-        return {
-          ...a,
-          [name]: candidate[0],
-        };
-      },
-      { ...system.components },
-    );
-  return {
-    ...system,
-    candidates,
-    components,
-  };
 }

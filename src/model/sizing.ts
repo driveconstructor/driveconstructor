@@ -1,4 +1,7 @@
-import { BaseCandidates } from "./component";
+import { Cable } from "./cable";
+import { CableComponent } from "./cable-component";
+import { findCableComponent as findCableCandidates } from "./cable-sizing";
+import { BaseCandidates, BaseComponents } from "./component";
 import { EMachineComponent } from "./emachine-component";
 import { emachineCatalog, findTypeSpeedTorque } from "./emachine-sizing";
 import { System } from "./system";
@@ -24,7 +27,7 @@ function distinctSyncSpeedAndType(emachines: EMachineComponent[]) {
   });
 }
 
-export function findCandidates(system: System): BaseCandidates {
+function findEmachines(system: System): EMachineComponent[] {
   let mechanism: Mechanism;
 
   if (
@@ -68,10 +71,34 @@ export function findCandidates(system: System): BaseCandidates {
         a.ratedPower - b.ratedPower,
     )
     .slice(0, 5);
+  return emachine;
+}
+
+export function withCandidates(system: System): System {
+  let candidates: BaseCandidates = { ...system.candidates };
+  let components: BaseComponents = { ...system.components };
+
+  let emachine;
+  if (!candidates.emachine) {
+    emachine = findEmachines(system);
+    if (emachine.length == 1) {
+      components = { ...components, emachine: emachine[0] };
+    }
+    candidates = { ...candidates, emachine };
+  }
+
+  let cable: CableComponent[] = [];
+  if (components.emachine) {
+    cable = findCableCandidates(components.emachine);
+    if (cable.length == 1) {
+      components = { ...components, cable: cable[0] };
+    }
+    candidates = { ...candidates, cable };
+  }
 
   return {
-    emachine,
-    cable: [],
-    fconvertor: [],
+    ...system,
+    candidates,
+    components,
   };
 }
