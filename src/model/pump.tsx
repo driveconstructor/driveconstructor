@@ -46,25 +46,6 @@ export const PumpElement: SystemElement<Pump> = {
       },
       value: 50,
     },
-    fluidDensity: {
-      label: "Fluid",
-      type: "number",
-      range: {
-        min: 500,
-        max: 3200,
-      },
-      value: 1000,
-      advanced: true,
-    },
-    ratedEfficiency: {
-      label: "Rated efficiency, %",
-      type: "number",
-      range: {
-        min: 0,
-        max: 100,
-      },
-      value: 81,
-    },
     ratedSpeed: {
       label: "Rated speed, rpm",
       type: "number",
@@ -83,6 +64,15 @@ export const PumpElement: SystemElement<Pump> = {
       },
       value: 0,
     },
+    ratedEfficiency: {
+      label: "Rated efficiency, %",
+      type: "number",
+      range: {
+        min: 0,
+        max: 100,
+      },
+      value: 81,
+    },
     startingTorque: {
       label: "Starting torque as *T_rated",
       type: "number",
@@ -92,6 +82,16 @@ export const PumpElement: SystemElement<Pump> = {
       },
       value: 0.0,
       options: [...Array(21)].map((_, i) => (i * 0.1).toFixed(1)),
+      advanced: true,
+    },
+    fluidDensity: {
+      label: "Fluid",
+      type: "number",
+      range: {
+        min: 500,
+        max: 3200,
+      },
+      value: 1000,
       advanced: true,
     },
     powerOnShaft: {
