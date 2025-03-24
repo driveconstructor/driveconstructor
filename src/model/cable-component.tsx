@@ -34,22 +34,28 @@ export const CableComponentModel: ComponentModel<CableComponent> = {
     },
     reactancePerHz: {
       label: "Reactance (PerHz)",
+      precision: 6,
     },
     resistancePerMeter: {
       label: "Resistance per meter",
+      precision: 8,
     },
     pricePerMeter: {
       label: "Price per meter",
+      precision: 2,
     },
     ...DesignationParam,
     voltageDrop: {
       label: "Voltage drop",
+      precision: 2,
     },
     losses: {
       label: "Losses, kW",
+      precision: 2,
     },
     efficiency100: {
       label: "Efficiency, %",
+      precision: 2,
     },
   },
 };

@@ -18,9 +18,11 @@ export function splitRange(value: string): Range {
   return result;
 }
 
-export function closest(array: number[], value: number): number {
+export function closest(array: number[], value: number, end?: boolean): number {
   return array.reduce((prev, curr) =>
-    Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev,
+    Math.abs(curr - value) < Math.abs(prev - value) && (!end || curr > value)
+      ? curr
+      : prev,
   );
 }
 

@@ -89,7 +89,7 @@ export function withCandidates(system: System): System {
 
   let cable: CableComponent[] = [];
   if (components.emachine) {
-    cable = findCableCandidates(components.emachine);
+    cable = findCableCandidates(system.input.cable, components.emachine);
     if (cable.length == 1) {
       components = { ...components, cable: cable[0] };
     }

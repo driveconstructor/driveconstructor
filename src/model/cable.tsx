@@ -1,18 +1,25 @@
 import icon from "../images/el-cable.svg";
 import { SystemElement } from "./system";
 
-const Material = ["copper", "aluminum"] as const;
-const CrossSection = [
+export const Material = ["copper", "aluminum"] as const;
+export const CrossSection = [
   1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 150, 185, 240, 300, 400, 500, 630,
   800,
-] as const;
-const NumberOfRuns = [1, 2, 4, 6, 8];
+] as const satisfies number[];
+
+export const NumberOfRuns = [1, 2, 4, 6, 8] as const;
+
+export type MaterialType = (typeof Material)[number];
+
+export type CrossSectionType = (typeof CrossSection)[number];
+
+export type NumberOfRunsType = (typeof NumberOfRuns)[number];
 
 export type Cable = {
   length: number;
-  material: (typeof Material)[number];
-  crossSection: (typeof CrossSection)[number] | null;
-  numberOfRuns: (typeof NumberOfRuns)[number] | null;
+  material: MaterialType;
+  crossSection: CrossSectionType | null;
+  numberOfRuns: NumberOfRunsType | null;
 };
 
 export const LengthParam = {
