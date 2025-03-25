@@ -1,5 +1,6 @@
 import { ComponentModel } from "./component";
 import { Cooling, Protection } from "./cooling-protection";
+import { FcVoltageY } from "./fconverter-voltage";
 import {
   FConverterMounting,
   FConverterPower,
@@ -8,7 +9,7 @@ import {
 import { VoltageY } from "./voltage";
 
 export type FConvertorComponent = {
-  voltage: VoltageY;
+  voltage: FcVoltageY;
   price: number;
   workingVoltage: number;
   currentLO: number;

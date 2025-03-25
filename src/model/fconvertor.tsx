@@ -40,15 +40,16 @@ export const GridSideFilter = ["no", "choke", "sin", "choke+RFI"] as const;
 export const MachineSideFilter = ["no", "choke", "du/dt", "sin"] as const;
 
 export type FConvertorTypeAlias = (typeof FConverterType)[number];
-export type GridSideFilterAlias = (typeof GridSideFilter)[number];
-export type MachineSideFilterAlias = (typeof MachineSideFilter)[number];
+export type GridSideFilterType = (typeof GridSideFilter)[number];
+export type MachineSideFilterType = (typeof MachineSideFilter)[number];
+export type FConverterMountingType = (typeof FConverterMounting)[number];
 
 export type FConvertor = {
   type: FConvertorTypeAlias;
   ratedPower: (typeof FConverterPower)[number] | null;
-  gridSideFilter: GridSideFilterAlias;
-  machineSideFilter: MachineSideFilterAlias;
-  mounting: (typeof FConverterMounting)[number] | null;
+  gridSideFilter: GridSideFilterType;
+  machineSideFilter: MachineSideFilterType;
+  mounting: FConverterMountingType | null;
 } & CoolingProtection &
   Environment;
 
@@ -127,8 +128,8 @@ function FConvertorElement(
 }
 
 function customizeFilters(type: FConvertorTypeAlias): {
-  grid: GridSideFilterAlias[];
-  machine: MachineSideFilterAlias[];
+  grid: GridSideFilterType[];
+  machine: MachineSideFilterType[];
 } {
   switch (type) {
     case "2Q-2L-VSC-6p":
