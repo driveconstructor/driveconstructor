@@ -50,6 +50,8 @@ export type FConvertor = {
   gridSideFilter: GridSideFilterType;
   machineSideFilter: MachineSideFilterType;
   mounting: FConverterMountingType | null;
+  // virtuals
+  voltageDerating: number;
 } & CoolingProtection &
   Environment;
 
@@ -100,6 +102,17 @@ function FConvertorElement(
       },
       ...CoolingProtectionModel,
       ...EnvironmentModel,
+      voltageDerating: {
+        label: "Voltage derating",
+        type: "number",
+        precision: 4,
+        value: (fc, input) => {
+          console.log(input);
+          const K = input?.grid.voltage < 1000 ? 0.00015 : 0.0001;
+
+          return fc.altitude > 2000 ? 1 - K * (fc.altitude - 2000) : 1;
+        },
+      },
     },
     customize(model, system) {
       const iconWidth = system.type.indexOf("SCHB") == -1 ? 160 : 80;

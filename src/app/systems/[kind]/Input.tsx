@@ -30,7 +30,8 @@ export default function Input({ kind }: { kind: SystemKind }) {
   const [errors, setErrors] = useState([] as string[]);
   const [showMore, setShowMore] = useState(false);
   const [showCalculated, setShowCalculated] = useState(false);
-  const [counter, setCounter] = useState(0);
+  const [update, setUpdate] = useState(0);
+  const [updateCalculated, setUpdateCalculated] = useState(0);
 
   useEffect(() => {
     saveSystem(id, value);
@@ -61,11 +62,16 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 .filter(([_, v]) => showMore || !v.advanced)
                 .filter(([_, v]) => !v.hidden)
                 .filter(
-                  ([_, v]) => showCalculated || typeof v.value != "function",
+                  ([_, v]) =>
+                    // hide calculated fields in case of errors
+                    (showCalculated && errors.length == 0) ||
+                    typeof v.value != "function",
                 )
-                .map(([k, _]) => (
+                .map(([k, v]) => (
                   <Param
-                    key={context.system.element + "." + k + "." + counter}
+                    key={`${context.system.element}.${k}.${update}.${
+                      typeof v.value == "function" ? updateCalculated : ""
+                    }`}
                     name={k}
                     handleChange={(v) => {
                       const updated = updateParam(context, k, v);
@@ -75,6 +81,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                       setErrors(errors);
                       if (errors.length == 0) {
                         setValue(updated);
+                        setUpdateCalculated(updateCalculated + 1);
                       }
                     }}
                     resetErrors={() => setErrors([])}
@@ -102,7 +109,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
             <Errors
               errors={errors}
               handleDismissClick={() => {
-                setCounter(counter + 1);
+                setUpdate(update + 1);
                 setErrors([]);
               }}
             ></Errors>

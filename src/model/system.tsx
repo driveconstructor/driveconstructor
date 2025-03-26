@@ -15,7 +15,7 @@ export type ParamRangeProps<V> = { min: V; max: V; step?: V };
 export type SystemParam<V = any, E = any> = {
   label: React.ReactNode;
   type: ParamType;
-  value: V | ((element: E) => number);
+  value: V | ((element: E, input: System["input"]) => number);
   options?: V[] | (string | null)[];
   optionLabels?: (React.ReactNode | null)[];
   range?: ParamRangeProps<V>;

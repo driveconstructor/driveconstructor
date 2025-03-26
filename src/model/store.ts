@@ -1,6 +1,6 @@
 import { BaseComponents } from "./component";
 import { withCandidates } from "./sizing";
-import { System, SystemModel } from "./system";
+import { System, SystemModel, SystemParam } from "./system";
 
 const prefix = "dc-v1.system.";
 
@@ -23,22 +23,33 @@ export type SystemContextType = {
   system: System;
 };
 
-export function initOrUpdateSystemInput(
+export function updateSystemInput(
   model: SystemModel,
-  input?: Record<string, any>,
+  input: Record<string, any>,
 ) {
+  // update functionnal values
   return Object.entries(model.input).reduce((a, [e, p]) => {
     return {
       ...a,
       [e]: Object.entries(p.params).reduce((b, [k, v]) => {
         return {
           ...b,
-          [k]:
-            typeof v.value == "function"
-              ? v.value(b)
-              : input
-                ? input[e][k]
-                : v.value,
+          [k]: typeof v.value == "function" ? v.value(b, input) : input[e][k],
+        };
+      }, {}),
+    };
+  }, {});
+}
+
+export function initSystemInput(model: SystemModel) {
+  // initialize with default values
+  return Object.entries(model.input).reduce((a, [e, p]) => {
+    return {
+      ...a,
+      [e]: Object.entries(p.params).reduce((b, [k, v]) => {
+        return {
+          ...b,
+          [k]: v.value,
         };
       }, {}),
     };
@@ -47,7 +58,7 @@ export function initOrUpdateSystemInput(
 
 export function createSystem(model: SystemModel): string {
   const kind = model.kind;
-  const input = initOrUpdateSystemInput(model);
+  const input = updateSystemInput(model, initSystemInput(model));
 
   const id = "draft_" + kind;
   const system = {
@@ -83,7 +94,7 @@ export function updateParam(
   const withModelUpdate =
     context.model.update?.(withParamUpdate) ?? withParamUpdate;
 
-  const input = initOrUpdateSystemInput(context.model, withModelUpdate.input);
+  const input = updateSystemInput(context.model, withModelUpdate.input);
   const withCalculatedParams = {
     ...withModelUpdate,
     input,

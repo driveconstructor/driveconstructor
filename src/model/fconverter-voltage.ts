@@ -20,12 +20,11 @@ export const FcVoltage = [
 export function findFcVoltageY(voltage: number): FcVoltageY {
   const value = closest(FcVoltage, voltage) as (typeof FcVoltage)[number];
 
-  const type =
-    LowVoltage.findIndex((v) => v == value) != -1
-      ? "LV"
-      : MediumVoltage1.findIndex((v) => v == value) != -1
-        ? "MV1"
-        : "MV2";
+  const type = LowVoltage.includes(value)
+    ? "LV"
+    : MediumVoltage1.includes(value)
+      ? "MV1"
+      : "MV2";
 
   return { min: value * 0.9, value, max: value * 1.05, type };
 }

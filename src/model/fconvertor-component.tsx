@@ -6,7 +6,6 @@ import {
   FConverterPower,
   FConvertorTypeAlias,
 } from "./fconvertor";
-import { VoltageY } from "./voltage";
 
 export type FConvertorComponent = {
   voltage: FcVoltageY;
