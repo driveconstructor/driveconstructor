@@ -9,11 +9,11 @@ export const ANY = "#any";
 export default function Param({
   name,
   handleChange,
-  resetErrors,
+  setErrors,
 }: {
   name: string;
   handleChange: ChangeHandler;
-  resetErrors: () => void;
+  setErrors: (errors: string[]) => void;
 }) {
   const context = useContext(SystemContext);
   const element = context.system.element;
@@ -28,14 +28,14 @@ export default function Param({
       handleChange(null);
     } else if (paramModel.type == "number") {
       if (v == "") {
-        // invalid value
+        setErrors([`${paramModel.label}: Invalid value`]);
         return;
       }
 
       const num = Number(v);
       const range = paramModel.range;
       if (range != null && (range.min > num || range.max < num)) {
-        // out of range
+        setErrors([`${paramModel.label}: Value out of range`]);
         return;
       }
 
@@ -51,7 +51,7 @@ export default function Param({
       value={inputValue}
       model={paramModel}
       onChange={(v) => {
-        resetErrors();
+        setErrors([]);
         setInputValue(v);
         setValue(v);
       }}
@@ -62,7 +62,7 @@ export default function Param({
       value={inputValue}
       model={paramModel}
       onChange={(v) => {
-        resetErrors();
+        setErrors([]);
         setInputValue(v);
       }}
       onCommit={setValue}

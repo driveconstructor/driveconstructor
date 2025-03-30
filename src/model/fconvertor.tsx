@@ -107,7 +107,6 @@ function FConvertorElement(
         type: "number",
         precision: 4,
         value: (fc, input) => {
-          console.log(input);
           const K = input?.grid.voltage < 1000 ? 0.00015 : 0.0001;
 
           return fc.altitude > 2000 ? 1 - K * (fc.altitude - 2000) : 1;

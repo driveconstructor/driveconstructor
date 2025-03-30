@@ -9,7 +9,7 @@ export default function Errors({
     <div className="grid">
       <div>&nbsp;</div>
       <div className="text-red-600 text-lg">
-        {errors}
+        Error: {errors}
         &nbsp;
       </div>
       <div className="flex">

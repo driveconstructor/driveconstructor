@@ -1,5 +1,6 @@
 "use client";
 
+import { withCandidates } from "@/model/sizing";
 import {
   SystemContextType,
   getSystem,
@@ -10,11 +11,10 @@ import { SystemKind, customizeModel, getModel } from "@/model/system";
 import { useSearchParams } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import Candidates from "./Candidates";
+import Errors from "./Errors";
 import Graph from "./Graph";
 import Param from "./Param";
 import Schema from "./Schema";
-import Errors from "./Errors";
-import { withCandidates } from "@/model/sizing";
 
 export const SystemContext = createContext({} as SystemContextType);
 
@@ -30,8 +30,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
   const [errors, setErrors] = useState([] as string[]);
   const [showMore, setShowMore] = useState(false);
   const [showCalculated, setShowCalculated] = useState(false);
-  const [update, setUpdate] = useState(0);
-  const [updateCalculated, setUpdateCalculated] = useState(0);
+  const [update, setUpdate] = useState({ exlcude: "", count: 0 });
 
   useEffect(() => {
     saveSystem(id, value);
@@ -43,9 +42,21 @@ export default function Input({ kind }: { kind: SystemKind }) {
     system: value,
   };
 
+  const resetErrors = () => {
+    setUpdate({ exlcude: "", count: update.count + 1 });
+    setErrors([]);
+  };
+
   return (
     <SystemContext.Provider value={context}>
-      <div className="grid gap-2 lg:grid-cols-2">
+      <div
+        className="grid gap-2 lg:grid-cols-2"
+        onKeyUp={(e) => {
+          if (e.key == "Escape") {
+            resetErrors();
+          }
+        }}
+      >
         <div>
           <Schema
             model={context.model}
@@ -67,11 +78,9 @@ export default function Input({ kind }: { kind: SystemKind }) {
                     (showCalculated && errors.length == 0) ||
                     typeof v.value != "function",
                 )
-                .map(([k, v]) => (
+                .map(([k, mv]) => (
                   <Param
-                    key={`${context.system.element}.${k}.${update}.${
-                      typeof v.value == "function" ? updateCalculated : ""
-                    }`}
+                    key={`${context.system.element}.${k}.${k == update.exlcude ? "" : update.count}}`}
                     name={k}
                     handleChange={(v) => {
                       const updated = updateParam(context, k, v);
@@ -81,10 +90,10 @@ export default function Input({ kind }: { kind: SystemKind }) {
                       setErrors(errors);
                       if (errors.length == 0) {
                         setValue(updated);
-                        setUpdateCalculated(updateCalculated + 1);
+                        setUpdate({ exlcude: k, count: update.count + 1 });
                       }
                     }}
-                    resetErrors={() => setErrors([])}
+                    setErrors={setErrors}
                   ></Param>
                 ))}
             </div>
@@ -106,13 +115,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
             <div className="btn flex-none">Show report</div>
           </div>
           <div hidden={errors.length == 0}>
-            <Errors
-              errors={errors}
-              handleDismissClick={() => {
-                setUpdate(update + 1);
-                setErrors([]);
-              }}
-            ></Errors>
+            <Errors errors={errors} handleDismissClick={resetErrors}></Errors>
           </div>
         </div>
         <div hidden={errors.length != 0}>
