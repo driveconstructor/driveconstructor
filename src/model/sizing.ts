@@ -103,6 +103,14 @@ export function withCandidates(system: System): System {
       system.input.fconverter,
       components.emachine.workingCurrent,
     );
+    const grouping = Object.groupBy(fconverter, (fc) =>
+      [fc.mounting, fc.protection, fc.cooling].join("-"),
+    );
+
+    fconverter = Object.entries(grouping)
+      .flatMap(([_, v]) => v?.sort((a, b) => a.currentLO - b.currentLO)[0])
+      .filter((v) => typeof v != "undefined");
+
     if (fconverter.length == 1) {
       components = { ...components, fconverter: fconverter[0] };
     }
