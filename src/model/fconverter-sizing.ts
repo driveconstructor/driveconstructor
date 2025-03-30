@@ -10,6 +10,8 @@ import {
 import { FConverterComponent } from "./fconverter-component";
 import { Voltage } from "./voltage";
 import { closest } from "./utils";
+import { getDesignation } from "./fconverter-utils";
+import { FConverterVoltageFilering } from "./fconverter-types";
 
 export function findFcConverters(
   systemVoltage: number,
@@ -42,10 +44,10 @@ export function findFcConverters(
                       fconverter.mounting == null ||
                       mounting == fconverter.mounting,
                   ).flatMap((mounting) => {
-                    const ratedPowerHO = Math.max(
-                      0,
-                      closest(FConverterPower, ratedPowerLO, true),
-                    );
+                    const ratedPowerHO =
+                      FConverterPower[
+                        Math.max(0, FConverterPower.indexOf(ratedPowerLO) - 1)
+                      ];
                     const efficiency100 = getEfficiency100(
                       ratedPowerLO,
                       cooling,
@@ -70,7 +72,7 @@ export function findFcConverters(
                       workingVoltage: 0,
                       currentLO,
                       currentHO,
-                      efficiency100: 0,
+                      efficiency100,
                       cosFi100: 0,
                       height: 0,
                       width: 0,
@@ -87,7 +89,14 @@ export function findFcConverters(
                       mounting,
                       cooling,
                       protection,
-                      designation: "XXX",
+                      designation: getDesignation(
+                        type,
+                        voltage,
+                        ratedPowerLO,
+                        protection,
+                        cooling,
+                        mounting,
+                      ),
                       type,
                     };
                   }),
@@ -96,16 +105,16 @@ export function findFcConverters(
           ),
         ),
     )
+    .filter((fc) => FConverterVoltageFilering[fc.type](fc))
     .filter((fc) => {
       const efficiencyK = cableEfficiency100 / 100;
       const current =
         emachineWorkingCurrent /
         fconverter.overallCurrentDerating /
         efficiencyK;
-      console.log("XXX " + current + " " + fc.currentLO);
-      return fc.currentLO >= current && fc.currentHO >= current;
-    })
-    .slice(0, 5);
+      return fc.currentLO >= current;
+    });
+  // .slice(0, 5);
 }
 
 function getK1(cooling: FcCoolingType) {

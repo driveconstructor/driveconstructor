@@ -55,13 +55,13 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
     workingVoltage: {
       label: "Working voltage, V",
     },
-    currentLO: {
-      label: "Rated current LO, A",
+    currentHO: {
+      label: "Rated current HO, A",
       precision: 2,
       advanced: true,
     },
-    currentHO: {
-      label: "Rated current HO, A",
+    currentLO: {
+      label: "Rated current LO, A",
       precision: 2,
       advanced: true,
     },
@@ -70,6 +70,7 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
     },
     efficiency100: {
       label: "Efficiency @100% load",
+      precision: 2,
     },
     efficiency75: {
       label: "Efficiency @75% load",
