@@ -17,16 +17,27 @@ export type Mechanism = {
   linear: boolean;
 };
 
-function distinctSyncSpeedAndType(emachines: EMachineComponent[]) {
-  const set = new Set();
-  return emachines.filter((em) => {
-    const key = em.ratedSynchSpeed + em.type;
-    if (set.has(key)) {
-      return false;
-    }
-    set.add(key);
-    return true;
-  });
+function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
+  const grouping = Object.groupBy(emachines, (em) =>
+    [
+      em.cooling,
+      em.protection,
+      em.frameMaterial,
+      em.mounting,
+      em.type,
+      //em.shaftHeight, // !?
+      em.efficiencyClass,
+    ].join("-"),
+  );
+  return Object.entries(grouping)
+    .flatMap(
+      ([_, v]) =>
+        v?.sort(
+          (a, b) =>
+            a.ratedPower - b.ratedPower || a.shaftHeight - b.shaftHeight,
+        )[0],
+    )
+    .filter((v) => typeof v != "undefined");
 }
 
 function findEmachines(system: System): EMachineComponent[] {
@@ -65,15 +76,7 @@ function findEmachines(system: System): EMachineComponent[] {
     voltageY,
   );
 
-  const emachine = distinctSyncSpeedAndType(catalog)
-    .sort(
-      (a, b) =>
-        a.ratedSynchSpeed - b.ratedSynchSpeed ||
-        a.type.localeCompare(b.type) ||
-        a.ratedPower - b.ratedPower,
-    )
-    .slice(0, 5);
-  return emachine;
+  return distinctEmBySecondaryParams(catalog);
 }
 
 export function withCandidates(system: System): System {
@@ -103,14 +106,8 @@ export function withCandidates(system: System): System {
       system.input.fconverter,
       components.emachine.workingCurrent,
     );
-    const grouping = Object.groupBy(fconverter, (fc) =>
-      [fc.mounting, fc.protection, fc.cooling].join("-"),
-    );
 
-    fconverter = Object.entries(grouping)
-      .flatMap(([_, v]) => v?.sort((a, b) => a.currentLO - b.currentLO)[0])
-      .filter((v) => typeof v != "undefined");
-
+    fconverter = distinctFcByMounting(fconverter);
     if (fconverter.length == 1) {
       components = { ...components, fconverter: fconverter[0] };
     }
@@ -122,4 +119,11 @@ export function withCandidates(system: System): System {
     candidates,
     components,
   };
+}
+
+function distinctFcByMounting(fconverter: FConverterComponent[]) {
+  const grouping = Object.groupBy(fconverter, (fc) => fc.mounting);
+  return Object.entries(grouping)
+    .flatMap(([_, v]) => v?.sort((a, b) => a.currentLO - b.currentLO)[0])
+    .filter((v) => typeof v != "undefined");
 }
