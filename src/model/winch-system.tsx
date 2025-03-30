@@ -1,7 +1,7 @@
 import { CableElement } from "./cable";
 import { BaseCandidates, BaseComponents } from "./component";
 import { EMachineElement } from "./emachine";
-import { NoTrafoFConvertorElement } from "./fconvertor";
+import { NoTrafoFConverterElement } from "./fconverter";
 import { GridElement } from "./grid";
 import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
@@ -32,7 +32,7 @@ export const WinchFcModel: Model<WinchFc> = {
     winch: WinchElement,
     emachine: EMachineElement,
     cable: CableElement,
-    fconvertor: NoTrafoFConvertorElement,
+    fconverter: NoTrafoFConverterElement,
     switch: SwitchElement,
     grid: GridElement,
   },

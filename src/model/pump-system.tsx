@@ -1,7 +1,6 @@
 import { CableElement } from "./cable";
 import { BaseCandidates, BaseComponents } from "./component";
 import { EMachineElement } from "./emachine";
-import { NoTrafoFConvertorElement, TrafoFConvertorElement } from "./fconvertor";
 import { Gearbox, GearboxElement } from "./gearbox";
 import { GridElement } from "./grid";
 import { Pump, PumpElement } from "./pump";
@@ -9,6 +8,7 @@ import { SwitchElement } from "./switch";
 import { BaseSystem, Model, SystemModel } from "./system";
 import { Trafo, TrafoElement, TrafoVoltageHV } from "./trafo";
 import { splitRange, valueDifference } from "./utils";
+import { NoTrafoFConverterElement, TrafoFConverterElement } from "./fconverter";
 
 export type PumpFc = BaseSystem & {
   kind: "pump-fc";
@@ -57,7 +57,7 @@ export const PumpFcModel: Model<PumpFc> = {
     pump: PumpElement,
     emachine: EMachineElement,
     cable: CableElement,
-    fconvertor: NoTrafoFConvertorElement,
+    fconverter: NoTrafoFConverterElement,
     switch: SwitchElement,
     grid: GridElement,
   },
@@ -101,7 +101,7 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
       },
     },
     cable: CableElement,
-    fconvertor: NoTrafoFConvertorElement,
+    fconverter: NoTrafoFConverterElement,
     switch: SwitchElement,
     grid: GridElement,
   },
@@ -156,7 +156,7 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
     pump: PumpElement,
     emachine: EMachineElement,
     cable: CableElement,
-    fconvertor: TrafoFConvertorElement,
+    fconverter: TrafoFConverterElement,
     trafo: TrafoElement,
     switch: SwitchElement,
     grid: {
@@ -218,7 +218,7 @@ export const PumpGbFcTrModel: Model<PumpGbFcTr> = {
     gearbox: GearboxElement,
     emachine: EMachineElement,
     cable: CableElement,
-    fconvertor: TrafoFConvertorElement,
+    fconverter: TrafoFConverterElement,
     trafo: TrafoElement,
     switch: SwitchElement,
     grid: {

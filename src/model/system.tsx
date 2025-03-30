@@ -3,7 +3,7 @@ import React from "react";
 import applications from "./application";
 import { Cable } from "./cable";
 import { EMachine } from "./emachine";
-import { FConvertor } from "./fconvertor";
+import { FConverter } from "./fconverter";
 import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { WinchFc } from "./winch-system";
@@ -56,7 +56,7 @@ export type BaseSystem = {
   input: {
     emachine: EMachine;
     cable: Cable;
-    fconvertor: FConvertor;
+    fconverter: FConverter;
     switch: {};
     grid: Grid;
   };

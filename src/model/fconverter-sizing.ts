@@ -4,8 +4,8 @@ import {
   FConverterMounting,
   FConverterPower,
   FConverterType,
-} from "./fconvertor";
-import { FConvertorComponent } from "./fconvertor-component";
+} from "./fconverter";
+import { FConverterComponent } from "./fconverter-component";
 import { Voltage } from "./voltage";
 
 const Params = [
@@ -16,7 +16,7 @@ const Params = [
   FConverterMounting, // 4
 ];
 
-export function findFcConverters(): FConvertorComponent[] {
+export function findFcConverters(): FConverterComponent[] {
   return FConverterType.flatMap((type) =>
     FcVoltage.flatMap((voltage) =>
       FConverterPower.flatMap((ratedPower) =>
@@ -35,8 +35,8 @@ export function findFcConverters(): FConvertorComponent[] {
                 width: 0,
                 depth: 0,
                 weight: 0,
-                gridSideFilterDesignation: "string",
-                machineSideFilterDesignation: "string",
+                gridSideFilter: null,
+                machineSideFilter: null,
                 efficiency75: 0,
                 efficiency50: 0,
                 efficiency25: 0,

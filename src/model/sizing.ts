@@ -4,6 +4,8 @@ import { findCableComponent as findCableCandidates } from "./cable-sizing";
 import { BaseCandidates, BaseComponents } from "./component";
 import { EMachineComponent } from "./emachine-component";
 import { emachineCatalog, findTypeSpeedTorque } from "./emachine-sizing";
+import { findFcConverters } from "./fconverter-sizing";
+import { FConverterComponent as FConverterComponent } from "./fconverter-component";
 import { System } from "./system";
 import { findVoltageY } from "./voltage";
 
@@ -94,6 +96,15 @@ export function withCandidates(system: System): System {
       components = { ...components, cable: cable[0] };
     }
     candidates = { ...candidates, cable };
+  }
+
+  let fconverter: FConverterComponent[] = [];
+  if (components.emachine) {
+    fconverter = findFcConverters();
+    if (fconverter.length == 1) {
+      components = { ...components, fconverter: fconverter[0] };
+    }
+    candidates = { ...candidates, fconverter: [fconverter[0]] };
   }
 
   return {

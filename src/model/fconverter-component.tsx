@@ -4,10 +4,11 @@ import { FcVoltageY } from "./fconverter-voltage";
 import {
   FConverterMounting,
   FConverterPower,
-  FConvertorTypeAlias,
-} from "./fconvertor";
+  FConverterTypeAlias,
+} from "./fconverter";
+import { FilterComponent } from "./filter-component";
 
-export type FConvertorComponent = {
+export type FConverterComponent = {
   voltage: FcVoltageY;
   price: number;
   workingVoltage: number;
@@ -19,8 +20,8 @@ export type FConvertorComponent = {
   width: number;
   depth: number;
   weight: number;
-  gridSideFilterDesignation: string;
-  machineSideFilterDesignation: string;
+  gridSideFilter: FilterComponent | null;
+  machineSideFilter: FilterComponent | null;
   efficiency75: number;
   efficiency50: number;
   efficiency25: number;
@@ -31,11 +32,11 @@ export type FConvertorComponent = {
   cooling: (typeof Cooling)[number];
   protection: (typeof Protection)[number];
   designation: string;
-  type: FConvertorTypeAlias;
+  type: FConverterTypeAlias;
 };
 
-export const FConvertorComponentModel: ComponentModel<FConvertorComponent> = {
-  kind: "fconvertor",
+export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
+  kind: "fconverter",
   title: "Frequency converter",
   params: {
     type: {
@@ -84,13 +85,15 @@ export const FConvertorComponentModel: ComponentModel<FConvertorComponent> = {
       label: "cos_fi @ rated load",
       advanced: true,
     },
-    gridSideFilterDesignation: {
+    gridSideFilter: {
       label: "Grid side filter",
       advanced: true,
+      render: (v) => v?.designation,
     },
-    machineSideFilterDesignation: {
+    machineSideFilter: {
       label: "Machine side filter",
       advanced: true,
+      render: (v) => v?.designation,
     },
     mounting: {
       label: "Mounting variant",

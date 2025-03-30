@@ -39,13 +39,13 @@ export const GridSideFilter = ["no", "choke", "sin", "choke+RFI"] as const;
 
 export const MachineSideFilter = ["no", "choke", "du/dt", "sin"] as const;
 
-export type FConvertorTypeAlias = (typeof FConverterType)[number];
+export type FConverterTypeAlias = (typeof FConverterType)[number];
 export type GridSideFilterType = (typeof GridSideFilter)[number];
 export type MachineSideFilterType = (typeof MachineSideFilter)[number];
 export type FConverterMountingType = (typeof FConverterMounting)[number];
 
-export type FConvertor = {
-  type: FConvertorTypeAlias;
+export type FConverter = {
+  type: FConverterTypeAlias;
   ratedPower: (typeof FConverterPower)[number] | null;
   gridSideFilter: GridSideFilterType;
   machineSideFilter: MachineSideFilterType;
@@ -55,16 +55,16 @@ export type FConvertor = {
 } & CoolingProtection &
   Environment;
 
-export const NoTrafoFConvertorElement = FConvertorElement([
+export const NoTrafoFConverterElement = FConverterElement([
   "2Q-2L-VSC-6p",
   "4Q-2L-VSC",
 ]);
 
-export const TrafoFConvertorElement = FConvertorElement([...FConverterType]);
+export const TrafoFConverterElement = FConverterElement([...FConverterType]);
 
-function FConvertorElement(
-  types: FConvertorTypeAlias[],
-): SystemElement<FConvertor> {
+function FConverterElement(
+  types: FConverterTypeAlias[],
+): SystemElement<FConverter> {
   return {
     icon,
     params: {
@@ -139,7 +139,7 @@ function FConvertorElement(
   };
 }
 
-function customizeFilters(type: FConvertorTypeAlias): {
+function customizeFilters(type: FConverterTypeAlias): {
   grid: GridSideFilterType[];
   machine: MachineSideFilterType[];
 } {
@@ -175,7 +175,7 @@ function customizeFilters(type: FConvertorTypeAlias): {
   }
 }
 
-function customizeIcon(type: FConvertorTypeAlias): StaticImageData {
+function customizeIcon(type: FConverterTypeAlias): StaticImageData {
   switch (type) {
     case "2Q-2L-VSC-6p":
       return icon_2Q_2L_VSC_6p;
