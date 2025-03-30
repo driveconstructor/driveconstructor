@@ -1,11 +1,11 @@
 import { ComponentModel } from "./component";
-import { Cooling, Protection } from "./cooling-protection";
-import { FcVoltageY } from "./fconverter-voltage";
+import { FcCoolingType, FcProtectionType } from "./cooling-protection";
 import {
   FConverterMounting,
   FConverterPower,
   FConverterTypeAlias,
 } from "./fconverter";
+import { FcVoltageY } from "./fconverter-voltage";
 import { FilterComponent } from "./filter-component";
 
 export type FConverterComponent = {
@@ -29,8 +29,8 @@ export type FConverterComponent = {
   volume: number;
   ratedPower: (typeof FConverterPower)[number];
   mounting: (typeof FConverterMounting)[number];
-  cooling: (typeof Cooling)[number];
-  protection: (typeof Protection)[number];
+  cooling: FcCoolingType;
+  protection: FcProtectionType;
   designation: string;
   type: FConverterTypeAlias;
 };
@@ -57,10 +57,12 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
     },
     currentLO: {
       label: "Rated current LO, A",
+      precision: 2,
       advanced: true,
     },
     currentHO: {
       label: "Rated current HO, A",
+      precision: 2,
       advanced: true,
     },
     cooling: {

@@ -3,9 +3,13 @@ import { SystemParam } from "./system";
 export const Protection = ["IP21/31", "IP54/55"] as const;
 export const Cooling = ["air", "water"] as const;
 
+export type FcCoolingType = (typeof Cooling)[number];
+
+export type FcProtectionType = (typeof Protection)[number];
+
 export type CoolingProtection = {
-  cooling: (typeof Protection)[number];
-  protection: (typeof Cooling)[number];
+  cooling: FcCoolingType;
+  protection: FcProtectionType;
 };
 
 export const ProtectionParam = {

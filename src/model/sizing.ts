@@ -99,12 +99,20 @@ export function withCandidates(system: System): System {
   }
 
   let fconverter: FConverterComponent[] = [];
-  if (components.emachine) {
-    fconverter = findFcConverters();
+  if (components.emachine && components.cable) {
+    fconverter = distincFcCurrent(
+      findFcConverters(
+        system.input.grid.voltage,
+        components.cable.efficiency100,
+        system.input.fconverter,
+        components.emachine.workingCurrent,
+      ),
+    );
+    console.log(fconverter.length);
     if (fconverter.length == 1) {
       components = { ...components, fconverter: fconverter[0] };
     }
-    candidates = { ...candidates, fconverter: [fconverter[0]] };
+    candidates = { ...candidates, fconverter };
   }
 
   return {
@@ -112,4 +120,16 @@ export function withCandidates(system: System): System {
     candidates,
     components,
   };
+}
+
+function distincFcCurrent(fconvereters: FConverterComponent[]) {
+  const set = new Set();
+  return fconvereters.filter((fc) => {
+    const key = fc.currentLO + "-" + fc.currentHO;
+    if (set.has(key)) {
+      return false;
+    }
+    set.add(key);
+    return true;
+  });
 }

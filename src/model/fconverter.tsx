@@ -33,7 +33,7 @@ export const FConverterPower = [
   110, 132, 160, 200, 250, 315, 355, 400, 450, 500, 630, 710, 800, 900, 1000,
   1120, 1250, 1400, 1600, 1800, 2000, 2200, 2500, 2800, 3000, 3300, 3600, 3800,
   4000, 4500, 4700, 5000, 5200, 5500,
-] as const;
+] as const satisfies number[];
 
 export const GridSideFilter = ["no", "choke", "sin", "choke+RFI"] as const;
 
@@ -52,6 +52,7 @@ export type FConverter = {
   mounting: FConverterMountingType | null;
   // virtuals
   voltageDerating: number;
+  overallCurrentDerating: number;
 } & CoolingProtection &
   Environment;
 
@@ -110,6 +111,37 @@ function FConverterElement(
           const K = input?.grid.voltage < 1000 ? 0.00015 : 0.0001;
 
           return fc.altitude > 2000 ? 1 - K * (fc.altitude - 2000) : 1;
+        },
+      },
+      overallCurrentDerating: {
+        label: "Overall current derating",
+        type: "number",
+        precision: 4,
+        value: (fc) => {
+          const deratingA =
+            fc.altitude > 1000 ? 1 - 0.000066 * (fc.altitude - 1000) : 1;
+
+          let deratingC = 1;
+          let deratingT = 1;
+
+          if (fc.cooling === "water") {
+            if (fc.coolantTemperature > 35) {
+              deratingC = 1 - 0.02 * (fc.coolantTemperature - 35);
+            } else {
+              deratingC = 1 - 0.005 * (fc.coolantTemperature - 35);
+            }
+          }
+
+          if (fc.ambientTemperature > 40) {
+            deratingT = 1 - 0.02 * (fc.ambientTemperature - 40);
+          } else {
+            deratingT = 1 - 0.005 * (fc.ambientTemperature - 40);
+          }
+
+          const derating1 = deratingA * deratingC;
+          const derating2 = deratingA * deratingT;
+
+          return derating1 <= derating2 ? derating1 : derating2;
         },
       },
     },

@@ -195,6 +195,4 @@ export function emachineTypeFilter(em: EMachineComponent): boolean {
       }
       return false;
   }
-
-  throw new Error("Unsupporeted type");
 }
