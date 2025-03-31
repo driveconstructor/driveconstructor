@@ -16,7 +16,15 @@ import { FConverterVoltageFilering } from "./fconverter-types";
 import { getVolume } from "./fconverter-volume";
 import { getWeight } from "./fconverter-weight";
 import { getPrice } from "./fconverter-price";
-import { findFiler } from "./filter-component";
+import { FilterComponent, findFiler } from "./filter-component";
+
+function addFilter(
+  filter: FilterComponent | null,
+  func: (f: FilterComponent) => number,
+  nullValue = 0,
+): number {
+  return filter == null ? nullValue : func(filter);
+}
 
 export function findFcConverters(
   systemVoltage: number,
@@ -53,11 +61,30 @@ export function findFcConverters(
                       FConverterPower[
                         Math.max(0, FConverterPower.indexOf(ratedPowerLO) - 1)
                       ];
-                    const efficiency100 = getEfficiency100(
-                      ratedPowerLO,
-                      cooling,
-                      type,
+
+                    const gridSideFilter =
+                      fconverter.gridSideFilter == "choke"
+                        ? null
+                        : findFiler(
+                            fconverter.gridSideFilter,
+                            emachineWorkingCurrent,
+                            voltage.value,
+                          );
+                    const machineSideFilter = findFiler(
+                      fconverter.machineSideFilter,
+                      emachineWorkingCurrent,
+                      voltage.value,
                     );
+
+                    const efficiency100 =
+                      getEfficiency100(ratedPowerLO, cooling, type) *
+                      addFilter(gridSideFilter, (f) => f.efficiency / 100, 1) *
+                      addFilter(
+                        machineSideFilter,
+                        (f) => f.efficiency / 100,
+                        1,
+                      );
+
                     const cosFi100 = getCosFi100(type);
                     const currentLO = getCurrent(
                       ratedPowerLO,
@@ -73,33 +100,46 @@ export function findFcConverters(
                     );
                     const depth = getDepth(type, mounting, ratedPowerLO);
                     const height = getHeight(type, mounting, ratedPowerLO);
-                    const volume = getVolume(
-                      type,
-                      cooling,
-                      protection,
-                      cosFi100,
-                      efficiency100,
-                      voltage.value,
-                      ratedPowerLO,
-                    );
+
+                    const volume =
+                      getVolume(
+                        type,
+                        cooling,
+                        protection,
+                        cosFi100,
+                        efficiency100,
+                        voltage.value,
+                        ratedPowerLO,
+                      ) +
+                      addFilter(gridSideFilter, (f) => f.volume) +
+                      addFilter(machineSideFilter, (f) => f.volume);
+
                     const width = volume / height / depth;
-                    const weight = getWeight(
-                      type,
-                      cooling,
-                      protection,
-                      cosFi100,
-                      efficiency100,
-                      voltage.value,
-                      ratedPowerLO,
-                    );
-                    const price = getPrice(
-                      type,
-                      mounting,
-                      protection,
-                      cosFi100,
-                      efficiency100,
-                      ratedPowerLO,
-                    );
+                    const weight =
+                      getWeight(
+                        type,
+                        cooling,
+                        protection,
+                        cosFi100,
+                        efficiency100,
+                        voltage.value,
+                        ratedPowerLO,
+                      ) +
+                      addFilter(gridSideFilter, (f) => f.weight) +
+                      addFilter(machineSideFilter, (f) => f.weight);
+
+                    const price =
+                      getPrice(
+                        type,
+                        mounting,
+                        protection,
+                        cosFi100,
+                        efficiency100,
+                        ratedPowerLO,
+                      ) +
+                      addFilter(gridSideFilter, (f) => f.price) +
+                      addFilter(machineSideFilter, (f) => f.price);
+
                     return {
                       voltage,
                       price,
@@ -112,19 +152,8 @@ export function findFcConverters(
                       width,
                       depth,
                       weight,
-                      gridSideFilter:
-                        fconverter.gridSideFilter == "choke"
-                          ? null
-                          : findFiler(
-                              fconverter.gridSideFilter,
-                              emachineWorkingCurrent,
-                              voltage.value,
-                            ),
-                      machineSideFilter: findFiler(
-                        fconverter.machineSideFilter,
-                        emachineWorkingCurrent,
-                        voltage.value,
-                      ),
+                      gridSideFilter,
+                      machineSideFilter,
                       efficiency75: efficiency75(efficiency100),
                       efficiency50: efficiency50(efficiency100),
                       efficiency25: efficiency25(efficiency100),

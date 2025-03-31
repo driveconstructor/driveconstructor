@@ -1,10 +1,8 @@
 import {
   FConverterMountingType,
-  FConverter,
   GridSideFilterType,
   MachineSideFilterType,
 } from "./fconverter";
-import { FConverterComponent } from "./fconverter-component";
 import json from "./filter-catalog.json";
 
 const FilterType = ["du/dt", "rfi", "sin"] as const;
@@ -23,6 +21,7 @@ export type FilterComponent = {
   footprint: number;
   protection: "IP21";
   designation: string;
+  price: number;
 };
 
 export const filters = json as FilterComponent[];

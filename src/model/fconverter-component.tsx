@@ -95,12 +95,12 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
     gridSideFilter: {
       label: "Grid side filter",
       advanced: true,
-      render: (v) => v?.designation,
+      render: (v) => (v == null ? "no" : v.designation),
     },
     machineSideFilter: {
       label: "Machine side filter",
       advanced: true,
-      render: (v) => v?.designation,
+      render: (v) => (v == null ? "no" : v.designation),
     },
     mounting: {
       label: "Mounting variant",
