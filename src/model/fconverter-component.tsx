@@ -75,18 +75,22 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
     efficiency75: {
       label: "Efficiency @75% load",
       advanced: true,
+      precision: 2,
     },
     efficiency50: {
       label: "Efficiency @50% load",
       advanced: true,
+      precision: 2,
     },
     efficiency25: {
       label: "Efficiency @25% load",
       advanced: true,
+      precision: 2,
     },
     cosFi100: {
       label: "cos_fi @ rated load",
       advanced: true,
+      precision: 4,
     },
     gridSideFilter: {
       label: "Grid side filter",
@@ -107,21 +111,27 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
     },
     height: {
       label: "Height, m",
+      precision: 2,
     },
     width: {
       label: "Width, m",
+      precision: 2,
     },
     depth: {
       label: "Depth, m",
+      precision: 4,
     },
     volume: {
       label: "Volume, m3",
+      precision: 4,
     },
     footprint: {
       label: "Footprint, m2",
+      precision: 4,
     },
     weight: {
       label: "Weight, kg",
+      precision: 2,
     },
     designation: {
       label: "Designation",

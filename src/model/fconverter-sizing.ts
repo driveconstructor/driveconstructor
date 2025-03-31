@@ -3,6 +3,7 @@ import { FcVoltage, findFcVoltageY } from "./fconverter-voltage";
 import {
   FConverter,
   FConverterMounting,
+  FConverterMountingType,
   FConverterPower,
   FConverterType,
   FConverterTypeAlias,
@@ -12,6 +13,9 @@ import { Voltage } from "./voltage";
 import { closest } from "./utils";
 import { getDesignation } from "./fconverter-utils";
 import { FConverterVoltageFilering } from "./fconverter-types";
+import { getVolume } from "./fconverter-volume";
+import { getWeight } from "./fconverter-weight";
+import { getPrice } from "./fconverter-price";
 
 export function findFcConverters(
   systemVoltage: number,
@@ -66,25 +70,54 @@ export function findFcConverters(
                       efficiency100,
                       cosFi100,
                     );
+                    const depth = getDepth(type, mounting, ratedPowerLO);
+                    const height = getHeight(type, mounting, ratedPowerLO);
+                    const volume = getVolume(
+                      type,
+                      cooling,
+                      protection,
+                      cosFi100,
+                      efficiency100,
+                      voltage.value,
+                      ratedPowerLO,
+                    );
+                    const width = volume / height / depth;
+                    const weight = getWeight(
+                      type,
+                      cooling,
+                      protection,
+                      cosFi100,
+                      efficiency100,
+                      voltage.value,
+                      ratedPowerLO,
+                    );
+                    const price = getPrice(
+                      type,
+                      mounting,
+                      protection,
+                      cosFi100,
+                      efficiency100,
+                      ratedPowerLO,
+                    );
                     return {
                       voltage,
-                      price: 0,
-                      workingVoltage: 0,
+                      price,
+                      workingVoltage: voltage.value,
                       currentLO,
                       currentHO,
                       efficiency100,
-                      cosFi100: 0,
-                      height: 0,
-                      width: 0,
-                      depth: 0,
-                      weight: 0,
+                      cosFi100,
+                      height,
+                      width,
+                      depth,
+                      weight,
                       gridSideFilter: null,
                       machineSideFilter: null,
-                      efficiency75: 0,
-                      efficiency50: 0,
-                      efficiency25: 0,
-                      footprint: 0,
-                      volume: 0,
+                      efficiency75: efficiency75(efficiency100),
+                      efficiency50: efficiency50(efficiency100),
+                      efficiency25: efficiency25(efficiency100),
+                      footprint: width * height,
+                      volume,
                       ratedPower: ratedPowerLO,
                       mounting,
                       cooling,
@@ -161,7 +194,7 @@ function getEfficiency100(
   }
 }
 
-export function getCosFi100(type: FConverterTypeAlias) {
+function getCosFi100(type: FConverterTypeAlias): number {
   switch (type) {
     case "2Q-2L-VSC-6p":
     case "2Q-2L-VSC-12p":
@@ -189,4 +222,101 @@ function getCurrent(
     (1000 * ratedPower) /
     (((Math.sqrt(3) * ratedVoltage * efficiency100) / 100) * cosFi100)
   );
+}
+
+function getDepth(
+  type: FConverterTypeAlias,
+  mounting: FConverterMountingType,
+  ratedPowerLO: number,
+): number {
+  switch (type) {
+    case "2Q-2L-VSC-6p":
+    case "2Q-2L-VSC-12p":
+    case "4Q-2L-VSC":
+      switch (mounting) {
+        case "floor":
+          return 0.6;
+        case "wall":
+          return ratedPowerLO < 10 ? 0.2 : 0.4;
+      }
+    case "2Q-3L-NPC-VSC":
+    case "4Q-3L-NPC-VSC":
+      if (ratedPowerLO < 1000) {
+        return 1;
+      } else if (ratedPowerLO >= 1000 && ratedPowerLO < 5000) {
+        return 1.2;
+      }
+      return 1.4;
+    case "2Q-ML-SCHB-VSC":
+    case "4Q-ML-SCHB-VSC":
+      return 0.9;
+  }
+}
+
+function getHeight(
+  type: FConverterTypeAlias,
+  mounting: FConverterMountingType,
+  ratedPowerLO: number,
+): number {
+  switch (type) {
+    case "2Q-2L-VSC-6p":
+    case "2Q-2L-VSC-12p":
+    case "4Q-2L-VSC": {
+      switch (mounting) {
+        case "floor":
+          return 2.2;
+        case "wall":
+          return ratedPowerLO < 10 ? 0.5 : 1;
+      }
+    }
+    case "2Q-3L-NPC-VSC":
+    case "4Q-3L-NPC-VSC":
+    case "2Q-ML-SCHB-VSC":
+    case "4Q-ML-SCHB-VSC":
+      if (ratedPowerLO < 1000) {
+        return 2.2;
+      }
+      if (ratedPowerLO >= 1000 && ratedPowerLO < 5000) {
+        return 2.4;
+      }
+
+      return 2.6;
+  }
+}
+
+function getEfficiency(efficiency100: number, K: number) {
+  return 100 - (100 - efficiency100) * K;
+}
+
+function efficiency25(efficiency100: number) {
+  let K;
+  //if (this.input.pump || this.input.wind) {
+  K = 1.37;
+  //} else if (this.input.conveyor || this.input.winch) {
+  // K = 0.85;
+  // }
+
+  return getEfficiency(efficiency100, K);
+}
+
+function efficiency50(efficiency100: number) {
+  let K;
+  // if (this.input.pump || this.input.wind) {
+  K = 1.13;
+  //} else if (this.input.conveyor || this.input.winch) {
+  // K = 0.87;
+  //}
+
+  return getEfficiency(efficiency100, K);
+}
+
+function efficiency75(efficiency100: number) {
+  let K;
+  //if (this.input.pump || this.input.wind) {
+  K = 1.05;
+  //} else if (this.input.conveyor || this.input.winch) {
+  // K = 0.93;
+  //}
+
+  return getEfficiency(efficiency100, K);
 }
