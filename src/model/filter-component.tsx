@@ -1,4 +1,9 @@
-import { FConverterMountingType, FConverter } from "./fconverter";
+import {
+  FConverterMountingType,
+  FConverter,
+  GridSideFilterType,
+  MachineSideFilterType,
+} from "./fconverter";
 import { FConverterComponent } from "./fconverter-component";
 import json from "./filter-catalog.json";
 
@@ -22,13 +27,21 @@ export type FilterComponent = {
 
 export const filters = json as FilterComponent[];
 
-export function findFilters(
-  workingCurrent: number,
+export function findFiler(
+  type: GridSideFilterType | MachineSideFilterType,
+  emachineWorkingCurrent: number,
   fconverterRatedVoltage: number,
-) {
-  // todo: implement
-  filters.filter(
-    (f) =>
-      f.voltageMax >= fconverterRatedVoltage && f.current >= workingCurrent,
-  );
+): FilterComponent | null {
+  if (type == "no") {
+    return null;
+  }
+
+  return filters
+    .filter(
+      (f) =>
+        f.type == (type == "choke+RFI" ? "rfi" : type) &&
+        f.voltageMax >= fconverterRatedVoltage &&
+        f.current >= emachineWorkingCurrent,
+    )
+    .sort((a, b) => a.voltageMax - b.voltageMax || a.current - b.current)[0];
 }

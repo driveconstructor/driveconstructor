@@ -16,6 +16,7 @@ import { FConverterVoltageFilering } from "./fconverter-types";
 import { getVolume } from "./fconverter-volume";
 import { getWeight } from "./fconverter-weight";
 import { getPrice } from "./fconverter-price";
+import { findFiler } from "./filter-component";
 
 export function findFcConverters(
   systemVoltage: number,
@@ -111,8 +112,19 @@ export function findFcConverters(
                       width,
                       depth,
                       weight,
-                      gridSideFilter: null,
-                      machineSideFilter: null,
+                      gridSideFilter:
+                        fconverter.gridSideFilter == "choke"
+                          ? null
+                          : findFiler(
+                              fconverter.gridSideFilter,
+                              emachineWorkingCurrent,
+                              voltage.value,
+                            ),
+                      machineSideFilter: findFiler(
+                        fconverter.machineSideFilter,
+                        emachineWorkingCurrent,
+                        voltage.value,
+                      ),
                       efficiency75: efficiency75(efficiency100),
                       efficiency50: efficiency50(efficiency100),
                       efficiency25: efficiency25(efficiency100),
