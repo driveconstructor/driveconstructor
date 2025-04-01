@@ -128,30 +128,32 @@ export const EMachineElement: SystemElement<EMachine> = {
       value: (em) => {
         const deratingA =
           em.altitude > 1000 ? 1 - 0.00008 * (em.altitude - 1000) : 1;
-        let deratingC = 1;
-        let deratingT = 1;
 
         if (em.cooling == "IC411" || em.cooling == "IC416") {
           if (em.ambientTemperature > 40) {
-            deratingT = 1 - 0.008 * (em.ambientTemperature - 40);
+            const deratingT = 1 - 0.008 * (em.ambientTemperature - 40);
+            return deratingA * deratingT;
           }
-        } else if (em.cooling === "IC71W") {
-          if (em.coolantTemperature > 35) {
-            deratingC = 1 - 0.008 * (em.coolantTemperature - 35);
-          } else {
-            deratingC = 1 + 0.008 * (em.coolantTemperature - 35);
-          }
-          if (em.ambientTemperature > 40) {
-            deratingT = 1 - 0.004 * (em.ambientTemperature - 40);
-          } else {
-            deratingT = 1 + 0.004 * (em.ambientTemperature - 40);
-          }
+
+          return deratingA;
         }
 
-        const derating1 = deratingA * deratingC;
-        const derating2 = deratingA * deratingT;
+        if (em.cooling == "IC71W" && em.protection == "IP21/23") {
+          const deratingC = 1 - 0.008 * (em.coolantTemperature - 35);
+          const deratingT = 1 - 0.004 * (em.ambientTemperature - 40);
 
-        return derating1 <= derating2 ? derating1 : derating2;
+          const derating1 = deratingA * deratingC;
+          const derating2 = deratingA * deratingT;
+
+          return Math.min(derating1, derating2);
+        }
+
+        if (em.cooling == "IC71W" && em.protection == "IP54/55") {
+          const deratingT = 1 - 0.008 * (em.coolantTemperature - 35);
+          return deratingA * deratingT;
+        }
+
+        throw new Error("Invalid combination");
       },
     },
     voltageDerating: {
@@ -159,7 +161,7 @@ export const EMachineElement: SystemElement<EMachine> = {
       type: "number",
       precision: 4,
       value: (em) =>
-        em.altitude > 2000 ? 1 - 0.00015 * (em.altitude - 2000) : 1,
+        em.altitude > 1000 ? 1 - 0.00015 * (em.altitude - 1000) : 1,
     },
   },
   customize: (model, value) => {
