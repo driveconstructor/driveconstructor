@@ -3,14 +3,12 @@ import {
   CrossSection,
   CrossSectionType,
   Material,
-  MaterialParam,
   MaterialType,
   NumberOfRuns,
   NumberOfRunsType,
 } from "./cable";
 import { CableComponent } from "./cable-component";
 import { EMachineComponent } from "./emachine-component";
-import { System } from "./system";
 import { closest } from "./utils";
 
 const Voltage = [1, 3, 6, 10, 15];

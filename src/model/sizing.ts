@@ -25,23 +25,17 @@ function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
       em.frameMaterial,
       em.mounting,
       em.type,
-      //em.shaftHeight, // !?
       em.efficiencyClass,
     ].join("-"),
   );
   return Object.entries(grouping)
-    .flatMap(
-      ([_, v]) =>
-        v?.sort(
-          (a, b) =>
-            a.ratedPower - b.ratedPower || a.shaftHeight - b.shaftHeight,
-        )[0],
-    )
+    .flatMap(([_, v]) => v?.sort((a, b) => a.ratedPower - b.ratedPower)[0])
     .filter((v) => typeof v != "undefined");
 }
 
 function findEmachines(system: System): EMachineComponent[] {
   let mechanism: Mechanism;
+  const input = system.input;
 
   if (
     system.kind == "pump-fc" ||
@@ -50,28 +44,28 @@ function findEmachines(system: System): EMachineComponent[] {
     system.kind == "pump-gb-fc-tr"
   ) {
     mechanism = {
-      ratedSpeed: system.input.pump.ratedSpeed,
-      ratedTorque: system.input.pump.ratedTorque,
-      powerOnShaft: system.input.pump.powerOnShaft,
-      minimalSpeed: system.input.pump.minimalSpeed,
+      ratedSpeed: input.pump.ratedSpeed,
+      ratedTorque:
+        input.pump.ratedTorque / input.emachine.overallTorqueDerating,
+      powerOnShaft: input.pump.powerOnShaft,
+      minimalSpeed: input.pump.minimalSpeed,
       linear:
-        system.input.emachine.cooling == "IC411" &&
-        system.input.pump.type == "positive displacement",
+        input.emachine.cooling == "IC411" &&
+        input.pump.type == "positive displacement",
     };
   } else {
     throw new Error("Unsupported");
   }
 
   const typeSpeedAndTorqueList = findTypeSpeedTorque(
-    system.input.emachine.type,
+    input.emachine.type,
     mechanism,
   );
-  const deratedVoltage =
-    system.input.grid.voltage / system.input.emachine.voltageDerating;
+  const deratedVoltage = input.grid.voltage / input.emachine.voltageDerating;
   const voltageY = findVoltageY(deratedVoltage);
 
   const catalog = emachineCatalog(
-    system.input.emachine,
+    input.emachine,
     typeSpeedAndTorqueList,
     voltageY,
   );
