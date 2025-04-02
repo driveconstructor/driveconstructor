@@ -94,19 +94,22 @@ function Candidate({
             >
               <div className="grid grid-cols-4 lg:grid-cols-8">
                 <div className="justify-self-center">
-                  Selected{" "}
-                  <input
-                    type="radio"
-                    checked={selected == i}
-                    onChange={() => setSelected(i)}
-                  />
+                  <label>
+                    <input
+                      type="radio"
+                      checked={selected == i}
+                      onChange={() => setSelected(i)}
+                      data-testid={`${kind}[${i}].<selected>`}
+                    />{" "}
+                    Selected
+                  </label>
                 </div>
                 {Object.keys(model.params)
                   .filter((k) => showMore || !model.params[k].advanced)
-                  .map((k, i) => (
-                    <div key={i}>
+                  .map((k, j) => (
+                    <div key={j}>
                       <Param
-                        id={`${kind}.${k}`}
+                        id={`${kind}[${i}].${k}`}
                         model={model.params[k]}
                         value={v[k]}
                       />

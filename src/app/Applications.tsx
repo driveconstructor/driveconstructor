@@ -23,7 +23,11 @@ function renderApp(model: ApplicationModel) {
       <div className="text-xl">{model.title}</div>
       <div>{model.description}</div>
       <div className="m-4 flex justify-end space-x-1">
-        <Link className="btn" href={`/applications/${model.name}`}>
+        <Link
+          className="btn"
+          href={`/applications/${model.name}`}
+          role="button"
+        >
           Select
         </Link>
         <Link className="btn" href={model.url}>
