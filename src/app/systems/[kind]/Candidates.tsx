@@ -105,7 +105,11 @@ function Candidate({
                   .filter((k) => showMore || !model.params[k].advanced)
                   .map((k, i) => (
                     <div key={i}>
-                      <Param param={model.params[k]} value={v[k]} />
+                      <Param
+                        id={`${kind}.${k}`}
+                        model={model.params[k]}
+                        value={v[k]}
+                      />
                     </div>
                   ))}
               </div>
@@ -116,11 +120,19 @@ function Candidate({
   );
 }
 
-function Param({ param: model, value }: { param: ComponentParam; value: any }) {
+function Param({
+  id,
+  model,
+  value,
+}: {
+  id: string;
+  model: ComponentParam;
+  value: any;
+}) {
   return (
     <div className="p-1">
       <div className="text-sm">{model.label}:</div>
-      <div className="border">
+      <div className="border" data-testid={id}>
         {model.render
           ? model.render(value)
           : typeof value == "number"
@@ -130,12 +142,3 @@ function Param({ param: model, value }: { param: ComponentParam; value: any }) {
     </div>
   );
 }
-
-/**
- *     <div className="p-4">
-      <div className="absolute mx-2 p-2 text-xs">{param.label}:</div>
-      <div className="m-4 border p-2">
-        {param.render ? param.render(value) : value}
-      </div>
-    </div>
- */
