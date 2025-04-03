@@ -69,9 +69,11 @@ jobs:
 
       - name: Update staging repo
         run: |
+          set -e
           cd staging
           git rm -rf .
           git clean -fxd
+          pwd
           cp -r ../out/* .
           git config --local user.email "info@driveconstructor.com"
           git config --local user.name "Build Bot"
