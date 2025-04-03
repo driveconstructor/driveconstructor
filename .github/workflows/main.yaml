@@ -37,13 +37,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Install playwright dependencies
-        run: npx playwright install --with-deps
-        if: never()
+      #- name: Install playwright dependencies
+        #run: npx playwright install --with-deps
 
-      - name: Run playwright
-        run: npm run test:e2e
-        if: never()
+      #- name: Run playwright
+      # run: npm run test:e2e
 
       - name: Upload playwright report
         uses: actions/upload-artifact@v4
@@ -69,7 +67,8 @@ jobs:
           cp -rv ../out/* .
           git config --local user.email "info@driveconstructor.com"
           git config --local user.name "Build Bot"
-          git commit -a -m "Bump staging to ${{ github.sha }}"
+          git add -A
+          git commit -m "Bump staging to ${{ github.sha }}"
 
       - name: Push staging changes
         uses: ad-m/github-push-action@master
