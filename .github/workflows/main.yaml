@@ -37,11 +37,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      #- name: Install playwright dependencies
-        #run: npx playwright install --with-deps
+      - name: Install playwright dependencies
+        run: npx playwright install --with-deps
 
-      #- name: Run playwright
-      # run: npm run test:e2e
+      - name: Run playwright
+        run: npm run test:e2e
 
       - name: Upload playwright report
         uses: actions/upload-artifact@v4
@@ -63,8 +63,8 @@ jobs:
           set -e
           cd staging
           git rm -rf .
-          ls -l ../out
-          cp -rv ../out/* .
+          cp -r ../out/* .
+          touch .nojekyll
           git config --local user.email "info@driveconstructor.com"
           git config --local user.name "Build Bot"
           git add -A
