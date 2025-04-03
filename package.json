@@ -8,7 +8,7 @@
     "test": "jest",
     "test:e2e": "playwright test",
     "format": "prettier --write --ignore-path .gitignore .",
-    "serve": "serve -c ../server.json out"
+    "serve": "serve out"
   },
   "dependencies": {
     "@heroicons/react": "2.2.0",

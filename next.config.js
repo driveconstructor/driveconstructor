@@ -2,11 +2,11 @@
 const nextConfig = {
   output: "export",
   trailingSlash: true,
-  basePath: "/driveconstructor",
+  basePath: "",
   env: {
     build_at: new Date().toISOString(),
   },
-  distDir: "out/driveconstructor",
+  distDir: "out",
 };
 
 module.exports = nextConfig;
