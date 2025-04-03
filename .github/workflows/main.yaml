@@ -61,18 +61,27 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Checkout staging repo
+        uses: actions/checkout@v4
         with:
-          path: out
+          repository: driveconstructor-staging/driveconstructor-staging.github.io
+          token: ${{ secrets.GH_PAT }}
+          path: staging
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Update staging repo
+        run: |
+          cd staging
+          git rm -rf .
+          git clean -fxd
+          cp -r ../out/* .
+          git config --local user.email "info@driveconstructor.com"
+          git config --local user.name "Build Bot"
+          git commit -a -m "Bump staging to ${{ github.sha }}"
+
+      - name: Push staging changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          directory: out
+          repository: driveconstructor-staging/driveconstructor-staging.github.io
+          force: true
