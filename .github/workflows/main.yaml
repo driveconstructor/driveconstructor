@@ -63,9 +63,7 @@ jobs:
           set -e
           cd staging
           git rm -rf .
-          git clean -fxd
-          pwd
-          tree ../
+          ls -l ../
           cp -r ../out/* .
           git config --local user.email "info@driveconstructor.com"
           git config --local user.name "Build Bot"
