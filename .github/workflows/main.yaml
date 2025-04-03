@@ -1,15 +1,9 @@
-name: Deploy site to Pages
+name: Build and deploy to staging
 
 on:
   push:
     branches: ["main"]
   workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -27,9 +21,6 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
 
       - name: Restore cache
         uses: actions/cache@v4
@@ -73,7 +64,6 @@ jobs:
           cd staging
           git rm -rf .
           git clean -fxd
-          pwd
           cp -r ../out/* .
           git config --local user.email "info@driveconstructor.com"
           git config --local user.name "Build Bot"
