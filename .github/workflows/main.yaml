@@ -40,16 +40,16 @@ jobs:
       - name: Install playwright dependencies
         run: npx playwright install --with-deps
 
-      #- name: Run playwright
-      #  run: npm run test:e2e
+      - name: Run playwright
+        run: npm run test:e2e
 
-      #- name: Upload playwright report
-      #  uses: actions/upload-artifact@v4
-      #  if: always()
-      #  with:
-      #    name: playwright-report
-      #    path: playwright-report/
-      #    retention-days: 30
+      - name: Upload playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 
       - name: Checkout staging repo
         uses: actions/checkout@v4
@@ -71,7 +71,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -a -m "${{ github.sha }} ${{ github.event.head_commit.message }}"
+          git commit -a -m "${GITHUB_SHA::7} ${{ github.event.head_commit.message }}"
 
       - name: Push staging changes
         uses: ad-m/github-push-action@master
