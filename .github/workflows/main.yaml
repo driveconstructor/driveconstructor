@@ -71,7 +71,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -a -m "Bump staging to ${{ github.sha }}"
+          git commit -a -m "${{ github.sha }} ${{ github.event.head_commit.message }}"
 
       - name: Push staging changes
         uses: ad-m/github-push-action@master
