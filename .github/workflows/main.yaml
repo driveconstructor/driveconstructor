@@ -58,13 +58,13 @@ jobs:
           repository: ${{ vars.STAGING_REPO }}
           token: ${{ secrets.GH_PAT }}
           path: staging
+          ref: gh-pages
 
       - name: Update staging repo
         if: ${{ vars.STAGING_REPO }}
         run: |
           set -e
-          cd staging
-          git checkout -b gh-pages
+          cd staging          
           git rm -rf .
           cp -r ../out/* .
           touch .nojekyll
