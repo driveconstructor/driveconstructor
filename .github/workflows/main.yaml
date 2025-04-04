@@ -54,7 +54,7 @@ jobs:
       - name: Checkout staging repo
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.STAGING_REPO }}
+          repository: ${{ vars.STAGING_REPO }}
           token: ${{ secrets.GH_PAT }}
           path: staging
 
@@ -75,5 +75,5 @@ jobs:
         with:
           github_token: ${{ secrets.GH_PAT }}
           directory: staging
-          repository: ${{ env.STAGING_REPO }}
+          repository: ${{ vars.STAGING_REPO }}
           force: true
