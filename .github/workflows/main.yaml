@@ -54,7 +54,7 @@ jobs:
       - name: Checkout staging repo
         uses: actions/checkout@v4
         with:
-          repository: driveconstructor-staging/driveconstructor-staging.github.io
+          repository: ${{ env.STAGING_REPO }}
           token: ${{ secrets.GH_PAT }}
           path: staging
 
@@ -65,8 +65,8 @@ jobs:
           git rm -rf .
           cp -r ../out/* .
           touch .nojekyll
-          git config --local user.email "info@driveconstructor.com"
-          git config --local user.name "Build Bot"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git add -A
           git commit -m "Bump staging to ${{ github.sha }}"
 
@@ -75,5 +75,5 @@ jobs:
         with:
           github_token: ${{ secrets.GH_PAT }}
           directory: staging
-          repository: driveconstructor-staging/driveconstructor-staging.github.io
+          repository: ${{ env.STAGING_REPO }}
           force: true
