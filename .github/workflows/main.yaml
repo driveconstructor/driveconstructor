@@ -58,7 +58,6 @@ jobs:
           repository: ${{ vars.STAGING_REPO }}
           token: ${{ secrets.GH_PAT }}
           path: staging
-          ref: gh-pages
 
       - name: Update staging repo
         if: ${{ vars.STAGING_REPO }}
@@ -81,4 +80,3 @@ jobs:
           directory: staging
           repository: ${{ vars.STAGING_REPO }}
           force: true
-          branch: gh-pages
