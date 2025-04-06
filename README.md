@@ -12,6 +12,10 @@ Before you start, you need to install Node packages required by the application 
 
 Note: everytime there are changes in `package.json`, you need to run this command again.
 
+If you want to run end-to-end tests you will also need to install [playwright](https://playwright.dev/) dependencies:
+
+    > npx playwright install
+
 Run the following command to start the application in the development mode:
 
     > npm run dev
@@ -28,7 +32,7 @@ Run the follow to perform end-to-end tests on the pre-built application:
 
     > npm run test:e2e
 
-The tests are run in the headless browser using [playwright](https://playwright.dev/).
+The tests are run in a headless browser.
 
 ## Deployment
 
