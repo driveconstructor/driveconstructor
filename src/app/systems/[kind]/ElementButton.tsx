@@ -18,6 +18,7 @@ export default function ElementButton({
 
   return (
     <Element
+      name={name}
       icon={model.icon}
       width={model.iconWidth ?? 80}
       height={80}

@@ -73,6 +73,7 @@ function Candidate({
             <div
               className="btn flex-none"
               onClick={() => setShowMore(!showMore)}
+              data-testid={`${kind}.<more>`}
             >
               {showMore ? "Less..." : "More..."}
             </div>
