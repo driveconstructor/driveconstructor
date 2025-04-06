@@ -15,7 +15,6 @@ export default function Element({
   active?: boolean;
   onClick?: () => void;
 }) {
-  console.log("xxx: " + name);
   return (
     <button
       onClick={onClick}

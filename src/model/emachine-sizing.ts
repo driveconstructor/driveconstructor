@@ -75,10 +75,11 @@ export function findTypeSpeedTorque(
   );
 }
 
-export function emachineCatalog(
+export function findEmCandidates(
   em: EMachine,
   typeSpeedTorqueList: TypeSpeedTorque[],
   ratedVoltageY: VoltageY,
+  mechanismTorqueOverload?: number,
 ): EMachineComponent[] {
   return EMachineCooling.filter((c) => em.cooling == null || c == em.cooling)
     .flatMap((cooling) =>
@@ -206,7 +207,12 @@ export function emachineCatalog(
     )
     .filter(emachineTypeFilter)
     .filter((ec) => em.ratedPower == null || ec.ratedPower == em.ratedPower)
-    .filter((ec) => em.shaftHeight == null || ec.shaftHeight == em.shaftHeight);
+    .filter((ec) => em.shaftHeight == null || ec.shaftHeight == em.shaftHeight)
+    .filter(
+      (ec) =>
+        typeof mechanismTorqueOverload == "undefined" ||
+        ec.torqueOverload * ec.ratedTorque >= mechanismTorqueOverload,
+    );
 }
 
 function getCosFi(typeSpeedTorque: TypeSpeedTorque, k: number): number {

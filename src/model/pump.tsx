@@ -81,7 +81,8 @@ export const PumpElement: SystemElement<Pump> = {
         max: 20,
       },
       value: 0.0,
-      options: [...Array(21)].map((_, i) => (i * 0.1).toFixed(1)),
+      options: [...Array(21)].map((_, i) => i * 0.1),
+      optionLabels: [...Array(21)].map((_, i) => (i * 0.1).toFixed(1)),
       advanced: true,
     },
     fluidDensity: {

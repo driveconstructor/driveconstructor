@@ -1,11 +1,13 @@
-import { Cable } from "./cable";
 import { CableComponent } from "./cable-component";
 import { findCableComponent as findCableCandidates } from "./cable-sizing";
 import { BaseCandidates, BaseComponents } from "./component";
 import { EMachineComponent } from "./emachine-component";
-import { emachineCatalog, findTypeSpeedTorque } from "./emachine-sizing";
+import {
+  findEmCandidates as findEmachines,
+  findTypeSpeedTorque
+} from "./emachine-sizing";
+import { FConverterComponent } from "./fconverter-component";
 import { findFcConverters } from "./fconverter-sizing";
-import { FConverterComponent as FConverterComponent } from "./fconverter-component";
 import { System } from "./system";
 import { findVoltageY } from "./voltage";
 
@@ -33,7 +35,7 @@ function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
     .filter((v) => typeof v != "undefined");
 }
 
-function findEmachines(system: System): EMachineComponent[] {
+function findEMachineCandidates(system: System): EMachineComponent[] {
   let mechanism: Mechanism;
   const input = system.input;
 
@@ -64,10 +66,11 @@ function findEmachines(system: System): EMachineComponent[] {
   const deratedVoltage = input.grid.voltage / input.emachine.voltageDerating;
   const voltageY = findVoltageY(deratedVoltage);
 
-  const catalog = emachineCatalog(
+  const catalog = findEmachines(
     input.emachine,
     typeSpeedAndTorqueList,
     voltageY,
+    input.pump.torqueOverload,
   );
 
   return distinctEmBySecondaryParams(catalog);
@@ -77,7 +80,7 @@ export function withCandidates(system: System): System {
   let candidates: BaseCandidates = { ...system.candidates };
   let components: BaseComponents = { ...system.components };
 
-  const emachine = findEmachines(system);
+  const emachine = findEMachineCandidates(system);
   if (emachine.length == 1) {
     components = { ...components, emachine: emachine[0] };
   }
@@ -108,11 +111,7 @@ export function withCandidates(system: System): System {
     candidates = { ...candidates, fconverter };
   }
 
-  return {
-    ...system,
-    candidates,
-    components,
-  };
+  return { ...system, candidates, components };
 }
 
 function distinctFcByMounting(fconverter: FConverterComponent[]) {

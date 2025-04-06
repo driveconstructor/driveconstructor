@@ -182,7 +182,7 @@ test("Minimum speed in Positive displacement pump", async ({ page }) => {
   );
 });
 
-test("Checking starting torque", async ({ page }) => {
+test("Starting torque", async ({ page }) => {
   await page.getByTestId("emachine.<icon>").click();
   await page.getByLabel("Type:").selectOption("PMSM");
   await expect(page.getByTestId("emachine[0].designation")).toContainText(
@@ -198,8 +198,28 @@ test("Checking starting torque", async ({ page }) => {
   await page.getByText("More...").first().click();
   await page.getByLabel("Starting torque as *T_rated:").selectOption("2.0");
 
-  // TODO: fix
-  //await expect(page.getByTestId("emachine[0].designation")).toContainText(
-  //   "PM-200-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
-  //);
+  await expect(page.getByTestId("emachine[0].designation")).toContainText(
+    "PM-200-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
+  );
+  await expect(page.getByTestId("fconverter[0].designation")).toContainText(
+    "2Q-2L-400-132-IP2x-AC-W-6p",
+  );
+  await page.getByLabel("Starting torque as *T_rated:").selectOption("1.6");
+  await expect(page.getByTestId("emachine[0].designation")).toContainText(
+    "PM-160-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
+  );
+  await expect(page.getByTestId("fconverter[0].designation")).toContainText(
+    "2Q-2L-400-132-IP2x-AC-W-6p",
+  );
+  await expect(page.getByTestId("fconverter[1].designation")).toContainText(
+    "2Q-2L-400-200-IP2x-AC-F-6p",
+  );
+});
+
+test("Fluid density", async ({ page }) => {
+  await page.getByText('More...').first().click();
+  await page.getByRole('spinbutton', { name: 'Fluid:' }).fill('2000');
+  await expect(page.getByTestId('emachine[0].designation')).toContainText('IM-250-LV-400-SH315-ACS-IP2x-CI-1500-B3-IE4');
+  await expect(page.getByTestId('fconverter[0].designation')).toContainText('2Q-2L-400-355-IP2x-AC-F-6p');
+  await expect(page.getByTestId('fconverter[0].<selected>')).toBeChecked();
 });
