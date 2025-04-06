@@ -4,7 +4,7 @@ import { BaseCandidates, BaseComponents } from "./component";
 import { EMachineComponent } from "./emachine-component";
 import {
   findEmCandidates as findEmachines,
-  findTypeSpeedTorque
+  findTypeSpeedTorque,
 } from "./emachine-sizing";
 import { FConverterComponent } from "./fconverter-component";
 import { findFcConverters } from "./fconverter-sizing";

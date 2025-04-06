@@ -217,9 +217,17 @@ test("Starting torque", async ({ page }) => {
 });
 
 test("Fluid density", async ({ page }) => {
-  await page.getByText('More...').first().click();
-  await page.getByRole('spinbutton', { name: 'Fluid:' }).fill('2000');
-  await expect(page.getByTestId('emachine[0].designation')).toContainText('IM-250-LV-400-SH315-ACS-IP2x-CI-1500-B3-IE4');
-  await expect(page.getByTestId('fconverter[0].designation')).toContainText('2Q-2L-400-355-IP2x-AC-F-6p');
-  await expect(page.getByTestId('fconverter[0].<selected>')).toBeChecked();
+  await page.getByText("More...").first().click();
+  await page.getByRole("spinbutton", { name: "Fluid:" }).fill("2000");
+  await expect(page.getByTestId("emachine[0].designation")).toContainText(
+    "IM-250-LV-400-SH315-ACS-IP2x-CI-1500-B3-IE4",
+  );
+  await expect(page.getByTestId("fconverter[0].designation")).toContainText(
+    "2Q-2L-400-355-IP2x-AC-F-6p",
+  );
+  await expect(page.getByTestId("fconverter[0].<selected>")).toBeChecked();
+});
+
+test("Influence of cable length", async ({ page }) => {
+  // TODO: implement
 });
