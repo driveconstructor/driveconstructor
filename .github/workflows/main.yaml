@@ -62,7 +62,7 @@ jobs:
       - name: Update staging repo
         if: ${{ vars.STAGING_REPO }}
         run: .github/scripts/update-staging.sh
-        with:
+        env:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
 
       - name: Push staging changes
