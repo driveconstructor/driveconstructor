@@ -3,6 +3,7 @@ set -eu
 
 cd staging
 git rm -rf .
+git checkout HEAD -- .github
 cp -r ../out/* .
 touch .nojekyll
 git config --local user.email "action@github.com"
