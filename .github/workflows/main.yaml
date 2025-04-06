@@ -3,6 +3,8 @@ name: Build and deploy to staging
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 concurrency:
@@ -53,21 +55,21 @@ jobs:
 
       - name: Checkout staging repo
         uses: actions/checkout@v4
-        if: ${{ vars.STAGING_REPO }}
+        if: ${{ vars.STAGING_REPO && github.event_name != 'pull_request' }}
         with:
           repository: ${{ vars.STAGING_REPO }}
           token: ${{ secrets.GH_PAT }}
           path: staging
 
       - name: Update staging repo
-        if: ${{ vars.STAGING_REPO }}
+        if: ${{ vars.STAGING_REPO && github.event_name != 'pull_request' }}
         run: .github/scripts/update-staging.sh
         env:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
 
       - name: Push staging changes
         uses: ad-m/github-push-action@master
-        if: ${{ vars.STAGING_REPO }}
+        if: ${{ vars.STAGING_REPO && github.event_name != 'pull_request' }}
         with:
           github_token: ${{ secrets.GH_PAT }}
           directory: staging
