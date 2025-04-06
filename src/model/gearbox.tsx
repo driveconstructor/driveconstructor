@@ -2,7 +2,7 @@ import icon from "../images/el-gearbox.svg";
 import { System, SystemElement, SystemParam } from "./system";
 
 export const StageType = ["worm", "helical", "planetary", "bevel"] as const;
-type StageTypeAlias = (typeof StageType)[number];
+export type StageTypeAlias = (typeof StageType)[number];
 
 export const SecondaryStageType: StageTypeAlias[] = ["helical", "planetary"];
 

@@ -1,5 +1,5 @@
 import { CableElement } from "./cable";
-import { BaseCandidates, BaseComponents } from "./component";
+import { CandidatesType, ComponentsType } from "./component";
 import { EMachineElement } from "./emachine";
 import { NoTrafoFConverterElement } from "./fconverter";
 import { GridElement } from "./grid";
@@ -12,8 +12,8 @@ export type WinchFc = BaseSystem & {
   input: {
     winch: Winch;
   };
-  candidates: BaseCandidates;
-  components: BaseComponents;
+  candidates: CandidatesType;
+  components: ComponentsType;
 };
 
 export const WinchFcModel: Model<WinchFc> = {

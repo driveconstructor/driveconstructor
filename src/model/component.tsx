@@ -7,6 +7,7 @@ import {
   FConverterComponent,
   FConverterComponentModel,
 } from "./fconverter-component";
+import { GearboxComponent } from "./gearbox-component";
 
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
@@ -18,9 +19,7 @@ export type ComponentParam<T = any> = {
 export type ComponentModel<T = any> = {
   kind: string;
   title: React.ReactNode;
-  params: {
-    [P in keyof T]: ComponentParam<T[P]>;
-  };
+  params: { [P in keyof T]: ComponentParam<T[P]> };
 };
 
 export function getComponentModel(kind: string): ComponentModel {
@@ -36,12 +35,13 @@ export function getComponentModel(kind: string): ComponentModel {
   return result;
 }
 
-export type BaseComponents = {
+export type ComponentsType = {
   emachine?: EMachineComponent;
   cable?: CableComponent;
   fconverter?: FConverterComponent;
+  gearbox?: GearboxComponent;
 };
 
-export type BaseCandidates = {
-  [P in keyof BaseComponents]: BaseComponents[P][];
+export type CandidatesType = {
+  [P in keyof ComponentsType]: ComponentsType[P][];
 };

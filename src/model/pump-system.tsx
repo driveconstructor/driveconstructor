@@ -1,5 +1,5 @@
 import { CableElement } from "./cable";
-import { BaseCandidates, BaseComponents } from "./component";
+import { CandidatesType, ComponentsType } from "./component";
 import { EMachineElement } from "./emachine";
 import { Gearbox, GearboxElement } from "./gearbox";
 import { GridElement } from "./grid";
@@ -12,11 +12,9 @@ import { NoTrafoFConverterElement, TrafoFConverterElement } from "./fconverter";
 
 export type PumpFc = BaseSystem & {
   kind: "pump-fc";
-  input: {
-    pump: Pump;
-  };
-  candidates: BaseCandidates;
-  components: BaseComponents;
+  input: { pump: Pump };
+  candidates: CandidatesType;
+  components: ComponentsType;
 };
 
 function validate(system: PumpFc | PumpGbFc) {
@@ -66,12 +64,9 @@ export const PumpFcModel: Model<PumpFc> = {
 
 export type PumpGbFc = BaseSystem & {
   kind: "pump-gb-fc";
-  input: {
-    pump: Pump;
-    gearbox: Gearbox;
-  };
-  candidates: BaseCandidates;
-  components: BaseComponents;
+  input: { pump: Pump; gearbox: Gearbox };
+  candidates: CandidatesType;
+  components: ComponentsType;
 };
 
 export const PumpGbFcModel: Model<PumpGbFc> = {
@@ -93,13 +88,15 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
       },
     },
     gearbox: GearboxElement,
-    emachine: {
+    /* TODO: use this for wind
+   emachine: {
       ...EMachineElement,
       params: {
         ...EMachineElement.params,
         type: { ...EMachineElement.params.type, value: "PMSM" },
       },
-    },
+    },*/
+    emachine: EMachineElement,
     cable: CableElement,
     fconverter: NoTrafoFConverterElement,
     switch: SwitchElement,
@@ -123,23 +120,16 @@ function updateTrSystem<T extends PumpFcTr | PumpGbFcTr>(system: T): T {
     ...system,
     input: {
       ...system.input,
-      trafo: {
-        ...trafo,
-        sideVoltageHV: grid.voltage,
-        ratio,
-      },
+      trafo: { ...trafo, sideVoltageHV: grid.voltage, ratio },
     },
   };
 }
 
 export type PumpFcTr = BaseSystem & {
   kind: "pump-fc-tr";
-  input: {
-    pump: Pump;
-    trafo: Trafo;
-  };
-  candidates: BaseCandidates;
-  components: BaseComponents;
+  input: { pump: Pump; trafo: Trafo };
+  candidates: CandidatesType;
+  components: ComponentsType;
 };
 
 export const PumpFcTrModel: Model<PumpFcTr> = {
@@ -182,11 +172,7 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
       ...system,
       input: {
         ...system.input,
-        trafo: {
-          ...trafo,
-          sideVoltageHV: grid.voltage,
-          ratio,
-        },
+        trafo: { ...trafo, sideVoltageHV: grid.voltage, ratio },
       },
     };
   },
@@ -194,13 +180,9 @@ export const PumpFcTrModel: Model<PumpFcTr> = {
 
 export type PumpGbFcTr = BaseSystem & {
   kind: "pump-gb-fc-tr";
-  input: {
-    pump: Pump;
-    gearbox: Gearbox;
-    trafo: Trafo;
-  };
-  candidates: BaseCandidates;
-  components: BaseComponents;
+  input: { pump: Pump; gearbox: Gearbox; trafo: Trafo };
+  candidates: CandidatesType;
+  components: ComponentsType;
 };
 
 export const PumpGbFcTrModel: Model<PumpGbFcTr> = {

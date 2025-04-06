@@ -1,6 +1,6 @@
 import { CableComponent } from "./cable-component";
 import { findCableComponent as findCableCandidates } from "./cable-sizing";
-import { BaseCandidates, BaseComponents } from "./component";
+import { CandidatesType, ComponentsType } from "./component";
 import { EMachineComponent } from "./emachine-component";
 import {
   findEmCandidates as findEmachines,
@@ -8,6 +8,7 @@ import {
 } from "./emachine-sizing";
 import { FConverterComponent } from "./fconverter-component";
 import { findFcConverters } from "./fconverter-sizing";
+import { findGearboxes } from "./gearbox-sizing";
 import { System } from "./system";
 import { findVoltageY } from "./voltage";
 
@@ -77,8 +78,13 @@ function findEMachineCandidates(system: System): EMachineComponent[] {
 }
 
 export function withCandidates(system: System): System {
-  let candidates: BaseCandidates = { ...system.candidates };
-  let components: BaseComponents = { ...system.components };
+  let candidates: CandidatesType = { ...system.candidates };
+  let components: ComponentsType = { ...system.components };
+
+  if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
+    const gearboxes = findGearboxes();
+    console.log(gearboxes.length);
+  }
 
   const emachine = findEMachineCandidates(system);
   if (emachine.length == 1) {

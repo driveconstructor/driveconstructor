@@ -1,4 +1,4 @@
-import { BaseComponents } from "./component";
+import { ComponentsType } from "./component";
 import { withCandidates } from "./sizing";
 import { System, SystemModel, SystemParam } from "./system";
 
