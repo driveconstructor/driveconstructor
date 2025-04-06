@@ -63,14 +63,14 @@ jobs:
         if: ${{ vars.STAGING_REPO }}
         run: |
           set -e
-          cd staging          
+          cd staging
           git rm -rf .
           cp -r ../out/* .
           touch .nojekyll
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -a -m "${GITHUB_SHA::7} ${{ github.event.head_commit.message }}"
+          git commit -m "${{ github.event.head_commit.message }} (${GITHUB_SHA::7})"
 
       - name: Push staging changes
         uses: ad-m/github-push-action@master
