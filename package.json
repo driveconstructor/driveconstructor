@@ -13,7 +13,7 @@
   "dependencies": {
     "@heroicons/react": "2.2.0",
     "@jest/globals": "29.7.0",
-    "@playwright/test": "1.49.1",
+    "@playwright/test": "1.51.1",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.1.0",
     "@types/node": "22.10.6",
