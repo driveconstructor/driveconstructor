@@ -70,7 +70,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "${{ github.event.head_commit.message }} (${GITHUB_SHA::7})"
+          git commit -m "${{ github.event.head_commit.message }}\n\nReference: ${GITHUB_SHA::7}"
 
       - name: Push staging changes
         uses: ad-m/github-push-action@master
