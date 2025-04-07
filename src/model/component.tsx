@@ -7,7 +7,7 @@ import {
   FConverterComponent,
   FConverterComponentModel,
 } from "./fconverter-component";
-import { GearboxComponent } from "./gearbox-component";
+import { GearboxComponent, GearboxComponentModel } from "./gearbox-component";
 
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
@@ -24,6 +24,7 @@ export type ComponentModel<T = any> = {
 
 export function getComponentModel(kind: string): ComponentModel {
   const result = [
+    GearboxComponentModel,
     EMachineComponentModel,
     CableComponentModel,
     FConverterComponentModel,

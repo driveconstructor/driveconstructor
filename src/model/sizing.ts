@@ -1,6 +1,7 @@
 import { CableComponent } from "./cable-component";
 import { findCableComponent as findCableCandidates } from "./cable-sizing";
 import { CandidatesType, ComponentsType } from "./component";
+import { EMachine } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
 import {
   findEmCandidates as findEmachines,
@@ -8,7 +9,8 @@ import {
 } from "./emachine-sizing";
 import { FConverterComponent } from "./fconverter-component";
 import { findFcConverters } from "./fconverter-sizing";
-import { findGearboxes } from "./gearbox-sizing";
+import { findGearbox } from "./gearbox-sizing";
+import { Grid } from "./grid";
 import { System } from "./system";
 import { findVoltageY } from "./voltage";
 
@@ -18,6 +20,7 @@ export type Mechanism = {
   powerOnShaft: number;
   minimalSpeed: number;
   linear: boolean;
+  torqueOverload: number;
 };
 
 function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
@@ -36,8 +39,7 @@ function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
     .filter((v) => typeof v != "undefined");
 }
 
-function findEMachineCandidates(system: System): EMachineComponent[] {
-  let mechanism: Mechanism;
+function createMechanism(system: System): Mechanism {
   const input = system.input;
 
   if (
@@ -46,7 +48,7 @@ function findEMachineCandidates(system: System): EMachineComponent[] {
     system.kind == "pump-gb-fc" ||
     system.kind == "pump-gb-fc-tr"
   ) {
-    mechanism = {
+    return {
       ratedSpeed: input.pump.ratedSpeed,
       ratedTorque:
         input.pump.ratedTorque / input.emachine.overallTorqueDerating,
@@ -55,23 +57,27 @@ function findEMachineCandidates(system: System): EMachineComponent[] {
       linear:
         input.emachine.cooling == "IC411" &&
         input.pump.type == "positive displacement",
+      torqueOverload: input.pump.torqueOverload,
     };
   } else {
-    throw new Error("Unsupported");
+    throw new Error("Unsupported ty");
   }
+}
 
-  const typeSpeedAndTorqueList = findTypeSpeedTorque(
-    input.emachine.type,
-    mechanism,
-  );
-  const deratedVoltage = input.grid.voltage / input.emachine.voltageDerating;
+function findEMachineCandidates(
+  emachine: EMachine,
+  grid: Grid,
+  mechanism: Mechanism,
+): EMachineComponent[] {
+  const typeSpeedAndTorqueList = findTypeSpeedTorque(emachine.type, mechanism);
+  const deratedVoltage = grid.voltage / emachine.voltageDerating;
   const voltageY = findVoltageY(deratedVoltage);
 
   const catalog = findEmachines(
-    input.emachine,
+    emachine,
     typeSpeedAndTorqueList,
     voltageY,
-    input.pump.torqueOverload,
+    mechanism.torqueOverload,
   );
 
   return distinctEmBySecondaryParams(catalog);
@@ -81,12 +87,21 @@ export function withCandidates(system: System): System {
   let candidates: CandidatesType = { ...system.candidates };
   let components: ComponentsType = { ...system.components };
 
+  const mechanism = createMechanism(system);
+
   if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
-    const gearboxes = findGearboxes();
-    console.log(gearboxes.length);
+    const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
+    if (gearbox.length == 1) {
+      components = { ...components, gearbox: gearbox[0] };
+    }
+    candidates = { ...candidates, gearbox };
   }
 
-  const emachine = findEMachineCandidates(system);
+  const emachine = findEMachineCandidates(
+    system.input.emachine,
+    system.input.grid,
+    mechanism,
+  );
   if (emachine.length == 1) {
     components = { ...components, emachine: emachine[0] };
   }

@@ -30,7 +30,7 @@ const GearRatiosByType = {
   helical: {
     min: 3,
     max: 8,
-    value: 5,
+    value: 3,
   },
   planetary: {
     min: 4,
