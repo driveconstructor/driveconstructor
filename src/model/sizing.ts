@@ -21,6 +21,7 @@ export type Mechanism = {
   minimalSpeed: number;
   linear: boolean;
   torqueOverload: number;
+  gearRatio: number;
 };
 
 function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
@@ -58,6 +59,7 @@ function createMechanism(system: System): Mechanism {
         input.emachine.cooling == "IC411" &&
         input.pump.type == "positive displacement",
       torqueOverload: input.pump.torqueOverload,
+      gearRatio: 1,
     };
   } else {
     throw new Error("Unsupported ty");
@@ -87,14 +89,23 @@ export function withCandidates(system: System): System {
   let candidates: CandidatesType = { ...system.candidates };
   let components: ComponentsType = { ...system.components };
 
-  const mechanism = createMechanism(system);
+  let mechanism = createMechanism(system);
 
   if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
     if (gearbox.length == 1) {
       components = { ...components, gearbox: gearbox[0] };
+      const gearRatio = gearbox[0].gearRatio;
+      const K = (gearRatio * gearbox[0].efficiency100) / 100;
+      mechanism = {
+        ...mechanism,
+        ratedSpeed: mechanism.ratedSpeed * gearRatio,
+        ratedTorque: mechanism.ratedTorque / K,
+        torqueOverload: mechanism.ratedTorque / K,
+      };
+    } else {
+      return { ...system, candidates: { ...candidates, gearbox }, components };
     }
-    candidates = { ...candidates, gearbox };
   }
 
   const emachine = findEMachineCandidates(

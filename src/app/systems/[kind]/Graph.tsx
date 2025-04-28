@@ -47,10 +47,11 @@ export default function Graph() {
     : context.system.candidates.emachine;
 
   if (emachines) {
+    const gearRatio = context.system.components.gearbox?.gearRatio || 1;
     emachines
       .filter((em) => typeof em != "undefined")
       .forEach((em, index) => {
-        const emGraphData = emachineGraphData(em);
+        const emGraphData = emachineGraphData(gearRatio, em);
         const color = colors[index % colors.length];
         datasets.push({
           label: em.designation,

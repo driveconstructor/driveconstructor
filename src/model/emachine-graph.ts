@@ -19,8 +19,10 @@ function getSpeedPoints(emachine: EMachineComponent) {
   return result.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b);
 }
 
-export function emachineGraphData(emachine: EMachineComponent) {
-  const gearRatio = 1; // gearbox ? gearbox.gearRatio : 1;
+export function emachineGraphData(
+  gearRatio: number,
+  emachine: EMachineComponent,
+) {
   const speedPoints = getSpeedPoints(emachine).map((s) => s / gearRatio);
 
   return speedPoints.map((speed) => {
