@@ -9,10 +9,11 @@ import {
 } from "./fconverter-component";
 import { GearboxComponent, GearboxComponentModel } from "./gearbox-component";
 
-export type ComponentParam<T = any> = {
+export type ComponentParam<T = any, C = any> = {
   label: React.ReactNode;
   advanced?: boolean;
   precision?: number;
+  hidden?: boolean;
   render?: (value: T) => React.ReactNode;
 };
 
@@ -20,6 +21,7 @@ export type ComponentModel<T = any> = {
   kind: string;
   title: React.ReactNode;
   params: { [P in keyof T]: ComponentParam<T[P]> };
+  customize?: (model: ComponentModel<T>, component: T) => ComponentModel<T>;
 };
 
 export function getComponentModel(kind: string): ComponentModel {

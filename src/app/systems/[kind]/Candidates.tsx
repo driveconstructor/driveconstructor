@@ -83,42 +83,48 @@ function Candidate({
       <div>
         {values
           .filter(() => !collapsed)
-          .map((v, i) => (
-            <div
-              key={i}
-              className={
-                selected == i
-                  ? "border border-blue-400 bg-slate-50"
-                  : "border hover:border-blue-400"
-              }
-              onClick={() => setSelected(i)}
-            >
-              <div className="grid grid-cols-4 lg:grid-cols-8">
-                <div className="justify-self-center">
-                  <label>
-                    <input
-                      type="radio"
-                      checked={selected == i}
-                      onChange={() => setSelected(i)}
-                      data-testid={`${kind}[${i}].<selected>`}
-                    />{" "}
-                    Selected
-                  </label>
+          .map((v, i) => {
+            const updatedModel = model.customize
+              ? model.customize(model, v)
+              : model;
+            return (
+              <div
+                key={i}
+                className={
+                  selected == i
+                    ? "border border-blue-400 bg-slate-50"
+                    : "border hover:border-blue-400"
+                }
+                onClick={() => setSelected(i)}
+              >
+                <div className="grid grid-cols-4 lg:grid-cols-8">
+                  <div className="justify-self-center">
+                    <label>
+                      <input
+                        type="radio"
+                        checked={selected == i}
+                        onChange={() => setSelected(i)}
+                        data-testid={`${kind}[${i}].<selected>`}
+                      />{" "}
+                      Selected
+                    </label>
+                  </div>
+                  {Object.keys(updatedModel.params)
+                    .filter((k) => !updatedModel.params[k].hidden)
+                    .filter((k) => showMore || !updatedModel.params[k].advanced)
+                    .map((k, j) => (
+                      <div key={j}>
+                        <Param
+                          id={`${kind}[${i}].${k}`}
+                          model={updatedModel.params[k]}
+                          value={v[k]}
+                        />
+                      </div>
+                    ))}
                 </div>
-                {Object.keys(model.params)
-                  .filter((k) => showMore || !model.params[k].advanced)
-                  .map((k, j) => (
-                    <div key={j}>
-                      <Param
-                        id={`${kind}[${i}].${k}`}
-                        model={model.params[k]}
-                        value={v[k]}
-                      />
-                    </div>
-                  ))}
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     </>
   );

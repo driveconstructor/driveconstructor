@@ -17,7 +17,7 @@ export function findGearbox(
     mechanismRatedTorque,
   );
 
-  const inputTorque = mechanismRatedTorque / 1000;
+  // const inputTorque = mechanismRatedTorque / 1000;
 
   /*  if (typeof stage == "undefined") {
     return [];
@@ -43,7 +43,6 @@ export function findGearbox(
     {
       ...gearbox,
       ...stage1,
-      inputTorque,
       designation,
     },
   ];
@@ -58,6 +57,7 @@ function combine(
   }
 
   return {
+    inputTorque: b.inputTorque,
     torque: b.torque,
     gearRatio: a.gearRatio * b.gearRatio,
     efficiency100: a.efficiency100 * b.efficiency100,
@@ -105,8 +105,7 @@ function findStage(
 
     return false;
   })
-    .filter((torque) => inputTorque >= torque)
-    .sort((a, b) => b - a)
+    .filter((torque) => inputTorque <= torque)
     .slice(0, 1)
     .map((torque) => {
       const efficiency100 = getEfficiency100(type, gearRatio) * 100;
@@ -131,10 +130,12 @@ function findStage(
         0.1 * Math.pow(height / 2, 4) * shaftDiamLS * 1.2 * 8000;
       const inertiaLSpart = inertiaLSshaft + inertiaLSdisk;
       const designation = getDesignation(type, torque, gearRatio);
+      const inputTorque = torque / 1000;
 
       return {
         designation,
-        torque: ((torque / 1000 / gearRatio) * efficiency100) / 100,
+        inputTorque,
+        torque: ((inputTorque / gearRatio) * efficiency100) / 100,
         gearRatio,
         efficiency100,
         weight,

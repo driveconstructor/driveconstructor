@@ -2,6 +2,7 @@ import { ComponentModel } from "./component";
 import { Gearbox } from "./gearbox";
 
 export type GearboxStageComponent = {
+  inputTorque: number;
   torque: number;
   gearRatio: number;
   efficiency100: number;
@@ -24,6 +25,30 @@ export type GearboxComponent = Gearbox &
 export const GearboxComponentModel: ComponentModel<GearboxComponent> = {
   kind: "gearbox",
   title: "Gearbox",
+  customize: (model, component) => {
+    return {
+      ...model,
+      params: {
+        ...model.params,
+        stage2Ratio: {
+          ...model.params.stage2Ratio,
+          hidden: component.numberOfStages == 1,
+        },
+        stage2Type: {
+          ...model.params.stage2Type,
+          hidden: component.numberOfStages == 1,
+        },
+        stage3Ratio: {
+          ...model.params.stage3Ratio,
+          hidden: component.numberOfStages <= 2,
+        },
+        stage3Type: {
+          ...model.params.stage3Type,
+          hidden: component.numberOfStages <= 2,
+        },
+      },
+    };
+  },
   params: {
     inputTorque: {
       label: "Input rated torque (KNm)",
