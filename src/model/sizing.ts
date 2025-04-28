@@ -93,8 +93,9 @@ export function withCandidates(system: System): System {
 
   if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
+    candidates = { ...candidates, gearbox };
+
     if (gearbox.length == 1) {
-      components = { ...components, gearbox: gearbox[0] };
       const gearRatio = gearbox[0].gearRatio;
       const K = (gearRatio * gearbox[0].efficiency100) / 100;
       mechanism = {
@@ -103,8 +104,10 @@ export function withCandidates(system: System): System {
         ratedTorque: mechanism.ratedTorque / K,
         torqueOverload: mechanism.ratedTorque / K,
       };
+      components = { ...components, gearbox: gearbox[0] };
     } else {
-      return { ...system, candidates: { ...candidates, gearbox }, components };
+      // geabox is not found
+      return { ...system, candidates };
     }
   }
 
