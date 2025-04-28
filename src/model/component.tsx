@@ -9,7 +9,7 @@ import {
 } from "./fconverter-component";
 import { GearboxComponent, GearboxComponentModel } from "./gearbox-component";
 
-export type ComponentParam<T = any, C = any> = {
+export type ComponentParam<T = any> = {
   label: React.ReactNode;
   advanced?: boolean;
   precision?: number;

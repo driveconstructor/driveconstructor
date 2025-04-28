@@ -11,39 +11,48 @@ export function findGearbox(
   gearbox: Gearbox,
   mechanismRatedTorque: number,
 ): GearboxComponent[] {
-  let stage1 = findStage(
+  const designation: string[] = [];
+
+  let stage = findStage(
     gearbox.stage1Type,
     gearbox.stage1Ratio,
     mechanismRatedTorque,
   );
-
-  // const inputTorque = mechanismRatedTorque / 1000;
-
-  /*  if (typeof stage == "undefined") {
-    return [];
-  }
+  designation.push(typeDesignation(gearbox.stage1Type));
 
   if (gearbox.numberOfStages > 1) {
     stage = combine(
       stage,
-      findStage(gearbox.stage2Type, gearbox.stage2Ratio, mechanismRatedTorque),
+      findStage(gearbox.stage2Type, gearbox.stage2Ratio, stage.torque * 1000),
     );
+    designation.push(typeDesignation(gearbox.stage2Type));
   }
 
   if (gearbox.numberOfStages > 2) {
     stage = combine(
       stage,
-      findStage(gearbox.stage3Type, gearbox.stage3Ratio, mechanismRatedTorque),
+      findStage(gearbox.stage3Type, gearbox.stage3Ratio, stage.torque * 1000),
     );
-  }*/
+    designation.push(typeDesignation(gearbox.stage3Type));
+  }
+  designation.push(stage.gearRatio.toFixed());
 
-  const designation = "TODO"; // = getDesignation(type, torque, gearRatio);
+  const efficiency25 = stage.efficiency100 * 0.975;
+  const efficiency50 = stage.efficiency100 * 0.992;
+  const efficiency75 = stage.efficiency100 * 0.9997;
+  const volume = stage.height * stage.width * stage.length;
+  const footprint = stage.height * stage.width;
 
   return [
     {
       ...gearbox,
-      ...stage1,
-      designation,
+      ...stage,
+      designation: designation.join("-"),
+      efficiency25,
+      efficiency50,
+      efficiency75,
+      volume,
+      footprint,
     },
   ];
 }
@@ -57,10 +66,10 @@ function combine(
   }
 
   return {
-    inputTorque: b.inputTorque,
+    inputTorque: a.inputTorque,
     torque: b.torque,
     gearRatio: a.gearRatio * b.gearRatio,
-    efficiency100: a.efficiency100 * b.efficiency100,
+    efficiency100: (a.efficiency100 * b.efficiency100) / 100,
     price: a.price + b.price,
     width: a.width + b.width,
     length: a.length + b.length,
@@ -129,11 +138,9 @@ function findStage(
       const inertiaLSdisk =
         0.1 * Math.pow(height / 2, 4) * shaftDiamLS * 1.2 * 8000;
       const inertiaLSpart = inertiaLSshaft + inertiaLSdisk;
-      const designation = getDesignation(type, torque, gearRatio);
       const inputTorque = torque / 1000;
 
       return {
-        designation,
         inputTorque,
         torque: ((inputTorque / gearRatio) * efficiency100) / 100,
         gearRatio,
@@ -160,31 +167,17 @@ export function getEfficiency100(type: StageTypeAlias, gearRatio: number) {
   }
 }
 
-export function getDesignation(
-  type: StageTypeAlias,
-  torque: number,
-  gearRatio: number,
-) {
-  const result = [];
+function typeDesignation(type: StageTypeAlias) {
   switch (type) {
     case "planetary":
-      result.push("P");
-      break;
+      return "P";
     case "helical":
-      result.push("H");
-      break;
+      return "H";
     case "bevel":
-      result.push("B");
-      break;
+      return "B";
     case "worm":
-      result.push("W");
-      break;
+      return "W";
     default:
-      result.push("XXX");
+      return "XXX";
   }
-
-  result.push(torque);
-  result.push(gearRatio);
-
-  return result.join("-");
 }

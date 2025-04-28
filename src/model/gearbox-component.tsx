@@ -1,4 +1,5 @@
 import { ComponentModel } from "./component";
+import { VolumeParam } from "./component-params";
 import { Gearbox } from "./gearbox";
 
 export type GearboxStageComponent = {
@@ -11,15 +12,18 @@ export type GearboxStageComponent = {
   height: number;
   width: number;
   price: number;
-  designation?: string;
   inertiaHSpart?: number;
   inertiaLSpart?: number;
 };
 
 export type GearboxComponent = Gearbox &
   GearboxStageComponent & {
-    inputTorque: number;
     designation: string;
+    efficiency75: number;
+    efficiency50: number;
+    efficiency25: number;
+    volume: number;
+    footprint: number;
   };
 
 export const GearboxComponentModel: ComponentModel<GearboxComponent> = {
@@ -83,19 +87,28 @@ export const GearboxComponentModel: ComponentModel<GearboxComponent> = {
       label: `Stage 3 type`,
     },
     gearRatio: {
-      label: "Gear ration",
+      label: "Gear ratio",
       precision: 2,
     },
     efficiency100: {
       label: "Efficiency",
-      precision: 4,
+      precision: 2,
+    },
+    efficiency75: {
+      label: "Efficiency @ 75%",
+    },
+    efficiency50: {
+      label: "Efficiency @ 50%",
+    },
+    efficiency25: {
+      label: "Efficiency @ 25%",
     },
     weight: {
       label: "Weight",
       precision: 2,
     },
     length: {
-      label: "Lenght",
+      label: "Length",
       precision: 2,
     },
     height: {
@@ -112,6 +125,14 @@ export const GearboxComponentModel: ComponentModel<GearboxComponent> = {
     },
     designation: {
       label: "Designation",
+    },
+    volume: {
+      label: null,
+      hidden: true,
+    },
+    footprint: {
+      label: null,
+      hidden: true,
     },
   },
 };
