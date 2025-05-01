@@ -138,7 +138,7 @@ test("Centrifugal vs Positive displacement", async ({ page }) => {
   await page.getByTestId("emachine.<icon>").click();
   await page.getByLabel("Cooling:").selectOption("IC71W");
   await expect(page.getByTestId("emachine[0].designation")).toContainText(
-    "IM-132-LV-400-SH280-WC-IP2x-CI-1500-B3-IE4",
+    "IM-132-LV-400-SH250-WC-IP2x-CI-1500-B3-IE4",
   );
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
     "2Q-2L-400-160-IP2x-AC-W-6p",
@@ -172,7 +172,7 @@ test("Minimum speed in Positive displacement pump", async ({ page }) => {
     .getByRole("spinbutton", { name: "Minimal speed, rpm:" })
     .fill("300");
   await expect(page.getByTestId("emachine[0].designation")).toContainText(
-    "IM-200-LV-400-SH315-ACS-IP2x-CI-1500-B3-IE4",
+    "IM-200-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
   );
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
     "2Q-2L-400-160-IP2x-AC-W-6p",
@@ -206,7 +206,7 @@ test("Starting torque", async ({ page }) => {
   );
   await page.getByLabel("Starting torque as *T_rated:").selectOption("1.6");
   await expect(page.getByTestId("emachine[0].designation")).toContainText(
-    "PM-160-LV-400-SH280-ACS-IP2x-CI-1500-B3-IE4",
+    "PM-160-LV-400-SH250-ACS-IP2x-CI-1500-B3-IE4",
   );
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
     "2Q-2L-400-132-IP2x-AC-W-6p",

@@ -10,6 +10,8 @@ describe("utils", () => {
   });
   test("closest", () => {
     expect(closest([...ShaftHeight], 210)).toBe(200);
+    expect(closest([...ShaftHeight], 396)).toBe(355);
+    expect(closest([400, 1000], 400)).toBe(400);
   });
   test("closest up", () => {
     expect(closest([...CrossSection], 121.5, true)).toBe(150);

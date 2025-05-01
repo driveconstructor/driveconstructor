@@ -27,6 +27,7 @@ export type Mechanism = {
 function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
   const grouping = Object.groupBy(emachines, (em) =>
     [
+      em.ratedSynchSpeed,
       em.cooling,
       em.protection,
       em.frameMaterial,
@@ -36,7 +37,14 @@ function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
     ].join("-"),
   );
   return Object.entries(grouping)
-    .flatMap(([_, v]) => v?.sort((a, b) => a.ratedPower - b.ratedPower)[0])
+    .flatMap(
+      ([_, v]) =>
+        v?.sort(
+          (a, b) =>
+            a.ratedSynchSpeed - b.ratedSynchSpeed ||
+            a.ratedPower - b.ratedPower,
+        )[0],
+    )
     .filter((v) => typeof v != "undefined");
 }
 
@@ -82,6 +90,8 @@ function findEMachineCandidates(
     mechanism.torqueOverload,
   );
 
+  console.log(catalog.map((l) => l.designation + " " + l.volume));
+
   return distinctEmBySecondaryParams(catalog);
 }
 
@@ -101,6 +111,7 @@ export function withCandidates(system: System): System {
       mechanism = {
         ...mechanism,
         ratedSpeed: mechanism.ratedSpeed * gearRatio,
+        minimalSpeed: mechanism.minimalSpeed * gearRatio,
         ratedTorque: mechanism.ratedTorque / K,
         torqueOverload: mechanism.ratedTorque / K,
       };

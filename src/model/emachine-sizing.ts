@@ -141,6 +141,9 @@ export function findEmCandidates(
                     typeSpeedTorque.ratedPower,
                     volume,
                   );
+                  if (typeof shaftHeight == "undefined") {
+                    throw new Error("shaftHeight not found");
+                  }
                   const price = getPrice(
                     ratedVoltageY,
                     typeSpeedTorque,

@@ -48,13 +48,16 @@ export default function Graph() {
 
   if (emachines) {
     const gearRatio = context.system.components.gearbox?.gearRatio || 1;
+    const maximumSpeed = Math.max(
+      ...emachines.map((em) => (em ? em.maximumSpeed : 0)),
+    );
     emachines
       .filter((em) => typeof em != "undefined")
       .forEach((em, index) => {
-        const emGraphData = emachineGraphData(gearRatio, em);
+        const emGraphData = emachineGraphData(gearRatio, em, maximumSpeed);
         const color = colors[index % colors.length];
         datasets.push({
-          label: em.designation,
+          label: `${gearRatio == 1 ? "" : "Gearbox+"}${em.designation}`,
           data: emGraphData.map(toPoint),
           backgroundColor: color,
           borderColor: color,
