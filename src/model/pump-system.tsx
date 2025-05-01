@@ -1,14 +1,14 @@
 import { CableElement } from "./cable";
 import { CandidatesType, ComponentsType } from "./component";
 import { EMachineElement } from "./emachine";
+import { NoTrafoFConverterElement, TrafoFConverterElement } from "./fconverter";
 import { Gearbox, GearboxElement } from "./gearbox";
 import { GridElement } from "./grid";
 import { Pump, PumpElement } from "./pump";
 import { SwitchElement } from "./switch";
-import { BaseSystem, Model, SystemModel } from "./system";
-import { Trafo, TrafoElement, TrafoVoltageHV } from "./trafo";
+import { BaseSystem, Model } from "./system";
+import { Trafo, TrafoElement } from "./trafo";
 import { splitRange, valueDifference } from "./utils";
-import { NoTrafoFConverterElement, TrafoFConverterElement } from "./fconverter";
 
 export type PumpFc = BaseSystem & {
   kind: "pump-fc";

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
-import { findVoltageY } from "../voltage";
-import { filters } from "../filter-component";
 import { findFcVoltageY } from "../fconverter-voltage";
+import { filters } from "../filter-component";
+import { findVoltageY } from "../voltage";
 describe("sizingn utilities", () => {
   test("voltage", () => {
     const v1 = findVoltageY(400);

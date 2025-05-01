@@ -1,7 +1,7 @@
 import PageTemplate from "@/app/PageTemplate";
 import { SystemKind, getModel, getSystemKinds } from "@/model/system";
-import Input from "./Input";
 import { Suspense } from "react";
+import Input from "./Input";
 
 export default async function Page({
   params,

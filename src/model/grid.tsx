@@ -1,5 +1,5 @@
 import icon from "../images/el-grid.svg";
-import { System, SystemElement } from "./system";
+import { SystemElement } from "./system";
 
 export type Grid = {
   voltage: number;

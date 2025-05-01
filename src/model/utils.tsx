@@ -1,5 +1,3 @@
-import { ShaftHeight } from "./emachine";
-
 export type Range = {
   min: number;
   max: number;

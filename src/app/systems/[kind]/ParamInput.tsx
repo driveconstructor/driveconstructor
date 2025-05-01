@@ -1,7 +1,7 @@
 import { SystemParam } from "@/model/system";
+import { round } from "@/model/utils";
 import { ChangeHandler } from "./Param";
 import ParamRange from "./ParamRange";
-import { round } from "@/model/utils";
 
 export default function ParamInput({
   id,

@@ -1,4 +1,4 @@
-import { FcCoolingType, FcProtectionType } from "./cooling-protection";
+import { FcProtectionType } from "./cooling-protection";
 import { FConverterMountingType, FConverterTypeAlias } from "./fconverter";
 
 function getK1(type: FConverterTypeAlias) {

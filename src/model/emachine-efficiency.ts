@@ -1,4 +1,4 @@
-import { EfficiencyClass, EfficiencyClassType } from "./emachine";
+import { EfficiencyClassType } from "./emachine";
 import json from "./emachine-efficiency.json";
 import { TypeSpeedTorque } from "./emachine-sizing";
 

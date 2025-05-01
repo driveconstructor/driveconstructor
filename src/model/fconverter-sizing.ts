@@ -1,5 +1,4 @@
 import { Cooling, FcCoolingType, Protection } from "./cooling-protection";
-import { FcVoltage, findFcVoltageY } from "./fconverter-voltage";
 import {
   FConverter,
   FConverterMounting,
@@ -9,13 +8,12 @@ import {
   FConverterTypeAlias,
 } from "./fconverter";
 import { FConverterComponent } from "./fconverter-component";
-import { Voltage } from "./voltage";
-import { closest } from "./utils";
-import { getDesignation } from "./fconverter-utils";
+import { getPrice } from "./fconverter-price";
 import { FConverterVoltageFilering } from "./fconverter-types";
+import { getDesignation } from "./fconverter-utils";
+import { FcVoltage, findFcVoltageY } from "./fconverter-voltage";
 import { getVolume } from "./fconverter-volume";
 import { getWeight } from "./fconverter-weight";
-import { getPrice } from "./fconverter-price";
 import { FilterComponent, findFiler } from "./filter-component";
 
 function addFilter(

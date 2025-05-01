@@ -45,7 +45,8 @@ function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
             a.ratedPower - b.ratedPower,
         )[0],
     )
-    .filter((v) => typeof v != "undefined");
+    .filter((v) => typeof v != "undefined")
+    .sort((a, b) => a.ratedSynchSpeed - b.ratedSynchSpeed);
 }
 
 function createMechanism(system: System): Mechanism {
@@ -89,8 +90,6 @@ function findEMachineCandidates(
     voltageY,
     mechanism.torqueOverload,
   );
-
-  console.log(catalog.map((l) => l.designation + " " + l.volume));
 
   return distinctEmBySecondaryParams(catalog);
 }

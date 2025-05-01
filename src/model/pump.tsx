@@ -1,6 +1,5 @@
 import icon from "../images/el-pump.svg";
-import { PumpFc } from "./pump-system";
-import { System, SystemElement } from "./system";
+import { SystemElement } from "./system";
 
 const PumpType = ["centrifugal", "positive displacement"] as const;
 

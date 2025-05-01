@@ -1,4 +1,3 @@
-import { EMachine } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
 import { TypeSpeedTorque } from "./emachine-sizing";
 import { VoltageY } from "./voltage";

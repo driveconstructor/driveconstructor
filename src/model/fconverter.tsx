@@ -9,12 +9,12 @@ import icon_4Q_3L_NPC_VSC from "../images/el-fconverter-4Q-3L-NPC-VSC.svg";
 import icon_4Q_ML_SCHB_VSC from "../images/el-fconverter-4Q-ML-SCHB-VSC.svg";
 
 import { StaticImageData } from "next/image";
-import { Environment, EnvironmentModel } from "./environment";
-import { SystemElement } from "./system";
 import {
   CoolingProtection,
   CoolingProtectionModel,
 } from "./cooling-protection";
+import { Environment, EnvironmentModel } from "./environment";
+import { SystemElement } from "./system";
 
 export const FConverterMounting = ["wall", "floor"] as const;
 

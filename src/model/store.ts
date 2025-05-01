@@ -1,6 +1,5 @@
-import { ComponentsType } from "./component";
 import { withCandidates } from "./sizing";
-import { System, SystemModel, SystemParam } from "./system";
+import { System, SystemModel } from "./system";
 
 const prefix = "dc-v1.system.";
 

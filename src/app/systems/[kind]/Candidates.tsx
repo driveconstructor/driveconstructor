@@ -1,8 +1,8 @@
 import { ComponentParam, getComponentModel } from "@/model/component";
+import { round } from "@/model/utils";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
 import { SystemContext } from "./Input";
-import { round } from "@/model/utils";
 
 export default function Candidates({
   onSelect,

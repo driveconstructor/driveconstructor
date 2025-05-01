@@ -1,5 +1,4 @@
 import { ComponentModel } from "./component";
-import { VolumeParam } from "./component-params";
 import { Gearbox } from "./gearbox";
 
 export type GearboxStageComponent = {

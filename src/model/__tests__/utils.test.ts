@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
-import { closest, splitRange } from "../utils";
-import { ShaftHeight } from "../emachine";
 import { CrossSection } from "../cable";
+import { ShaftHeight } from "../emachine";
+import { closest, splitRange } from "../utils";
 
 describe("utils", () => {
   test("parse range type", () => {

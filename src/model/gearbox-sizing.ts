@@ -1,4 +1,4 @@
-import { Gearbox, StageType, StageTypeAlias } from "./gearbox";
+import { Gearbox, StageTypeAlias } from "./gearbox";
 import { GearboxComponent, GearboxStageComponent } from "./gearbox-component";
 
 const Torque = [
