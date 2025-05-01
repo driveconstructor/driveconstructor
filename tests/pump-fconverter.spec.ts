@@ -3,8 +3,8 @@ import { expect, test } from "@playwright/test";
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
 
-  await page.getByTestId('pump').click();
-  await page.getByTestId('pump-fc').click();
+  await page.getByTestId("pump").click();
+  await page.getByTestId("pump-fc").click();
   await expect(page.getByText("Drive train with just")).toBeVisible();
 });
 
