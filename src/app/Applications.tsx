@@ -26,7 +26,7 @@ function renderApp(model: ApplicationModel) {
         <Link
           className="btn"
           href={`/applications/${model.name}`}
-          role="button"
+          data-testid={model.name}
         >
           Select
         </Link>

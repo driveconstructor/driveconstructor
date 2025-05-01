@@ -3,8 +3,8 @@ import { expect, test } from "@playwright/test";
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
 
-  await page.getByRole("button", { name: "Select" }).first().click();
-  await page.getByRole("button", { name: "New System" }).first().click();
+  await page.getByTestId('pump').click();
+  await page.getByTestId('pump-fc').click();
   await expect(page.getByText("Drive train with just")).toBeVisible();
 });
 

@@ -9,6 +9,7 @@ export default function NewSystemButton({ kind }: { kind: SystemKind }) {
   return (
     <button
       className="btn"
+      data-testid={kind}
       onClick={() => {
         const model = getModel(kind);
         const id = createSystem(model);
