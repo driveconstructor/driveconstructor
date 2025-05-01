@@ -34,14 +34,14 @@ test("Defaults", async ({ page }) => {
   await expect(page.getByTestId("gearbox[0].price")).toContainText("19113.72");
   await expect(page.getByTestId("gearbox[0].designation")).toContainText("H-3");
   await expect(page.getByTestId("emachine[0].designation")).toContainText(
-    "IM-250-LV-400-SH355-ACS-IP2x-CI-600-B3-IE4",
+    "IM-250-LV-400-SH400-ACS-IP2x-CI-500-B3-IE4",
   );
   await expect(page.getByTestId("emachine[1].designation")).toContainText(
-    "IM-250-LV-400-SH400-ACS-IP2x-CI-500-B3-IE4",
+    "IM-250-LV-400-SH355-ACS-IP2x-CI-600-B3-IE4",
   );
   await page.getByTestId("emachine[0].<selected>").check();
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
-    "2Q-2L-400-200-IP2x-AC-W-6p",
+    "2Q-2L-400-160-IP2x-AC-W-6p",
   );
   await expect(page.getByTestId("fconverter[1].designation")).toContainText(
     "2Q-2L-400-200-IP2x-AC-F-6p",
@@ -56,12 +56,12 @@ test("2 helial stages", async ({ page }) => {
     "H-H-9",
   );
   await expect(page.getByTestId("emachine[0].designation")).toContainText(
-    "IM-250-LV-400-SH315-ACS-IP2x-CI-1500-B3-IE4",
+    "IM-132-LV-400-SH315-ACS-IP2x-CI-750-B3-IE4",
   );
   await expect(page.getByTestId("emachine[1].designation")).toContainText(
     "IM-160-LV-400-SH315-ACS-IP2x-CI-1000-B3-IE4",
   );
   await expect(page.getByTestId("emachine[2].designation")).toContainText(
-    "IM-132-LV-400-SH315-ACS-IP2x-CI-750-B3-IE4",
+    "IM-250-LV-400-SH315-ACS-IP2x-CI-1500-B3-IE4",
   );
 });
