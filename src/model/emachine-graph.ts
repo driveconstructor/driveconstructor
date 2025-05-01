@@ -7,11 +7,10 @@ export type EMachinGraphPoint = GraphPoint & {
 
 const numberOfPoints = 20;
 
-function getSpeedPoints(emachine: EMachineComponent, maximumSpeed: number) {
+function getSpeedPoints(emachine: EMachineComponent) {
   const result = [];
   for (let i = 0; i <= numberOfPoints; i++) {
-    const speed =
-      (Math.max(maximumSpeed, emachine.maximumSpeed) * i) / numberOfPoints;
+    const speed = (emachine.maximumSpeed * i) / numberOfPoints;
     result.push(speed);
   }
 
@@ -23,11 +22,8 @@ function getSpeedPoints(emachine: EMachineComponent, maximumSpeed: number) {
 export function emachineGraphData(
   gearRatio: number,
   emachine: EMachineComponent,
-  maxSpeed: number,
 ) {
-  const speedPoints = getSpeedPoints(emachine, maxSpeed).map(
-    (s) => s / gearRatio,
-  );
+  const speedPoints = getSpeedPoints(emachine).map((s) => s / gearRatio);
 
   return speedPoints.map((speed) => {
     const ratedTorque = emachine.ratedTorque * gearRatio;
