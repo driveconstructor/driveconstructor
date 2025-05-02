@@ -1,5 +1,5 @@
-import PageTemplate from "@/app/PageTemplate";
-import Schema from "@/app/systems/[kind]/Schema";
+import PageTemplate from "@/app/(home)/PageTemplate";
+import Schema from "@/app/(home)/systems/[kind]/Schema";
 import applications from "@/model/application";
 import { SystemModel } from "@/model/system";
 import Link from "next/link";

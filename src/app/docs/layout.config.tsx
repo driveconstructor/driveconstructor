@@ -19,10 +19,11 @@ export const baseOptions: BaseLayoutProps = {
         >
           <circle cx={12} cy={12} r={12} fill="currentColor" />
         </svg>
-        My App
+        Drive Constructor
       </>
     ),
   },
+  themeSwitch: { enabled: false },
   links: [
     {
       text: "Documentation",

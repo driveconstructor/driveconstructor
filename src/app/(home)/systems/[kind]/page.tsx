@@ -1,4 +1,4 @@
-import PageTemplate from "@/app/PageTemplate";
+import PageTemplate from "@/app/(home)/PageTemplate";
 import { SystemKind, getModel, getSystemKinds } from "@/model/system";
 import { Suspense } from "react";
 import Input from "./Input";

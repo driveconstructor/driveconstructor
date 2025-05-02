@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import applications, { ApplicationModel } from "../model/application";
+import applications, { ApplicationModel } from "../../model/application";
 
 export default function Applications() {
   return (
