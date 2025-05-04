@@ -39,6 +39,11 @@ export default function Range({
           setSliding(false);
           onCommit(value);
         }}
+        onTouchStart={() => setSliding(true)}
+        onTouchEnd={() => {
+          setSliding(false);
+          onCommit(value);
+        }}
       />
       <div className="mx-2 text-xs">{range.max}</div>
     </div>
