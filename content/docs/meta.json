@@ -1,3 +1,4 @@
 {
-  "pages": ["index", "applications", "systems", "exercises"]
+  "pages": ["index", "applications", "systems", "exercises"],
+  "defaultOpen": true
 }

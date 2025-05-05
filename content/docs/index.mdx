@@ -1,36 +1,42 @@
 ---
 title: Introduction
-description: About DriveConstructor
+description: What is DriveConstructor?
 ---
 
-_DriveConstructor_ is the online educational software. It was created to support
-professors teaching design of power conversion systems. It is possible to use
-the software for sketching solutions for the real world problems. However, it
-was developed first of all for the educational purposes.
+import Image from "next/image";
+import dcImage from "../docs/images/DC.png";
 
-The software together with the Textbook and the [Exercize book](exercises) form
-the integral online course in power conversion system design. The knowledge can
-be acquired in a structured way through solving the tasks proposed in the
-[Exercize book](exercises).
+## Capabilities of documentation framework
 
-A task can be for example driving a _mechanism_, like pump or conveyor, by using
-electric power from the grid. Such a task requires conversion of the energy from
-electric into mechanical whereby the electric machine, being the "heart" of the
-power conversion system, works as a motor. Another example of a task can be
-delivering power extracted from the water flow by a tidal turbine into the grid;
-here conversion takes place from mechanical energy into electric energy whereby
-the electric machine works as a generator.
+### Math
 
-The system between the mechanism and the grid can include various components;
-both electrical, such as frequency converters and transformers, and mechanical,
-such as gearboxes. The components, put together into the power conversion
-system, can be called a _drive train_ or a _drive system_ \(this is, by the way,
-why this online software is called _DriveConstructor_\)
+- $$m_a \sim \pi D_\delta h_a L_a g$$
+- $$T = F D_\delta/2 = F_A A D_\delta/2 = FA π D_\delta^2 L_a /2$$
 
-![Placeholder](https://placehold.co/100x100/png)
+### Images
 
-Providers of the equipment often call the tasks _Applications_.
+#### External using Markdown
 
-In _DriveConstructor_ it is possible to design systems for the four
-applications: [pump](applications/pump.mdx), TBD. The applications have
-different load profiles and operational modes.
+![Placeholder](https://placehold.co/600x400/png)
+
+#### External using tag
+
+- <img src="https://placehold.co/600x400/png" width="50%" height="50%" />
+- <img src={dcImage.src} width="50%" height="50%" />
+
+#### Static image using component
+
+- <Image src={dcImage} alt="DC" />
+
+#### Links using Markdown
+
+- [Pumps](/docs/applications/pumps)
+- [Pump parameters](/docs/applications/pumps/pump-parameters)
+
+## About
+
+## Exercises
+
+## System
+
+## Applications
