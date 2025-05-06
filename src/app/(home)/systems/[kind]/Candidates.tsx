@@ -141,8 +141,8 @@ function Param({
 }) {
   return (
     <div className="p-1">
-      <div className="text-sm">{model.label}:</div>
-      <div className="border" data-testid={id}>
+      <div className="text-sm break-normal">{model.label}:</div>
+      <div className="border break-normal" data-testid={id}>
         {model.render
           ? model.render(value)
           : typeof value == "number"

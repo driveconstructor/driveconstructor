@@ -31,7 +31,7 @@ test("Defaults", async ({ page }) => {
   await expect(page.getByTestId("gearbox[0].length")).toContainText("0.61");
   await expect(page.getByTestId("gearbox[0].height")).toContainText("0.73");
   await expect(page.getByTestId("gearbox[0].width")).toContainText("0.51");
-  await expect(page.getByTestId("gearbox[0].price")).toContainText("19113.72");
+  await expect(page.getByTestId("gearbox[0].price")).toContainText("19114");
   await expect(page.getByTestId("gearbox[0].designation")).toContainText("H-3");
   await expect(page.getByTestId("emachine[0].designation")).toContainText(
     "IM-250-LV-400-SH400-ACS-IP2x-CI-500-B3-IE4",
@@ -51,7 +51,7 @@ test("Defaults", async ({ page }) => {
 test("2 helial stages", async ({ page }) => {
   await page.getByTestId("gearbox.<icon>").click();
   await page.getByLabel("Number of stages:").selectOption("2");
-  await expect(page.getByTestId("gearbox[0].price")).toContainText("29674.59");
+  await expect(page.getByTestId("gearbox[0].price")).toContainText("29675");
   await expect(page.getByTestId("gearbox[0].designation")).toContainText(
     "H-H-9",
   );

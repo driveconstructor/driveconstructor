@@ -1,4 +1,5 @@
 import icon from "../images/el-cable.svg";
+import { LengthParam } from "./component-params";
 import { SystemElement } from "./system";
 
 export const Material = ["copper", "aluminum"] as const;
@@ -20,12 +21,6 @@ export type Cable = {
   material: MaterialType;
   crossSection: CrossSectionType | null;
   numberOfRuns: NumberOfRunsType | null;
-};
-
-export const LengthParam = {
-  length: {
-    label: "Length (m)",
-  },
 };
 
 export const NumberOfRunsParam = {

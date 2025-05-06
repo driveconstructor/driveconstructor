@@ -1,13 +1,14 @@
 export const WeightParam = {
   weight: {
     label: "Weight, kg",
+    precision: 2,
   },
 };
 
 export const DepthParam = {
   depth: {
     label: "Depth, m",
-    precision: 2,
+    precision: 4,
   },
 };
 
@@ -28,14 +29,14 @@ export const WidthParam = {
 export const FootprintParam = {
   footprint: {
     label: "Footprint, m2",
-    precision: 2,
+    precision: 4,
   },
 };
 
 export const VolumeParam = {
   volume: {
     label: "Volume, m3",
-    precision: 2,
+    precision: 4,
   },
 };
 
@@ -54,5 +55,12 @@ export const PriceParam = {
 export const MountingParam = {
   mounting: {
     label: "Mounting",
+  },
+};
+
+export const LengthParam = {
+  length: {
+    label: "Length, m",
+    precision: 2,
   },
 };

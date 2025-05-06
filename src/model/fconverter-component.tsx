@@ -1,4 +1,13 @@
 import { ComponentModel } from "./component";
+import {
+  DepthParam,
+  DesignationParam,
+  FootprintParam,
+  HeightParam,
+  VolumeParam,
+  WeightParam,
+  WidthParam,
+} from "./component-params";
 import { FcCoolingType, FcProtectionType } from "./cooling-protection";
 import {
   FConverterMounting,
@@ -109,32 +118,12 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
       label: "Protection",
       advanced: true,
     },
-    height: {
-      label: "Height, m",
-      precision: 2,
-    },
-    width: {
-      label: "Width, m",
-      precision: 2,
-    },
-    depth: {
-      label: "Depth, m",
-      precision: 4,
-    },
-    volume: {
-      label: "Volume, m3",
-      precision: 4,
-    },
-    footprint: {
-      label: "Footprint, m2",
-      precision: 4,
-    },
-    weight: {
-      label: "Weight, kg",
-      precision: 2,
-    },
-    designation: {
-      label: "Designation",
-    },
+    ...HeightParam,
+    ...WidthParam,
+    ...DepthParam,
+    ...VolumeParam,
+    ...FootprintParam,
+    ...WeightParam,
+    ...DesignationParam,
   },
 };

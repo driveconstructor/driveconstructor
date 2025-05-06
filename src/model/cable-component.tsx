@@ -1,12 +1,11 @@
 import {
   Cable,
   CrossSectionParam,
-  LengthParam,
   MaterialParam,
   NumberOfRunsParam,
 } from "./cable";
 import { ComponentModel } from "./component";
-import { DesignationParam, PriceParam } from "./component-params";
+import { DesignationParam, LengthParam, PriceParam } from "./component-params";
 
 export type CableComponent = Cable & {
   voltage: number;
