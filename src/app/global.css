@@ -1,5 +1,5 @@
 @import "tailwindcss";
-/*@import "fumadocs-ui/css/neutral.css";*/
+@import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 
 /*
@@ -22,4 +22,12 @@
 
 .btn {
   @apply cursor-pointer rounded-lg border border-gray-400 px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900;
+}
+
+/*
+  Override Fuma Docs background color to match the reset of the application
+*/
+:root {
+  --color-fd-background: hsl(0, 0%, 100%);
+  --color-fd-card: hsl(0, 0%, 100%);
 }
