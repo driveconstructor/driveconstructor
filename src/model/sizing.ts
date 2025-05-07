@@ -12,6 +12,7 @@ import { findFcConverters } from "./fconverter-sizing";
 import { findGearbox } from "./gearbox-sizing";
 import { Grid } from "./grid";
 import { System } from "./system";
+import { findTrafoCandidates } from "./trafo-sizing";
 import { findVoltageY } from "./voltage";
 
 export type Mechanism = {
@@ -99,6 +100,13 @@ export function withCandidates(system: System): System {
   let components: ComponentsType = { ...system.components };
 
   let mechanism = createMechanism(system);
+
+  if (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr") {
+    //const trafo = system.input.trafo;
+    const trafo = findTrafoCandidates().slice(0, 2);
+    components = { ...components, trafo: trafo[0] };
+    candidates = { ...candidates, trafo };
+  }
 
   if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);

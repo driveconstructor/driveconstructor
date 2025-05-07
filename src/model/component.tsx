@@ -8,6 +8,7 @@ import {
   FConverterComponentModel,
 } from "./fconverter-component";
 import { GearboxComponent, GearboxComponentModel } from "./gearbox-component";
+import { TrafoComponent, TrafoComponentModel } from "./trafo-component";
 
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
@@ -30,6 +31,7 @@ export function getComponentModel(kind: string): ComponentModel {
     EMachineComponentModel,
     CableComponentModel,
     FConverterComponentModel,
+    TrafoComponentModel,
   ].find((m) => m.kind == kind);
   if (!result) {
     throw new Error("Component is not found: " + kind);
@@ -43,6 +45,7 @@ export type ComponentsType = {
   cable?: CableComponent;
   fconverter?: FConverterComponent;
   gearbox?: GearboxComponent;
+  trafo?: TrafoComponent;
 };
 
 export type CandidatesType = {

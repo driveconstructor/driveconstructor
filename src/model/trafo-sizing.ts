@@ -1,7 +1,11 @@
 import { EMachineProtection, FcCooling } from "./cooling-protection";
 import { DryOil, Integration, Power, TypeIIIAlias, Winding } from "./trafo";
 import { TrafoComponent } from "./trafo-component";
-import { getWeight } from "./trafo-utils";
+import {
+  getDesignation,
+  getRatedCoolantTemperature,
+  getWeight,
+} from "./trafo-utils";
 
 const Voltage = [440, 700, 2500, 3300, 4200, 6600, 11000];
 
@@ -16,7 +20,7 @@ const Voltage = [440, 700, 2500, 3300, 4200, 6600, 11000];
   Protection, // 7
 ];*/
 
-function findTrafo(): TrafoComponent[] {
+export function findTrafoCandidates(): TrafoComponent[] {
   return Voltage.flatMap((voltageLVmax) =>
     Voltage.flatMap((voltageHVmax) =>
       Power.flatMap((ratedPower) =>
@@ -46,9 +50,17 @@ function findTrafo(): TrafoComponent[] {
                   const depth = 0.72 * Math.pow(volume, 1 / 3);
                   const height = 1.3 * Math.pow(volume, 1 / 3);
                   const width = 1.08 * Math.pow(volume, 1 / 3);
-                  const ratedCoolantTemperature = 0; // getRatedCoolantTemperature(trafo);
+                  const ratedCoolantTemperature =
+                    getRatedCoolantTemperature(cooling);
                   const price = 15 * Math.pow(weight, 0.88);
-                  const designation = ""; //getDesignation(trafo);
+                  const designation = getDesignation(
+                    protection,
+                    typeIV,
+                    typeII,
+                    cooling,
+                    voltageHVmax,
+                    ratedPower,
+                  );
 
                   return {
                     designation,
