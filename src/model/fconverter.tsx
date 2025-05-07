@@ -10,8 +10,10 @@ import icon_4Q_ML_SCHB_VSC from "../images/el-fconverter-4Q-ML-SCHB-VSC.svg";
 
 import { StaticImageData } from "next/image";
 import {
-  CoolingProtection,
-  CoolingProtectionModel,
+  FcCoolingModel,
+  FcCoolingType,
+  FcProtectionModel,
+  FcProtectionType,
 } from "./cooling-protection";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
@@ -53,8 +55,9 @@ export type FConverter = {
   // virtuals
   voltageDerating: number;
   overallCurrentDerating: number;
-} & CoolingProtection &
-  Environment;
+  cooling: FcCoolingType;
+  protection: FcProtectionType;
+} & Environment;
 
 export const NoTrafoFConverterElement = FConverterElement([
   "2Q-2L-VSC-6p",
@@ -101,7 +104,8 @@ function FConverterElement(
         options: [null, ...FConverterMounting],
         value: null,
       },
-      ...CoolingProtectionModel,
+      ...FcCoolingModel,
+      ...FcProtectionModel,
       ...EnvironmentModel,
       voltageDerating: {
         label: "Voltage derating",

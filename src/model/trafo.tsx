@@ -3,8 +3,10 @@ import icon3w from "../images/el-trafo-3-winding.svg";
 import iconMw from "../images/el-trafo-multi-winding.svg";
 import icon from "../images/el-trafo.svg";
 import {
-  CoolingProtection,
-  CoolingProtectionModel,
+  EMachineProtectionModel,
+  EMachineProtectionType,
+  FcCoolingModel,
+  FcCoolingType,
 } from "./cooling-protection";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
@@ -56,8 +58,9 @@ export type Trafo = {
   ratio: number;
   sideVoltageLV: VoltageLVAlias;
   tappings: number;
-} & CoolingProtection &
-  Environment;
+  protection: EMachineProtectionType;
+  cooling: FcCoolingType;
+} & Environment;
 
 export const TrafoElement: SystemElement<Trafo> = {
   icon,
@@ -118,7 +121,8 @@ export const TrafoElement: SystemElement<Trafo> = {
       value: 0,
       advanced: true,
     },
-    ...CoolingProtectionModel,
+    ...FcCoolingModel,
+    ...EMachineProtectionModel,
     ...EnvironmentModel,
   },
   customize(model, system) {

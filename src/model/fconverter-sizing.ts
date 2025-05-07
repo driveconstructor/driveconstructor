@@ -1,4 +1,4 @@
-import { Cooling, FcCoolingType, Protection } from "./cooling-protection";
+import { FcCooling, FcCoolingType, FcProtection } from "./cooling-protection";
 import {
   FConverter,
   FConverterMounting,
@@ -45,134 +45,131 @@ export function findFcConverters(
               fconverter.ratedPower == null ||
               ratedPower == fconverter.ratedPower,
           ).flatMap((ratedPowerLO) =>
-            Cooling.filter((cooling) => cooling == fconverter.cooling).flatMap(
-              (cooling) =>
-                Protection.filter(
-                  (proteciton) => proteciton == fconverter.protection,
-                ).flatMap((protection) =>
-                  FConverterMounting.filter(
-                    (mounting) =>
-                      fconverter.mounting == null ||
-                      mounting == fconverter.mounting,
-                  ).flatMap((mounting) => {
-                    const ratedPowerHO =
-                      FConverterPower[
-                        Math.max(0, FConverterPower.indexOf(ratedPowerLO) - 1)
-                      ];
+            FcCooling.filter(
+              (cooling) => cooling == fconverter.cooling,
+            ).flatMap((cooling) =>
+              FcProtection.filter(
+                (proteciton) => proteciton == fconverter.protection,
+              ).flatMap((protection) =>
+                FConverterMounting.filter(
+                  (mounting) =>
+                    fconverter.mounting == null ||
+                    mounting == fconverter.mounting,
+                ).flatMap((mounting) => {
+                  const ratedPowerHO =
+                    FConverterPower[
+                      Math.max(0, FConverterPower.indexOf(ratedPowerLO) - 1)
+                    ];
 
-                    const gridSideFilter =
-                      fconverter.gridSideFilter == "choke"
-                        ? null
-                        : findFiler(
-                            fconverter.gridSideFilter,
-                            emachineWorkingCurrent,
-                            voltage.value,
-                          );
-                    const machineSideFilter = findFiler(
-                      fconverter.machineSideFilter,
-                      emachineWorkingCurrent,
-                      voltage.value,
-                    );
+                  const gridSideFilter =
+                    fconverter.gridSideFilter == "choke"
+                      ? null
+                      : findFiler(
+                          fconverter.gridSideFilter,
+                          emachineWorkingCurrent,
+                          voltage.value,
+                        );
+                  const machineSideFilter = findFiler(
+                    fconverter.machineSideFilter,
+                    emachineWorkingCurrent,
+                    voltage.value,
+                  );
 
-                    const efficiency100 =
-                      getEfficiency100(ratedPowerLO, cooling, type) *
-                      addFilter(gridSideFilter, (f) => f.efficiency / 100, 1) *
-                      addFilter(
-                        machineSideFilter,
-                        (f) => f.efficiency / 100,
-                        1,
-                      );
+                  const efficiency100 =
+                    getEfficiency100(ratedPowerLO, cooling, type) *
+                    addFilter(gridSideFilter, (f) => f.efficiency / 100, 1) *
+                    addFilter(machineSideFilter, (f) => f.efficiency / 100, 1);
 
-                    const cosFi100 = getCosFi100(type);
-                    const currentLO = getCurrent(
-                      ratedPowerLO,
-                      voltage.value,
-                      efficiency100,
-                      cosFi100,
-                    );
-                    const currentHO = getCurrent(
-                      ratedPowerHO,
-                      voltage.value,
-                      efficiency100,
-                      cosFi100,
-                    );
-                    const depth = getDepth(type, mounting, ratedPowerLO);
-                    const height = getHeight(type, mounting, ratedPowerLO);
+                  const cosFi100 = getCosFi100(type);
+                  const currentLO = getCurrent(
+                    ratedPowerLO,
+                    voltage.value,
+                    efficiency100,
+                    cosFi100,
+                  );
+                  const currentHO = getCurrent(
+                    ratedPowerHO,
+                    voltage.value,
+                    efficiency100,
+                    cosFi100,
+                  );
+                  const depth = getDepth(type, mounting, ratedPowerLO);
+                  const height = getHeight(type, mounting, ratedPowerLO);
 
-                    const volume =
-                      getVolume(
-                        type,
-                        cooling,
-                        protection,
-                        cosFi100,
-                        efficiency100,
-                        voltage.value,
-                        ratedPowerLO,
-                      ) +
-                      addFilter(gridSideFilter, (f) => f.volume) +
-                      addFilter(machineSideFilter, (f) => f.volume);
-
-                    const width = volume / height / depth;
-                    const weight =
-                      getWeight(
-                        type,
-                        cooling,
-                        protection,
-                        cosFi100,
-                        efficiency100,
-                        voltage.value,
-                        ratedPowerLO,
-                      ) +
-                      addFilter(gridSideFilter, (f) => f.weight) +
-                      addFilter(machineSideFilter, (f) => f.weight);
-
-                    const price =
-                      getPrice(
-                        type,
-                        mounting,
-                        protection,
-                        cosFi100,
-                        efficiency100,
-                        ratedPowerLO,
-                      ) +
-                      addFilter(gridSideFilter, (f) => f.price) +
-                      addFilter(machineSideFilter, (f) => f.price);
-
-                    return {
-                      voltage,
-                      price,
-                      workingVoltage: voltage.value,
-                      currentLO,
-                      currentHO,
-                      efficiency100,
-                      cosFi100,
-                      height,
-                      width,
-                      depth,
-                      weight,
-                      gridSideFilter,
-                      machineSideFilter,
-                      efficiency75: efficiency75(efficiency100),
-                      efficiency50: efficiency50(efficiency100),
-                      efficiency25: efficiency25(efficiency100),
-                      footprint: width * height,
-                      volume,
-                      ratedPower: ratedPowerLO,
-                      mounting,
+                  const volume =
+                    getVolume(
+                      type,
                       cooling,
                       protection,
-                      designation: getDesignation(
-                        type,
-                        voltage,
-                        ratedPowerLO,
-                        protection,
-                        cooling,
-                        mounting,
-                      ),
+                      cosFi100,
+                      efficiency100,
+                      voltage.value,
+                      ratedPowerLO,
+                    ) +
+                    addFilter(gridSideFilter, (f) => f.volume) +
+                    addFilter(machineSideFilter, (f) => f.volume);
+
+                  const width = volume / height / depth;
+                  const weight =
+                    getWeight(
                       type,
-                    };
-                  }),
-                ),
+                      cooling,
+                      protection,
+                      cosFi100,
+                      efficiency100,
+                      voltage.value,
+                      ratedPowerLO,
+                    ) +
+                    addFilter(gridSideFilter, (f) => f.weight) +
+                    addFilter(machineSideFilter, (f) => f.weight);
+
+                  const price =
+                    getPrice(
+                      type,
+                      mounting,
+                      protection,
+                      cosFi100,
+                      efficiency100,
+                      ratedPowerLO,
+                    ) +
+                    addFilter(gridSideFilter, (f) => f.price) +
+                    addFilter(machineSideFilter, (f) => f.price);
+
+                  return {
+                    voltage,
+                    price,
+                    workingVoltage: voltage.value,
+                    currentLO,
+                    currentHO,
+                    efficiency100,
+                    cosFi100,
+                    height,
+                    width,
+                    depth,
+                    weight,
+                    gridSideFilter,
+                    machineSideFilter,
+                    efficiency75: efficiency75(efficiency100),
+                    efficiency50: efficiency50(efficiency100),
+                    efficiency25: efficiency25(efficiency100),
+                    footprint: width * height,
+                    volume,
+                    ratedPower: ratedPowerLO,
+                    mounting,
+                    cooling,
+                    protection,
+                    designation: getDesignation(
+                      type,
+                      voltage,
+                      ratedPowerLO,
+                      protection,
+                      cooling,
+                      mounting,
+                    ),
+                    type,
+                  };
+                }),
+              ),
             ),
           ),
         ),

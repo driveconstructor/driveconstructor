@@ -1,4 +1,4 @@
-import { CoolingProtection } from "./cooling-protection";
+import { EMachineProtectionType, FcCoolingType } from "./cooling-protection";
 import {
   PowerTypeAlias,
   TypeIIAlias,
@@ -23,4 +23,6 @@ export type TrafoComponent = {
   typeII: TypeIIAlias;
   typeIII: TypeIIIAlias;
   typeIV: TypeIVAlias;
-} & CoolingProtection;
+  cooling: FcCoolingType;
+  protection: EMachineProtectionType;
+};

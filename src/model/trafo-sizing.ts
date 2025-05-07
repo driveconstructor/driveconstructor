@@ -1,6 +1,7 @@
-import { Cooling, Protection } from "./cooling-protection";
-import { DryOil, Integration, Power, Winding } from "./trafo";
+import { EMachineProtection, FcCooling } from "./cooling-protection";
+import { DryOil, Integration, Power, TypeIIIAlias, Winding } from "./trafo";
 import { TrafoComponent } from "./trafo-component";
+import { getWeight } from "./trafo-utils";
 
 const Voltage = [440, 700, 2500, 3300, 4200, 6600, 11000];
 
@@ -19,18 +20,28 @@ function findTrafo(): TrafoComponent[] {
   return Voltage.flatMap((voltageLVmax) =>
     Voltage.flatMap((voltageHVmax) =>
       Power.flatMap((ratedPower) =>
-        Winding.flatMap((typeIII) =>
+        Winding.filter((typeIII) =>
+          trafoFilter(voltageHVmax, voltageHVmax, ratedPower, typeIII),
+        ).flatMap((typeIII) =>
           Integration.flatMap((typeIV) =>
             DryOil.flatMap((typeII) =>
-              Cooling.flatMap((cooling) =>
-                Protection.flatMap((protection) => {
+              FcCooling.flatMap((cooling) =>
+                EMachineProtection.flatMap((protection) => {
                   const currentHVmax =
                     (ratedPower * 1000) / (Math.sqrt(3) * voltageHVmax);
                   const currentLVmax =
                     (ratedPower * 1000) / (Math.sqrt(3) * voltageLVmax);
                   const efficiency100 =
                     (0.98 + (0.005 * (ratedPower / 1000)) / 15) * 100;
-                  const weight = 0; // getWeight(trafo) * 1000;
+                  const weight =
+                    getWeight(
+                      protection,
+                      typeIV,
+                      typeIII,
+                      cooling,
+                      voltageHVmax,
+                      ratedPower,
+                    ) * 1000;
                   const volume = weight / 1000;
                   const depth = 0.72 * Math.pow(volume, 1 / 3);
                   const height = 1.3 * Math.pow(volume, 1 / 3);
@@ -67,4 +78,48 @@ function findTrafo(): TrafoComponent[] {
       ),
     ),
   );
+}
+
+function trafoFilter(
+  voltageLVmax: number,
+  voltageHVmax: number,
+  ratedPower: number,
+  typeIII: TypeIIIAlias,
+) {
+  if (voltageLVmax > voltageHVmax) {
+    return false;
+  }
+
+  // LV to LV
+  if (voltageLVmax <= 700 && voltageHVmax <= 700) {
+    if (ratedPower > 2000) {
+      return false;
+    }
+
+    if (typeIII === "multi-winding") {
+      return false;
+    }
+
+    return true;
+  }
+
+  // MV to LV
+  if (voltageLVmax <= 700 && voltageHVmax <= 11000 && voltageHVmax >= 2500) {
+    if (ratedPower > 2000) {
+      return false;
+    }
+
+    if (typeIII === "multi-winding") {
+      return false;
+    }
+
+    return true;
+  }
+
+  // MV to MV
+  if (voltageLVmax >= 2500 && voltageHVmax >= 2500) {
+    return true;
+  }
+
+  return false;
 }
