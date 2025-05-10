@@ -3,6 +3,7 @@
 import { withCandidates } from "@/model/sizing";
 import {
   SystemContextType,
+  createSystem,
   getSystem,
   saveSystem,
   updateParam,
@@ -78,7 +79,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                     (showCalculated && errors.length == 0) ||
                     typeof v.value != "function",
                 )
-                .map(([k, mv]) => (
+                .map(([k, _]) => (
                   <Param
                     key={`${context.system.element}.${k}.${k == update.exlcude ? "" : update.count}}`}
                     name={k}
@@ -110,6 +111,16 @@ export default function Input({ kind }: { kind: SystemKind }) {
               onClick={() => setShowCalculated(!showCalculated)}
             >
               {showCalculated ? "Hide calculated..." : "Show calculated..."}
+            </div>
+            <div
+              className="btn"
+              onClick={() => {
+                const id = createSystem(context.model);
+                setValue(getSystem(id));
+                setUpdate({ exlcude: "", count: update.count + 1 });
+              }}
+            >
+              Reset
             </div>
             <div className="grow" />
             <div className="btn flex-none">Show report</div>

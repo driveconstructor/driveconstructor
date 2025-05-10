@@ -1,9 +1,9 @@
 import Applications from "./Applications";
-import Page from "./PageTemplate";
+import PageTemplate from "./PageTemplate";
 
 export default function Home() {
   return (
-    <Page
+    <PageTemplate
       title="Welcome to DriveConstructor"
       text="
         Discover the beauty and complexity of the world of standard components.
@@ -11,6 +11,6 @@ export default function Home() {
       "
     >
       <Applications />
-    </Page>
+    </PageTemplate>
   );
 }

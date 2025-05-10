@@ -12,7 +12,7 @@ export default async function Page({
   const model = getModel(kind);
 
   return (
-    <PageTemplate title={model.title} text="">
+    <PageTemplate title={model.title}>
       <Suspense>
         <Input kind={kind} />
       </Suspense>
