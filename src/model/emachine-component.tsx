@@ -7,12 +7,16 @@ import {
   VolumeParam,
   WeightParam,
 } from "./component-params";
-import { CoolingParam, ProtectionParam } from "./cooling-protection";
+import {
+  CoolingParam,
+  EMachineProtectionType,
+  ProtectionParam,
+} from "./cooling-protection";
+import { EfficiencyXXXParams } from "./efficiency-component";
 import {
   EMachineCoolingType,
   EMachineFrameMaterialType,
   EMachineMountingType,
-  EMachineProtectionType,
   EMachineTypeAlias,
   ERatedPower,
   EfficiencyClassType,
@@ -85,25 +89,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
       label: "Efficiency class",
       advanced: true,
     },
-    efficiency100: {
-      label: "Efficiency @100% load",
-      precision: 2,
-    },
-    efficiency75: {
-      label: "Efficiency @75% load",
-      precision: 2,
-      advanced: true,
-    },
-    efficiency50: {
-      label: "Efficiency @50% load",
-      precision: 2,
-      advanced: true,
-    },
-    efficiency25: {
-      label: "Efficiency @25% load",
-      precision: 2,
-      advanced: true,
-    },
+    ...EfficiencyXXXParams,
     ratedCurrent: {
       label: "Rated current, A",
     },

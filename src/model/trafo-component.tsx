@@ -8,9 +8,16 @@ import {
   WeightParam,
   WidthParam,
 } from "./component-params";
-import { EMachineProtectionType, FcCoolingType } from "./cooling-protection";
+import {
+  CoolingParam,
+  EMachineProtectionType,
+  FcCoolingType,
+  ProtectionParam,
+} from "./cooling-protection";
+import { EfficiencyParam } from "./efficiency-component";
 import {
   PowerTypeAlias,
+  TrafoElement,
   TypeIIAlias,
   TypeIIIAlias,
   TypeIVAlias,
@@ -41,18 +48,18 @@ export const TrafoComponentModel: ComponentModel<TrafoComponent> = {
   kind: "trafo",
   title: "Trafo",
   params: {
-    voltageLVmax: { label: "voltageLVmax" },
-    voltageHVmax: { label: "voltageHVmax" },
-    currentHVmax: { label: "currentHVmax" },
-    currentLVmax: { label: "currentLVmax" },
-    efficiency100: { label: "efficiency100" },
-    ratedCoolantTemperature: { label: "ratedCoolantTemperature" },
-    ratedPower: { label: "ratedPower" },
-    typeII: { label: "typeII" },
-    typeIII: { label: "typeIII" },
-    typeIV: { label: "typeIV" },
-    cooling: { label: "cooling" },
-    protection: { label: "protection" },
+    voltageLVmax: { label: "LV side voltage (max)" },
+    voltageHVmax: { label: "HV side voltage (max)" },
+    currentHVmax: { label: "HV side current (max)" },
+    currentLVmax: { label: "LV side current (max)" },
+    ...EfficiencyParam,
+    ratedCoolantTemperature: { label: null, hidden: true },
+    ratedPower: { label: TrafoElement.params.ratedPower.label },
+    typeII: { label: TrafoElement.params.typeII.label },
+    typeIII: { label: TrafoElement.params.typeIII.label },
+    typeIV: { label: TrafoElement.params.typeIV.label },
+    ...CoolingParam,
+    ...ProtectionParam,
     ...WeightParam,
     ...LengthParam,
     ...HeightParam,

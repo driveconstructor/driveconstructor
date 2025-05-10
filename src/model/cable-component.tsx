@@ -6,6 +6,7 @@ import {
 } from "./cable";
 import { ComponentModel } from "./component";
 import { DesignationParam, LengthParam, PriceParam } from "./component-params";
+import { EfficiencyParam } from "./efficiency-component";
 
 export type CableComponent = Cable & {
   voltage: number;
@@ -52,9 +53,6 @@ export const CableComponentModel: ComponentModel<CableComponent> = {
       label: "Losses, kW",
       precision: 2,
     },
-    efficiency100: {
-      label: "Efficiency, %",
-      precision: 2,
-    },
+    ...EfficiencyParam,
   },
 };

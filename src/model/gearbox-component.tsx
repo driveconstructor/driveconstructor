@@ -7,6 +7,7 @@ import {
   WeightParam,
   WidthParam,
 } from "./component-params";
+import { EfficiencyXXXParams } from "./efficiency-component";
 import { Gearbox } from "./gearbox";
 
 export type GearboxStageComponent = {
@@ -97,19 +98,7 @@ export const GearboxComponentModel: ComponentModel<GearboxComponent> = {
       label: "Gear ratio",
       precision: 2,
     },
-    efficiency100: {
-      label: "Efficiency",
-      precision: 2,
-    },
-    efficiency75: {
-      label: "Efficiency @ 75%",
-    },
-    efficiency50: {
-      label: "Efficiency @ 50%",
-    },
-    efficiency25: {
-      label: "Efficiency @ 25%",
-    },
+    ...EfficiencyXXXParams,
     ...WeightParam,
     ...LengthParam,
     ...HeightParam,

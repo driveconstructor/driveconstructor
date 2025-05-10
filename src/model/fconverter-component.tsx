@@ -9,6 +9,7 @@ import {
   WidthParam,
 } from "./component-params";
 import { FcCoolingType, FcProtectionType } from "./cooling-protection";
+import { EfficiencyXXXParams } from "./efficiency-component";
 import {
   FConverterMounting,
   FConverterPower,
@@ -77,25 +78,7 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
     cooling: {
       label: "Cooling",
     },
-    efficiency100: {
-      label: "Efficiency @100% load",
-      precision: 2,
-    },
-    efficiency75: {
-      label: "Efficiency @75% load",
-      advanced: true,
-      precision: 2,
-    },
-    efficiency50: {
-      label: "Efficiency @50% load",
-      advanced: true,
-      precision: 2,
-    },
-    efficiency25: {
-      label: "Efficiency @25% load",
-      advanced: true,
-      precision: 2,
-    },
+    ...EfficiencyXXXParams,
     cosFi100: {
       label: "cos_fi @ rated load",
       advanced: true,

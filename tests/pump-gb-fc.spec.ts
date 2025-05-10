@@ -24,9 +24,17 @@ test("Defaults", async ({ page }) => {
   await expect(page.getByTestId("gearbox[0].efficiency100")).toContainText(
     "99",
   );
-  await expect(page.getByTestId("gearbox[0].efficiency75")).toContainText("99");
-  await expect(page.getByTestId("gearbox[0].efficiency50")).toContainText("98");
-  await expect(page.getByTestId("gearbox[0].efficiency25")).toContainText("97");
+
+  await page.getByTestId("gearbox.<more>").click();
+  await expect(page.getByTestId("gearbox[0].efficiency75")).toContainText(
+    "98.97",
+  );
+  await expect(page.getByTestId("gearbox[0].efficiency50")).toContainText(
+    "98.21",
+  );
+  await expect(page.getByTestId("gearbox[0].efficiency25")).toContainText(
+    "96.52",
+  );
   await expect(page.getByTestId("gearbox[0].weight")).toContainText("332.59");
   await expect(page.getByTestId("gearbox[0].length")).toContainText("0.61");
   await expect(page.getByTestId("gearbox[0].height")).toContainText("0.73");
