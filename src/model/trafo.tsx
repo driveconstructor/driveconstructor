@@ -21,7 +21,7 @@ export const TrafoVoltageHV = [
   "5800-6800",
   "6800-9000",
   "9000-12000",
-] as const;
+] as const satisfies string[];
 
 export const Power = [
   75, 93, 100, 112.5, 118, 145, 150, 160, 175, 190, 220, 225, 240, 250, 275,
@@ -43,6 +43,14 @@ export const VoltageLV = [
   "9900-11500",
 ] as const;
 
+function parseVoltqage(voltage: string[]) {
+  return voltage
+    .map((s) => s.split("-"))
+    .map((v) => {
+      return { min: Number(v[0]), max: Number([1]) };
+    });
+}
+
 export type PowerTypeAlias = (typeof Power)[number];
 export type TypeIIAlias = (typeof DryOil)[number];
 export type TypeIIIAlias = (typeof Winding)[number];
@@ -60,6 +68,12 @@ export type Trafo = {
   tappings: number;
   protection: EMachineProtectionType;
   cooling: FcCoolingType;
+  // calculated
+  overallCurrentDerating: number;
+  voltageDerating: number;
+  sideVoltageLVMinCalc: number;
+  sideVoltageLVMaxCalc: number;
+  ratioCalc: number;
 } & Environment;
 
 export const TrafoElement: SystemElement<Trafo> = {
@@ -124,6 +138,77 @@ export const TrafoElement: SystemElement<Trafo> = {
     ...FcCoolingModel,
     ...EMachineProtectionModel,
     ...EnvironmentModel,
+    overallCurrentDerating: {
+      label: "Overall current derating",
+      type: "number",
+      precision: 4,
+      value: (trafo) => {
+        const deratingA =
+          trafo.altitude > 1000 ? 1 - 0.00008 * (trafo.altitude - 1000) : 1;
+
+        let deratingT = 1;
+        let deratingC = 1;
+
+        if (trafo.cooling === "air") {
+          if (trafo.ambientTemperature > 40) {
+            deratingT = 1 - 0.008 * (trafo.ambientTemperature - 40);
+          }
+        } else if (trafo.cooling === "water") {
+          if (trafo.coolantTemperature > 35) {
+            deratingC = 1 - 0.008 * (trafo.coolantTemperature - 35);
+          } else {
+            deratingC = 1 + 0.008 * (trafo.coolantTemperature - 35);
+          }
+          if (trafo.ambientTemperature > 40) {
+            deratingT = 1 - 0.004 * (trafo.ambientTemperature - 40);
+          } else {
+            deratingT = 1 + 0.004 * (trafo.ambientTemperature - 40);
+          }
+        }
+
+        const derating1 = deratingA * deratingC;
+        const derating2 = deratingA * deratingT;
+
+        return derating1 <= derating2 ? derating1 : derating2;
+      },
+    },
+    voltageDerating: {
+      label: "Voltage derating",
+      type: "number",
+      precision: 4,
+      value: (trafo) =>
+        trafo.altitude > 2000 ? 1 - 0.00015 * (trafo.altitude - 2000) : 1,
+    },
+    sideVoltageLVMaxCalc: {
+      label: "Side LV Max",
+      type: "number",
+      precision: 4,
+      value: () => 700,
+    },
+    sideVoltageLVMinCalc: {
+      label: "Side LV Min",
+      type: "number",
+      precision: 4,
+      value: () => 650,
+    },
+
+    ratioCalc: {
+      label: "Calculated ratio",
+      type: "number",
+      precision: 4,
+      value: (trafo, input) => {
+        const voltage = input.grid.voltage;
+        // not used?
+        const value = parseVoltqage(TrafoVoltageHV).find(
+          (a) => a.min <= voltage && a.max >= voltage,
+        );
+
+        const minRatio = voltage / trafo.sideVoltageLVMinCalc;
+        const maxRatio = voltage / trafo.sideVoltageLVMaxCalc;
+
+        return ((1 + Number(trafo.tappings)) * (maxRatio + minRatio)) / 2;
+      },
+    },
   },
   customize(model, system) {
     return {
