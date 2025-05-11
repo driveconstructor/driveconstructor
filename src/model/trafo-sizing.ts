@@ -1,11 +1,20 @@
 import { EMachineProtection, FcCooling } from "./cooling-protection";
-import { DryOil, Integration, Power, TypeIIIAlias, Winding } from "./trafo";
+import { EMachineComponent } from "./emachine-component";
+import {
+  DryOil,
+  Integration,
+  Power,
+  Trafo,
+  TypeIIIAlias,
+  Winding,
+} from "./trafo";
 import { TrafoComponent } from "./trafo-component";
 import {
   getDesignation,
   getRatedCoolantTemperature,
   getWeight,
 } from "./trafo-utils";
+import { splitRange } from "./utils";
 
 const Voltage = [440, 700, 2500, 3300, 4200, 6600, 11000];
 
@@ -20,76 +29,106 @@ const Voltage = [440, 700, 2500, 3300, 4200, 6600, 11000];
   Protection, // 7
 ];*/
 
-export function findTrafoCandidates(): TrafoComponent[] {
-  return Voltage.flatMap((voltageLVmax) =>
-    Voltage.flatMap((voltageHVmax) =>
-      Power.flatMap((ratedPower) =>
-        Winding.filter((typeIII) =>
-          trafoFilter(voltageHVmax, voltageHVmax, ratedPower, typeIII),
-        ).flatMap((typeIII) =>
-          Integration.flatMap((typeIV) =>
-            DryOil.flatMap((typeII) =>
-              FcCooling.flatMap((cooling) =>
-                EMachineProtection.flatMap((protection) => {
-                  const currentHVmax =
-                    (ratedPower * 1000) / (Math.sqrt(3) * voltageHVmax);
-                  const currentLVmax =
-                    (ratedPower * 1000) / (Math.sqrt(3) * voltageLVmax);
-                  const efficiency100 =
-                    (0.98 + (0.005 * (ratedPower / 1000)) / 15) * 100;
-                  const weight =
-                    getWeight(
+/*const query = {
+  currentLVmax: {
+    $gte: emachine.workingCurrent / trafo.overallCurrentDerating
+  },
+  currentHVmax: {
+    $gte: emachine.workingCurrent / trafo.overallCurrentDerating / ratio
+  },
+  voltageHVmax: {
+    $gte: system.input.grid.voltage
+  },
+  voltageLVmax: {
+    $gte: system.input.trafo.sideVoltageLVMaxCalc
+  }
+};*/
+
+export function findTrafoCandidates(
+  trafo: Trafo,
+  emachine: EMachineComponent,
+): TrafoComponent[] {
+  return Voltage.filter(
+    (voltageLVmax) => voltageLVmax >= splitRange(trafo.sideVoltageLV).max,
+  )
+    .flatMap((voltageLVmax) =>
+      Voltage.filter(
+        (voltageHVmax) => voltageHVmax >= trafo.sideVoltageHV,
+      ).flatMap((voltageHVmax) =>
+        Power.flatMap((ratedPower) =>
+          Winding.filter((typeIII) =>
+            trafoFilter(voltageHVmax, voltageHVmax, ratedPower, typeIII),
+          ).flatMap((typeIII) =>
+            Integration.flatMap((typeIV) =>
+              DryOil.flatMap((typeII) =>
+                FcCooling.flatMap((cooling) =>
+                  EMachineProtection.flatMap((protection) => {
+                    const currentHVmax =
+                      (ratedPower * 1000) / (Math.sqrt(3) * voltageHVmax);
+                    const currentLVmax =
+                      (ratedPower * 1000) / (Math.sqrt(3) * voltageLVmax);
+                    const efficiency100 =
+                      (0.98 + (0.005 * (ratedPower / 1000)) / 15) * 100;
+                    const weight =
+                      getWeight(
+                        protection,
+                        typeIV,
+                        typeIII,
+                        cooling,
+                        voltageHVmax,
+                        ratedPower,
+                      ) * 1000;
+                    const volume = weight / 1000;
+                    const depth = 0.72 * Math.pow(volume, 1 / 3);
+                    const height = 1.3 * Math.pow(volume, 1 / 3);
+                    const width = 1.08 * Math.pow(volume, 1 / 3);
+                    const ratedCoolantTemperature =
+                      getRatedCoolantTemperature(cooling);
+                    const price = 15 * Math.pow(weight, 0.88);
+                    const designation = getDesignation(
                       protection,
                       typeIV,
-                      typeIII,
+                      typeII,
                       cooling,
                       voltageHVmax,
                       ratedPower,
-                    ) * 1000;
-                  const volume = weight / 1000;
-                  const depth = 0.72 * Math.pow(volume, 1 / 3);
-                  const height = 1.3 * Math.pow(volume, 1 / 3);
-                  const width = 1.08 * Math.pow(volume, 1 / 3);
-                  const ratedCoolantTemperature =
-                    getRatedCoolantTemperature(cooling);
-                  const price = 15 * Math.pow(weight, 0.88);
-                  const designation = getDesignation(
-                    protection,
-                    typeIV,
-                    typeII,
-                    cooling,
-                    voltageHVmax,
-                    ratedPower,
-                  );
+                    );
 
-                  return {
-                    designation,
-                    weight,
-                    depth,
-                    height,
-                    width,
-                    price,
-                    voltageLVmax,
-                    voltageHVmax,
-                    currentHVmax,
-                    currentLVmax,
-                    efficiency100,
-                    ratedCoolantTemperature,
-                    ratedPower,
-                    typeII,
-                    typeIII,
-                    typeIV,
-                    cooling,
-                    protection,
-                  };
-                }),
+                    return {
+                      designation,
+                      weight,
+                      depth,
+                      height,
+                      width,
+                      price,
+                      voltageLVmax,
+                      voltageHVmax,
+                      currentHVmax,
+                      currentLVmax,
+                      efficiency100,
+                      ratedCoolantTemperature,
+                      ratedPower,
+                      typeII,
+                      typeIII,
+                      typeIV,
+                      cooling,
+                      protection,
+                    };
+                  }),
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    )
+    .filter(
+      (t) =>
+        t.currentLVmax >=
+          emachine.workingCurrent / trafo.overallCurrentDerating &&
+        t.currentHVmax >=
+          emachine.workingCurrent / trafo.overallCurrentDerating / trafo.ratio,
+    );
 }
 
 function trafoFilter(

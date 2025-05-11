@@ -98,13 +98,6 @@ export function withCandidates(system: System): System {
 
   let mechanism = createMechanism(system);
 
-  if (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr") {
-    //const trafo = system.input.trafo;
-    const trafo = findTrafoCandidates().slice(0, 2);
-    components = { ...components, trafo: trafo[0] };
-    candidates = { ...candidates, trafo };
-  }
-
   if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
     candidates = { ...candidates, gearbox };
@@ -135,6 +128,18 @@ export function withCandidates(system: System): System {
     components = { ...components, emachine: emachine[0] };
   }
   candidates = { ...candidates, emachine };
+
+  if (
+    components.emachine &&
+    (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr")
+  ) {
+    const trafo = findTrafoCandidates(
+      system.input.trafo,
+      components.emachine,
+    ).slice(0, 2);
+    components = { ...components, trafo: trafo[0] };
+    candidates = { ...candidates, trafo };
+  }
 
   let cable: CableComponent[] = [];
   if (components.emachine) {

@@ -43,14 +43,6 @@ export const VoltageLV = [
   "9900-11500",
 ] as const;
 
-function parseVoltage(voltage: string[]) {
-  return voltage
-    .map((s) => s.split("-"))
-    .map((v) => {
-      return { min: Number(v[0]), max: Number([1]) };
-    });
-}
-
 export type PowerTypeAlias = (typeof Power)[number];
 export type TypeIIAlias = (typeof DryOil)[number];
 export type TypeIIIAlias = (typeof Winding)[number];
@@ -71,9 +63,6 @@ export type Trafo = {
   // calculated
   overallCurrentDerating: number;
   voltageDerating: number;
-  sideVoltageLVMinCalc: number;
-  sideVoltageLVMaxCalc: number;
-  ratioCalc: number;
 } & Environment;
 
 export const TrafoElement: SystemElement<Trafo> = {
@@ -96,15 +85,14 @@ export const TrafoElement: SystemElement<Trafo> = {
       label: "Transformation ratio",
       type: "number",
       disabled: true,
-      advanced: true,
       value: -1,
       precision: 2,
     },
     sideVoltageLV: {
       label: "Voltage (LV)",
       type: "text",
-      options: [...VoltageLV],
       value: "650-700",
+      options: [...VoltageLV],
     },
     typeII: {
       label: "Dry or oil-immersed",
@@ -178,36 +166,6 @@ export const TrafoElement: SystemElement<Trafo> = {
       precision: 4,
       value: (trafo) =>
         trafo.altitude > 2000 ? 1 - 0.00015 * (trafo.altitude - 2000) : 1,
-    },
-    sideVoltageLVMaxCalc: {
-      label: "Side LV Max",
-      type: "number",
-      precision: 4,
-      value: () => 700,
-    },
-    sideVoltageLVMinCalc: {
-      label: "Side LV Min",
-      type: "number",
-      precision: 4,
-      value: () => 650,
-    },
-
-    ratioCalc: {
-      label: "Calculated ratio",
-      type: "number",
-      precision: 4,
-      value: (trafo, input) => {
-        const voltage = input.grid.voltage;
-        // not used?
-        const value = parseVoltage(TrafoVoltageHV).find(
-          (a) => a.min <= voltage && a.max >= voltage,
-        );
-
-        const minRatio = voltage / trafo.sideVoltageLVMinCalc;
-        const maxRatio = voltage / trafo.sideVoltageLVMaxCalc;
-
-        return ((1 + Number(trafo.tappings)) * (maxRatio + minRatio)) / 2;
-      },
     },
   },
   customize(model, system) {
