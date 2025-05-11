@@ -52,7 +52,7 @@ export type FConverter = {
   gridSideFilter: GridSideFilterType;
   machineSideFilter: MachineSideFilterType;
   mounting: FConverterMountingType | null;
-  // virtuals
+  // calculated
   voltageDerating: number;
   overallCurrentDerating: number;
   cooling: FcCoolingType;

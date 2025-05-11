@@ -132,6 +132,6 @@ repository is deployed to the following domains:
 | staging    | https://driveconstructor-staging.github.io/ |
 | production | https://driveconstructor.github.io/         |
 
-## Lisense
+## License
 
 See the [LICENSE](LICENSE) file for license rights and limitations (Apache 2.0).

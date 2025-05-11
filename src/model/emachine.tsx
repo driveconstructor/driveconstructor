@@ -2,7 +2,12 @@ import iconPMSM from "../images/el-emachine-pmsm.svg";
 import iconSCIM from "../images/el-emachine-scim.svg";
 import iconSyRM from "../images/el-emachine-syrm.svg";
 import icon from "../images/el-emachine.svg";
-import { CoolingParam, ProtectionParam } from "./cooling-protection";
+import {
+  CoolingParam,
+  EMachineProtection,
+  EMachineProtectionType,
+  ProtectionParam,
+} from "./cooling-protection";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
 
@@ -16,7 +21,6 @@ export const EfficiencyClass = ["IE2", "IE3", "IE4"] as const;
 export type EfficiencyClassType = (typeof EfficiencyClass)[number];
 export const EMachineMounting = ["B3", "B5", "B35"] as const;
 export const EMachineCooling = ["IC411", "IC416", "IC71W"] as const;
-export const EMachineProtection = ["IP21/23", "IP54/55"] as const;
 export const EMachineFrameMaterial = [
   "steel",
   "aluminum",
@@ -29,8 +33,6 @@ export const ShaftHeight = [
 ] as const satisfies number[];
 
 export type EMachineCoolingType = (typeof EMachineCooling)[number];
-
-export type EMachineProtectionType = (typeof EMachineProtection)[number];
 
 export type EMachineTypeAlias = (typeof EMachineType)[number];
 
@@ -122,7 +124,7 @@ export const EMachineElement: SystemElement<EMachine> = {
       advanced: true,
     },
     overallTorqueDerating: {
-      label: "Overal torque derating",
+      label: "Overall torque derating",
       type: "number",
       precision: 4,
       value: (em) => {

@@ -1,4 +1,8 @@
 import {
+  EMachineProtection,
+  EMachineProtectionType,
+} from "./cooling-protection";
+import {
   EfficiencyClass,
   EfficiencyClassType,
   EMachine,
@@ -8,8 +12,6 @@ import {
   EMachineFrameMaterialType,
   EMachineMounting,
   EMachineMountingType,
-  EMachineProtection,
-  EMachineProtectionType,
   EMachineType,
   EMachineTypeAlias,
   ERatedPower,
@@ -17,7 +19,7 @@ import {
 } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
 import { getEfficiency100, getPartialEfficiency } from "./emachine-efficiency";
-import { emachinDesignation, emachineTypeFilter } from "./emachine-utils";
+import { emachineDesignation, emachineTypeFilter } from "./emachine-utils";
 import { Mechanism } from "./sizing";
 import { closest } from "./utils";
 import { VoltageY } from "./voltage";
@@ -154,7 +156,7 @@ export function findEmCandidates(
                     efficiencyClass,
                   );
 
-                  const designation = emachinDesignation(
+                  const designation = emachineDesignation(
                     typeSpeedTorque,
                     ratedVoltageY,
                     shaftHeight,

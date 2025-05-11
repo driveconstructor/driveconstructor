@@ -43,7 +43,7 @@ export const VoltageLV = [
   "9900-11500",
 ] as const;
 
-function parseVoltqage(voltage: string[]) {
+function parseVoltage(voltage: string[]) {
   return voltage
     .map((s) => s.split("-"))
     .map((v) => {
@@ -199,7 +199,7 @@ export const TrafoElement: SystemElement<Trafo> = {
       value: (trafo, input) => {
         const voltage = input.grid.voltage;
         // not used?
-        const value = parseVoltqage(TrafoVoltageHV).find(
+        const value = parseVoltage(TrafoVoltageHV).find(
           (a) => a.min <= voltage && a.max >= voltage,
         );
 

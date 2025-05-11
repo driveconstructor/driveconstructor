@@ -9,7 +9,7 @@ import {
 } from "./fconverter";
 import { FConverterComponent } from "./fconverter-component";
 import { getPrice } from "./fconverter-price";
-import { FConverterVoltageFilering } from "./fconverter-types";
+import { FConverterVoltageFiltering } from "./fconverter-types";
 import { getDesignation } from "./fconverter-utils";
 import { FcVoltage, findFcVoltageY } from "./fconverter-voltage";
 import { getVolume } from "./fconverter-volume";
@@ -49,7 +49,7 @@ export function findFcConverters(
               (cooling) => cooling == fconverter.cooling,
             ).flatMap((cooling) =>
               FcProtection.filter(
-                (proteciton) => proteciton == fconverter.protection,
+                (protection) => protection == fconverter.protection,
               ).flatMap((protection) =>
                 FConverterMounting.filter(
                   (mounting) =>
@@ -174,7 +174,7 @@ export function findFcConverters(
           ),
         ),
     )
-    .filter((fc) => FConverterVoltageFilering[fc.type](fc))
+    .filter((fc) => FConverterVoltageFiltering[fc.type](fc))
     .filter((fc) => {
       const efficiencyK = cableEfficiency100 / 100;
       const current =

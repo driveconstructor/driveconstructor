@@ -59,7 +59,7 @@ function mediumVoltage2(fc: FConverterComponent) {
   return false;
 }
 
-export const FConverterVoltageFilering: Record<
+export const FConverterVoltageFiltering: Record<
   FConverterTypeAlias,
   (fc: FConverterComponent) => boolean
 > = {

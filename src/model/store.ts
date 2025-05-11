@@ -26,7 +26,7 @@ export function updateSystemInput(
   model: SystemModel,
   input: Record<string, any>,
 ) {
-  // update functionnal values
+  // update functional values
   return Object.entries(model.input).reduce((a, [e, p]) => {
     return {
       ...a,

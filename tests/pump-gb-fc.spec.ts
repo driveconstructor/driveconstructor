@@ -56,7 +56,7 @@ test("Defaults", async ({ page }) => {
   );
 });
 
-test("2 helial stages", async ({ page }) => {
+test("2 helical stages", async ({ page }) => {
   await page.getByTestId("gearbox.<icon>").click();
   await page.getByLabel("Number of stages:").selectOption("2");
   await expect(page.getByTestId("gearbox[0].price")).toContainText("29675");

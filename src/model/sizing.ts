@@ -1,12 +1,9 @@
 import { CableComponent } from "./cable-component";
-import { findCableComponent as findCableCandidates } from "./cable-sizing";
+import { findCableComponent } from "./cable-sizing";
 import { CandidatesType, ComponentsType } from "./component";
 import { EMachine } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
-import {
-  findEmCandidates as findEmachines,
-  findTypeSpeedTorque,
-} from "./emachine-sizing";
+import { findEmCandidates, findTypeSpeedTorque } from "./emachine-sizing";
 import { FConverterComponent } from "./fconverter-component";
 import { findFcConverters } from "./fconverter-sizing";
 import { findGearbox } from "./gearbox-sizing";
@@ -85,7 +82,7 @@ function findEMachineCandidates(
   const deratedVoltage = grid.voltage / emachine.voltageDerating;
   const voltageY = findVoltageY(deratedVoltage);
 
-  const catalog = findEmachines(
+  const catalog = findEmCandidates(
     emachine,
     typeSpeedAndTorqueList,
     voltageY,
@@ -124,7 +121,7 @@ export function withCandidates(system: System): System {
       };
       components = { ...components, gearbox: gearbox[0] };
     } else {
-      // geabox is not found
+      // gearbox is not found
       return { ...system, candidates };
     }
   }
@@ -141,7 +138,7 @@ export function withCandidates(system: System): System {
 
   let cable: CableComponent[] = [];
   if (components.emachine) {
-    cable = findCableCandidates(system.input.cable, components.emachine);
+    cable = findCableComponent(system.input.cable, components.emachine);
     if (cable.length == 1) {
       components = { ...components, cable: cable[0] };
     }

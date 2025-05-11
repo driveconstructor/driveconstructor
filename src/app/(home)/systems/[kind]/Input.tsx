@@ -31,7 +31,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
   const [errors, setErrors] = useState([] as string[]);
   const [showMore, setShowMore] = useState(false);
   const [showCalculated, setShowCalculated] = useState(false);
-  const [update, setUpdate] = useState({ exlcude: "", count: 0 });
+  const [update, setUpdate] = useState({ exclude: "", count: 0 });
 
   useEffect(() => {
     saveSystem(id, value);
@@ -44,7 +44,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
   };
 
   const resetErrors = () => {
-    setUpdate({ exlcude: "", count: update.count + 1 });
+    setUpdate({ exclude: "", count: update.count + 1 });
     setErrors([]);
   };
 
@@ -81,7 +81,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 )
                 .map(([k, _]) => (
                   <Param
-                    key={`${context.system.element}.${k}.${k == update.exlcude ? "" : update.count}}`}
+                    key={`${context.system.element}.${k}.${k == update.exclude ? "" : update.count}}`}
                     name={k}
                     handleChange={(v) => {
                       const updated = updateParam(context, k, v);
@@ -91,7 +91,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                       setErrors(errors);
                       if (errors.length == 0) {
                         setValue(updated);
-                        setUpdate({ exlcude: k, count: update.count + 1 });
+                        setUpdate({ exclude: k, count: update.count + 1 });
                       }
                     }}
                     setErrors={setErrors}
@@ -117,7 +117,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
               onClick={() => {
                 const id = createSystem(context.model);
                 setValue(getSystem(id));
-                setUpdate({ exlcude: "", count: update.count + 1 });
+                setUpdate({ exclude: "", count: update.count + 1 });
               }}
             >
               Reset

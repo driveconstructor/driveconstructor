@@ -2,7 +2,7 @@ import { EMachineComponent } from "./emachine-component";
 import { TypeSpeedTorque } from "./emachine-sizing";
 import { VoltageY } from "./voltage";
 
-export function emachinDesignation(
+export function emachineDesignation(
   typeSpeedTorque: TypeSpeedTorque,
   ratedVoltageY: VoltageY,
   shaftHeight: number,
