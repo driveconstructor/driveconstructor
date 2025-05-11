@@ -40,8 +40,11 @@ export default function RootLayout({
         <NavItem href="/" className="text-xl">
           Drive Constructor
         </NavItem>
-        <NavItem href="/docs" className="text-m">
-          Documentation
+        <NavItem href="/docs/textbook" className="text-m">
+          Textbook
+        </NavItem>
+        <NavItem href="/docs/exercises" className="text-m">
+          Exercises
         </NavItem>
       </nav>
       <main className="mb-auto"> {children}</main>

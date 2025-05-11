@@ -1,4 +1,5 @@
 {
   "defaultOpen": true,
-  "pages": ["electric-machines", "drive-systems", "frequency-converters"]
+  "pages": ["electric-machines", "drive-systems", "frequency-converters"],
+  "root": true
 }

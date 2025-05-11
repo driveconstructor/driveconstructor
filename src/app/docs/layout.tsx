@@ -10,7 +10,24 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
       <RootProvider search={{ enabled: false }}>
-        <DocsLayout tree={source.pageTree} {...baseOptions}>
+        <DocsLayout
+          tree={source.pageTree}
+          sidebar={{
+            tabs: [
+              {
+                title: "Text book",
+                description: "Text book description",
+                url: "/docs/textbook",
+              },
+              {
+                title: "Exercises",
+                description: "Exercises description",
+                url: "/docs/exercises",
+              },
+            ],
+          }}
+          {...baseOptions}
+        >
           {children}
         </DocsLayout>
       </RootProvider>

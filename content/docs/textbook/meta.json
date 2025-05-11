@@ -1,4 +1,5 @@
 {
   "pages": ["index", "applications", "systems", "exercises"],
-  "defaultOpen": true
+  "defaultOpen": true,
+  "root": true
 }
