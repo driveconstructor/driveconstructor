@@ -12,8 +12,8 @@ export default function NewSystemButton({ kind }: { kind: SystemKind }) {
       data-testid={kind}
       onClick={() => {
         const model = getModel(kind);
-        const id = createSystem(model);
-        router.push(`/systems/${kind}?id=${id}`);
+        const result = createSystem(model);
+        router.push(`/systems/${kind}?id=${result.id}`);
       }}
     >
       New System

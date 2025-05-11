@@ -112,17 +112,18 @@ export default function Input({ kind }: { kind: SystemKind }) {
             >
               {showCalculated ? "Hide calculated..." : "Show calculated..."}
             </div>
+            <div className="grow" />
             <div
               className="btn"
               onClick={() => {
-                const id = createSystem(context.model);
-                setValue(getSystem(id));
+                const result = createSystem(context.model);
+                setErrors([]);
+                setValue(result.system);
                 setUpdate({ exclude: "", count: update.count + 1 });
               }}
             >
               Reset
             </div>
-            <div className="grow" />
             <div className="btn flex-none">Show report</div>
           </div>
           <div hidden={errors.length == 0}>

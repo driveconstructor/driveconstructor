@@ -55,18 +55,22 @@ export function initSystemInput(model: SystemModel) {
   }, {});
 }
 
-export function createSystem(model: SystemModel): string {
+export function createSystem(model: SystemModel): {
+  id: string;
+  system: System;
+} {
   const kind = model.kind;
   const input = updateSystemInput(model, initSystemInput(model));
 
   const id = "draft_" + kind;
-  const system = {
+  const result = {
     kind,
     input,
     element: Object.keys(model.input)[0],
   } as System;
-  saveSystem(id, withCandidates(model.update?.(system) ?? system));
-  return id;
+  const system = withCandidates(model.update?.(result) ?? result);
+  saveSystem(id, system);
+  return { id, system };
 }
 
 export function updateParam(
