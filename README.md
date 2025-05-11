@@ -93,8 +93,8 @@ and perform formatting while you editing.
 autoing tool. Get yourself familiar with how to write the documentation using
 this framework.
 
-The content files are located in the`content/docs` directory, they stored the
-[MDX](https://mdxjs.com/) markdown format.
+The content files are located in the`content/docs` directory, they are stored
+the [MDX](https://mdxjs.com/) markdown format.
 
 If you are using [Visual Studio Code](https://code.visualstudio.com/), you can
 install the MDX
