@@ -59,10 +59,12 @@ export function findTrafoCandidates(
           Winding.filter((typeIII) =>
             trafoFilter(voltageHVmax, voltageHVmax, ratedPower, typeIII),
           ).flatMap((typeIII) =>
-            Integration.flatMap((typeIV) =>
-              DryOil.flatMap((typeII) =>
-                FcCooling.flatMap((cooling) =>
-                  EMachineProtection.flatMap((protection) => {
+            Integration.filter((t4) => t4 == trafo.typeIV).flatMap((typeIV) =>
+              DryOil.filter((t2) => t2 == trafo.typeII).flatMap((typeII) =>
+                FcCooling.filter((c) => c == trafo.cooling).flatMap((cooling) =>
+                  EMachineProtection.filter(
+                    (p) => p == trafo.protection,
+                  ).flatMap((protection) => {
                     const currentHVmax =
                       (ratedPower * 1000) / (Math.sqrt(3) * voltageHVmax);
                     const currentLVmax =

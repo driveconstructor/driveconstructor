@@ -124,7 +124,7 @@ export const TrafoElement: SystemElement<Trafo> = {
       advanced: true,
     },
     ...FcCoolingModel,
-    ...EMachineProtectionModel,
+    protection: { ...EMachineProtectionModel.protection, value: "IP54/55" },
     ...EnvironmentModel,
     overallCurrentDerating: {
       label: "Overall current derating",

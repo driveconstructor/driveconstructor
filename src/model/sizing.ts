@@ -77,9 +77,10 @@ function findEMachineCandidates(
   emachine: EMachine,
   grid: Grid,
   mechanism: Mechanism,
+  ratio: number,
 ): EMachineComponent[] {
   const typeSpeedAndTorqueList = findTypeSpeedTorque(emachine.type, mechanism);
-  const deratedVoltage = grid.voltage / emachine.voltageDerating;
+  const deratedVoltage = grid.voltage / emachine.voltageDerating / ratio;
   const voltageY = findVoltageY(deratedVoltage);
 
   const catalog = findEmCandidates(
@@ -97,6 +98,10 @@ export function withCandidates(system: System): System {
   let components: ComponentsType = { ...system.components };
 
   let mechanism = createMechanism(system);
+  const ratio =
+    system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr"
+      ? system.input.trafo.ratio
+      : 1;
 
   if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
@@ -123,23 +128,12 @@ export function withCandidates(system: System): System {
     system.input.emachine,
     system.input.grid,
     mechanism,
+    ratio,
   );
   if (emachine.length == 1) {
     components = { ...components, emachine: emachine[0] };
   }
   candidates = { ...candidates, emachine };
-
-  if (
-    components.emachine &&
-    (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr")
-  ) {
-    const trafo = findTrafoCandidates(
-      system.input.trafo,
-      components.emachine,
-    ).slice(0, 2);
-    components = { ...components, trafo: trafo[0] };
-    candidates = { ...candidates, trafo };
-  }
 
   let cable: CableComponent[] = [];
   if (components.emachine) {
@@ -164,6 +158,18 @@ export function withCandidates(system: System): System {
       components = { ...components, fconverter: fconverter[0] };
     }
     candidates = { ...candidates, fconverter };
+  }
+
+  if (
+    components.emachine &&
+    (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr")
+  ) {
+    const trafo = findTrafoCandidates(
+      system.input.trafo,
+      components.emachine,
+    ).slice(0, 1);
+    components = { ...components, trafo: trafo[0] };
+    candidates = { ...candidates, trafo };
   }
 
   return { ...system, candidates, components };
