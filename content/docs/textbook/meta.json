@@ -1,5 +1,5 @@
 {
-  "pages": ["index", "applications", "systems", "exercises"],
+  "pages": ["index", "applications", "components", "systems"],
   "defaultOpen": true,
   "root": true
 }

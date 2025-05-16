@@ -1,0 +1,4 @@
+{
+  "pages": ["electric-machines", "frequency-converters", "gearboxes", "transformers"],
+  "defaultOpen": true
+}
