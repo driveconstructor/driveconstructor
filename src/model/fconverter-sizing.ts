@@ -29,8 +29,10 @@ export function findFcConverters(
   cableEfficiency100: number,
   fconverter: FConverter,
   emachineWorkingCurrent: number,
+  trafoRatio: number,
 ): FConverterComponent[] {
-  const deratedVoltage = systemVoltage / fconverter.voltageDerating;
+  const deratedVoltage =
+    systemVoltage / fconverter.voltageDerating / trafoRatio;
 
   return FConverterType.filter((type) => type == fconverter.type)
     .flatMap((type) =>

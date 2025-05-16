@@ -77,10 +77,10 @@ function findEMachineCandidates(
   emachine: EMachine,
   grid: Grid,
   mechanism: Mechanism,
-  ratio: number,
+  trafoRatio: number,
 ): EMachineComponent[] {
   const typeSpeedAndTorqueList = findTypeSpeedTorque(emachine.type, mechanism);
-  const deratedVoltage = grid.voltage / emachine.voltageDerating / ratio;
+  const deratedVoltage = grid.voltage / emachine.voltageDerating / trafoRatio;
   const voltageY = findVoltageY(deratedVoltage);
 
   const catalog = findEmCandidates(
@@ -98,7 +98,7 @@ export function withCandidates(system: System): System {
   let components: ComponentsType = { ...system.components };
 
   let mechanism = createMechanism(system);
-  const ratio =
+  const trafoRatio =
     system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr"
       ? system.input.trafo.ratio
       : 1;
@@ -128,7 +128,7 @@ export function withCandidates(system: System): System {
     system.input.emachine,
     system.input.grid,
     mechanism,
-    ratio,
+    trafoRatio,
   );
   if (emachine.length == 1) {
     components = { ...components, emachine: emachine[0] };
@@ -151,6 +151,7 @@ export function withCandidates(system: System): System {
       components.cable.efficiency100,
       system.input.fconverter,
       components.emachine.workingCurrent,
+      trafoRatio,
     );
 
     fconverter = distinctFcByMounting(fconverter);
