@@ -1,7 +1,6 @@
 import {
   Cable,
   CrossSection,
-  CrossSectionType,
   Material,
   MaterialType,
   NumberOfRuns,
@@ -9,7 +8,6 @@ import {
 } from "./cable";
 import { CableComponent } from "./cable-component";
 import { EMachineComponent } from "./emachine-component";
-import { closest } from "./utils";
 
 const Voltage = [1, 3, 6, 10, 15];
 
@@ -17,7 +15,11 @@ export function findCableComponent(
   cable: Cable,
   emachine: EMachineComponent,
 ): CableComponent[] {
-  const { numberOfRuns, crossSection } = calculateCable(cable, emachine);
+  const calculatedCable = calculateCable(cable, emachine);
+  if (calculatedCable == null) {
+    return [];
+  }
+  const { numberOfRuns, crossSection } = calculatedCable;
 
   return Voltage.filter(
     (voltage) => voltage >= emachine.ratedVoltageY.max / 1000,
@@ -184,11 +186,10 @@ function calculateCable(cable: Cable, emachine: EMachineComponent) {
   if (cable.crossSection == null) {
     const crossSectionCalc =
       workingCurrent / result.numberOfRuns / result.maxCurrentDensity;
-    crossSection = closest(
-      CrossSection,
-      crossSectionCalc,
-      true,
-    ) as CrossSectionType;
+    crossSection = CrossSection.find((v) => v >= crossSectionCalc);
+    if (crossSection == null) {
+      return null;
+    }
   } else {
     crossSection = cable.crossSection;
   }

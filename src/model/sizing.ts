@@ -82,6 +82,9 @@ function findEMachineCandidates(
   const typeSpeedAndTorqueList = findTypeSpeedTorque(emachine.type, mechanism);
   const deratedVoltage = grid.voltage / emachine.voltageDerating / trafoRatio;
   const voltageY = findVoltageY(deratedVoltage);
+  if (voltageY == null) {
+    return [];
+  }
 
   const catalog = findEmCandidates(
     emachine,

@@ -2,11 +2,32 @@ import { describe, expect, test } from "@jest/globals";
 import { findFcVoltageY } from "../fconverter-voltage";
 import { filters } from "../filter-component";
 import { findVoltageY } from "../voltage";
-describe("sizingn utilities", () => {
+describe("sizing utilities", () => {
   test("voltage", () => {
-    const v1 = findVoltageY(400);
-    expect(v1.min).toBeCloseTo(360);
-    expect(v1.max).toBeCloseTo(440);
+    expect(findVoltageY(400)).toStrictEqual({
+      min: 360,
+      max: 440,
+      type: "LV",
+      value: 400,
+    });
+    expect(findVoltageY(1000)).toBeDefined();
+
+    expect(findVoltageY(4000)).toStrictEqual({
+      max: 7260,
+      min: 5940,
+      type: "MV",
+      value: 6600,
+    });
+    expect(findFcVoltageY(12000)).toBeNull();
+
+    expect(findVoltageY(100)?.value).toBe(400);
+    expect(findVoltageY(400)?.value).toBe(400);
+    expect(findVoltageY(405)?.value).toBe(400);
+    expect(findVoltageY(450)?.value).toBe(660);
+    expect(findVoltageY(600)?.value).toBe(660);
+    expect(findVoltageY(1000)?.value).toBe(3300);
+    expect(findVoltageY(3000)?.value).toBe(3300);
+    expect(findVoltageY(12000)?.value).toBeUndefined();
   });
 
   test("filters", () => {
@@ -14,24 +35,29 @@ describe("sizingn utilities", () => {
   });
 
   test("fc voltage", () => {
-    const v1 = findFcVoltageY(400);
-    expect(v1.min).toBeCloseTo(360);
-    expect(v1.max).toBeCloseTo(420);
-    expect(v1.type).toBe("LV");
+    expect(findFcVoltageY(400)).toStrictEqual({
+      min: 360,
+      max: 420,
+      type: "LV",
+      value: 400,
+    });
+    expect(findFcVoltageY(1000)).toBeNull();
 
-    const v2 = findFcVoltageY(1000);
-    expect(v2.min).toBeCloseTo(594);
-    expect(v2.max).toBeCloseTo(693);
-    expect(v2.type).toBe("LV");
+    expect(findFcVoltageY(4000)).toStrictEqual({
+      max: 4368,
+      min: 3744,
+      type: "MV1",
+      value: 4160,
+    });
+    expect(findFcVoltageY(4200)).toBeNull();
 
-    const v3 = findFcVoltageY(5000);
-    expect(v3.min).toBeCloseTo(3744);
-    expect(v3.max).toBeCloseTo(4368);
-    expect(v3.value).toBeCloseTo(4160);
-    expect(v3.type).toBe("MV1");
+    expect(findFcVoltageY(6005)).toStrictEqual({
+      max: 6930,
+      min: 5940,
+      type: "MV2",
+      value: 6600,
+    });
 
-    const v4 = findFcVoltageY(50000);
-    expect(v4.value).toBe(11000);
-    expect(v4.type).toBe("MV2");
+    expect(findFcVoltageY(12000)).toBeNull();
   });
 });

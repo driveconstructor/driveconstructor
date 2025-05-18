@@ -37,6 +37,7 @@ export function findFcConverters(
   return FConverterType.filter((type) => type == fconverter.type)
     .flatMap((type) =>
       FcVoltage.map(findFcVoltageY)
+        .filter((v) => v != null)
         .filter(
           (voltageY) =>
             voltageY.min <= deratedVoltage && deratedVoltage <= voltageY.max,

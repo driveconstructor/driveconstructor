@@ -21,7 +21,6 @@ import { EMachineComponent } from "./emachine-component";
 import { getEfficiency100, getPartialEfficiency } from "./emachine-efficiency";
 import { emachineDesignation, emachineTypeFilter } from "./emachine-utils";
 import { Mechanism } from "./sizing";
-import { closest } from "./utils";
 import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
@@ -450,7 +449,7 @@ function getTorqueOverload(type: EMachineTypeAlias) {
 function getShaftHeight(ratedPower: number, volume: number) {
   const DtoLcurve = 1.4 + 0.2 * Math.pow(ratedPower, 0.2);
   const SHapprox = 0.5 * Math.pow(((volume / DtoLcurve) * 4) / 3.1416, 1 / 3);
-  return closest(ShaftHeight, SHapprox * 1000);
+  return ShaftHeight.findLast((v) => v <= SHapprox * 1000);
 }
 
 function getMomentOfInertia(ratedPower: number, weight: number) {

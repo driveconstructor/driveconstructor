@@ -18,16 +18,6 @@ export function splitRange(value: string): Range {
   return result;
 }
 
-export function closest(
-  array: number[],
-  value: number,
-  end?: boolean,
-): number | undefined {
-  return end
-    ? array.sort().find((v) => v >= value)
-    : array.sort((a, b) => b - a).find((v) => v <= value);
-}
-
 export function round(value: number, precision?: number): number {
   return parseFloat(value.toFixed(precision));
 }
