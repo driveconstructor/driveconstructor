@@ -120,6 +120,7 @@ export function withCandidates(system: System): System {
         minimalSpeed: mechanism.minimalSpeed * gearRatio,
         ratedTorque: mechanism.ratedTorque / K,
         torqueOverload: mechanism.ratedTorque / K,
+        gearRatio,
       };
       components = { ...components, gearbox: gearbox[0] };
     }
