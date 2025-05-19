@@ -1,18 +1,128 @@
 ---
 title: Drive systems
-description: Drive systems exercises description
+description: Drive systems exercises
 ---
-
-## About
 
 ## SYS-1. Rated speed vs weight, size & cost
 
+For the system driving a pump and consisting of a motor and a frequency converter investigate how chosen rated speed of the machine affects it’s weight, size and cost.
+
+import Image from "next/image";
+
+import pmp_fc_EM3_2Image from "./images/pmp_fc_EM3_2.png";
+
+<img src={pmp_fc_EM3_2Image.src} width="50%" height="50%" />
+
+Design the system with the following parameters:
+* Pump: rated flow 100 l/s, head 110 m, pump efficiency 86%, speed 1100 rpm,
+* Motor type SCIM, cooling IC411,
+* Grid voltage 400 V.
+
+First choose machine with the synchronous speed of 1000 rpm. Record weight and cost of motor and of frequency converter.
+
+As the alternative variant choose machine with synchronous speed of 1500 rpm. Record weight and cost of motor and of frequency converter.
+
+Compare weights and costs of the two motors (1000 and 1500 rpm), then compare costs of the two systems. Draw conclusions and explain. Can you explain the results/conclusions as electric machine designer?
+
+* [!] Make sure you keep machine type, efficiency class, cooling, protection class and other «influential» parameters constant (the same). Include these parameters in your report.
+
 ## SYS-2. Design for short and wide speed ranges
+
+The chief engineer is to design drive system for the three similar conveyors with different operational speed ranges. Available information (common for the three conveyors):
+* One drum to be driven
+* Gearbox: helical 1-stage, ratio 1:5
+* No overloads, duty cycle – 100%
+* Air-conditioned clean power house, abundant heat removal capability
+* Distance between the driven drum of the conveyor and the FC (cable length) – 30 m
+* Grid 400 V
+* Rated torque 5 kNm
+* Cooling: cooling water is not available. Consider the two air-cooling variants: (a) IC411, (b) IC416
+
+Difference between the conveyors: speeds (min-max)
+* 1 case: 40 - 200 rpm (wide speed range)
+* 2 case: 180 - 200 rpm (narrow speed range)
+* 3 case: 180 - 206 rpm (overspeed)
+
+Help the chief engineer to design the three systems. Record weight and cost of motor and of frequency converter for each case. Draw conclusions and explain. Can you explain the results/conclusions as electric machine designer? Converter designer? System designer?
 
 ## SYS-3. THD
 
+Design drive trains for the three identical pumps for the three application areas: airport, office building and factory. Choose solution with lowest cost. Note that $$THD(u)$$ limits in the three above mentioned areas are according to IEEE519 (see table below). Short-circuit power (the same in all three cases): 1000 MVA.
+
+Pump parameters:
+* Rated flow 50 l/s, head 200 m, efficiency 81%, speed 1450 rpm
+* Grid voltage – 6000 V
+
+import SYS_3_tableImage from "./images/SYS_3_table.png";
+
+<img src={SYS_3_tableImage.src} width="60%" height="60%" />
+
 ## SYS-4. System design
+
+Choose optimal drive train (mechanical and electrical system) for a pump in water supply system.
+
+import SYS4Image from "./images/SYS4.png";
+
+<img src={SYS4Image.src} width="70%" height="70%" />
+
+import Link from 'next/link'
+
+<Link href="https://www.vecteezy.com/free-photos/centrifugal-pump">picture source</Link>
+
+Parameters:
+* Rated flow 50 l/s, head 200 m, pump efficiency 81%
+* Grid voltage 690 V
+* Conditions in the electric room - dry, no dust
+* Cable 50 m
+* Heat removal capabilities - very good
+* Distance from the electric room to the pump (cable length) - 50 m
+* Conditions at the place of the pump installation - wet
+* Pump's mechanical configuration (horizontal shaft)
+
+Make and present three design variants:
+* 1st variant: design for lowest cost.
+* 2nd variant: design for highest efficiency (lowest energy consumption).
+* 3rd variant: design for highest efficiency with budget constraints on the investment in the new drive system of 31000 Euro.
+
+Present benchmarking results as a spider diagram. Compare the system on the primary and the secondary criteria.
+
+import SpiderImage from "./images/Spider.png";
+
+<img src={SpiderImage.src} width="60%" height="60%" />
 
 ## SYS-5. Influence of gearbox type
 
+Analyze efficiency (at several loads), weight and cost of electromechanical part of drive train (gearbox + electric machine) for the two applications:
+
+##### Wind turbine
+Parameters: Torque 10 kNm, Speed 30 rpm, overspeed 1,2, grid 6000 V.
+
+Compare the following three variants of gearbox stages and electric machines: (1) *Pl+Pl+Hel+SCIM* vs (2) *Pl+Pl+Hel+PMSM* vs (3) *Pl+Pl+PMSM*, where "Pl" means planetary gear stage, "Hel" means helical gear stage.
+
+import SYS5_wind_gearImage from "./images/SYS5_wind_gear.png";
+
+<img src={SYS5_wind_gearImage.src} width="30%" height="30%" /> _Fig.1. Gearbox with 2 planetary stages and one helical stage - "Pl+Pl+Hel" (Source: Romax)._
+
+##### Conveyor
+Parameters: Torque 10 kNm, Speed 200-300 rpm, grid 400 V.
+
+Compare the following three variantsof gearbox stages and electric machines: (1) *Worm+SCIM* vs (2) *Hel+Hel+SCIM* vs (3) *Hel+Bevel+SCIM*, where "Worm" means worm gearbox.
+
+import SYS5_wormImage from "./images/SYS5_worm.png";
+
+<img src={SYS5_wormImage.src} width="50%" height="50%" /> _Fig.2. Gearbox with 1 worm stage - "Worm"._
+
+Reflect on efficiency if operation is at partial load most of the time. Collect results in the tables (separate table for each application).
+
+import SYS5tableImage from "./images/SYS5table.png";
+
+<img src={SYS5tableImage.src} width="100%" height="100%" />
+
 ## SYS-6. Filters, cable length and losses
+
+Design drive trains for four pumps (all have identical parameters: flow 250 l/s, head 280 m, efficiency 87%, rated speed 1450 rpm). Distance to the respective pumps from the electric room (with 6 kV voltage source) where the system driving the pumps are installed: 40 m, 250 m, 400 m, 1000 m.
+
+Try systems with LV and MV FC.
+
+First, set cable on «automatic selection». Then try higher and lower cross-sections. Compare the results. Change cable material from Copper to Aluminum. Compare the results. Summarize your findings in a table.
+

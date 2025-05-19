@@ -1,6 +1,114 @@
 ---
 title: Electric machines
-description: Electric machines description
+description: Relevant information
 ---
+## What is included
 
-TBD
+Only rotating AC machines with cylindrical cores with inner rotor are included into this version of _DriveConstructor_.
+It is possible to choose between:
+* _SCIM_ – Squirrel Cage Induction Machine (Fig.1),
+* _SyRM_ – Synchronous Reluctance Machine (Fig.2),
+* _PMSM_ – Permanent Magnet Synchronous Machine (rotor shown in Fig.3) and
+
+import Image from "next/image";
+import SCIMImage from "./images/SCIM.png";
+
+<img src={SCIMImage.src} width="40%" height="40%" /> _Fig.1A. SCIM_.
+
+import scim_simple1Image from "./images/scim_simple1.png";
+
+<img src={scim_simple1Image.src} width="15%" height="15%" /> _Fig.1B. icon of SCIM_.
+
+import SyRMImage from "./images/SyRM.png";
+
+<img src={SyRMImage.src} width="40%" height="40%" /> _Fig.2A. SyRM_.
+
+import syrm_simple1Image from "./images/syrm_simple1.png";
+
+<img src={syrm_simple1Image.src} width="15%" height="15%" /> _Fig.2B. icon of SyRM_.
+
+import PMSM_rotorImage from "./images/PMSM_rotor.png";
+
+<img src={PMSM_rotorImage.src} width="25%" height="25%" /> _Fig.3A. Rotor of PMSM_.
+
+import pm_motor_simple1Image from "./images/pm_motor_simple1.png";
+
+<img src={pm_motor_simple1Image.src} width="15%" height="15%" /> _Fig.3B. icon of PMSM_.
+
+SCIM, PMSM and SyRM can be selected for any application and any drive train topology. SyRM are available for quite limited range of powers. So far only LV SyRM products are known, therefore only LV FC can be used to drive SyRM.
+
+Performances of the machines of different types are different. Usually:
+* Efficiency (SCIM) < Efficiency (SyRM) < Efficiency (PMSM)
+* Cost (SCIM) < Cost (SyRM) < Cost (PMSM)
+* Size (SCIM) > Size (SyRM) > Size (PMSM)
+
+## Key parameters of electric machines
+
+#### Rated power
+
+Power rating of the electric machines available in *DriveConstructor* is according to IEC 60072-1 which suggests the following preferred ratings (based on a subset of the R40 series) for motors (in kW) and generators (in kVA):
+
+import EM_rated_powersImage from "./images/EM_rated_powers.png";
+
+<img src={EM_rated_powersImage.src} width="100%" height="100%" />
+[Source: IEC](http://www.openelectrical.org/wiki/index.php?title=Standard_IEC_Ratings)
+
+Note that asterix-marked powers are "secondary series" ratings and are only to be used in cases of special need.
+
+In *DriveConstructor* we use the following series of powers (in kW): 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000.
+
+Our list is shorter than the IEC one as we picked up only the most used powers.
+
+#### Rated voltage
+
+Electric machines may be designed for different supply voltages (from converter or grid). Machines are usually designed for «standard» ranges of rated voltage, e.g. 380-400 V or 650-700 V, as it is easier to connect a «standard» machine to a typical grid or a «standard» frequency converter. In Europe and America the standard ranges are different. In Europe it is usual to differentiate between *LV* (below 1 kV) and *MV* (above 1 kV).
+
+In *DriveConstructor* the range of rated voltages to which the machine is designed to operate within can be chosen from the following options: 380-440, 650-700, 3200-3400, 5900-6700, 9000-12000 V. If it is desirable that the voltage is chosen automatically then choose "any". It is assumed that all machines are *Y*-connected. In practice windings can be reconnected into *D*, but this option is not included.
+
+Machines designed for lower voltage are usually smaller, lighter and cheaper than those designed for MV. This is because of thinner insulation in the slots, which allows putting more copper in the slots and makes heat removal easier.
+
+It is normally not possible to design LV machines for very high powers as currents would become too high and cables would become too thick to be practical. LV machines are normally produced for powers from fractions of kW up to a few MW (in *DriveConstructor* up to 2 MW), MV machines – from about 0,2 MW to 10...20 MW (in *DriveConstructor* up to 5 MW), in some cases up to 100 MW!
+
+Slot designs of LV and MV machines look quite different:
+
+import LV_slotImage from "./images/LV_slot.png";
+
+<img src={LV_slotImage.src} width="30%" height="30%" /> _Fig.1. LV slot._
+
+import HV_slotImage from "./images/HV_slot.png";
+
+<img src={HV_slotImage.src} width="50%" height="50%" /> _Fig.2. HV slot._
+
+#### Rated synchronous speed
+
+Rated synchronous speed is proportional to supply frequency and reverse proportional to number of poles ($$n=120*f/p$$). For 50 Hz supply and number of poles 2, 4, 6, 8 and 10 rated synchronous speed is 3000, 1500, 1000, 750 and 600, respectively.
+
+SCIM have slip, so its rated speed is lower than rated synchronous speed by a few percent. SyRM and PMSM have rated speed equal rated synchronous speed.
+
+It is obvious that a machine designed for delivering high power is bigger than a machine designed for delivering low power. It is less obvious that the rated speed the machine is designed for affects it’s weight, compactness, rotor inertia and cost. However, if the power is fixed, the machine with lower speed will have higher torque ($$T\sim P/n$$). To be able to provide higher torque the machine has to be larger, heavier and as the consequence more expensive.
+
+## Efficiency class
+
+The International Electrotechnical Commission (IEC) has developed an internationally applicable testing Standard IEC 60034-2-1 for electric motors and a classification scheme IEC 60034-30-1 with four levels of motor efficiency ("IE-code"):
+* IE1 Standard efficiency,
+* IE2 High efficiency,
+* IE3 Premium efficiency
+* IE4 Super premium efficiency.
+
+The IE-code and its efficiency levels create a basic vocabulary for governments to determine the efficiency level for their minimum energy performance standards (MEPS). The European Union sets motor MEPS levels (Directive 640/2009) at IE3 (or IE2 in combination with a variable frequency drive) from 2015 for smaller motors and from 2017 covering also larger motors.
+
+import Efficiency_class1Image from "./images/Efficiency_class1.png";
+
+<img src={Efficiency_class1Image.src} width="70%" height="70%" />
+
+ _Fig.1. Cut-away of standard, energy-efficient, and premium efficiency motors._
+
+Efficiency value for a certain class depends on power as shown on the diagram below:
+
+import Efficiency_class3Image from "./images/Efficiency_class3.png";
+
+<img src={Efficiency_class3Image.src} width="60%" height="60%" />
+
+Efficiency at partial load (e.g. 25%, 50%) is lower than at rated load (100%).
+High efficiency class motors are larger and heavier, while lower IE class motors are more compact and lighter. Therefore, motors with higher IE class are more expensive.
+

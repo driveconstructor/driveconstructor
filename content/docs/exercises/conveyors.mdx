@@ -1,0 +1,126 @@
+---
+title: Conveyors
+description: Conveyors exercises
+---
+
+## C-1. Design for constrained space
+
+Design drive system for the conveyor situated in a narrow passage. L = 120 cm (see the sketch).
+
+import Image from "next/image";
+
+import C1Image from "./images/C1.png";
+
+<img src={C1Image.src} width="60%" height="60%" /> _Fig.1. Explanation for the task._
+
+Available information:
+* One drum to be driven
+* No overloads, duty cycle – 100%
+* Dusty environment, abundant heat removal capability, wet floor
+* Grid 400 V
+* Distance between the driven drum of the conveyor and the FC (cable length) – 30 m
+* Rated torque 10 kNm
+* Speeds: min – 200 rpm, max - 250 rpm
+* Cooling water available
+
+Design for:
+(A) Design system for lowest cost. (B) Design system for highest efficiency
+
+## C-2.Design for applications with different duties
+
+Design drive system for the three conveyors with different duties (a) duty 100%, (b) 70%, (c) 50%. Duty cycle period – 1 min.
+
+Available information:
+* One drum to be driven
+* Rated torque 50 kNm
+* Speeds: min – 75 rpm, max -150 rpm
+* No overloads
+* Air-conditioned clean power house, abundant heat removal capability
+* Grid 400 V
+* Distance of conveyor from FC (cable length) – 40 m
+* Cooling water not available
+
+Use helical gearbox with ratio 1:5.
+
+Summarize the data in a table like the one below. Explain the results.
+
+
+| Case |	Duty | Motor type | FC type | Cost motor | Cost FC | Cost total |
+|	-- | -- | -- | -- | -- | -- | -- |
+| 1 |	100%  |  | |  | |  |
+| 2 |	70%  |  | |  | |  |
+| 3 |	50%  |  | |  | |  | |
+
+
+## C-3.Design for applications with different overloads
+
+You are chief engineer at a plant. Design drive system for the five conveyors. Design for the following overload variants:
+* (a) No overloads (0%),
+* (b) 100% 2 sec each 1 min,
+* (c) 100% 1 min each 10 min,  
+* (d) 100% 2 min each 20 min.
+* (e) 50% 1 min each 10 min.
+
+Available information:
+* One drum to be driven
+* Rated torque 10 kNm
+* Speeds: min – 400 rpm, max - 630 rpm
+* Duty 100%
+* Air-conditioned clear power house, abundant heat removal capability
+* Grid 400 V
+* Distance pump from FC (cable length) – 40 m
+* Cooling water not available
+
+Explain the results.
+
+| Case |	Overload | Motor type | FC type | Cost motor | Cost FC | Cost total |
+|	-- | -- | -- | -- | -- | -- | -- |
+| 1 |	No  |  | |  | |  |
+| 2 |	100% 2 sec each 1 min  |  | |  | |  |
+| 3 |	100% 1 min each 10 min |  | |  | |  |
+| 4 |	100% 5 min each 20 min |  | |  | |  |
+| 5 |	50% 1 min each 10 min |  | |  | |  | |
+
+
+## C-4. Design for lowest system cost
+
+Design drive system for the four conveyors with different speeds (the same power).
+
+Given parameters:
+* No overloads
+* Duty - 100% (uninterruptable operation)
+* Location/environment – clean room
+* Grid - 690 V
+* Cooling water not available
+* Speeds and torques according to the table:
+
+| Case |	speed, rpm | torque, kNm |
+|	-- | -- | -- |
+| 1 |	100...500 | 10 |
+| 2 |	300...500 | 10 |
+| 3 |	20...100 | 50 |
+| 4 |	70...100 | 50 |
+
+
+Design for: lowest investment cost (CAPEX). Assume energy efficiency is not important. Present total system efficiency at 100% load, 50% load
+
+
+## C-5. Design for long and short cables
+
+Design drive system for the conveyor with two drums to be driven. Load sharing 50/50%. You are free to choose where the drive and the transformer (if any) will be located. Also free to choose voltage level.
+
+Note: only one possible variant is shown on the sketch in Fig.1.
+
+import C5Image from "./images/C5.png";
+
+<img src={C5Image.src} width="100%" height="100%" /> _Fig.1. Explanation of the task._
+
+Available information:
+* Rated torque 60 kNm (for the total conveyor)
+* Operational speeds 40 - 200 rpm
+* 20% overloads
+* Duty cycle – 100%
+* Choose between two power houses with 6000 V and 690 V voltage sources
+* Power houses: constrained space (try to minimize footprint)
+
+Design the system for lowest cost.
