@@ -64,7 +64,7 @@ function Candidate({
             <ChevronDownIcon className="h-6 text-gray-500" />
           )}
           <div className="text-lg text-gray-500">
-            {model.title + (collapsed ? `(${values.length})` : "")}
+            {`${model.title} (${values.length})`}
           </div>
         </div>
         {!collapsed && hasAdvanced && values.length != 0 ? (

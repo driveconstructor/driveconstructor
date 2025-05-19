@@ -9,6 +9,7 @@ import { findFcConverters } from "./fconverter-sizing";
 import { findGearbox } from "./gearbox-sizing";
 import { Grid } from "./grid";
 import { System } from "./system";
+import { TrafoComponent } from "./trafo-component";
 import { findTrafoCandidates } from "./trafo-sizing";
 import { findVoltageY } from "./voltage";
 
@@ -121,9 +122,6 @@ export function withCandidates(system: System): System {
         torqueOverload: mechanism.ratedTorque / K,
       };
       components = { ...components, gearbox: gearbox[0] };
-    } else {
-      // gearbox is not found
-      return { ...system, candidates };
     }
   }
 
@@ -144,8 +142,8 @@ export function withCandidates(system: System): System {
     if (cable.length == 1) {
       components = { ...components, cable: cable[0] };
     }
-    candidates = { ...candidates, cable };
   }
+  candidates = { ...candidates, cable };
 
   let fconverter: FConverterComponent[] = [];
   if (components.emachine && components.cable) {
@@ -161,18 +159,19 @@ export function withCandidates(system: System): System {
     if (fconverter.length == 1) {
       components = { ...components, fconverter: fconverter[0] };
     }
-    candidates = { ...candidates, fconverter };
   }
+  candidates = { ...candidates, fconverter };
 
-  if (
-    components.emachine &&
-    (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr")
-  ) {
-    const trafo = findTrafoCandidates(
-      system.input.trafo,
-      components.emachine,
-    ).slice(0, 1);
-    components = { ...components, trafo: trafo[0] };
+  if (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr") {
+    let trafo: TrafoComponent[] = [];
+    if (components.emachine) {
+      trafo = findTrafoCandidates(
+        system.input.trafo,
+        components.emachine,
+      ).slice(0, 1);
+      components = { ...components, trafo: trafo[0] };
+    }
+
     candidates = { ...candidates, trafo };
   }
 
