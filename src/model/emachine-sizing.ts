@@ -95,7 +95,11 @@ export function findEmCandidates(
           ).flatMap((protection) =>
             [...EfficiencyClass, null]
               .filter(
-                (ec) => em.efficiencyClass == null || ec == em.efficiencyClass,
+                (ec) =>
+                  em.efficiencyClass == null ||
+                  ec == em.efficiencyClass ||
+                  // pass any class down
+                  ec == null,
               )
               .flatMap((efficiencyClass) =>
                 typeSpeedTorqueList.map((typeSpeedTorque) => {

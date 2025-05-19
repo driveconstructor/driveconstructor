@@ -88,6 +88,7 @@ export const EMachineComponentModel: ComponentModel<EMachineComponent> = {
     efficiencyClass: {
       label: "Efficiency class",
       advanced: true,
+      render: (v) => (v == null ? "<any>" : v),
     },
     ...EfficiencyXXXParams,
     ratedCurrent: {

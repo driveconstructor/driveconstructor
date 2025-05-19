@@ -1,7 +1,7 @@
 import { CableComponent } from "./cable-component";
 import { findCableComponent } from "./cable-sizing";
 import { CandidatesType, ComponentsType } from "./component";
-import { EMachine } from "./emachine";
+import { EfficiencyClass, EMachine } from "./emachine";
 import { EMachineComponent } from "./emachine-component";
 import { findEmCandidates, findTypeSpeedTorque } from "./emachine-sizing";
 import { FConverterComponent } from "./fconverter-component";
@@ -23,6 +23,12 @@ export type Mechanism = {
   gearRatio: number;
 };
 
+function efficiencyClass(em: EMachineComponent): number {
+  return em.efficiencyClass == null
+    ? EfficiencyClass.length
+    : EfficiencyClass.indexOf(em.efficiencyClass);
+}
+
 function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
   const grouping = Object.groupBy(emachines, (em) =>
     [
@@ -32,7 +38,6 @@ function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
       em.frameMaterial,
       em.mounting,
       em.type,
-      em.efficiencyClass,
     ].join("-"),
   );
   return Object.entries(grouping)
@@ -40,6 +45,7 @@ function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
       ([_, v]) =>
         v?.sort(
           (a, b) =>
+            efficiencyClass(a) - efficiencyClass(b) ||
             a.ratedSynchSpeed - b.ratedSynchSpeed ||
             a.ratedPower - b.ratedPower,
         )[0],
