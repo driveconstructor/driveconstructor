@@ -9,7 +9,7 @@ import {
   FcCoolingType,
 } from "./cooling-protection";
 import { Environment, EnvironmentModel } from "./environment";
-import { SystemElement } from "./system";
+import { System, SystemElement } from "./system";
 export const TrafoVoltageHV = [
   "2200-2500",
   "2500-2800",
@@ -114,6 +114,19 @@ export const TrafoElement: SystemElement<Trafo> = {
       options: [...Integration],
       value: "stand-alone",
       advanced: true,
+      update(system, value) {
+        if (value == "integrated") {
+          return {
+            ...system,
+            input: {
+              ...system.input,
+              trafo: { ...system.input.trafo, typeIII: "multi-winding" },
+            },
+          } as System;
+        }
+
+        return system;
+      },
     },
     tappings: {
       label: "Tappings",
@@ -168,10 +181,22 @@ export const TrafoElement: SystemElement<Trafo> = {
         trafo.altitude > 2000 ? 1 - 0.00015 * (trafo.altitude - 2000) : 1,
     },
   },
-  customize(model, system) {
+  customize(model, trafo) {
+    if (trafo.typeIV == "integrated") {
+      model = {
+        ...TrafoElement,
+        params: {
+          ...TrafoElement.params,
+          typeIII: {
+            ...TrafoElement.params.typeIII,
+            options: ["multi-winding"],
+          },
+        },
+      };
+    }
     return {
       ...model,
-      icon: customizeIcon(system.typeIII),
+      icon: customizeIcon(trafo.typeIII),
     };
   },
 };

@@ -50,6 +50,14 @@ export default function Input({ kind }: { kind: SystemKind }) {
 
   return (
     <SystemContext.Provider value={context}>
+      <div className="flex items-center">
+        <div className="p-4 text-2xl">{context.model.title}</div>
+        <div>
+          <span className="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300">
+            ({id})
+          </span>
+        </div>
+      </div>
       <div
         className="grid gap-2 lg:grid-cols-2"
         onKeyUp={(e) => {
