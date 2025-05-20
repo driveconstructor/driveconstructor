@@ -128,7 +128,7 @@ function FConverterElement(
           let deratingC = 1;
           let deratingT = 1;
 
-          if (fc.cooling === "water") {
+          if (fc.cooling == "water") {
             if (fc.coolantTemperature > 35) {
               deratingC = 1 - 0.02 * (fc.coolantTemperature - 35);
             } else {
