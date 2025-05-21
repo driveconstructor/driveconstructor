@@ -18,8 +18,7 @@ import convImage from "./images/conveyor.png";
 
 See also:
 
-    - [Parameters of conveyors](/docs/textbook/applications/conveyors/conveyor-parameters)
-    - [Duties and overloads](/docs/textbook/applications/conveyors/conveyor-parameters)
+    - [Duties and overloads](/docs/textbook/applications/conveyors)
 
 ### Benefits of VSD for conveyors
 
@@ -48,3 +47,21 @@ Using a frequency converter allows the conveyor to operate at speeds above par, 
 *e) Load balancing on motors, shaft synchronization*
 
 If the conveyor is provided with two or more motors, there is a need for load balancing between the engines and the synchronization of their shafts. Modern frequency converters have a software that allows you to implement these functions.
+
+
+## Parameters of conveyors
+
+In *DriveConstructor* we operate with the type of curves shown in Fig.1. We assume torque is constant in the given speed range. Short-term overload can be specified. Also very short-term overloads for starting the conveyor (breakaway torque) can be specified.
+
+import concurImage from "./images/conveyor-curves.png";
+
+<img src={concurImage.src} alt="conveyor-curves" width="40%" height="40%" />
+*Fig.1.*
+
+So, one needs to specify:
+
+   - minimum and maximum rotational speed of the conveyor drum,
+   - rated torque,
+   - overload torque,
+   - starting (breakaway) torque, and
+   - conveyor duty

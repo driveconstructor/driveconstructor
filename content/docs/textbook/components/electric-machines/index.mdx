@@ -8,7 +8,7 @@ Only rotating AC machines with cylindrical cores with inner rotor are included i
 It is possible to choose between:
 * _SCIM_ – Squirrel Cage Induction Machine (Fig.1),
 * _SyRM_ – Synchronous Reluctance Machine (Fig.2),
-* _PMSM_ – Permanent Magnet Synchronous Machine (rotor shown in Fig.3) and
+* _PMSM_ – Permanent Magnet Synchronous Machine (rotor shown in Fig.3).
 
 import Image from "next/image";
 import SCIMImage from "./images/SCIM.png";
@@ -112,3 +112,111 @@ import Efficiency_class3Image from "./images/Efficiency_class3.png";
 Efficiency at partial load (e.g. 25%, 50%) is lower than at rated load (100%).
 High efficiency class motors are larger and heavier, while lower IE class motors are more compact and lighter. Therefore, motors with higher IE class are more expensive.
 
+
+## Cooling
+
+Cooling arrangements are usually chosen to minimize machine cost. Other factors, such as the availability of cooling water, the need to minimize airborne noise, or space limitations, may influence the eventual choice. There exist many types (classes) of cooling. However, in *DriveConstructor* the choice is limited to the three classes presented below:
+* air-cooled self-cooled, designated _IC411_
+* air-cooled forced-cooled _IC416_ (forced ventilation independent from the shaft)
+* water-cooled	 _IC71W_
+
+import Cooling1Image from "./images/Cooling1.png";
+
+<img src={Cooling1Image.src} width="40%" height="40%" /> _Fig.1. IC411_.
+
+import Cooling2Image from "./images/Cooling2.png";
+
+<img src={Cooling2Image.src} width="40%" height="40%" /> _Fig.2. IC416. Note separate motor for driving the fan_.
+
+import Cooling3Image from "./images/Cooling3.png";
+
+<img src={Cooling3Image.src} width="50%" height="50%" /> _Fig.3. IC71W_.
+
+Fig. 4 shows that _IC416_ provides more load capacity at low speeds than _IC411_. It is because the independently fed fan motor of _IC416_ configuration allows maintaining the cooling air flow independently on the rotor speed.
+
+import cooling_411_vs_416Image from "./images/cooling_411_vs_416.png";
+
+<img src={cooling_411_vs_416Image.src} width="50%" height="50%" /> _Fig.4. IC411 vs IC416_.
+
+Water-cooled machines can be 20-40% smaller than air-cooled IP54/55 machines.
+If cooling water is available, some economies in motor size can be obtained by the use of water-cooling.
+
+
+
+## Mechanical design
+
+#### Mounting variants
+
+There are three basic variants of mounting included in *DriveConstructor*: B3 – foot-mounted, B5 – flange-mounted, B35 – machine with both feet and flange. The difference between mounting variants is reflected in price. Flange-mounted machine would have 1-3% higher price and flange&foot-mounted – by 5%, compared to the basic foot-mounted design.
+
+import EM_mounting1Image from "./images/EM_mounting1.png";
+
+<img src={EM_mounting1Image.src} width="20%" height="20%" /> _Fig.1. B3_
+
+import EM_mountingB5Image from "./images/EM_mountingB5.png";
+
+<img src={EM_mountingB5Image.src} width="20%" height="20%" /> _Fig.2. B5_
+
+import EM_mountingB35Image from "./images/EM_mountingB35.png";
+
+<img src={EM_mountingB35Image.src} width="20%" height="20%" /> _Fig.3. B35_
+
+#### Shaft height
+
+IEC and NEMA has standardized motor dimensions, including shaft height.
+
+import Shaft_heightImage from "./images/Shaft_height.png";
+
+<img src={Shaft_heightImage.src} width="40%" height="40%" /> _Fig.4. Shaft height illustration._
+
+Standard shaft heights row in mm: 56, 63, 71, 80, 90, 100, 112, 132, 160, 180, 200, 225, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710.
+If the shaft height of the driven mechanism is set, then it can be beneficial to choose electric machine with the same or close shaft height to simplify coupling of the motor and the mechanism. If the shaft height of the driven mechanism is unknown then for the electric machine “any” can be chosen instead of some concrete value.
+Shaft height is approximately equal to half the diameter (*h=OD/2*).
+
+#### Frame material
+
+The available frame materials are used based on their mechanical strength, density, heat transfer capability, cost, corrosion resistance, etc. In *DriveConstructor* it is possible to choose from Aluminum (AL), Cast Iron (CI) and Steel (S). Some characteristics of the materials in comparison to the others are given below:
+
+* Aluminum
+ * vs CI&S: Aluminum is almost two-three times lighter than steel or cast iron but several times more expensive
+ * vs CI&S: Aluminum is a better heat conductor than steel or cast iron. The extrusion process enhances aluminum’s heat conducting properties by allowing the frame sections to have thinner fins placed closer together. The result is more fins and greater surface area for maximum cooling. So, machines with aluminum frames will be more compact and lighter
+ * vs CI&S: Machines with aluminum frames are usually cheaper and easier to install (because they are lighter).
+
+* Cast iron
+ * vs AL: Cast iron machines don't have corrosion problems. Their frames are much stronger than aluminum frames, but they are heavier and harder to install.
+ * vs S: Cast iron is cheaper than steel
+
+* Steel
+ * vs CI: The yield strength of steel is higher than the ultimate strength of cast iron. This makes steel much stronger and 250% more rigid than cast iron. Cast iron is perceived as a rugged motor frame material because of its bulkiness, when in reality its relatively fragile nature requires 2-1/2 times as much metal to approach the performance of steel. And when it comes to impact loads, steel provides much greater resistance to cracking.
+
+Aluminum frames are usually used up to 60 kW, steel and cast iron frames – to MW level.
+
+
+
+## Insulation classes
+
+Anyone specifying or using electric machines should have understanding of how the insulation is related to temperature. Three classes of insulation are in common use (with *F* being the most common):
+* class *B* - with a maximum operating temperature of $$130^\circ C$$
+* class *F* - with a maximum operating temperature of $$155^\circ C$$
+* class *H* - with a maximum operating temperature of $$180^\circ C$$
+
+Typically motors are designed for a maximum ambient temperature of 40 $$^\circ C$$. The difference between the average winding temperature and any hot spot is limited and it is usual to allow a 10 $$^\circ C$$ margin for class *B* and *F* insulation and a 15 $$^\circ C$$ margin for class *H*.
+
+| Insulation class | B | F | H |
+| ---- | ---- | ---- | ---- |
+| Maximum insulation temperature | $$130^\circ C$$ | $$155^\circ C$$ | $$180^\circ C$$ |
+| Maximum temperature rise | $$80^\circ C$$ | $$100^\circ C$$ | $$125^\circ C$$ |
+
+Note that electrical machines are designed for an overall temperature rise to a level that is below the maximum specified for the insulation materials. For example, using class-F insulation:
+
+max ambient + max temperature rise = $$40^\circ C + 100^\circ C = 140^\circ C$$,
+
+which gives a thermal researve of $$15^\circ C$$. The larger the thermal researve, the longer the life expectancy of the insulation material.
+
+When operating conteniously at the maximum rated temperaure of its class, the life expectancy of the insulation is about 10 years. Most machines do not operate at such extreme conditions because an additional safety margin is usually allowed between the calculated load torque requirements and the actual size of the machine chosen for the application. So life expectancy of a machine, which is correctly matched to its load and with suitable safety margins, can reasonably be taken between 15 and 25 years. It is common practice to design machines for class-*B* temperature rise but to actually use class-*F* insulation materials. This provides an extra $$20^\circ C$$ thermal that will extend the life expectancy to more than 20 years. This also means that the machine could be used at higher ambient temperatures of up to $$50^\circ C$$ or more, theoretically up to $$65^\circ C$$.
+
+Running motors at a reduced temperature will also significantly extend the useful life. For example, a machine operating at $$180^\circ C$$ will have an estimated life of
+* only 300 hours with Class *A* insulation
+* only 1800 hours with Class *B* insulation
+* only 8500 hours with Class *F* insulation
+* tens of thousands of hours with Class *H* insulation
