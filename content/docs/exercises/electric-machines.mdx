@@ -4,55 +4,75 @@ description: Electric machines exercises
 ---
 
 ## EM-1. Voltage level and insulation
+
 import Image from "next/image";
 import pm_fc_trImage from "./images/pm_fc_tr.png";
 
 <img src={pm_fc_trImage.src} width="50%" height="50%" />
 
-Investigate influence of the rated voltage level on size and cost of the electric motors by working with the system consisting of a motor and a frequency converter. Take PUMP as the application and design the drive systems for the four sets of pump parameters:
-1. *head* 200 m, *flow* 85 l/s, *efficiency* 85%, rated speed 2950 rpm;
-2. *head* 200 m, *flow* 145 l/s, *efficiency* 85%, rated speed 2950 rpm;
-3. *head* 200 m, *flow* 200 l/s, *efficiency* 85%, rated speed 2950 rpm.
+Investigate influence of the rated voltage level on size and cost of the
+electric motors by working with the system consisting of a motor and a frequency
+converter. Take PUMP as the application and design the drive systems for the
+four sets of pump parameters:
 
-Set motor type to *SCIM*, cooling to *IC411*, efficiency class to *IE3*, protection to *IP21*.
-Design the drive system so that machine and converter voltage is around 400 V, then 690 V, then 3300 V and, finally, 6000 V.
-* [!] Make sure you keep machine type, efficiency class, cooling, protection class and other parameters except voltage and power the same for all the cases above. Include these parameters in your report.
+1. _head_ 200 m, _flow_ 85 l/s, _efficiency_ 85%, rated speed 2950 rpm;
+2. _head_ 200 m, _flow_ 145 l/s, _efficiency_ 85%, rated speed 2950 rpm;
+3. _head_ 200 m, _flow_ 200 l/s, _efficiency_ 85%, rated speed 2950 rpm.
 
-Record power, weight and cost of motors for the three pumps above and for the four voltages. Present the results as a chart or a table, draw conclusions.
+Set motor type to _SCIM_, cooling to _IC411_, efficiency class to _IE3_,
+protection to _IP21_. Design the drive system so that machine and converter
+voltage is around 400 V, then 690 V, then 3300 V and, finally, 6000 V.
 
-Can you explain the results/conclusions as the electric machines designer, in terms of winding design (insulation, cooling)?
+- [!] Make sure you keep machine type, efficiency class, cooling, protection
+  class and other parameters except voltage and power the same for all the cases
+  above. Include these parameters in your report.
+
+Record power, weight and cost of motors for the three pumps above and for the
+four voltages. Present the results as a chart or a table, draw conclusions.
+
+Can you explain the results/conclusions as the electric machines designer, in
+terms of winding design (insulation, cooling)?
 
 ## EM-2. Rated speed vs weight, size, inertia
 
-You are chief engineer responsible for powering a new conveyor. You have three helical gearboxes available at the plant’s stock: two 1-stage gears with ratios *1:4* and *1:6*, and one 2-stage gear (ratio *1:12*). Your can buy a motor to match the gearbox or a motor that fits speed of the conveyor without any gearbox.
+You are chief engineer responsible for powering a new conveyor. You have three
+helical gearboxes available at the plant’s stock: two 1-stage gears with ratios
+_1:4_ and _1:6_, and one 2-stage gear (ratio _1:12_). Your can buy a motor to
+match the gearbox or a motor that fits speed of the conveyor without any
+gearbox.
 
 Consider two system architectures; with gearbox and without one (direct drive).
 
 #### System 1:
+
 import cn_em_fcImage from "./images/cn_em_fc.png";
 
 <img src={cn_em_fcImage.src} width="50%" height="50%" />
 
 #### System 2:
+
 import cn_gb_em_fcImage from "./images/cn_gb_em_fc.png";
 
 <img src={cn_gb_em_fcImage.src} width="50%" height="50%" />
 
-For the systems 1 and 2 above investigate influence of the gear ratio on size, cost and inertia of electric motor.
+For the systems 1 and 2 above investigate influence of the gear ratio on size,
+cost and inertia of electric motor.
 
-* *Take system 1.*
-  * Set conveyor drum max speed to 230 rpm and min speed to 80 rpm.
-  * Torque = 9 kNm.
-  * Take the machine with synchronous speed to 300 rpm @ 50 Hz.
-  * Record weight, cost and inertia of the chosen motor.
+- _Take system 1._
 
+  - Set conveyor drum max speed to 230 rpm and min speed to 80 rpm.
+  - Torque = 9 kNm.
+  - Take the machine with synchronous speed to 300 rpm @ 50 Hz.
+  - Record weight, cost and inertia of the chosen motor.
 
-* *Take system 2*.
-  * Set conveyor drum speed to 230 rpm and min speed to 80 rpm.
-  * Torque = 9 kNm.
-  * Record speed, weight, cost and inertia of motors for the following gearbox ratios: *4*, *6* and *12*.
+- _Take system 2_.
+  - Set conveyor drum speed to 230 rpm and min speed to 80 rpm.
+  - Torque = 9 kNm.
+  - Record speed, weight, cost and inertia of motors for the following gearbox
+    ratios: _4_, _6_ and _12_.
 
-Summarize in results in a table. Explain what you see, draw conclusions. Can you explain the results/conclusions as the electric machine designer?
+Summarize in results in a table. Explain what you see, draw conclusions. Can you
+explain the results/conclusions as the electric machine designer?
 
 _Use PM machines only!_
 
@@ -62,40 +82,46 @@ import pmp_fc_EM3_2Image from "./images/pmp_fc_EM3_2.png";
 
 <img src={pmp_fc_EM3_2Image.src} width="50%" height="50%" />
 
-You are a chief engineer at a plant. Consider replacement of old induction motor (cooling IC411, protection IP21) on a centrifugal pump with either IE3 motor or IE4 motor. The old motor has efficiency corresponding to IE2. Available grid – 400 V. The existing motor is driven by an FC.
+You are a chief engineer at a plant. Consider replacement of old induction motor
+(cooling IC411, protection IP21) on a centrifugal pump with either IE3 motor or
+IE4 motor. The old motor has efficiency corresponding to IE2. Available grid –
+400 V. The existing motor is driven by an FC.
 
-Pump parameters: *head* 50 m, *flow* 50 l/s, *efficiency* 82%, *speed* 1450 rpm.
+Pump parameters: _head_ 50 m, _flow_ 50 l/s, _efficiency_ 82%, _speed_ 1450 rpm.
 
 Operational mode of the pump:
-* operation at 25% load 70% of time and at rated load - 30% of time
+
+- operation at 25% load 70% of time and at rated load - 30% of time
 
 Find LCC (cost of ownership) for all the alternatives
-* Energy price - 0,07 Euro/kWh (another variant 0,2 Euro/kWh)
-* Operational time – 8000 hours/year
-* Service life – 5 years (another variant 10 years)
+
+- Energy price - 0,07 Euro/kWh (another variant 0,2 Euro/kWh)
+- Operational time – 8000 hours/year
+- Service life – 5 years (another variant 10 years)
 
 import EM3_1Image from "./images/EM3_1.png";
 
 <img src={EM3_1Image.src} width="50%" height="50%" />
 
 So, there are all together eight variants to consider:
-1.	IE3 motor, Energy price - 0,07 Euro/kWh, Service life – 5 years
-2.	IE3 motor, Energy price - 0,07 Euro/kWh, Service life – 10 years
-3.	IE3 motor, Energy price - 0,2 Euro/kWh, Service life – 5 years
-4.	IE3 motor, Energy price - 0,2 Euro/kWh, Service life – 10 years
-5.	IE4 motor, Energy price - 0,07 Euro/kWh, Service life – 5 years
-6.	IE4 motor, Energy price - 0,07 Euro/kWh, Service life – 10 years
-7.	IE4 motor, Energy price - 0,2 Euro/kWh, Service life – 5 years
-8.	IE4 motor, Energy price - 0,2 Euro/kWh, Service life – 10 years
+
+1. IE3 motor, Energy price - 0,07 Euro/kWh, Service life – 5 years
+2. IE3 motor, Energy price - 0,07 Euro/kWh, Service life – 10 years
+3. IE3 motor, Energy price - 0,2 Euro/kWh, Service life – 5 years
+4. IE3 motor, Energy price - 0,2 Euro/kWh, Service life – 10 years
+5. IE4 motor, Energy price - 0,07 Euro/kWh, Service life – 5 years
+6. IE4 motor, Energy price - 0,07 Euro/kWh, Service life – 10 years
+7. IE4 motor, Energy price - 0,2 Euro/kWh, Service life – 5 years
+8. IE4 motor, Energy price - 0,2 Euro/kWh, Service life – 10 years
 
 What motor (IE3 or IE4) would you choose for each of the four scenarios?
-1.	Energy price - 0,07 Euro/kWh, Service life – 5 years
-2.	Energy price - 0,07 Euro/kWh, Service life – 10 years
-3.	Energy price - 0,2 Euro/kWh, Service life – 5 years
-4.	Energy price - 0,2 Euro/kWh, Service life – 10 years
+
+1. Energy price - 0,07 Euro/kWh, Service life – 5 years
+2. Energy price - 0,07 Euro/kWh, Service life – 10 years
+3. Energy price - 0,2 Euro/kWh, Service life – 5 years
+4. Energy price - 0,2 Euro/kWh, Service life – 10 years
 
 What general conclusion can you draw on dominating cost components?
-
 
 ## EM-4. Comparison of machine technologies
 
@@ -103,78 +129,106 @@ import pmpfcEM32Image from "./images/pmp_fc_EM3_2.png";
 
 <img src={pmpfcEM32Image.src} width="50%" height="50%" />
 
-Design drive train for a pump (*head* 50 m, *flow* 50 l/s, *efficiency* 82%, *speed* 1450 rpm).
+Design drive train for a pump (_head_ 50 m, _flow_ 50 l/s, _efficiency_ 82%,
+_speed_ 1450 rpm).
 
 Operational mode of the pump:
-* operation at 25% load 70% of time and at rated load - 30% of time
 
-Try *SCIM (IE2)*, *SyRM*, *PMSM* as the motor type. Calculate Life Cycle Cost (LCC) for each motor variant. Compare the variants on spider diagram. Consider strong and weak sides of the technologies.
+- operation at 25% load 70% of time and at rated load - 30% of time
+
+Try _SCIM (IE2)_, _SyRM_, _PMSM_ as the motor type. Calculate Life Cycle Cost
+(LCC) for each motor variant. Compare the variants on spider diagram. Consider
+strong and weak sides of the technologies.
 
 import EM31Image from "./images/EM3_1.png";
 
 <img src={EM31Image.src} width="50%" height="50%" />
 
-*	Energy price - 0,2 Euro/kWh
-*	Operational time – 8000 hours/year
-*	Service life – 10 years
+- Energy price - 0,2 Euro/kWh
+- Operational time – 8000 hours/year
+- Service life – 10 years
 
 ## EM-5. Protection (IP class) vs size and cost
 
-Design drive trains for the four different applications below. Note different environmental conditions where the electric machines will be operating and choose correct IP class for the machines.
+Design drive trains for the four different applications below. Note different
+environmental conditions where the electric machines will be operating and
+choose correct IP class for the machines.
 
-Set the same rated speed (300 rpm) and the same voltage (690 V) in all applications. Set *PMSM* as the motor type.
+Set the same rated speed (300 rpm) and the same voltage (690 V) in all
+applications. Set _PMSM_ as the motor type.
 
-* Case 1. Pump: dairy (for different trains)
-    * H=50 m, Q=50 l/s, ƞ=79 %, speed 300
+- Case 1. Pump: dairy (for different trains)
 
-* Case 2. Conveyor: cement plant
-    * min speed - 100 rpm, max speed - 300 rpm, Torque - 0,9 kNm
+  - H=50 m, Q=50 l/s, ƞ=79 %, speed 300
 
-* Case 3. Wind turbine: air conditioned compartment(nacelle)
-    * Rated speed - 200 rpm, overspeed - 1,2, Torque - 1 kNm
+- Case 2. Conveyor: cement plant
 
-* Case 4. Winder: Clean paper winding room
-    * Drum diameter (empty) - 0,3 m, Drum diameter (full) - 0,5 m, Force - 4 kN, Speed of the line (rated) - 3 m/s
+  - min speed - 100 rpm, max speed - 300 rpm, Torque - 0,9 kNm
 
+- Case 3. Wind turbine: air conditioned compartment(nacelle)
 
-Record: mechanism rated power, motor designation, IP class, weight and cost of the electric machines you have chosen for the four applications above. Make sure you keep cooling and other «influential» parameters the same. Include these parameters in your report. Comment on the differences between the motors chosen.
+  - Rated speed - 200 rpm, overspeed - 1,2, Torque - 1 kNm
+
+- Case 4. Winder: Clean paper winding room
+  - Drum diameter (empty) - 0,3 m, Drum diameter (full) - 0,5 m, Force - 4 kN,
+    Speed of the line (rated) - 3 m/s
+
+Record: mechanism rated power, motor designation, IP class, weight and cost of
+the electric machines you have chosen for the four applications above. Make sure
+you keep cooling and other «influential» parameters the same. Include these
+parameters in your report. Comment on the differences between the motors chosen.
 
 ## EM-6. Cooling vs size and cost
 
-Imagine you are chief engineer at a paper mill. Design drive train for the winder with given characteristics:
-* Drum diameter (empty) - 0,3 m,
-* Drum diameter (full) - 0,6 m,
-* Force - 16 kN,
-* Speed of the line (rated) - 5 m/s,
-* 400 V,
-* flange&foot mounting of the motor,
-* cooling water 30 deg.C is available.
+Imagine you are chief engineer at a paper mill. Design drive train for the
+winder with given characteristics:
 
-Make sure you keep machine type and efficiency class the same when comparing  cooling and protection class variants. Include these parameters in your report.
+- Drum diameter (empty) - 0,3 m,
+- Drum diameter (full) - 0,6 m,
+- Force - 16 kN,
+- Speed of the line (rated) - 5 m/s,
+- 400 V,
+- flange&foot mounting of the motor,
+- cooling water 30 deg.C is available.
 
-Solve the problem using power components with (1) air cooling, (2) water cooling. Compare the air-cooled and water-cooled variants. Present the results in the table.
+Make sure you keep machine type and efficiency class the same when comparing
+cooling and protection class variants. Include these parameters in your report.
 
-|  |	Cooling |	Protection | Weight |	OD |	Length |	Cost |
-|	-- | -- |	-- | -- |	-- |	-- | -- |
-| Case 1 |	IC411 |	IP54/55 |  |	  |	 |  |
-| Case 2 |	IC416 |	IP54/55 |  |	  |	 |  |
-| Case 3 |	IC411 |	IP21/23 |  |	  |	 |  |
-| Case 4 |	IC71W |	 | 	|	  |	 |    |  |		
+Solve the problem using power components with (1) air cooling, (2) water
+cooling. Compare the air-cooled and water-cooled variants. Present the results
+in the table.
+
+|        | Cooling | Protection | Weight | OD  | Length | Cost |
+| ------ | ------- | ---------- | ------ | --- | ------ | ---- | --- |
+| Case 1 | IC411   | IP54/55    |        |     |        |      |
+| Case 2 | IC416   | IP54/55    |        |     |        |      |
+| Case 3 | IC411   | IP21/23    |        |     |        |      |
+| Case 4 | IC71W   |            |        |     |        |      |     |
 
 ## EM-7. Derating for altitude and temperature
 
-Sales manager of a big electric motor provider have received three very similar requests from Madrid, Mexico and El Alto. In each of the requests they need induction motor to drive a centrifugal pump with *head* 60 m, *flow* 50 l/s, *efficiency* 83% and *rated speed* of 950 rpm. The motor is to be operated from existing frequency converter which rated voltage of 400 V and power of 45 kVA. Distance between the pump and the FC is 30 m. Other conditions, e.g. cooling, are specified as well. Help the sales manager to make offers for Madrid/Mexico/El Alto. Propose more than one alternative if needed. Include only motors into the offers.
- 
-Important details: 
-  - Madrid, Spain - 667 m above sea level
-  - Mexico, Mexico - 2240 m above sea level
-  - El Alto, Bolivia - 4150 m above sea level
+Sales manager of a big electric motor provider have received three very similar
+requests from Madrid, Mexico and El Alto. In each of the requests they need
+induction motor to drive a centrifugal pump with _head_ 60 m, _flow_ 50 l/s,
+_efficiency_ 83% and _rated speed_ of 950 rpm. The motor is to be operated from
+existing frequency converter which rated voltage of 400 V and power of 45 kVA.
+Distance between the pump and the FC is 30 m. Other conditions, e.g. cooling,
+are specified as well. Help the sales manager to make offers for
+Madrid/Mexico/El Alto. Propose more than one alternative if needed. Include only
+motors into the offers.
+
+Important details:
+
+- Madrid, Spain - 667 m above sea level
+- Mexico, Mexico - 2240 m above sea level
+- El Alto, Bolivia - 4150 m above sea level
 
 ## EM-8. Frame material vs size and cost
 
 Choose frame material suitable for the given environment.
 
 #### Case 1
+
 Application - food & beverages (wet, acids, etc.)
 
 Take CONVEYOR with drive system with just frequency converter.
@@ -184,38 +238,44 @@ import cnemfcImage from "./images/cn_em_fc.png";
 <img src={cnemfcImage.src} width="50%" height="50%" />
 
 Available information:
-* One drum to be driven
-* No overloads, duty cycle – 100%
-* Dusty environment, abundant heat removal capability, wet floor
-* Grid 400 V
-* Distance between the driven drum of the conveyor and the FC (cable length) – 30 m
-* Rated torque 500 Nm
-* Speeds: min – 300, max - 400 rpm
+
+- One drum to be driven
+- No overloads, duty cycle – 100%
+- Dusty environment, abundant heat removal capability, wet floor
+- Grid 400 V
+- Distance between the driven drum of the conveyor and the FC (cable length) –
+  30 m
+- Rated torque 500 Nm
+- Speeds: min – 300, max - 400 rpm
 
 #### Case 2
-Application - mining (dusty, mechanical shocks)
 
+Application - mining (dusty, mechanical shocks)
 
 Take WINCH with drive system with just frequency converter.
 
 Available information:
-* empty drum diameter 0.2 m
-* full drum diameter 0.3 m
-* linear speed at which the cable is to be reeled on the drum - 1 m/s
-* force/tension on the cable 2 kN
-* grid voltage 400 V
-* no overloads
+
+- empty drum diameter 0.2 m
+- full drum diameter 0.3 m
+- linear speed at which the cable is to be reeled on the drum - 1 m/s
+- force/tension on the cable 2 kN
+- grid voltage 400 V
+- no overloads
 
 ## EM-9. Shaft height and mounting
 
-There is an oil pump with *Q*=55 l/s, *H*=50 m, *efficiency* 82%, *speed* 1400 rpm.
-Conditions:
-* Clean dry room with abundant heat removal capability.
-* Grid 400 V.
-* Cable length - 200 m.
+There is an oil pump with _Q_=55 l/s, _H_=50 m, _efficiency_ 82%, _speed_ 1400
+rpm. Conditions:
 
-The plan is to replace old *SCIM* driving the pump with IE4 motor. Shaft height of the old motor is 180 mm and the pump is fixed to the frame together with the motor.
-Is the replacement possible? Consider several variants. Compare them. First consider *SCIM* only. Then solve the problem using other motor types.
+- Clean dry room with abundant heat removal capability.
+- Grid 400 V.
+- Cable length - 200 m.
+
+The plan is to replace old _SCIM_ driving the pump with IE4 motor. Shaft height
+of the old motor is 180 mm and the pump is fixed to the frame together with the
+motor. Is the replacement possible? Consider several variants. Compare them.
+First consider _SCIM_ only. Then solve the problem using other motor types.
 
 Note that density of oil is not the same as density of water.
 
@@ -223,19 +283,27 @@ import pwmImage from "./images/pump-with-motor.png";
 
 <img src={pwmImage.src} width="30%" height="30%" />
 
-
 ## EM-10. Thermal capacity & insulation class
 
 Design drive trains for the two identical conveyors with parameters:
-* Speed 200...230 rpm
-* Rated torque - 9 kNm
+
+- Speed 200...230 rpm
+- Rated torque - 9 kNm
 
 One conveyor has duty of 100%, another one - 80%. Grid is 690 V.
 
 Explain the difference in chosen electric machines for the two cases.
 
 #### Question-1
-Could we have used even smaller machine on the second conveyor? If yes, what insulation class should it have had (assume all motors in *DriveConstructor* have insulstion class *"B"*)? If we use smaller machine with the same class *"B"* as before then what would be insulation lifetime (assume in normal load lifetime of 10000 hours)?
+
+Could we have used even smaller machine on the second conveyor? If yes, what
+insulation class should it have had (assume all motors in _DriveConstructor_
+have insulstion class _"B"_)? If we use smaller machine with the same class
+_"B"_ as before then what would be insulation lifetime (assume in normal load
+lifetime of 10000 hours)?
 
 #### Question-2
-Is replacing the motor with insulation class *"H"* with another motor with insulation class *"F"*  possible? What lifetime should be expected? What if insulation class *"H"* but temperature rise as for class *"F"*?
+
+Is replacing the motor with insulation class _"H"_ with another motor with
+insulation class _"F"_ possible? What lifetime should be expected? What if
+insulation class _"H"_ but temperature rise as for class _"F"_?

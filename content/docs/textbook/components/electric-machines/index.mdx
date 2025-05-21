@@ -2,13 +2,15 @@
 title: Electric machines
 description: Relevant information
 ---
+
 ## What is included
 
-Only rotating AC machines with cylindrical cores with inner rotor are included into this version of _DriveConstructor_.
-It is possible to choose between:
-* _SCIM_ – Squirrel Cage Induction Machine (Fig.1),
-* _SyRM_ – Synchronous Reluctance Machine (Fig.2),
-* _PMSM_ – Permanent Magnet Synchronous Machine (rotor shown in Fig.3).
+Only rotating AC machines with cylindrical cores with inner rotor are included
+into this version of _DriveConstructor_. It is possible to choose between:
+
+- _SCIM_ – Squirrel Cage Induction Machine (Fig.1),
+- _SyRM_ – Synchronous Reluctance Machine (Fig.2),
+- _PMSM_ – Permanent Magnet Synchronous Machine (rotor shown in Fig.3).
 
 import Image from "next/image";
 import SCIMImage from "./images/SCIM.png";
@@ -17,7 +19,8 @@ import SCIMImage from "./images/SCIM.png";
 
 import scim_simple1Image from "./images/scim_simple1.png";
 
-<img src={scim_simple1Image.src} width="15%" height="15%" /> _Fig.1B. icon of SCIM_.
+<img src={scim_simple1Image.src} width="15%" height="15%" /> _Fig.1B. icon of
+SCIM_.
 
 import SyRMImage from "./images/SyRM.png";
 
@@ -25,49 +28,78 @@ import SyRMImage from "./images/SyRM.png";
 
 import syrm_simple1Image from "./images/syrm_simple1.png";
 
-<img src={syrm_simple1Image.src} width="15%" height="15%" /> _Fig.2B. icon of SyRM_.
+<img src={syrm_simple1Image.src} width="15%" height="15%" /> _Fig.2B. icon of
+SyRM_.
 
 import PMSM_rotorImage from "./images/PMSM_rotor.png";
 
-<img src={PMSM_rotorImage.src} width="25%" height="25%" /> _Fig.3A. Rotor of PMSM_.
+<img src={PMSM_rotorImage.src} width="25%" height="25%" /> _Fig.3A. Rotor of
+PMSM_.
 
 import pm_motor_simple1Image from "./images/pm_motor_simple1.png";
 
-<img src={pm_motor_simple1Image.src} width="15%" height="15%" /> _Fig.3B. icon of PMSM_.
+<img src={pm_motor_simple1Image.src} width="15%" height="15%" /> _Fig.3B. icon
+of PMSM_.
 
-SCIM, PMSM and SyRM can be selected for any application and any drive train topology. SyRM are available for quite limited range of powers. So far only LV SyRM products are known, therefore only LV FC can be used to drive SyRM.
+SCIM, PMSM and SyRM can be selected for any application and any drive train
+topology. SyRM are available for quite limited range of powers. So far only LV
+SyRM products are known, therefore only LV FC can be used to drive SyRM.
 
 Performances of the machines of different types are different. Usually:
-* Efficiency (SCIM) < Efficiency (SyRM) < Efficiency (PMSM)
-* Cost (SCIM) < Cost (SyRM) < Cost (PMSM)
-* Size (SCIM) > Size (SyRM) > Size (PMSM)
+
+- Efficiency (SCIM) < Efficiency (SyRM) < Efficiency (PMSM)
+- Cost (SCIM) < Cost (SyRM) < Cost (PMSM)
+- Size (SCIM) > Size (SyRM) > Size (PMSM)
 
 ## Key parameters of electric machines
 
 #### Rated power
 
-Power rating of the electric machines available in *DriveConstructor* is according to IEC 60072-1 which suggests the following preferred ratings (based on a subset of the R40 series) for motors (in kW) and generators (in kVA):
+Power rating of the electric machines available in _DriveConstructor_ is
+according to IEC 60072-1 which suggests the following preferred ratings (based
+on a subset of the R40 series) for motors (in kW) and generators (in kVA):
 
 import EM_rated_powersImage from "./images/EM_rated_powers.png";
 
 <img src={EM_rated_powersImage.src} width="100%" height="100%" />
-[Source: IEC](http://www.openelectrical.org/wiki/index.php?title=Standard_IEC_Ratings)
+[Source:
+IEC](http://www.openelectrical.org/wiki/index.php?title=Standard_IEC_Ratings)
 
-Note that asterix-marked powers are "secondary series" ratings and are only to be used in cases of special need.
+Note that asterix-marked powers are "secondary series" ratings and are only to
+be used in cases of special need.
 
-In *DriveConstructor* we use the following series of powers (in kW): 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000.
+In _DriveConstructor_ we use the following series of powers (in kW): 1.1, 1.5,
+2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160,
+200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1250,
+1400, 1600, 2000, 2500, 3150, 4000.
 
 Our list is shorter than the IEC one as we picked up only the most used powers.
 
 #### Rated voltage
 
-Electric machines may be designed for different supply voltages (from converter or grid). Machines are usually designed for «standard» ranges of rated voltage, e.g. 380-400 V or 650-700 V, as it is easier to connect a «standard» machine to a typical grid or a «standard» frequency converter. In Europe and America the standard ranges are different. In Europe it is usual to differentiate between *LV* (below 1 kV) and *MV* (above 1 kV).
+Electric machines may be designed for different supply voltages (from converter
+or grid). Machines are usually designed for «standard» ranges of rated voltage,
+e.g. 380-400 V or 650-700 V, as it is easier to connect a «standard» machine to
+a typical grid or a «standard» frequency converter. In Europe and America the
+standard ranges are different. In Europe it is usual to differentiate between
+_LV_ (below 1 kV) and _MV_ (above 1 kV).
 
-In *DriveConstructor* the range of rated voltages to which the machine is designed to operate within can be chosen from the following options: 380-440, 650-700, 3200-3400, 5900-6700, 9000-12000 V. If it is desirable that the voltage is chosen automatically then choose "any". It is assumed that all machines are *Y*-connected. In practice windings can be reconnected into *D*, but this option is not included.
+In _DriveConstructor_ the range of rated voltages to which the machine is
+designed to operate within can be chosen from the following options: 380-440,
+650-700, 3200-3400, 5900-6700, 9000-12000 V. If it is desirable that the voltage
+is chosen automatically then choose "any". It is assumed that all machines are
+_Y_-connected. In practice windings can be reconnected into _D_, but this option
+is not included.
 
-Machines designed for lower voltage are usually smaller, lighter and cheaper than those designed for MV. This is because of thinner insulation in the slots, which allows putting more copper in the slots and makes heat removal easier.
+Machines designed for lower voltage are usually smaller, lighter and cheaper
+than those designed for MV. This is because of thinner insulation in the slots,
+which allows putting more copper in the slots and makes heat removal easier.
 
-It is normally not possible to design LV machines for very high powers as currents would become too high and cables would become too thick to be practical. LV machines are normally produced for powers from fractions of kW up to a few MW (in *DriveConstructor* up to 2 MW), MV machines – from about 0,2 MW to 10...20 MW (in *DriveConstructor* up to 5 MW), in some cases up to 100 MW!
+It is normally not possible to design LV machines for very high powers as
+currents would become too high and cables would become too thick to be
+practical. LV machines are normally produced for powers from fractions of kW up
+to a few MW (in _DriveConstructor_ up to 2 MW), MV machines – from about 0,2 MW
+to 10...20 MW (in _DriveConstructor_ up to 5 MW), in some cases up to 100 MW!
 
 Slot designs of LV and MV machines look quite different:
 
@@ -81,44 +113,69 @@ import HV_slotImage from "./images/HV_slot.png";
 
 #### Rated synchronous speed
 
-Rated synchronous speed is proportional to supply frequency and reverse proportional to number of poles ($$n=120*f/p$$). For 50 Hz supply and number of poles 2, 4, 6, 8 and 10 rated synchronous speed is 3000, 1500, 1000, 750 and 600, respectively.
+Rated synchronous speed is proportional to supply frequency and reverse
+proportional to number of poles ($$n=120*f/p$$). For 50 Hz supply and number of
+poles 2, 4, 6, 8 and 10 rated synchronous speed is 3000, 1500, 1000, 750 and
+600, respectively.
 
-SCIM have slip, so its rated speed is lower than rated synchronous speed by a few percent. SyRM and PMSM have rated speed equal rated synchronous speed.
+SCIM have slip, so its rated speed is lower than rated synchronous speed by a
+few percent. SyRM and PMSM have rated speed equal rated synchronous speed.
 
-It is obvious that a machine designed for delivering high power is bigger than a machine designed for delivering low power. It is less obvious that the rated speed the machine is designed for affects it’s weight, compactness, rotor inertia and cost. However, if the power is fixed, the machine with lower speed will have higher torque ($$T\sim P/n$$). To be able to provide higher torque the machine has to be larger, heavier and as the consequence more expensive.
+It is obvious that a machine designed for delivering high power is bigger than a
+machine designed for delivering low power. It is less obvious that the rated
+speed the machine is designed for affects it’s weight, compactness, rotor
+inertia and cost. However, if the power is fixed, the machine with lower speed
+will have higher torque ($$T\sim P/n$$). To be able to provide higher torque the
+machine has to be larger, heavier and as the consequence more expensive.
 
 ## Efficiency class
 
-The International Electrotechnical Commission (IEC) has developed an internationally applicable testing Standard IEC 60034-2-1 for electric motors and a classification scheme IEC 60034-30-1 with four levels of motor efficiency ("IE-code"):
-* IE1 Standard efficiency,
-* IE2 High efficiency,
-* IE3 Premium efficiency
-* IE4 Super premium efficiency.
+The International Electrotechnical Commission (IEC) has developed an
+internationally applicable testing Standard IEC 60034-2-1 for electric motors
+and a classification scheme IEC 60034-30-1 with four levels of motor efficiency
+("IE-code"):
 
-The IE-code and its efficiency levels create a basic vocabulary for governments to determine the efficiency level for their minimum energy performance standards (MEPS). The European Union sets motor MEPS levels (Directive 640/2009) at IE3 (or IE2 in combination with a variable frequency drive) from 2015 for smaller motors and from 2017 covering also larger motors.
+- IE1 Standard efficiency,
+- IE2 High efficiency,
+- IE3 Premium efficiency
+- IE4 Super premium efficiency.
+
+The IE-code and its efficiency levels create a basic vocabulary for governments
+to determine the efficiency level for their minimum energy performance standards
+(MEPS). The European Union sets motor MEPS levels (Directive 640/2009) at IE3
+(or IE2 in combination with a variable frequency drive) from 2015 for smaller
+motors and from 2017 covering also larger motors.
 
 import Efficiency_class1Image from "./images/Efficiency_class1.png";
 
 <img src={Efficiency_class1Image.src} width="70%" height="70%" />
 
- _Fig.1. Cut-away of standard, energy-efficient, and premium efficiency motors._
+_Fig.1. Cut-away of standard, energy-efficient, and premium efficiency motors._
 
-Efficiency value for a certain class depends on power as shown on the diagram below:
+Efficiency value for a certain class depends on power as shown on the diagram
+below:
 
 import Efficiency_class3Image from "./images/Efficiency_class3.png";
 
 <img src={Efficiency_class3Image.src} width="60%" height="60%" />
 
 Efficiency at partial load (e.g. 25%, 50%) is lower than at rated load (100%).
-High efficiency class motors are larger and heavier, while lower IE class motors are more compact and lighter. Therefore, motors with higher IE class are more expensive.
-
+High efficiency class motors are larger and heavier, while lower IE class motors
+are more compact and lighter. Therefore, motors with higher IE class are more
+expensive.
 
 ## Cooling
 
-Cooling arrangements are usually chosen to minimize machine cost. Other factors, such as the availability of cooling water, the need to minimize airborne noise, or space limitations, may influence the eventual choice. There exist many types (classes) of cooling. However, in *DriveConstructor* the choice is limited to the three classes presented below:
-* air-cooled self-cooled, designated _IC411_
-* air-cooled forced-cooled _IC416_ (forced ventilation independent from the shaft)
-* water-cooled	 _IC71W_
+Cooling arrangements are usually chosen to minimize machine cost. Other factors,
+such as the availability of cooling water, the need to minimize airborne noise,
+or space limitations, may influence the eventual choice. There exist many types
+(classes) of cooling. However, in _DriveConstructor_ the choice is limited to
+the three classes presented below:
+
+- air-cooled self-cooled, designated _IC411_
+- air-cooled forced-cooled _IC416_ (forced ventilation independent from the
+  shaft)
+- water-cooled _IC71W_
 
 import Cooling1Image from "./images/Cooling1.png";
 
@@ -126,28 +183,35 @@ import Cooling1Image from "./images/Cooling1.png";
 
 import Cooling2Image from "./images/Cooling2.png";
 
-<img src={Cooling2Image.src} width="40%" height="40%" /> _Fig.2. IC416. Note separate motor for driving the fan_.
+<img src={Cooling2Image.src} width="40%" height="40%" /> _Fig.2. IC416. Note
+separate motor for driving the fan_.
 
 import Cooling3Image from "./images/Cooling3.png";
 
 <img src={Cooling3Image.src} width="50%" height="50%" /> _Fig.3. IC71W_.
 
-Fig. 4 shows that _IC416_ provides more load capacity at low speeds than _IC411_. It is because the independently fed fan motor of _IC416_ configuration allows maintaining the cooling air flow independently on the rotor speed.
+Fig. 4 shows that _IC416_ provides more load capacity at low speeds than
+_IC411_. It is because the independently fed fan motor of _IC416_ configuration
+allows maintaining the cooling air flow independently on the rotor speed.
 
 import cooling_411_vs_416Image from "./images/cooling_411_vs_416.png";
 
-<img src={cooling_411_vs_416Image.src} width="50%" height="50%" /> _Fig.4. IC411 vs IC416_.
+<img src={cooling_411_vs_416Image.src} width="50%" height="50%" /> _Fig.4. IC411
+vs IC416_.
 
-Water-cooled machines can be 20-40% smaller than air-cooled IP54/55 machines.
-If cooling water is available, some economies in motor size can be obtained by the use of water-cooling.
-
-
+Water-cooled machines can be 20-40% smaller than air-cooled IP54/55 machines. If
+cooling water is available, some economies in motor size can be obtained by the
+use of water-cooling.
 
 ## Mechanical design
 
 #### Mounting variants
 
-There are three basic variants of mounting included in *DriveConstructor*: B3 – foot-mounted, B5 – flange-mounted, B35 – machine with both feet and flange. The difference between mounting variants is reflected in price. Flange-mounted machine would have 1-3% higher price and flange&foot-mounted – by 5%, compared to the basic foot-mounted design.
+There are three basic variants of mounting included in _DriveConstructor_: B3 –
+foot-mounted, B5 – flange-mounted, B35 – machine with both feet and flange. The
+difference between mounting variants is reflected in price. Flange-mounted
+machine would have 1-3% higher price and flange&foot-mounted – by 5%, compared
+to the basic foot-mounted design.
 
 import EM_mounting1Image from "./images/EM_mounting1.png";
 
@@ -167,56 +231,99 @@ IEC and NEMA has standardized motor dimensions, including shaft height.
 
 import Shaft_heightImage from "./images/Shaft_height.png";
 
-<img src={Shaft_heightImage.src} width="40%" height="40%" /> _Fig.4. Shaft height illustration._
+<img src={Shaft_heightImage.src} width="40%" height="40%" /> _Fig.4. Shaft
+height illustration._
 
-Standard shaft heights row in mm: 56, 63, 71, 80, 90, 100, 112, 132, 160, 180, 200, 225, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710.
-If the shaft height of the driven mechanism is set, then it can be beneficial to choose electric machine with the same or close shaft height to simplify coupling of the motor and the mechanism. If the shaft height of the driven mechanism is unknown then for the electric machine “any” can be chosen instead of some concrete value.
-Shaft height is approximately equal to half the diameter (*h=OD/2*).
+Standard shaft heights row in mm: 56, 63, 71, 80, 90, 100, 112, 132, 160, 180,
+200, 225, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710. If the shaft height
+of the driven mechanism is set, then it can be beneficial to choose electric
+machine with the same or close shaft height to simplify coupling of the motor
+and the mechanism. If the shaft height of the driven mechanism is unknown then
+for the electric machine “any” can be chosen instead of some concrete value.
+Shaft height is approximately equal to half the diameter (_h=OD/2_).
 
 #### Frame material
 
-The available frame materials are used based on their mechanical strength, density, heat transfer capability, cost, corrosion resistance, etc. In *DriveConstructor* it is possible to choose from Aluminum (AL), Cast Iron (CI) and Steel (S). Some characteristics of the materials in comparison to the others are given below:
+The available frame materials are used based on their mechanical strength,
+density, heat transfer capability, cost, corrosion resistance, etc. In
+_DriveConstructor_ it is possible to choose from Aluminum (AL), Cast Iron (CI)
+and Steel (S). Some characteristics of the materials in comparison to the others
+are given below:
 
-* Aluminum
- * vs CI&S: Aluminum is almost two-three times lighter than steel or cast iron but several times more expensive
- * vs CI&S: Aluminum is a better heat conductor than steel or cast iron. The extrusion process enhances aluminum’s heat conducting properties by allowing the frame sections to have thinner fins placed closer together. The result is more fins and greater surface area for maximum cooling. So, machines with aluminum frames will be more compact and lighter
- * vs CI&S: Machines with aluminum frames are usually cheaper and easier to install (because they are lighter).
+- Aluminum
+- vs CI&S: Aluminum is almost two-three times lighter than steel or cast iron
+  but several times more expensive
+- vs CI&S: Aluminum is a better heat conductor than steel or cast iron. The
+  extrusion process enhances aluminum’s heat conducting properties by allowing
+  the frame sections to have thinner fins placed closer together. The result is
+  more fins and greater surface area for maximum cooling. So, machines with
+  aluminum frames will be more compact and lighter
+- vs CI&S: Machines with aluminum frames are usually cheaper and easier to
+  install (because they are lighter).
 
-* Cast iron
- * vs AL: Cast iron machines don't have corrosion problems. Their frames are much stronger than aluminum frames, but they are heavier and harder to install.
- * vs S: Cast iron is cheaper than steel
+- Cast iron
+- vs AL: Cast iron machines don't have corrosion problems. Their frames are much
+  stronger than aluminum frames, but they are heavier and harder to install.
+- vs S: Cast iron is cheaper than steel
 
-* Steel
- * vs CI: The yield strength of steel is higher than the ultimate strength of cast iron. This makes steel much stronger and 250% more rigid than cast iron. Cast iron is perceived as a rugged motor frame material because of its bulkiness, when in reality its relatively fragile nature requires 2-1/2 times as much metal to approach the performance of steel. And when it comes to impact loads, steel provides much greater resistance to cracking.
+- Steel
+- vs CI: The yield strength of steel is higher than the ultimate strength of
+  cast iron. This makes steel much stronger and 250% more rigid than cast iron.
+  Cast iron is perceived as a rugged motor frame material because of its
+  bulkiness, when in reality its relatively fragile nature requires 2-1/2 times
+  as much metal to approach the performance of steel. And when it comes to
+  impact loads, steel provides much greater resistance to cracking.
 
-Aluminum frames are usually used up to 60 kW, steel and cast iron frames – to MW level.
-
-
+Aluminum frames are usually used up to 60 kW, steel and cast iron frames – to MW
+level.
 
 ## Insulation classes
 
-Anyone specifying or using electric machines should have understanding of how the insulation is related to temperature. Three classes of insulation are in common use (with *F* being the most common):
-* class *B* - with a maximum operating temperature of $$130^\circ C$$
-* class *F* - with a maximum operating temperature of $$155^\circ C$$
-* class *H* - with a maximum operating temperature of $$180^\circ C$$
+Anyone specifying or using electric machines should have understanding of how
+the insulation is related to temperature. Three classes of insulation are in
+common use (with _F_ being the most common):
 
-Typically motors are designed for a maximum ambient temperature of 40 $$^\circ C$$. The difference between the average winding temperature and any hot spot is limited and it is usual to allow a 10 $$^\circ C$$ margin for class *B* and *F* insulation and a 15 $$^\circ C$$ margin for class *H*.
+- class _B_ - with a maximum operating temperature of $$130^\circ C$$
+- class _F_ - with a maximum operating temperature of $$155^\circ C$$
+- class _H_ - with a maximum operating temperature of $$180^\circ C$$
 
-| Insulation class | B | F | H |
-| ---- | ---- | ---- | ---- |
+Typically motors are designed for a maximum ambient temperature of 40
+$$^\circ C$$. The difference between the average winding temperature and any hot
+spot is limited and it is usual to allow a 10 $$^\circ C$$ margin for class _B_
+and _F_ insulation and a 15 $$^\circ C$$ margin for class _H_.
+
+| Insulation class               | B               | F               | H               |
+| ------------------------------ | --------------- | --------------- | --------------- |
 | Maximum insulation temperature | $$130^\circ C$$ | $$155^\circ C$$ | $$180^\circ C$$ |
-| Maximum temperature rise | $$80^\circ C$$ | $$100^\circ C$$ | $$125^\circ C$$ |
+| Maximum temperature rise       | $$80^\circ C$$  | $$100^\circ C$$ | $$125^\circ C$$ |
 
-Note that electrical machines are designed for an overall temperature rise to a level that is below the maximum specified for the insulation materials. For example, using class-F insulation:
+Note that electrical machines are designed for an overall temperature rise to a
+level that is below the maximum specified for the insulation materials. For
+example, using class-F insulation:
 
 max ambient + max temperature rise = $$40^\circ C + 100^\circ C = 140^\circ C$$,
 
-which gives a thermal researve of $$15^\circ C$$. The larger the thermal researve, the longer the life expectancy of the insulation material.
+which gives a thermal researve of $$15^\circ C$$. The larger the thermal
+researve, the longer the life expectancy of the insulation material.
 
-When operating conteniously at the maximum rated temperaure of its class, the life expectancy of the insulation is about 10 years. Most machines do not operate at such extreme conditions because an additional safety margin is usually allowed between the calculated load torque requirements and the actual size of the machine chosen for the application. So life expectancy of a machine, which is correctly matched to its load and with suitable safety margins, can reasonably be taken between 15 and 25 years. It is common practice to design machines for class-*B* temperature rise but to actually use class-*F* insulation materials. This provides an extra $$20^\circ C$$ thermal that will extend the life expectancy to more than 20 years. This also means that the machine could be used at higher ambient temperatures of up to $$50^\circ C$$ or more, theoretically up to $$65^\circ C$$.
+When operating conteniously at the maximum rated temperaure of its class, the
+life expectancy of the insulation is about 10 years. Most machines do not
+operate at such extreme conditions because an additional safety margin is
+usually allowed between the calculated load torque requirements and the actual
+size of the machine chosen for the application. So life expectancy of a machine,
+which is correctly matched to its load and with suitable safety margins, can
+reasonably be taken between 15 and 25 years. It is common practice to design
+machines for class-_B_ temperature rise but to actually use class-_F_ insulation
+materials. This provides an extra $$20^\circ C$$ thermal that will extend the
+life expectancy to more than 20 years. This also means that the machine could be
+used at higher ambient temperatures of up to $$50^\circ C$$ or more,
+theoretically up to $$65^\circ C$$.
 
-Running motors at a reduced temperature will also significantly extend the useful life. For example, a machine operating at $$180^\circ C$$ will have an estimated life of
-* only 300 hours with Class *A* insulation
-* only 1800 hours with Class *B* insulation
-* only 8500 hours with Class *F* insulation
-* tens of thousands of hours with Class *H* insulation
+Running motors at a reduced temperature will also significantly extend the
+useful life. For example, a machine operating at $$180^\circ C$$ will have an
+estimated life of
+
+- only 300 hours with Class _A_ insulation
+- only 1800 hours with Class _B_ insulation
+- only 8500 hours with Class _F_ insulation
+- tens of thousands of hours with Class _H_ insulation

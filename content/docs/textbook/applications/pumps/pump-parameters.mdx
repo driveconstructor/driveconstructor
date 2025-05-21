@@ -5,32 +5,45 @@ description: Key parameters of pumps description
 
 ## Head and flow
 
-Rated head and flow are the key characteristic of any pump and is always specified by the pump manufacturer.
+Rated head and flow are the key characteristic of any pump and is always
+specified by the pump manufacturer.
 
-The static Head (H) of a pump is the maximum pressure it can deliver (height to which the pump lifts the liquid). In DriveConstructor this parameter is entered in m.
+The static Head (H) of a pump is the maximum pressure it can deliver (height to
+which the pump lifts the liquid). In DriveConstructor this parameter is entered
+in m.
 
-Flow (Q), also referred to as volume flow rate or capacity, is the volume of liquid that travels through the pump in a given time (measured in liter per second of cubic meter per hour). Rated flow is the key characteristic of any pump and is always specified by the pump manufacturer. In DriveConstructor this parameter is entered in $$m^3/h$$
-or $$l/s$$.
+Flow (Q), also referred to as volume flow rate or capacity, is the volume of
+liquid that travels through the pump in a given time (measured in liter per
+second of cubic meter per hour). Rated flow is the key characteristic of any
+pump and is always specified by the pump manufacturer. In DriveConstructor this
+parameter is entered in $$m^3/h$$ or $$l/s$$.
 
 import Image from "next/image";
 import pmpresImage from "./images/pump-and-resistance-curve.png";
 
-<img src={pmpresImage.src} alt="Centrifugal pump and system resistance curves" width="50%" height="50%" />
+<img
+  src={pmpresImage.src}
+  alt="Centrifugal pump and system resistance curves"
+  width="50%"
+  height="50%"
+/>
 
-*Fig.1. Centrifugal pump and system resistance curves.*
+_Fig.1. Centrifugal pump and system resistance curves._
 
-| Fluid    | Density, kg/m3 |
-|---------|-----|
-| water   | 1000  |
-| average oil     | 920  |
-| kerosene | 820  |
-| milk   | 1035  |
-| average oil sea water    | 1025  |
-| gasoline | 720  |
+| Fluid                 | Density, kg/m3 |
+| --------------------- | -------------- |
+| water                 | 1000           |
+| average oil           | 920            |
+| kerosene              | 820            |
+| milk                  | 1035           |
+| average oil sea water | 1025           |
+| gasoline              | 720            |
 
 ### Starting torque ("breakaway" torque)
 
-Real pumps can have a significant static friction or breakaway torque (as shown in Fig. 2, 3), which must be overcome when starting. In some cituations starting torque can be higher than the rated torque even for centrifugal pumps.
+Real pumps can have a significant static friction or breakaway torque (as shown
+in Fig. 2, 3), which must be overcome when starting. In some cituations starting
+torque can be higher than the rated torque even for centrifugal pumps.
 
 import pmpcCTBTImage from "./images/pump-curves-CT-BT.png";
 
@@ -39,7 +52,14 @@ import pmpcCTBTImage from "./images/pump-curves-CT-BT.png";
 
 import pmpcCSImage from "./images/pump-curves-stiction.png";
 
-<img src={pmpcCSImage.src} alt="pump-curves-stiction" width="50%" height="50%" />
+<img
+  src={pmpcCSImage.src}
+  alt="pump-curves-stiction"
+  width="50%"
+  height="50%"
+/>
 *Fig.3. Pump with QT load curve and starting curve.*
 
-In *DriveConstructor* starting torque is defined as the fraction of rated torque $$T_r$$. The following values can be chosen: 0.0, 0.1, 0.2, 0.3, ..., 1.8, 1.9, 2.
+In _DriveConstructor_ starting torque is defined as the fraction of rated torque
+$$T_r$$. The following values can be chosen: 0.0, 0.1, 0.2, 0.3, ..., 1.8,
+1.9, 2.

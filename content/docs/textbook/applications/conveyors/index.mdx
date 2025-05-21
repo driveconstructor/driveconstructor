@@ -2,8 +2,13 @@
 title: Conveyors
 ---
 
-Conveyors are used in various industries: metallurgical, petrochemical, mining, glass, brewing, textile, food, printing, furniture, machinery, coal, as well as many others. In a conveyor one or more drums (rollers) can be driven by motor(s). Fig. 1-2 below show designs with one motor per drum. 
-Mutual position of the axle of the driven drum and the motor shaft are defined by the gearbox type. There can be an angle between the axles if bevel gear stage or worm gear stage is used.
+Conveyors are used in various industries: metallurgical, petrochemical, mining,
+glass, brewing, textile, food, printing, furniture, machinery, coal, as well as
+many others. In a conveyor one or more drums (rollers) can be driven by
+motor(s). Fig. 1-2 below show designs with one motor per drum. Mutual position
+of the axle of the driven drum and the motor shaft are defined by the gearbox
+type. There can be an angle between the axles if bevel gear stage or worm gear
+stage is used.
 
 import Image from "next/image";
 import mgdImage from "./images/motor-gear-drum.png";
@@ -22,36 +27,55 @@ See also:
 
 ### Benefits of VSD for conveyors
 
-Equipping conveyor with variable speed drive (VSD) (motor and frequency converter) provides a number of advantages:
+Equipping conveyor with variable speed drive (VSD) (motor and frequency
+converter) provides a number of advantages:
 
-*a) Improving the process controllability*
+_a) Improving the process controllability_
 
-The automatic control system of the frequency converter can maintain constant load or constant speed regardless of the load. Conveyor's control system may be integrated in the automation system of higher level.
+The automatic control system of the frequency converter can maintain constant
+load or constant speed regardless of the load. Conveyor's control system may be
+integrated in the automation system of higher level.
 
-*b) Energy savings*
+_b) Energy savings_
 
-Load of some conveyors, such as e.g. the belt conveyor at coal mines and ore-processing enterprises are quite difficult to predict because of the varying demand of the transportation. Idling or modes close to it can reach 20-40% of the operating time of the conveyor. The use of VSD provides smooth control of the belt speed, maximizes energy savings under variable loads, regardless of the profile of transport distribution.
+Load of some conveyors, such as e.g. the belt conveyor at coal mines and
+ore-processing enterprises are quite difficult to predict because of the varying
+demand of the transportation. Idling or modes close to it can reach 20-40% of
+the operating time of the conveyor. The use of VSD provides smooth control of
+the belt speed, maximizes energy savings under variable loads, regardless of the
+profile of transport distribution.
 
-*c) High starting torque*
+_c) High starting torque_
 
-The frequency converter provides high starting torque (up to 200% of the nominal value). In the event of an emergency stop it is not necessary to unload the conveyor because a high starting torque gives the possibility to even start a fully loaded conveyor.
+The frequency converter provides high starting torque (up to 200% of the nominal
+value). In the event of an emergency stop it is not necessary to unload the
+conveyor because a high starting torque gives the possibility to even start a
+fully loaded conveyor.
 
-*g) Less wear of the mechanical parts and switching equipment at start*
+_g) Less wear of the mechanical parts and switching equipment at start_
 
-Stepless speed increase when starting the conveyor protects the mechanical parts from wear and prolongs service life. Soft-start is also favorable for the power switching equipment and the mains.
+Stepless speed increase when starting the conveyor protects the mechanical parts
+from wear and prolongs service life. Soft-start is also favorable for the power
+switching equipment and the mains.
 
-*d) Increased line speed*
+_d) Increased line speed_
 
-Using a frequency converter allows the conveyor to operate at speeds above par, if required by the process.
+Using a frequency converter allows the conveyor to operate at speeds above par,
+if required by the process.
 
-*e) Load balancing on motors, shaft synchronization*
+_e) Load balancing on motors, shaft synchronization_
 
-If the conveyor is provided with two or more motors, there is a need for load balancing between the engines and the synchronization of their shafts. Modern frequency converters have a software that allows you to implement these functions.
-
+If the conveyor is provided with two or more motors, there is a need for load
+balancing between the engines and the synchronization of their shafts. Modern
+frequency converters have a software that allows you to implement these
+functions.
 
 ## Parameters of conveyors
 
-In *DriveConstructor* we operate with the type of curves shown in Fig.1. We assume torque is constant in the given speed range. Short-term overload can be specified. Also very short-term overloads for starting the conveyor (breakaway torque) can be specified.
+In _DriveConstructor_ we operate with the type of curves shown in Fig.1. We
+assume torque is constant in the given speed range. Short-term overload can be
+specified. Also very short-term overloads for starting the conveyor (breakaway
+torque) can be specified.
 
 import concurImage from "./images/conveyor-curves.png";
 
@@ -60,8 +84,8 @@ import concurImage from "./images/conveyor-curves.png";
 
 So, one needs to specify:
 
-   - minimum and maximum rotational speed of the conveyor drum,
-   - rated torque,
-   - overload torque,
-   - starting (breakaway) torque, and
-   - conveyor duty
+- minimum and maximum rotational speed of the conveyor drum,
+- rated torque,
+- overload torque,
+- starting (breakaway) torque, and
+- conveyor duty

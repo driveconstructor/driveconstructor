@@ -4,18 +4,26 @@ title: Frequency converters
 
 ## Frequency converters general information
 
-A typical frequency converter (FC) nowadays is a so-called voltage-source type - over 95% of all FC are voltage-source converters (VSC). This FC type has a DC-link with a capacitor bank across (see Fig.1).
+A typical frequency converter (FC) nowadays is a so-called voltage-source type -
+over 95% of all FC are voltage-source converters (VSC). This FC type has a
+DC-link with a capacitor bank across (see Fig.1).
 
 import Image from "next/image";
 import basic_fc_2Image from "./images/basic_fc_2.png";
 
-<img src={basic_fc_2Image.src} width="80%" height="80%" /> _Fig.1. VSC topology._
+<img src={basic_fc_2Image.src} width="80%" height="80%" /> _Fig.1. VSC
+topology._
 
-The voltage of the supply network with a constant frequency and amplitude is first rectified into DC voltage though with some ripples (Fig.2), and then it is converted into the voltage with the required frequency and amplitude (Fig. 3). Note that the voltage waveform is made of pulses of varying duration, wherein the "fundamental" voltage is sinusoidal.
+The voltage of the supply network with a constant frequency and amplitude is
+first rectified into DC voltage though with some ripples (Fig.2), and then it is
+converted into the voltage with the required frequency and amplitude (Fig. 3).
+Note that the voltage waveform is made of pulses of varying duration, wherein
+the "fundamental" voltage is sinusoidal.
 
 import rectificationImage from "./images/rectification.png";
 
-<img src={rectificationImage.src} width="80%" height="80%" /> _Fig.2. Rectified current in the DC link._
+<img src={rectificationImage.src} width="80%" height="80%" /> _Fig.2. Rectified
+current in the DC link._
 
 import pwm_voltageImage from "./images/pwm_voltage.png";
 
@@ -25,124 +33,167 @@ import pwm_currentImage from "./images/pwm_current.png";
 
 <img src={pwm_currentImage.src} width="20%" height="20%" /> _(b)_
 
-_Fig.3. Phase voltage (a) and current (b) at the converter output (machine side)._
+_Fig.3. Phase voltage (a) and current (b) at the converter output (machine
+side)._
 
-Some FC theory can be found for example [here](http://www.frequencyconverter.net/basics.html), [here](https://en.wikipedia.org/wiki/Variable-frequency_drive) and [here](http://machinedesign.com/motorsdrives/abcs-and-1-2-3s-variable-frequency-drives).
+Some FC theory can be found for example
+[here](http://www.frequencyconverter.net/basics.html),
+[here](https://en.wikipedia.org/wiki/Variable-frequency_drive) and
+[here](http://machinedesign.com/motorsdrives/abcs-and-1-2-3s-variable-frequency-drives).
 
 ##### FC mounting variant
 
-Small and ligth FC are usually wall-mounted, while large and heavy are - floor-mounted. In Fig.4 the smaller dark-colored FC are for wall-mounting. The larger light-colored FC should be floor-installed.
-Usually FC above 250 kW can be found in floor-mounted versions only. FC can be wall mounted when powers are below 250 kW. Wall-mounted modules can be convenient in certain cases, e.g. FC can be installed into existing cubicles or when the floor is wet wall mounted design can be the only way.
-For some powers (usually 200...250 kW) there exists both wall-mounted & floor-mounted versions.
-
+Small and ligth FC are usually wall-mounted, while large and heavy are -
+floor-mounted. In Fig.4 the smaller dark-colored FC are for wall-mounting. The
+larger light-colored FC should be floor-installed. Usually FC above 250 kW can
+be found in floor-mounted versions only. FC can be wall mounted when powers are
+below 250 kW. Wall-mounted modules can be convenient in certain cases, e.g. FC
+can be installed into existing cubicles or when the floor is wet wall mounted
+design can be the only way. For some powers (usually 200...250 kW) there exists
+both wall-mounted & floor-mounted versions.
 
 ## FC topologies
 
 FC can be 2-quadrant (2Q) and 4-quadrant (4Q):
-* 2Q FC can transfer power only in one direction - from the grid to the electric machine (motor),
-* 4Q FC can transfer power not only from the grid to the machine but also from the machine (generator) to the grid.
 
-Usually the operational mode (motoring, generating or both) of the application defines what FC should be chosen, 2Q or 4Q. For example a wind turbine requires 4Q FC with fully-controlled inventor scheme at the grid side. Sometimes operational requirements in applications which typically require 2Q, may require 4Q - for example large fan with high inertia may require considerable braking capability to slow down in reasonably short time.
+- 2Q FC can transfer power only in one direction - from the grid to the electric
+  machine (motor),
+- 4Q FC can transfer power not only from the grid to the machine but also from
+  the machine (generator) to the grid.
 
-FC can be low-voltage (LV) and medium-voltage (MV). LV FC usually have only 2-level (2L) topology, MV – several alternative topologies (3L-NPC, SCHB, etc.). Both the LV and MV topologies can be 2Q and 4Q.
+Usually the operational mode (motoring, generating or both) of the application
+defines what FC should be chosen, 2Q or 4Q. For example a wind turbine requires
+4Q FC with fully-controlled inventor scheme at the grid side. Sometimes
+operational requirements in applications which typically require 2Q, may require
+4Q - for example large fan with high inertia may require considerable braking
+capability to slow down in reasonably short time.
 
-The choice of LV or MV is usually defined by the power level, but other features of the application, e.g. long cable can also affect the choice.
+FC can be low-voltage (LV) and medium-voltage (MV). LV FC usually have only
+2-level (2L) topology, MV – several alternative topologies (3L-NPC, SCHB, etc.).
+Both the LV and MV topologies can be 2Q and 4Q.
+
+The choice of LV or MV is usually defined by the power level, but other features
+of the application, e.g. long cable can also affect the choice.
 
 Some FC require input transformer, some don't.
 
-As in *DriveConstructor* we deal with VSC only, all the topologies included in the software and presented below have "VSC" in the designations.
+As in _DriveConstructor_ we deal with VSC only, all the topologies included in
+the software and presented below have "VSC" in the designations.
 
 ### Converters of 2-level topology
+
 ##### 2Q-2L-VSC-6p, 2Q-2L-VSC-12p and 4Q-2L-VSC
-2Q FC inventor scheme at the grid side can be 6-pusle («6p») and 12-pulse («12p»). Difference between «6p» and «12p» is in size, weight, cost, efficiency and influence on the grid (THD). 4Q FC is larger, heavier, more expensive and has lower efficiency than 2Q FC. 4Q produce lower THD in the grid.
-2-level FC are usually LV.
+
+2Q FC inventor scheme at the grid side can be 6-pusle («6p») and 12-pulse
+(«12p»). Difference between «6p» and «12p» is in size, weight, cost, efficiency
+and influence on the grid (THD). 4Q FC is larger, heavier, more expensive and
+has lower efficiency than 2Q FC. 4Q produce lower THD in the grid. 2-level FC
+are usually LV.
 
 import afe_dc2l_dfe_IngImage from "./images/afe_dc2l_dfe_Ing.png";
 
-<img src={afe_dc2l_dfe_IngImage.src} width="60%" height="60%" /> _Fig.1a. 2Q-2L-VSC-6p_.
+<img src={afe_dc2l_dfe_IngImage.src} width="60%" height="60%" /> _Fig.1a.
+2Q-2L-VSC-6p_.
 
 import afe_dc2l_dfeImage from "./images/afe_dc2l_dfe.png";
 
-<img src={afe_dc2l_dfeImage.src} width="20%" height="20%" /> _Fig.1b. Icon designation_.
+<img src={afe_dc2l_dfeImage.src} width="20%" height="20%" /> _Fig.1b. Icon
+designation_.
 
-Note that on Fig.1a motor side of the FC is the right side, while on Fig.1b - left side.
+Note that on Fig.1a motor side of the FC is the right side, while on Fig.1b -
+left side.
 
 import afe_dc2l_dfe12_IngImage from "./images/afe_dc2l_dfe12_Ing.png";
 
-<img src={afe_dc2l_dfe12_IngImage.src} width="90%" height="90%" /> _Fig.2a. 2Q-2L-VSC-12p_.
+<img src={afe_dc2l_dfe12_IngImage.src} width="90%" height="90%" /> _Fig.2a.
+2Q-2L-VSC-12p_.
 
 import afe_dc2l_dfe12Image from "./images/afe_dc2l_dfe12.png";
 
-<img src={afe_dc2l_dfe12Image.src} width="20%" height="20%" /> _Fig.2b. Icon designation_.
+<img src={afe_dc2l_dfe12Image.src} width="20%" height="20%" /> _Fig.2b. Icon
+designation_.
 
 import afe_dc2l_afe_IngImage from "./images/afe_dc2l_afe_Ing.png";
 
-<img src={afe_dc2l_afe_IngImage.src} width="60%" height="60%" /> _Fig.3a. 4Q-2L-VSC_.
+<img src={afe_dc2l_afe_IngImage.src} width="60%" height="60%" /> _Fig.3a.
+4Q-2L-VSC_.
 
 import afe_dc2l_afeImage from "./images/afe_dc2l_afe.png";
 
-<img src={afe_dc2l_afeImage.src} width="20%" height="20%" /> _Fig.3b. Icon designation_.
+<img src={afe_dc2l_afeImage.src} width="20%" height="20%" /> _Fig.3b. Icon
+designation_.
 
 ### Converters with 3- and multi-level topologies
+
 ##### 2Q-3L-NPC-VSC and 4Q-3L-NPC-VSC
+
 3-level FC are usually MV. NPC stands for Neutral-Point Clamped.
 
 import afe_dc3l_dfe12_IngImage from "./images/afe_dc3l_dfe12_Ing.png";
 
-<img src={afe_dc3l_dfe12_IngImage.src} width="90%" height="90%" /> _Fig.4a. 2Q-3L-NPC-VSC_.
+<img src={afe_dc3l_dfe12_IngImage.src} width="90%" height="90%" /> _Fig.4a.
+2Q-3L-NPC-VSC_.
 
 import afe_dc3l_afe12Image from "./images/afe_dc3l_afe12.png";
 
-<img src={afe_dc3l_afe12Image.src} width="20%" height="20%" /> _Fig.4b. Icon designation_.
+<img src={afe_dc3l_afe12Image.src} width="20%" height="20%" /> _Fig.4b. Icon
+designation_.
 
 import afe_dc3l_afe_IngImage from "./images/afe_dc3l_afe_Ing.png";
 
-<img src={afe_dc3l_afe_IngImage.src} width="70%" height="70%" /> _Fig.5a. 4Q-3L-NPC-VSC_.
+<img src={afe_dc3l_afe_IngImage.src} width="70%" height="70%" /> _Fig.5a.
+4Q-3L-NPC-VSC_.
 
 import afe_dc3l_afeImage from "./images/afe_dc3l_afe.png";
 
-<img src={afe_dc3l_afeImage.src} width="20%" height="20%" /> _Fig.5b. Icon designation_.
+<img src={afe_dc3l_afeImage.src} width="20%" height="20%" /> _Fig.5b. Icon
+designation_.
 
 ##### 2Q-ML-SCHB-VSC and 4Q-ML-SCHB-VSC
+
 SCHB stands for Series-Connected H-Bridge.
 
 import SCHB_2Image from "./images/SCHB_2.png";
 
-<img src={SCHB_2Image.src} width="50%" height="50%" /> _Fig.6a. 2Q-ML-SCHB-VSC topology_.
+<img src={SCHB_2Image.src} width="50%" height="50%" /> _Fig.6a. 2Q-ML-SCHB-VSC
+topology_.
 
 import SCHB_dfe_cellImage from "./images/SCHB_dfe_cell.png";
 
-<img src={SCHB_dfe_cellImage.src} width="40%" height="40%" /> _Fig.6b. 2Q-ML-SCHB-VSC cell_.
+<img src={SCHB_dfe_cellImage.src} width="40%" height="40%" /> _Fig.6b.
+2Q-ML-SCHB-VSC cell_.
 
 import sc_hb_simple2Image from "./images/sc_hb_simple2.png";
 
-<img src={sc_hb_simple2Image.src} width="20%" height="20%" /> _Fig.6c. Icon designation_.
+<img src={sc_hb_simple2Image.src} width="20%" height="20%" /> _Fig.6c. Icon
+designation_.
 
 import SCHB_afe_cellImage from "./images/SCHB_afe_cell.png";
 
-<img src={SCHB_afe_cellImage.src} width="40%" height="40%" /> _Fig.6d. 4Q-ML-SCHB-VSC cell_.
+<img src={SCHB_afe_cellImage.src} width="40%" height="40%" /> _Fig.6d.
+4Q-ML-SCHB-VSC cell_.
 
 import sc_hb_simple3Image from "./images/sc_hb_simple3.png";
 
-<img src={sc_hb_simple3Image.src} width="20%" height="20%" /> _Fig.6e. Icon designation_.
-
-
+<img src={sc_hb_simple3Image.src} width="20%" height="20%" /> _Fig.6e. Icon
+designation_.
 
 ## FC cooling
 
-Typical efficiency of the low-voltage FC is 98% meaning 2% of converted energy is turned into heat which needs to be removed from the enclosed area.
-FC can be cooled by moving air and water (air- and liquid-cooling; *AC* and *LC*).
-The difference between *AC* and *LC*-cooled FC is in size and weight - higher compactness and lower weight can be achieved by use of liquid (water) cooling. *AC* and *LC*(=*WC*) FCs are usually priced on the same level.
+Typical efficiency of the low-voltage FC is 98% meaning 2% of converted energy
+is turned into heat which needs to be removed from the enclosed area. FC can be
+cooled by moving air and water (air- and liquid-cooling; _AC_ and _LC_). The
+difference between _AC_ and _LC_-cooled FC is in size and weight - higher
+compactness and lower weight can be achieved by use of liquid (water) cooling.
+_AC_ and _LC_(=_WC_) FCs are usually priced on the same level.
 
-Fig.1 depicts a 250 kW low-voltage FC mounted on the wall in an enclosed area such as an electrical room.
-
+Fig.1 depicts a 250 kW low-voltage FC mounted on the wall in an enclosed area
+such as an electrical room.
 
 import fccoolingairnatImage from "./images/fc_cooling_air_nat.png";
 
 <img src={fccoolingairnatImage.src} width="28%" height="28%" /> _(a)_
 
-{/*
-*/}
 import fc_cooling_air_ACImage from "./images/fc_cooling_air_AC.png";
 
 <img src={fc_cooling_air_ACImage.src} width="28%" height="28%" /> _(b)_
@@ -153,35 +204,82 @@ import fc_cooling_air_WCImage from "./images/fc_cooling_air_WC.png";
 
 _Fig.1. Cooling types._
 
-With the efficiency of 98% the 250 kW FC will produce 5 kW of heat. To remove the heat from the FC’s heatsink a quite powerful ventilation fan should be integrated into the FC enclosure. For the 250 kW power the volume of air pumped through the heatsink should be in the order of 2000-3000 m3/h. Filtering may be required if the environment is dusty or dirty. This can be a maintenance concern.
+With the efficiency of 98% the 250 kW FC will produce 5 kW of heat. To remove
+the heat from the FC’s heatsink a quite powerful ventilation fan should be
+integrated into the FC enclosure. For the 250 kW power the volume of air pumped
+through the heatsink should be in the order of 2000-3000 m3/h. Filtering may be
+required if the environment is dusty or dirty. This can be a maintenance
+concern.
 
-If the produced heat is not handled (removed) in some way, eventually the temperature within the enclosed area (ambient temperature for the FC) will increase. Increasing the ambient operating temperature above the maximum design temperature of the FC will cause the FC to overheat which shortens its lifetime and will cause shutdowns. In Fig.1,a the heat is removed in a natural way, e.g. through walls, windows, doors. This is possible if the enclosed area is large (e.g. large production hall). In Fig.1,b the heat is removed with the help of air conditioning. The latter measure can be costly and/or complicated to implement.
+If the produced heat is not handled (removed) in some way, eventually the
+temperature within the enclosed area (ambient temperature for the FC) will
+increase. Increasing the ambient operating temperature above the maximum design
+temperature of the FC will cause the FC to overheat which shortens its lifetime
+and will cause shutdowns. In Fig.1,a the heat is removed in a natural way, e.g.
+through walls, windows, doors. This is possible if the enclosed area is large
+(e.g. large production hall). In Fig.1,b the heat is removed with the help of
+air conditioning. The latter measure can be costly and/or complicated to
+implement.
 
-Fig. 1,c depicts water-cooled FC with water pipes going to the neighboring room. First, the water-cooled FC is considerably smaller (half the weight of the air-cooled one). Secondly, the heat produced inside the FC due to losses is divided into two parts; 90% is removed from the heat sink by the cooling water and brought away from the enclosed area where the FC is installed, 10% are dissipated within the enclosed area. The 10% of 5 kW of heat make just 500 W, which can be easily dissipated without additional measures like air conditioning. So, the largest portion of heat is removed through the liquid and can be transferred to another media through a heat exchanger as shown in Fig.1,c.
+Fig. 1,c depicts water-cooled FC with water pipes going to the neighboring room.
+First, the water-cooled FC is considerably smaller (half the weight of the
+air-cooled one). Secondly, the heat produced inside the FC due to losses is
+divided into two parts; 90% is removed from the heat sink by the cooling water
+and brought away from the enclosed area where the FC is installed, 10% are
+dissipated within the enclosed area. The 10% of 5 kW of heat make just 500 W,
+which can be easily dissipated without additional measures like air
+conditioning. So, the largest portion of heat is removed through the liquid and
+can be transferred to another media through a heat exchanger as shown in
+Fig.1,c.
 
-Liquids used in the FC primary cooling loop. Typical: drinking water, demineralized or deionized water, and a water/glycol mixture for freeze protection.
-
+Liquids used in the FC primary cooling loop. Typical: drinking water,
+demineralized or deionized water, and a water/glycol mixture for freeze
+protection.
 
 ##### Heat exchangers
-If clean cooling water is not available on site, water-to-air or water-to-water heat exchanger may be used, providing clean water. Parameters of the heat exchanger such as size, weight, cost and losses need to be included in the system parameters/ performances when benchmarking alternative systems (cooling solutions).
-Liquid to liquid (water-to-water) heat exchangers are used when a cooling liquid is readily available. Liquid to air (water-to-air) heat exchangers are used primarily when air conditioning is not desired, or in dusty/dirty environments where air cooled VFD’s can be adversely affected by these conditions (plugged heat sinks, electronics covered in dust, complicated maintenance routines.
-Challenges of water cooling: condensation, electrochemical corrosion (mostly related to HEx)
+
+If clean cooling water is not available on site, water-to-air or water-to-water
+heat exchanger may be used, providing clean water. Parameters of the heat
+exchanger such as size, weight, cost and losses need to be included in the
+system parameters/ performances when benchmarking alternative systems (cooling
+solutions). Liquid to liquid (water-to-water) heat exchangers are used when a
+cooling liquid is readily available. Liquid to air (water-to-air) heat
+exchangers are used primarily when air conditioning is not desired, or in
+dusty/dirty environments where air cooled VFD’s can be adversely affected by
+these conditions (plugged heat sinks, electronics covered in dust, complicated
+maintenance routines. Challenges of water cooling: condensation, electrochemical
+corrosion (mostly related to HEx)
 
 Other factors to consider:
-* Relation between cooling and IP
-* Audible noise. The large fan is the primary reason air cooled FCs are noisy. There is no large air fan in LC FC, just a very small fans to cool the electronic boards
+
+- Relation between cooling and IP
+- Audible noise. The large fan is the primary reason air cooled FCs are noisy.
+  There is no large air fan in LC FC, just a very small fans to cool the
+  electronic boards
 
 [Recommended description by Siemens](http://w3.siemens.com/mcms/mc-solutions/en/converters/low-voltage-converters/sinamics-s/motion-control-drives/tabcardpages-system-architecture/pages/cooling.aspx)
 
-
-
 ## Filters
 
-In many cases FC should be equipped with either input or output filters. Filters can help to solve various EMC issues on both grid side and machine side. However, the pay is extra size, weight, cost and losses. Some MV topologies do not require output filters.
-In DC it is possible to choose “choke” and “choke+RFI” for input filter and du/dt filter and sin-filter for output filter.
+In many cases FC should be equipped with either input or output filters. Filters
+can help to solve various EMC issues on both grid side and machine side.
+However, the pay is extra size, weight, cost and losses. Some MV topologies do
+not require output filters. In DC it is possible to choose “choke” and
+“choke+RFI” for input filter and du/dt filter and sin-filter for output filter.
+
 ### Output filters
+
 ##### SIN-filter
-The LC filter, called the "sinus filter", "sine-filter" or "sin filter" (Fig. 1) is the most efficient filter in terms of turning the current and voltage waveforms that the FC produces into almost sinusoidal form. Fig. 2 shows an example of the effect of a sin-filter on the shape of the voltage waveform at the FC output. With the use of a sin-filter, virtually all the negative effects described in chapter [FC influence on the electric machine](Systems/fc_influence_em.md)> are eliminated, since the machine is powered by voltage and current with a shape very close to sinusoidal.
+
+The LC filter, called the "sinus filter", "sine-filter" or "sin filter" (Fig. 1)
+is the most efficient filter in terms of turning the current and voltage
+waveforms that the FC produces into almost sinusoidal form. Fig. 2 shows an
+example of the effect of a sin-filter on the shape of the voltage waveform at
+the FC output. With the use of a sin-filter, virtually all the negative effects
+described in chapter
+[FC influence on the electric machine](Systems/fc_influence_em.md)> are
+eliminated, since the machine is powered by voltage and current with a shape
+very close to sinusoidal.
 
 import sin_filter_topologyImage from "./images/sin_filter_topology.png";
 
@@ -201,19 +299,29 @@ import after_sinImage from "./images/after_sin.png";
 
 <img src={after_sinImage.src} width="40%" height="40%" /> _(b)_
 
-_Fig. 2. The voltage waveforms at the input (a) and at the output (b) of the sin-filter. Note different time span on the oscillograms_.
+_Fig. 2. The voltage waveforms at the input (a) and at the output (b) of the
+sin-filter. Note different time span on the oscillograms_.
 
-Sin-filters have certain drawbacks (largely due to the high inductance value of its chokes):
+Sin-filters have certain drawbacks (largely due to the high inductance value of
+its chokes):
 
-* The voltage drop in the filter is 3-10%, depending on the manufacturer, the nominal power (current) of the filter and the frequency of the PWM.
-* Losses of 0.5-2%. The more power, the lower the relative losses in the filter.
-* Displacement of the field weakening point by 1-2 Hz towards low frequencies.
-* Significant reduction (up to 20% or more) of the critical moment (overload capacity) of the machine.
+- The voltage drop in the filter is 3-10%, depending on the manufacturer, the
+  nominal power (current) of the filter and the frequency of the PWM.
+- Losses of 0.5-2%. The more power, the lower the relative losses in the filter.
+- Displacement of the field weakening point by 1-2 Hz towards low frequencies.
+- Significant reduction (up to 20% or more) of the critical moment (overload
+  capacity) of the machine.
 
-Also it should be noted that the sine-filter is quite an expensive device. Its cost can be up to 30-40% of the cost of the FC (at low power - up to 50-70%).
+Also it should be noted that the sine-filter is quite an expensive device. Its
+cost can be up to 30-40% of the cost of the FC (at low power - up to 50-70%).
 
 ##### du/dt-filter
-Structurally, the du/dt filter is a three-phase choke (Fig. 3,a), and from the point of view of the electric circuit theory it is a concentrated inductive resistance. The inclusion of inductance in the equivalent electrical circuit of the cable increases the wave resistance of the cable line and brings down the reflection coefficient. Thus, the voltage peaks at terminals decreases.
+
+Structurally, the du/dt filter is a three-phase choke (Fig. 3,a), and from the
+point of view of the electric circuit theory it is a concentrated inductive
+resistance. The inclusion of inductance in the equivalent electrical circuit of
+the cable increases the wave resistance of the cable line and brings down the
+reflection coefficient. Thus, the voltage peaks at terminals decreases.
 
 import dut_filter_topologyImage from "./images/dut_filter_topology.png";
 
@@ -225,7 +333,11 @@ import dut_filterImage from "./images/dut_filter.png";
 
 _Fig. 3. “Classical” du/dt-filter topology (a) and product example (b)_.
 
-However, the main purpose of du/dt-filters is to eliminate du/dt-effect, i.e. decrease in the rise time of the voltage pulse. In addition, due to the inertial properties of the inductance, the filter also reduces the voltage surge at the leading edge of the pulse (Fig.4). The length of the cable is 30 m. Note different rise time: dt=220 ns, dt=820 ns.
+However, the main purpose of du/dt-filters is to eliminate du/dt-effect, i.e.
+decrease in the rise time of the voltage pulse. In addition, due to the inertial
+properties of the inductance, the filter also reduces the voltage surge at the
+leading edge of the pulse (Fig.4). The length of the cable is 30 m. Note
+different rise time: dt=220 ns, dt=820 ns.
 
 import before_dutImage from "./images/before_dut.png";
 
@@ -235,20 +347,31 @@ import after_dutImage from "./images/after_dut.png";
 
 <img src={after_dutImage.src} width="30%" height="30%" /> _(b)_
 
-_Fig. 4. Voltage pulses at the machine terminals without du/dt-filter (a) and with a filter (b)_.
+_Fig. 4. Voltage pulses at the machine terminals without du/dt-filter (a) and
+with a filter (b)_.
 
 ##### Common recommendations on the use of du/dt-filters and other measures
-To reduce the overvoltages, du/dt-effect and bearing currents, a whole complex of measures is often applied, including both recommendations to machine manufacturers, and the use of various filters, special cables, etc. The measures depend in particular on the voltage level of the mains and on the power (size) of the machine. Different drive manufacturers can offer different measures. One example is presented in the table:
 
-|  |	< 100 kW | >= 100 kW  |	>= 350 kW |
-| ------------- |	---------- | ---------- |	---------- |
-| $$Ur<=500 V$$ |	Standard machine |  Standard machine + isolated N-bearing |	Standard machine + isolated N-bearing + ferrite rings |
-| $$Ur<=600 V$$ |	(Standard machine + du/dt-filter) or Reinforced insulation  | (Standard machine + du/dt-filter) or (Reinforced insulation + isolated N-bearing) | (Standard machine + isolated N-bearing + du/dt-filter + 1 ferrite ring) or (Reinforced insulation + isolated N-bearing + ferrite rings) |
-| $$Ur<=690 V$$ |	Reinforced insulation + du/dt-filter | Reinforced insulation + du/dt-filter |	Reinforced insulation + isolated N-bearing + du/dt-filter + 1 ferrite ring |
+To reduce the overvoltages, du/dt-effect and bearing currents, a whole complex
+of measures is often applied, including both recommendations to machine
+manufacturers, and the use of various filters, special cables, etc. The measures
+depend in particular on the voltage level of the mains and on the power (size)
+of the machine. Different drive manufacturers can offer different measures. One
+example is presented in the table:
+
+|               | < 100 kW                                                   | >= 100 kW                                                                         | >= 350 kW                                                                                                                               |
+| ------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| $$Ur<=500 V$$ | Standard machine                                           | Standard machine + isolated N-bearing                                             | Standard machine + isolated N-bearing + ferrite rings                                                                                   |
+| $$Ur<=600 V$$ | (Standard machine + du/dt-filter) or Reinforced insulation | (Standard machine + du/dt-filter) or (Reinforced insulation + isolated N-bearing) | (Standard machine + isolated N-bearing + du/dt-filter + 1 ferrite ring) or (Reinforced insulation + isolated N-bearing + ferrite rings) |
+| $$Ur<=690 V$$ | Reinforced insulation + du/dt-filter                       | Reinforced insulation + du/dt-filter                                              | Reinforced insulation + isolated N-bearing + du/dt-filter + 1 ferrite ring                                                              |
 
 ### Grid filters
+
 ##### Chokes
-Influence of presence of the choke and its size on the harmonics injected into the grid is presented in Fig.5 and 6. The graphs show current waveform and the value of current distorsion THD(i) as % of nominal current at full load.
+
+Influence of presence of the choke and its size on the harmonics injected into
+the grid is presented in Fig.5 and 6. The graphs show current waveform and the
+value of current distorsion THD(i) as % of nominal current at full load.
 
 import a6p_no_chokeImage from "./images/6p_no_choke.png";
 
@@ -258,7 +381,8 @@ import THDi80Image from "./images/THDi80.png";
 
 <img src={THDi80Image.src} width="25%" height="25%" /> _(b)_
 
-_Fig. 5. 6-pulse rectifier without any choke (a) and current waveform for this topology (b)_.
+_Fig. 5. 6-pulse rectifier without any choke (a) and current waveform for this
+topology (b)_.
 
 import a6p_with_chokeImage from "./images/6p_with_choke.png";
 
@@ -272,10 +396,13 @@ import THDi28Image from "./images/THDi28.png";
 
 <img src={THDi28Image.src} width="25%" height="25%" /> _(c)_
 
-_Fig. 6. 6-pulse rectifier with a choke (a) and current waveforms for small choke (b) and big choke (c)_.
+_Fig. 6. 6-pulse rectifier with a choke (a) and current waveforms for small
+choke (b) and big choke (c)_.
 
 ##### LCL filter
-FC with LCL filter between FC and the grid is presented in Fig.7,a. Current waveform is very close to sinusoidal as can be seen in Fig. 7,b.
+
+FC with LCL filter between FC and the grid is presented in Fig.7,a. Current
+waveform is very close to sinusoidal as can be seen in Fig. 7,b.
 
 import fc_with_LCLImage from "./images/fc_with_LCL.png";
 
@@ -288,7 +415,9 @@ import THDi5Image from "./images/THDi5.png";
 _Fig. 7. Topology (a) and current waveform (b)_.
 
 ##### EMC filters
-EMC filters (Fig.8) is destined for emission reduction in MHz range. Example of the effect is presented in Fig.9.
+
+EMC filters (Fig.8) is destined for emission reduction in MHz range. Example of
+the effect is presented in Fig.9.
 
 import emc_filter_topologyImage from "./images/emc_filter_topology.png";
 

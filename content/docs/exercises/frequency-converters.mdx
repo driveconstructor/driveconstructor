@@ -5,9 +5,11 @@ description: Frequency converters exercises
 
 ## FC-1. 2Q vs 4Q solutions
 
-Design and compare drive trains for the two applications; a pump and a wind turbine.
+Design and compare drive trains for the two applications; a pump and a wind
+turbine.
 
 #### Pump
+
 Drive train with just FC.
 
 import Image from "next/image";
@@ -17,12 +19,14 @@ import pm_fc_trImage from "./images/pm_fc_tr.png";
 <img src={pm_fc_trImage.src} width="50%" height="50%" />
 
 Set parameters:
-* Rated flow 60 l/s, head 200 m,  efficiency 81%, speed 600 rpm
-* Grid voltage – 6000 V
-* Clean electric room for the FC with abundant heat removal capabilities
-* Distance from the electric room to the pump - 30 m
+
+- Rated flow 60 l/s, head 200 m, efficiency 81%, speed 600 rpm
+- Grid voltage – 6000 V
+- Clean electric room for the FC with abundant heat removal capabilities
+- Distance from the electric room to the pump - 30 m
 
 #### Wind turbine
+
 Drive train with gearbox, FC and transformer.
 
 import wt_gb_fc_trImage from "./images/wt_gb_fc_tr.png";
@@ -30,57 +34,83 @@ import wt_gb_fc_trImage from "./images/wt_gb_fc_tr.png";
 <img src={wt_gb_fc_trImage.src} width="50%" height="50%" />
 
 Set parameters:
-* Blades rated speed 20 rpm, overspeed 1,2, torque 60 kNm, 2-stage gearbox with ratio 1:30
-* Grid voltage – 6000 V
-* Clean nacelle where the FC is installed with abundant heat removal capabilities
 
-Use the same machine type (*SCIM*) in both cases and keep the same: air cooling, electric machine voltage around 690 V
+- Blades rated speed 20 rpm, overspeed 1,2, torque 60 kNm, 2-stage gearbox with
+  ratio 1:30
+- Grid voltage – 6000 V
+- Clean nacelle where the FC is installed with abundant heat removal
+  capabilities
 
-Compare: size, weight, cost, efficiency of the FC and THD of the two cases. Draw conclusions.
+Use the same machine type (_SCIM_) in both cases and keep the same: air cooling,
+electric machine voltage around 690 V
+
+Compare: size, weight, cost, efficiency of the FC and THD of the two cases. Draw
+conclusions.
 
 ## FC-2. Topologies and voltage levels
 
-Imagine you are chief engineer at a large plant. You need to upgrade throttle regulated pumps driven by direct online started motors to speed-controlled systems with FC and without any throttles. You have available some motors on stock (imagine you have any motor you may need) but need to buy the FCs.
+Imagine you are chief engineer at a large plant. You need to upgrade throttle
+regulated pumps driven by direct online started motors to speed-controlled
+systems with FC and without any throttles. You have available some motors on
+stock (imagine you have any motor you may need) but need to buy the FCs.
 
 The pumps in question have different power: 0.5, 1, 2 and 5 MW.
-1.	head 210 m, flow 200 l/s, efficiency 85%, rated speed 1450 rpm;
-2.	head 210 m, flow 400 l/s, efficiency 85%, rated speed 1450 rpm;
-3.	head 420 m, flow 400 l/s, efficiency 85%, rated speed 1450 rpm;
-4.	head 800 m, flow 500 l/s, efficiency 85%, rated speed 1450 rpm.
 
-Rated speed is the same – 1500 rpm. Grid – 6 kV. Distance between the pump and FC is 100 m.
+1. head 210 m, flow 200 l/s, efficiency 85%, rated speed 1450 rpm;
+2. head 210 m, flow 400 l/s, efficiency 85%, rated speed 1450 rpm;
+3. head 420 m, flow 400 l/s, efficiency 85%, rated speed 1450 rpm;
+4. head 800 m, flow 500 l/s, efficiency 85%, rated speed 1450 rpm.
+
+Rated speed is the same – 1500 rpm. Grid – 6 kV. Distance between the pump and
+FC is 100 m.
 
 Use the system topology with a transformer:
 
-
 <img src={pm_fc_trImage.src} width="60%" height="60%" />
 
-You have constrained budget so design the system for lowest possible cost. Present the results in a table.
+You have constrained budget so design the system for lowest possible cost.
+Present the results in a table.
 
-Reflect on how power level affects the choice of voltage level. Is the choice determined by feasible cable cross-section?
+Reflect on how power level affects the choice of voltage level. Is the choice
+determined by feasible cable cross-section?
 
-Find overall system efficiencies at partial load (50%) for each of the three systems.
+Find overall system efficiencies at partial load (50%) for each of the three
+systems.
 
-Extra question: you've got MV motor with accessible termnical box which can be connected either Y or D. When connected "Y" it can be fed 6000 V, when "D" - 3400 V. How this reconnection possibility may affect FC choice/opportunities?
+Extra question: you've got MV motor with accessible termnical box which can be
+connected either Y or D. When connected "Y" it can be fed 6000 V, when "D" -
+3400 V. How this reconnection possibility may affect FC choice/opportunities?
 
 ## FC-3. Cooling vs weight, size and cost
 
-Imagine you are the sales manager at a factory producing frequency converters (FC). Answer the questions in the two requests (solve the two problems).
+Imagine you are the sales manager at a factory producing frequency converters
+(FC). Answer the questions in the two requests (solve the two problems).
 
 #### Request 1. FC for a pump
 
 Pump parameters:
-* Rated flow 50 l/s, head 200 m, efficiency 81%, speed 1450 rpm
 
-There is avaiable a cubicle where the FC can be potentially placed. At the moment there is old motor starter in this cubicle to start this particular pump, so the idea is to replace the motor started with the new FC. Cubicle dimensions (Depth x Height x Width): 0,5 x 1,2 x 0,4 m. Cooling water is available. Will the new FC fit the cubicle?
+- Rated flow 50 l/s, head 200 m, efficiency 81%, speed 1450 rpm
+
+There is avaiable a cubicle where the FC can be potentially placed. At the
+moment there is old motor starter in this cubicle to start this particular pump,
+so the idea is to replace the motor started with the new FC. Cubicle dimensions
+(Depth x Height x Width): 0,5 x 1,2 x 0,4 m. Cooling water is available. Will
+the new FC fit the cubicle?
 
 #### Request 2. FC for a wind turbine
 
-There is a plan to upgrade of the WT product line from 1 to 1,5 MW. This will require changing the blades design.
+There is a plan to upgrade of the WT product line from 1 to 1,5 MW. This will
+require changing the blades design.
 
-The new wind turbine: rated speed of the blades 20 rpm, overspeed 1,2, torque 750 kNm, 2-stage gearbox with ratio 1:30. Grid 6000 V.
+The new wind turbine: rated speed of the blades 20 rpm, overspeed 1,2, torque
+750 kNm, 2-stage gearbox with ratio 1:30. Grid 6000 V.
 
-The plan to reuse the same nacelle. Place available for the new FC (footprint 6 m2, volume 4m3) remains the same as in the 1 MW nacelle. Former 1 MW drive train was air-cooled. It is decided to arrange water cooling, so air-to-water heat exchanger will be available (installed in the tower). Will the new 1,5 MW FC fit the available place?
+The plan to reuse the same nacelle. Place available for the new FC (footprint 6
+m2, volume 4m3) remains the same as in the 1 MW nacelle. Former 1 MW drive train
+was air-cooled. It is decided to arrange water cooling, so air-to-water heat
+exchanger will be available (installed in the tower). Will the new 1,5 MW FC fit
+the available place?
 
 import FC3Image from "./images/FC3.png";
 
@@ -88,89 +118,109 @@ import FC3Image from "./images/FC3.png";
 
 ## FC-4. Derating for altitude and temperature
 
-You have three requests which look identical from Madrid, Mexico and El Alto. In each of the request they need frequency converter to drive 45 kW induction motor driving a pump (centrifugal pump with head 60 m, flow 50 l/s, efficiency 83% and rated speed of 950 rpm). The motor is drawing current of 40 A at a voltage of 400 V. Distance between the pump and the FC is 30 m. Other conditions are specified as well. Make offers for Madrid/Mexico/El Alto. Propose more than one alternative if needed. Include only FC into the offers.
+You have three requests which look identical from Madrid, Mexico and El Alto. In
+each of the request they need frequency converter to drive 45 kW induction motor
+driving a pump (centrifugal pump with head 60 m, flow 50 l/s, efficiency 83% and
+rated speed of 950 rpm). The motor is drawing current of 40 A at a voltage of
+400 V. Distance between the pump and the FC is 30 m. Other conditions are
+specified as well. Make offers for Madrid/Mexico/El Alto. Propose more than one
+alternative if needed. Include only FC into the offers.
 
-Important details: 
-  - Madrid, Spain - 667 m above sea level
-  - Mexico, Mexico - 2240 m above sea level
-  - El Alto, Bolivia - 4150 m above sea level
+Important details:
 
-Additional question: Can we compensate high altitude with lower temperature of the coolant?
+- Madrid, Spain - 667 m above sea level
+- Mexico, Mexico - 2240 m above sea level
+- El Alto, Bolivia - 4150 m above sea level
+
+Additional question: Can we compensate high altitude with lower temperature of
+the coolant?
 
 ## FC-5. Influence of overloads on design
 
-Design drive trains for the six different conveyors. Each conveyor is to be driven by one motor.
-System topology is the same for all the conveyors: gearbox _1:5_ (type: helical). Grid voltage is 400 V.
+Design drive trains for the six different conveyors. Each conveyor is to be
+driven by one motor. System topology is the same for all the conveyors: gearbox
+_1:5_ (type: helical). Grid voltage is 400 V.
 
 import cn_gb_em_fcImage from "./images/cn_gb_em_fc.png";
 
 <img src={cn_gb_em_fcImage.src} width="50%" height="50%" />
 
 Parameters (the same for all the conveyors):
-* torque 10 kNm, speeds: min - 100 rpm, max - 200 rpm.
 
-The difference between the conveyors is in the overload patterns according to the table below. Conveyors 1-4 have overload due to technological processes. Conveyors 5 and 6 have overload due to heavy start. Reflect on motor thermal cycling.
+- torque 10 kNm, speeds: min - 100 rpm, max - 200 rpm.
 
-|	 Overloads |	1 |	2 |	3 |	4 |	5 |	6 |
-|	-- | -- |	-- | -- |	-- |	-- | -- |
-| Amplitude |	10% |	10% |	50% |	50% |	100% |	100% |
-| Duration |	1 min each 10 min |	1 min each 2 min |	1 min each 10 min |	1 min each 2 min |	2 s each 60 s |	10 s each 60 s |
-| FC type |	 |	 |	 |	 |	 |	 |
-| FC price |	 |	 |	 |	 |	 |	 |							
-| EM type |	 |	 |	 |	 |	 |	 |							
-| EM price |	 |	 |	 |	 |	 |	 |	 |
+The difference between the conveyors is in the overload patterns according to
+the table below. Conveyors 1-4 have overload due to technological processes.
+Conveyors 5 and 6 have overload due to heavy start. Reflect on motor thermal
+cycling.
+
+| Overloads | 1                 | 2                | 3                 | 4                | 5             | 6              |
+| --------- | ----------------- | ---------------- | ----------------- | ---------------- | ------------- | -------------- | --- |
+| Amplitude | 10%               | 10%              | 50%               | 50%              | 100%          | 100%           |
+| Duration  | 1 min each 10 min | 1 min each 2 min | 1 min each 10 min | 1 min each 2 min | 2 s each 60 s | 10 s each 60 s |
+| FC type   |                   |                  |                   |                  |               |                |
+| FC price  |                   |                  |                   |                  |               |                |
+| EM type   |                   |                  |                   |                  |               |                |
+| EM price  |                   |                  |                   |                  |               |                |     |
 
 ## FC-6. Mounting and protection
 
-Imagine you are the sales manager of frequency converter (FC) manufacturer company. Make four offers to the customers requesting FC for the four applications.
+Imagine you are the sales manager of frequency converter (FC) manufacturer
+company. Make four offers to the customers requesting FC for the four
+applications.
 
 #### Request 1: Pump to a dairy
-* Parameters:
- * Rated flow 50 l/s, head 200 m, pump efficiency 81%, speed 1450 rpm
- * Grid voltage – 400 V, distance from the electric room to the pump - 30 m
-* Environment: moist, wet floor
+
+- Parameters:
+- Rated flow 50 l/s, head 200 m, pump efficiency 81%, speed 1450 rpm
+- Grid voltage – 400 V, distance from the electric room to the pump - 30 m
+- Environment: moist, wet floor
 
 #### Request 2: Oil pump (inflamable oil)
-* Parameters:
- * Rated flow 55 l/s, head 200 m, pump efficiency 81%, speed 1450 rpm
- * Grid voltage – 400 V, distance from the electric room to the pump - 30 m
-* Environment: clean
+
+- Parameters:
+- Rated flow 55 l/s, head 200 m, pump efficiency 81%, speed 1450 rpm
+- Grid voltage – 400 V, distance from the electric room to the pump - 30 m
+- Environment: clean
 
 #### Request 3: Conveyor at a cement plant
-* Parameters:
- * Speeds: min – 150, max - 200 rpm
- * Rated torque - 5 kNm
- * Grid voltage – 400 V
- * Gearbox 1:5
- * Distance from the electric room to the conveyor - 30 m
-* Environment: cement dust
+
+- Parameters:
+- Speeds: min – 150, max - 200 rpm
+- Rated torque - 5 kNm
+- Grid voltage – 400 V
+- Gearbox 1:5
+- Distance from the electric room to the conveyor - 30 m
+- Environment: cement dust
 
 import FC6Image from "./images/FC6.png";
 
 <img src={FC6Image.src} width="50%" height="50%" />
 
+import Link from "next/link";
 
-
-import Link from 'next/link'
-
-*Fig.1.Belt conveyor at a cement plant.* (<Link href="https://www.vecteezy.com/free-photos/turbine">picture source</Link>)
+_Fig.1.Belt conveyor at a cement plant._
+(<Link href="https://www.vecteezy.com/free-photos/turbine">picture
+source</Link>)
 
 #### Request 4: Conveyor at a clean factory
-* Parameters:
- * Speeds: min – 150, max - 200 rpm
- * Rated torque - 5 kNm
- * Grid voltage – 400 V
- * Gearbox 1:5
- * Distance from the electric room to the conveyor - 30 m
 
-* Environment: clean, dry
+- Parameters:
+- Speeds: min – 150, max - 200 rpm
+- Rated torque - 5 kNm
+- Grid voltage – 400 V
+- Gearbox 1:5
+- Distance from the electric room to the conveyor - 30 m
 
-Reflect on how degree of protection (IP) affects size and cost of the equipment. Present the results and the table:
+- Environment: clean, dry
 
-| Case | 1 | 2 | 3 | 4 |
-|	-- | -- |	-- | -- |	-- |
-| application | water pump, dairy | oil pump | conveyor, cement  | conveyor, clean room |
-| IP | 2x or 5x | 2x or 5x | 2x or 5x | 2x or 5x |
-|mounting | wall or floor | wall or floor |  wall or floor | wall or floor |
-|FC type | ? | ? | ? | ? |
-|FC cost | ? | ? | ? | ? |
+Reflect on how degree of protection (IP) affects size and cost of the equipment.
+Present the results and the table:
+
+| Case        | 1                 | 2             | 3                | 4                    |
+| ----------- | ----------------- | ------------- | ---------------- | -------------------- |
+| application | water pump, dairy | oil pump      | conveyor, cement | conveyor, clean room |
+| IP          | 2x or 5x          | 2x or 5x      | 2x or 5x         | 2x or 5x             |
+| mounting    | wall or floor     | wall or floor | wall or floor    | wall or floor        |
+| FC type     | ?                 | ?             | ?                | ?                    |
+| FC cost     | ?                 | ?             | ?                | ?                    |

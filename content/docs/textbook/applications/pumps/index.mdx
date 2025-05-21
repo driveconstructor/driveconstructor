@@ -4,107 +4,143 @@ title: Pumps
 
 ## General description
 
-A pump can be specified by its type and the set of hydrodynamic parameters; rated speed, head, flow, efficiency and density of the fluid it pumps. However, what dimensions the drive system is torque on shaft of the pump and the shaft's rated speed as well how the torque changes with the changing speed.
+A pump can be specified by its type and the set of hydrodynamic parameters;
+rated speed, head, flow, efficiency and density of the fluid it pumps. However,
+what dimensions the drive system is torque on shaft of the pump and the shaft's
+rated speed as well how the torque changes with the changing speed.
 
 To configure the drive train for a pump DriveConstructor uses four parameters:
 
 1. Required rated torque on the shaft of the pump
 2. Rated rotational speed of the pump's shaft
-    - variable speed drive allows changing speed the pump operates at, however, a pump is designed for some definite rated speed usually given for any pump in the respective brochure or catalogue
+   - variable speed drive allows changing speed the pump operates at, however, a
+     pump is designed for some definite rated speed usually given for any pump
+     in the respective brochure or catalogue
 3. Load curve of the pump
 4. Starting torque of the pump
 
-The load curve and starting torque of the pump depend on the pump's type. There exist many different types of pumps. The most common - centrifugal pump - is presented in Fig.1. Another example - progressive cavity pump - is presented in Fig.2.
-
+The load curve and starting torque of the pump depend on the pump's type. There
+exist many different types of pumps. The most common - centrifugal pump - is
+presented in Fig.1. Another example - progressive cavity pump - is presented in
+Fig.2.
 
 import Image from "next/image";
 import dcImage from "./images/centrifugal-pump.png";
 
 <img src={dcImage.src} alt="Centrifugal pump" width="35%" height="35%" />
 
-*Fig.1. Centrifugal pump.*
+_Fig.1. Centrifugal pump._
 
-{/*
-import Image from "next/image";
-*/}
 import pcpImage from "./images/progressing-cavity-pump.png";
 
-<img src={pcpImage.src} alt="Progressing cavity pump" width="50%" height="50%" />
+<img
+  src={pcpImage.src}
+  alt="Progressing cavity pump"
+  width="50%"
+  height="50%"
+/>
 
-*Fig.2. Progressing cavity pump with a motor.*
+_Fig.2. Progressing cavity pump with a motor._
 
-
-Rated rotational speed of the pump's shaft is given for any pump in the respective brochure or catalogue.
+Rated rotational speed of the pump's shaft is given for any pump in the
+respective brochure or catalogue.
 
 ### Rated torque
+
 Rated torque is calculated from the power and the speed:
 
 $$T = (9.55∗P)/n$$,
 
 where $$n$$ is speed in rpm, $$P$$ is power in kW and $$T$$ is torque in kNm.
 
-The power can be calculated from pump parameters such as head, flow, efficiency and density of pumped fluid:
+The power can be calculated from pump parameters such as head, flow, efficiency
+and density of pumped fluid:
 
 $$P=(g∗\rho∗h∗q)/(3.6∗10^6∗\eta)$$,
 
+where $$P$$ is in kW, $$g$$ is gravity ($$g=9.81$$ $$m/s^2$$), $$\rho$$ is
+density of the pumped fluid in $$kg/m^3$$, $$\eta$$ is efficiency of the pump,
+$$h$$ is head in m and $$q$$ is flow in $$m^3/h$$.
 
-where $$P$$ is in kW, $$g$$ is gravity ($$g=9.81$$ $$m/s^2$$), $$\rho$$ is density of the pumped fluid in $$kg/m^3$$, $$\eta$$ is efficiency of the pump, $$h$$ is head in m and $$q$$ is flow in $$m^3/h$$.
-    
-Note that in practice a pump can work at heads and flows lower than the rated ones for which it is designed. Speed and efficiency can then be different from the rated ones as well. So, remember to enter actual head, flow, speed and efficiency.
+Note that in practice a pump can work at heads and flows lower than the rated
+ones for which it is designed. Speed and efficiency can then be different from
+the rated ones as well. So, remember to enter actual head, flow, speed and
+efficiency.
 
 ## Pump types and load curves
 
-Pumps can be classified by their method of the fluid displacement. There are many classifications, one of them is presented in Fig. 1.
+Pumps can be classified by their method of the fluid displacement. There are
+many classifications, one of them is presented in Fig. 1.
 
 import pmpclImage from "./images/pumps-classification.png";
 
 <img src={pmpclImage.src} alt="Pumps classification" width="90%" height="90%" />
 
-*Fig.1. Pump classification.*
+_Fig.1. Pump classification._
 
-There are two basic types of pumps: positive displacement and centrifugal (rotodynamic). Load curves (torque-speed characteristics) of these two types of pumps are different:
+There are two basic types of pumps: positive displacement and centrifugal
+(rotodynamic). Load curves (torque-speed characteristics) of these two types of
+pumps are different:
 
     - Centrifugal pumps have quadratic load curve (QT) $$T \sim n^2$$ (Fig.2)
     - Positive displacement pumps have constant load (CT) curve $$T∼const$$ (Fig.3)
 
 import pmpcQTImage from "./images/pump-curve-QT.png";
 
-<img src={pmpcQTImage.src} alt="pump-curve-QT" width="40%" height="40%" /> *Fig.2. QT curve.*
+<img src={pmpcQTImage.src} alt="pump-curve-QT" width="40%" height="40%" />
+*Fig.2. QT curve.*
 
 import pmpcCTImage from "./images/pump-curve-CT.png";
 
-<img src={pmpcCTImage.src} alt="pump-curve-CT" width="40%" height="40%" /> *Fig.3. CT curve.*
+<img src={pmpcCTImage.src} alt="pump-curve-CT" width="40%" height="40%" />
+*Fig.3. CT curve.*
 
-Quadratic loads are often approximately represented by assuming that the torque required is proportional to the square of the speed, giving rise to the terms square-law load.
+Quadratic loads are often approximately represented by assuming that the torque
+required is proportional to the square of the speed, giving rise to the terms
+square-law load.
 
 ## Key parameters of pumps
+
 ### Head and flow
 
-Rated head and flow are the key characteristic of any pump and is always specified by the pump manufacturer.
+Rated head and flow are the key characteristic of any pump and is always
+specified by the pump manufacturer.
 
-The static Head (H) of a pump is the maximum pressure it can deliver (height to which the pump lifts the liquid). In DriveConstructor this parameter is entered in m.
+The static Head (H) of a pump is the maximum pressure it can deliver (height to
+which the pump lifts the liquid). In DriveConstructor this parameter is entered
+in m.
 
-Flow (Q), also referred to as volume flow rate or capacity, is the volume of liquid that travels through the pump in a given time (measured in liter per second of cubic meter per hour). Rated flow is the key characteristic of any pump and is always specified by the pump manufacturer. In DriveConstructor this parameter is entered in $$m^3/h$$
-or $$l/s$$.
+Flow (Q), also referred to as volume flow rate or capacity, is the volume of
+liquid that travels through the pump in a given time (measured in liter per
+second of cubic meter per hour). Rated flow is the key characteristic of any
+pump and is always specified by the pump manufacturer. In DriveConstructor this
+parameter is entered in $$m^3/h$$ or $$l/s$$.
 
 import pmpresImage from "./images/pump-and-resistance-curve.png";
 
-<img src={pmpresImage.src} alt="Centrifugal pump and system resistance curves" width="50%" height="50%" />
+<img
+  src={pmpresImage.src}
+  alt="Centrifugal pump and system resistance curves"
+  width="50%"
+  height="50%"
+/>
 
-*Fig.1. Centrifugal pump and system resistance curves.*
+_Fig.1. Centrifugal pump and system resistance curves._
 
-| Fluid    | Density, kg/m3 |
-|---------|-----|
-| water   | 1000  |
-| average oil     | 920  |
-| kerosene | 820  |
-| milk   | 1035  |
-| average oil sea water    | 1025  |
-| gasoline | 720  |
+| Fluid                 | Density, kg/m3 |
+| --------------------- | -------------- |
+| water                 | 1000           |
+| average oil           | 920            |
+| kerosene              | 820            |
+| milk                  | 1035           |
+| average oil sea water | 1025           |
+| gasoline              | 720            |
 
 ### Starting torque ("breakaway" torque)
 
-Real pumps can have a significant static friction or breakaway torque (as shown in Fig. 2, 3), which must be overcome when starting. In some cituations starting torque can be higher than the rated torque even for centrifugal pumps.
+Real pumps can have a significant static friction or breakaway torque (as shown
+in Fig. 2, 3), which must be overcome when starting. In some cituations starting
+torque can be higher than the rated torque even for centrifugal pumps.
 
 import pmpcCTBTImage from "./images/pump-curves-CT-BT.png";
 
@@ -113,9 +149,14 @@ import pmpcCTBTImage from "./images/pump-curves-CT-BT.png";
 
 import pmpcCSImage from "./images/pump-curves-stiction.png";
 
-<img src={pmpcCSImage.src} alt="pump-curves-stiction" width="50%" height="50%" />
+<img
+  src={pmpcCSImage.src}
+  alt="pump-curves-stiction"
+  width="50%"
+  height="50%"
+/>
 *Fig.3. Pump with QT load curve and starting curve.*
 
-In *DriveConstructor* starting torque is defined as the fraction of rated torque $$T_r$$. The following values can be chosen: 0.0, 0.1, 0.2, 0.3, ..., 1.8, 1.9, 2.
-
-
+In _DriveConstructor_ starting torque is defined as the fraction of rated torque
+$$T_r$$. The following values can be chosen: 0.0, 0.1, 0.2, 0.3, ..., 1.8,
+1.9, 2.

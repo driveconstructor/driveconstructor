@@ -2,27 +2,33 @@
 title: Pump types and load curves
 ---
 
-Pumps can be classified by their method of the fluid displacement. There are many classifications, one of them is presented in Fig. 1.
-
+Pumps can be classified by their method of the fluid displacement. There are
+many classifications, one of them is presented in Fig. 1.
 
 import Image from "next/image";
 import pmpclImage from "./images/pumps-classification.png";
 
 <img src={pmpclImage.src} alt="Pumps classification" width="75%" height="75%" />
 
-*Fig.1. Pump classification.*
+_Fig.1. Pump classification._
 
-There are two basic types of pumps: positive displacement and centrifugal (rotodynamic). Load curves (torque-speed characteristics) of these two types of pumps are different:
+There are two basic types of pumps: positive displacement and centrifugal
+(rotodynamic). Load curves (torque-speed characteristics) of these two types of
+pumps are different:
 
     - Centrifugal pumps have quadratic load curve (QT) $$T \sim n^2$$ (Fig.2)
     - Positive displacement pumps have constant load (CT) curve $$T∼const$$ (Fig.3)
 
 import pmpcQTImage from "./images/pump-curve-QT.png";
 
-<img src={pmpcQTImage.src} alt="pump-curve-QT" width="40%" height="40%" /> *Fig.2. QT curve.*
+<img src={pmpcQTImage.src} alt="pump-curve-QT" width="40%" height="40%" />
+*Fig.2. QT curve.*
 
 import pmpcCTImage from "./images/pump-curve-CT.png";
 
-<img src={pmpcCTImage.src} alt="pump-curve-CT" width="40%" height="40%" /> *Fig.3. CT curve.*
+<img src={pmpcCTImage.src} alt="pump-curve-CT" width="40%" height="40%" />
+*Fig.3. CT curve.*
 
-Quadratic loads are often approximately represented by assuming that the torque required is proportional to the square of the speed, giving rise to the terms square-law load.
+Quadratic loads are often approximately represented by assuming that the torque
+required is proportional to the square of the speed, giving rise to the terms
+square-law load.
