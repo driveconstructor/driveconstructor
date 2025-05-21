@@ -182,18 +182,20 @@ export const TrafoElement: SystemElement<Trafo> = {
     },
   },
   customize(model, trafo) {
-    if (trafo.typeIV == "integrated") {
-      model = {
-        ...TrafoElement,
-        params: {
-          ...TrafoElement.params,
-          typeIII: {
-            ...TrafoElement.params.typeIII,
-            options: ["multi-winding"],
-          },
+    model = {
+      ...model,
+      params: {
+        ...model.params,
+        typeIII: {
+          ...model.params.typeIII,
+          options:
+            trafo.typeIV == "integrated"
+              ? ["multi-winding"]
+              : TrafoElement.params.typeIII.options,
         },
-      };
-    }
+      },
+    };
+
     return {
       ...model,
       icon: customizeIcon(trafo.typeIII),
