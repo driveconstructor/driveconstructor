@@ -1,4 +1,4 @@
 {
-  "pages": ["sizing-principals", "variable-speed", "energy-saving"],
+  "pages": ["sizing-principals", "variable-speed", "energy-saving", "optimal-systems", "influence-grid", "influence-machine", "inertia"],
   "defaultOpen": true
 }

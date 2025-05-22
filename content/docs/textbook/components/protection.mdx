@@ -1,0 +1,51 @@
+---
+title: Protection
+---
+
+Equipment can be installed in quite demanding environments (e.g. Fig 1).
+
+import Image from "next/image";
+import EM_protectionImage from "./images/EM_protection.png";
+
+<img src={EM_protectionImage.src} width="40%" height="40%" /> _Fig.1. Motor at a conveyor_.[^2]
+
+The IP rating (International Protection) is used to determine the degree of protection provided by an enclosure. It is a standard maintained by IEC 60529. The IP rating is made up of 2 digits.
+
+import EM_protection_tableImage from "./images/EM_protection_table.png";
+
+<img src={EM_protection_tableImage.src} width="70%" height="70%" /> _Fig.2. IP classes_.[^1]
+
+In _DriveConstructor_ everything is simplified to only two protection variants: “low” and “high”.
+
+##### Electric machine protection
+
+* “low” is designated IP21/23, meaning protection against solid object with a diameter >12.5 mm and against falling water, but not splashed from all directions.
+* “high” is designated IP54/55, meaning protection against dust and against water, coming from any direction.
+
+Totally enclosed air-cooled machines are larger than open-ventilated machines.
+
+##### FC protection
+
+* “low” is designated IP21/31, meaning protection against solid object with a diameter >12.5 mm and against vertically dropping water.
+* “high” is designated IP54/55, meaning protection against dust and against water, coming from any direction.
+
+Operational environment (dust, moist) defines requirements to the enclosure of the FC. FC with higher protection class in more expensive.
+
+##### Examples
+
+* Machine with IP23 – «drip proof» or «indoor». Predominately used in the refrigeration and compressor industries for their reduced frame size offerings. Are commonly found in environments where dirt and moisture are minimal. They are used in plant rooms and buildings on pumps, fans, blowers and compressors. Drip proof motors are the most cost effective industrial motor because of their design. They maximize ventilation through the motor providing the highest amount of heat dissipation. In turn more output power can be achieved in a smaller motor frame reducing cost. Typically used for indoor applications in relatively clean, dry locations.
+* Machine with IP 54 or IP 55 (sometimes called «weather protection» or «weather proof») is suitable for outdoor installation with the airpath designed to minimize the ingress of harmful substances. Prevents the free exchange of air between the inside and outside of the frame, but does not make the frame completely air tight.
+
+import EM_protection_exImage from "./images/EM_protection_ex.png";
+
+<img src={EM_protection_exImage.src} width="30%" height="30%" /> _Fig.3. Open drip proof motor example_.[^3]
+
+IP21/23 machine would have better cooling so it may be ~20% lighter and more compact than IP54/55 machine (aslo cheaper). Inspite of their higher cost totally enclosed machines are being used increasingly in industry.
+
+If you are not sure which protection to choose set it to «any».
+
+---
+
+[^1] [Source missing!](http://www.zkg.de/en/artikel/zkg_2012-05_Resilient_rugged_low-maintenance_1419770.html)
+[^2] [Source](http://www.zkg.de/en/artikel/zkg_2012-05_Resilient_rugged_low-maintenance_1419770.html)
+[^3] [Source missing!](http://www.zkg.de/en/artikel/zkg_2012-05_Resilient_rugged_low-maintenance_1419770.html)

@@ -1,0 +1,36 @@
+---
+title: Duties and overloads
+---
+
+If load of the mechanism is intermittent and follows a certain pattern, this load can be characterized by some standard duty and overload type.
+Some standard pattern according to IEC34 are presented in the chart (Fig.1). _S1_, _S2_ and _S3_ patterns contain only loads up to the rated load, while _S4_ patterns contains also overload, marked _"D"_ (when the load is above the rated value it is called _overload_).
+
+import Image from "next/image";
+import duty_cycles3Image from "./images/duty_cycles3.png";
+
+<img src={duty_cycles3Image.src} width="50%" height="50%" /> _Fig.1. Standard duty cycles_.
+
+_Duty_ is the ratio of the time at full load to the total time. In _DriveConstructor_ the range to choose from is 50...100%.
+_Duty cycle period_ is the time before the load pattern repeats itself. In _DriveConstructor_ the range to choose from is 0,1...100 min.
+
+import duty_cycles2Image from "./images/duty_cycles2.png";
+
+<img src={duty_cycles2Image.src} width="30%" height="30%" /> _Fig.2. Duties of 25, 50 and 75%_.
+
+Both _duties_ and _overloads_ have similar thermal effect. When the equipment is loaded (state "ON" in Fig.3) the temperature inside the component goes up. When load is removed (state "OFF" in Fig.3) then the temperature decreases. The rate of the temperature increase or decrease is defined by thermal constant of this particular component.
+
+import duty_cycles_tempImage from "./images/duty_cycles_temp.png";
+
+<img src={duty_cycles_tempImage.src} width="30%" height="30%" /> _Fig.3. Duties and temperature inside the loaded component_.
+
+To illustrate how overloads are defined in _DriveConstructor_ Fig.4 presents overload of 100%. The reference is rated load which is taken as 100%. The overload of 100% means the overload amplitude is 200%.
+
+import overloadsImage from "./images/overloads.png";
+
+<img src={overloadsImage.src} width="30%" height="30%" /> _Fig.4. Overload of 100%_.
+
+Different components have different tolerance to overloads. Even different electric machines have different overload tolerance; induction machines can handle 200% overload amplitude, while PM machine usually will handle lower - maybe 150% amplitude (=50% overload).
+
+The limits in the components are not only thermal, but can be for example saturation of magnetic cores in electric machines or maximum permissible current of the switches in the FC.
+
+Machine can thermally absorb long overloads, converter - only short ones.
