@@ -30,7 +30,6 @@ export default function Input({ kind }: { kind: SystemKind }) {
   const [value, setValue] = useState(system);
   const [errors, setErrors] = useState([] as string[]);
   const [showMore, setShowMore] = useState(false);
-  const [showCalculated, setShowCalculated] = useState(false);
   const [update, setUpdate] = useState({ exclude: "", count: 0 });
 
   useEffect(() => {
@@ -84,7 +83,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
                 .filter(
                   ([_, v]) =>
                     // hide calculated fields in case of errors
-                    (showCalculated && errors.length == 0) ||
+                    (showMore && errors.length == 0) ||
                     typeof v.value != "function",
                 )
                 .map(([k, _]) => (
@@ -113,12 +112,6 @@ export default function Input({ kind }: { kind: SystemKind }) {
               onClick={() => setShowMore(!showMore)}
             >
               {showMore ? "Less..." : "More..."}
-            </div>
-            <div
-              className="btn flex-none"
-              onClick={() => setShowCalculated(!showCalculated)}
-            >
-              {showCalculated ? "Hide calculated..." : "Show calculated..."}
             </div>
             <div className="grow" />
             <div
