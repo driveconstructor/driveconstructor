@@ -125,27 +125,20 @@ function FConverterElement(
           const deratingA =
             fc.altitude > 1000 ? 1 - 0.000066 * (fc.altitude - 1000) : 1;
 
-          let deratingC = 1;
-          let deratingT = 1;
+          const K1 = fc.ambientTemperature > 40 ? 0.02 : 0.005;
+          const K2 = fc.coolantTemperature > 35 ? 0.02 : 0.005;
 
-          if (fc.cooling == "water") {
-            if (fc.coolantTemperature > 35) {
-              deratingC = 1 - 0.02 * (fc.coolantTemperature - 35);
-            } else {
-              deratingC = 1 - 0.005 * (fc.coolantTemperature - 35);
-            }
+          const deratingT = 1 - K1 * (fc.ambientTemperature - 40);
+          const deratingC = 1 - K2 * (fc.coolantTemperature - 35);
+
+          switch (fc.cooling) {
+            case "air":
+              const derating1 = deratingA * deratingC;
+              const derating2 = deratingA * deratingT;
+              return Math.min(derating1, derating2);
+            case "water":
+              return deratingA * deratingT;
           }
-
-          if (fc.ambientTemperature > 40) {
-            deratingT = 1 - 0.02 * (fc.ambientTemperature - 40);
-          } else {
-            deratingT = 1 - 0.005 * (fc.ambientTemperature - 40);
-          }
-
-          const derating1 = deratingA * deratingC;
-          const derating2 = deratingA * deratingT;
-
-          return derating1 <= derating2 ? derating1 : derating2;
         },
       },
     },
