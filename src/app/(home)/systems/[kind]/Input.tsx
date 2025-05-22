@@ -21,10 +21,12 @@ export default function Input({
   id,
   system,
   model,
+  setShowReport,
 }: {
   id: string;
   system: System;
   model: SystemModel;
+  setShowReport: (v: boolean) => void;
 }) {
   const [value, setValue] = useState(system);
   const [errors, setErrors] = useState([] as string[]);
@@ -116,7 +118,9 @@ export default function Input({
             >
               Reset
             </div>
-            <div className="btn flex-none">Show report</div>
+            <div className="btn flex-none" onClick={() => setShowReport(true)}>
+              Show report
+            </div>
           </div>
           <div hidden={errors.length == 0}>
             <Errors errors={errors} handleDismissClick={resetErrors}></Errors>
