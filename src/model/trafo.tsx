@@ -147,18 +147,15 @@ export const TrafoElement: SystemElement<Trafo> = {
         const deratingA =
           trafo.altitude > 1000 ? 1 - 0.00008 * (trafo.altitude - 1000) : 1;
 
-        const K1 = trafo.ambientTemperature > 40 ? -0.008 : 0;
-        const K2 = trafo.coolantTemperature > 35 ? -0.008 : 0.008;
-        const K3 = trafo.ambientTemperature > 40 ? -0.004 : 0.004;
-
         switch (trafo.cooling) {
           case "air": {
+            const K1 = trafo.ambientTemperature > 40 ? -0.008 : 0;
             const deratingT = 1 + K1 * (trafo.ambientTemperature - 40);
             return deratingA * deratingT;
           }
           case "water": {
-            const deratingC = 1 + K2 * (trafo.coolantTemperature - 35);
-            const deratingT = 1 + K3 * (trafo.ambientTemperature - 40);
+            const deratingC = 1 - 0.008 * (trafo.coolantTemperature - 35);
+            const deratingT = 1 - 0.004 * (trafo.ambientTemperature - 40);
 
             const derating1 = deratingA * deratingC;
             const derating2 = deratingA * deratingT;
