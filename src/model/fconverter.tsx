@@ -133,11 +133,11 @@ function FConverterElement(
 
           switch (fc.cooling) {
             case "air":
+              return deratingA * deratingT;
+            case "water":
               const derating1 = deratingA * deratingC;
               const derating2 = deratingA * deratingT;
               return Math.min(derating1, derating2);
-            case "water":
-              return deratingA * deratingT;
           }
         },
       },
