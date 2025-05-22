@@ -1,7 +1,7 @@
 import PageTemplate from "@/app/(home)/PageTemplate";
 import { SystemKind, getSystemKinds } from "@/model/system";
 import { Suspense } from "react";
-import Input from "./Input";
+import System from "./System";
 
 export default async function Page({
   params,
@@ -13,7 +13,7 @@ export default async function Page({
   return (
     <PageTemplate>
       <Suspense>
-        <Input kind={kind} />
+        <System kind={kind} />
       </Suspense>
     </PageTemplate>
   );
