@@ -4,12 +4,10 @@ import { withCandidates } from "@/model/sizing";
 import {
   SystemContextType,
   createSystem,
-  getSystem,
   saveSystem,
   updateParam,
 } from "@/model/store";
-import { SystemKind, customizeModel, getModel } from "@/model/system";
-import { useSearchParams } from "next/navigation";
+import { System, SystemModel, customizeModel } from "@/model/system";
 import { createContext, useEffect, useState } from "react";
 import Candidates from "./Candidates";
 import Errors from "./Errors";
@@ -19,14 +17,15 @@ import Schema from "./Schema";
 
 export const SystemContext = createContext({} as SystemContextType);
 
-export default function Input({ kind }: { kind: SystemKind }) {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  if (id == null) {
-    throw new Error(`id is not found: ${id}`);
-  }
-
-  const system = getSystem(id);
+export default function Input({
+  id,
+  system,
+  model,
+}: {
+  id: string;
+  system: System;
+  model: SystemModel;
+}) {
   const [value, setValue] = useState(system);
   const [errors, setErrors] = useState([] as string[]);
   const [showMore, setShowMore] = useState(false);
@@ -38,7 +37,7 @@ export default function Input({ kind }: { kind: SystemKind }) {
 
   const context: SystemContextType = {
     id,
-    model: customizeModel(getModel(kind), value),
+    model: customizeModel(model, value),
     system: value,
   };
 
@@ -49,14 +48,6 @@ export default function Input({ kind }: { kind: SystemKind }) {
 
   return (
     <SystemContext.Provider value={context}>
-      <div className="flex items-center">
-        <div className="p-4 text-2xl">{context.model.title}</div>
-        <div>
-          <span className="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300">
-            ({id})
-          </span>
-        </div>
-      </div>
       <div
         className="grid gap-2 lg:grid-cols-2"
         onKeyUp={(e) => {
