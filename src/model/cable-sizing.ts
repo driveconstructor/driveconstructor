@@ -16,7 +16,6 @@ export function findCableComponent(
   emachine: EMachineComponent,
 ): CableComponent[] {
   const calculatedCable = calculateCable(cable, emachine);
-  console.log(calculatedCable);
   if (calculatedCable == null) {
     return [];
   }

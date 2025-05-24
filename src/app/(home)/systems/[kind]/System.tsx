@@ -3,11 +3,16 @@
 import { getSystem } from "@/model/store";
 import { SystemKind, getModel } from "@/model/system";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
 import Input from "./Input";
-import SystemReport from "./SystemReport";
+import SystemReport from "./report/SystemReport";
 
-export default function System({ kind }: { kind: SystemKind }) {
+export default function System({
+  kind,
+  showReport,
+}: {
+  kind: SystemKind;
+  showReport: boolean;
+}) {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   if (id == null) {
@@ -16,7 +21,6 @@ export default function System({ kind }: { kind: SystemKind }) {
 
   const system = getSystem(id);
   const model = getModel(kind);
-  const [showReport, setShowReport] = useState(false);
 
   return (
     <div>
@@ -29,18 +33,9 @@ export default function System({ kind }: { kind: SystemKind }) {
         </div>
       </div>
       {showReport ? (
-        <SystemReport
-          system={system}
-          model={model}
-          setShowReport={setShowReport}
-        />
+        <SystemReport id={id} system={system} model={model} />
       ) : (
-        <Input
-          id={id}
-          system={system}
-          model={model}
-          setShowReport={setShowReport}
-        />
+        <Input id={id} system={system} model={model} />
       )}
     </div>
   );

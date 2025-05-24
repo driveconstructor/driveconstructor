@@ -8,6 +8,7 @@ import {
   updateParam,
 } from "@/model/store";
 import { System, SystemModel, customizeModel } from "@/model/system";
+import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import Candidates from "./Candidates";
 import Errors from "./Errors";
@@ -21,12 +22,10 @@ export default function Input({
   id,
   system,
   model,
-  setShowReport,
 }: {
   id: string;
   system: System;
   model: SystemModel;
-  setShowReport: (v: boolean) => void;
 }) {
   const [value, setValue] = useState(system);
   const [errors, setErrors] = useState([] as string[]);
@@ -47,6 +46,8 @@ export default function Input({
     setUpdate({ exclude: "", count: update.count + 1 });
     setErrors([]);
   };
+
+  const router = useRouter();
 
   return (
     <SystemContext.Provider value={context}>
@@ -118,7 +119,12 @@ export default function Input({
             >
               Reset
             </div>
-            <div className="btn flex-none" onClick={() => setShowReport(true)}>
+            <div
+              className="btn flex-none"
+              onClick={() =>
+                router.push(`/systems/${model.kind}/report/?id=${id}`)
+              }
+            >
               Show report
             </div>
           </div>
