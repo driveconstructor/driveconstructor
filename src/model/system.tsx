@@ -61,7 +61,7 @@ export type BaseSystem = {
     switch: {};
     grid: Grid;
   };
-  params?: SystemParamsType;
+  params: SystemParamsType | null;
 };
 
 export type System = (PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr | WinchFc) & {

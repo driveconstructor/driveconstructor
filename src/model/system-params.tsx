@@ -15,8 +15,8 @@ export type SystemParamsType = {
   volume: number;
   footprint: number;
   weight: number;
-  thdU: number;
-  thdI: number;
+  thdU: number | null;
+  thdI: number | null;
 };
 
 export type SystemParamModelType = {

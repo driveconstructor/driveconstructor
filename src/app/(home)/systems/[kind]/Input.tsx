@@ -109,6 +109,15 @@ export default function Input({
             </div>
             <div className="grow" />
             <div
+              hidden={context.system.params == null}
+              className="btn flex-none"
+              onClick={() =>
+                router.push(`/systems/${model.kind}/report/?id=${id}`)
+              }
+            >
+              Show report
+            </div>
+            <div
               className="btn"
               onClick={() => {
                 const result = createSystem(context.model);
@@ -118,14 +127,6 @@ export default function Input({
               }}
             >
               Reset
-            </div>
-            <div
-              className="btn flex-none"
-              onClick={() =>
-                router.push(`/systems/${model.kind}/report/?id=${id}`)
-              }
-            >
-              Show report
             </div>
           </div>
           <div hidden={errors.length == 0}>

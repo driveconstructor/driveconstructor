@@ -200,8 +200,8 @@ export function withCandidates(system: System): System {
     CableComponentModel.kind,
     FConverterComponentModel.kind,
   ])
-    ? calculateParams(components)
-    : undefined;
+    ? calculateParams(components, system.input.grid.shortCircuitPower)
+    : null;
 
   return { ...system, candidates, components, params };
 }
@@ -213,7 +213,10 @@ function distinctFcByMounting(fconverter: FConverterComponent[]) {
     .filter((v) => typeof v != "undefined");
 }
 
-function calculateParams(components: ComponentsType): SystemParamsType {
+function calculateParams(
+  components: ComponentsType,
+  shortCircuitPower: number,
+): SystemParamsType {
   type ComponentType = Exclude<ComponentsType[keyof ComponentsType], undefined>;
 
   function apply(func: (v: ComponentType) => number) {
@@ -251,7 +254,54 @@ function calculateParams(components: ComponentsType): SystemParamsType {
       typeof v.footprint == "undefined" ? 0 : v.footprint,
     ),
     weight: sum((v) => (typeof v.weight == "undefined" ? 0 : v.weight)),
-    thdU: 1.23,
-    thdI: 1.23,
+    thdU:
+      components.fconverter && components.trafo
+        ? thdU(components.fconverter, components.trafo, shortCircuitPower)
+        : null,
+    thdI:
+      components.fconverter && components.trafo
+        ? thdI(components.fconverter, components.trafo)
+        : null,
   };
+}
+
+function thdU(
+  fconverter: FConverterComponent,
+  trafo: TrafoComponent,
+  shortCircuitPower: number,
+): number {
+  let scr = (shortCircuitPower * 1000) / fconverter.ratedPower;
+  if (scr < 20) {
+    scr = 20;
+  }
+
+  if (fconverter.type == "2Q-2L-VSC-6p") {
+    return (200 * 100) / scr;
+  }
+
+  if (fconverter.type == "2Q-2L-VSC-12p" && trafo.typeIII == "3-winding") {
+    return (120 * 100) / scr;
+  }
+
+  if (fconverter.type == "4Q-2L-VSC" && trafo.typeIII == "2-winding") {
+    return (115 * 100) / Math.pow(scr, 0.9);
+  }
+
+  throw new Error("Unexpected value");
+}
+
+function thdI(fconverter: FConverterComponent, trafo: TrafoComponent): number {
+  if (fconverter.type === "2Q-2L-VSC-6p" && trafo.typeIII === "2-winding") {
+    return 28;
+  }
+
+  if (fconverter.type === "2Q-2L-VSC-12p" && trafo.typeIII === "3-winding") {
+    return 15;
+  }
+
+  if (fconverter.type === "4Q-2L-VSC" && trafo.typeIII === "2-winding") {
+    return 4;
+  }
+
+  throw new Error("Unexpected value");
 }
