@@ -3,6 +3,7 @@ import {
   getComponentModel,
   renderComponentParam,
 } from "@/model/component";
+import { createNamedSystem } from "@/model/store";
 import { System, SystemModel } from "@/model/system";
 import { getSystemParamModel, SystemParamsType } from "@/model/system-params";
 import { round } from "@/model/utils";
@@ -35,6 +36,18 @@ export default function SystemReport({
             onClick={() => router.push(`/systems/${model.kind}?id=${id}`)}
           >
             Go back
+          </div>
+          <div
+            className="btn flex-none"
+            onClick={() => {
+              const name = prompt("Enter system name?", "System 1");
+              if (name) {
+                const newId = createNamedSystem(id, name);
+                router.push(`/systems/${model.kind}?id=${newId}`);
+              }
+            }}
+          >
+            Save
           </div>
         </div>
         {system.params ? (

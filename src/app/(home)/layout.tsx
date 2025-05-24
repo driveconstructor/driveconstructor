@@ -46,6 +46,9 @@ export default function RootLayout({
         <NavItem href="/docs/exercises" className="text-m">
           Exercises
         </NavItem>
+        <NavItem href="/my-systems" className="text-m">
+          My systems
+        </NavItem>
       </nav>
       <main className="mb-auto"> {children}</main>
       <footer className="my-2 flex justify-end">

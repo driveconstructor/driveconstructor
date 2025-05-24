@@ -111,3 +111,29 @@ export function updateParam(
 
   return withCandidates(withoutComponents);
 }
+
+export function createNamedSystem(id: string, name: string): string {
+  const system = getSystem(id);
+  const newId = window.crypto.randomUUID().replaceAll("-", "").substring(0, 7);
+  saveSystem(newId, { ...system, name });
+  return newId;
+}
+
+export type IdAndSystem = { id: string; system: System };
+
+export function getSystems(): IdAndSystem[] {
+  return typeof localStorage == "undefined"
+    ? []
+    : Object.keys(localStorage)
+        .filter((k) => k.startsWith(prefix))
+        .map((k) => {
+          const id = k.substring(prefix.length);
+          const system = getSystem(id);
+          return { id, system };
+        })
+        .filter((v) => v.system.name != null);
+}
+
+export function deleteSystem(id: string) {
+  localStorage.removeItem(prefix + id);
+}
