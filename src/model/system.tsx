@@ -6,6 +6,7 @@ import { EMachine } from "./emachine";
 import { FConverter } from "./fconverter";
 import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
+import { SystemParamsType } from "./system-params";
 import { WinchFc } from "./winch-system";
 
 export type ParamType = "text" | "number";
@@ -60,6 +61,7 @@ export type BaseSystem = {
     switch: {};
     grid: Grid;
   };
+  params?: SystemParamsType;
 };
 
 export type System = (PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr | WinchFc) & {

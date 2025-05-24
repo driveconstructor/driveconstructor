@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import { CrossSection } from "../cable";
 import { ShaftHeight } from "../emachine";
-import { splitRange } from "../utils";
+import { haveSameContent, splitRange } from "../utils";
 
 describe("utils", () => {
   test("parse range type", () => {
@@ -14,5 +14,11 @@ describe("utils", () => {
   });
   test("shaft height up", () => {
     expect(CrossSection.find((v) => v >= 121.5)).toBe(150);
+  });
+  test("contains all", () => {
+    expect(haveSameContent([], [])).toBeTruthy();
+    expect(haveSameContent(["a", "b"], ["a", "b"])).toBeTruthy();
+    expect(haveSameContent(["a", "b"], ["a"])).toBeFalsy();
+    expect(haveSameContent(["a"], ["a", "b"])).toBeFalsy();
   });
 });

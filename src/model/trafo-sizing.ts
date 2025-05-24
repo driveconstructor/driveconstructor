@@ -98,6 +98,7 @@ export function findTrafoCandidates(
                           voltageHVmax,
                           ratedPower,
                         );
+                        const footprint = height * width;
 
                         return {
                           designation,
@@ -118,6 +119,8 @@ export function findTrafoCandidates(
                           typeIV,
                           cooling,
                           protection,
+                          footprint,
+                          volume,
                         };
                       }),
                   ),

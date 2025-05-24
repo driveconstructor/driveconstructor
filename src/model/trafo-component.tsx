@@ -41,6 +41,8 @@ export type TrafoComponent = {
   typeIV: TypeIVAlias;
   cooling: FcCoolingType;
   protection: EMachineProtectionType;
+  footprint: number;
+  volume: number;
 };
 
 export const TrafoComponentModel: ComponentModel<TrafoComponent> = {
@@ -88,5 +90,13 @@ export const TrafoComponentModel: ComponentModel<TrafoComponent> = {
     ...PriceParam,
     ...DepthParam,
     ...DesignationParam,
+    footprint: {
+      label: null,
+      hidden: true,
+    },
+    volume: {
+      label: null,
+      hidden: true,
+    },
   },
 };

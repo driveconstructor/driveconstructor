@@ -25,3 +25,7 @@ export function round(value: number, precision?: number): number {
 export function valueDifference(a: number, b: number): number {
   return (Math.abs(b - a) * 2) / (b + a);
 }
+
+export function haveSameContent(a: string[], b: string[]) {
+  return a.length == b.length && a.every((v) => b.includes(v));
+}

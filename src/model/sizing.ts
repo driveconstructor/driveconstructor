@@ -1,16 +1,25 @@
-import { CableComponent } from "./cable-component";
+import { CableComponent, CableComponentModel } from "./cable-component";
 import { findCableComponent } from "./cable-sizing";
 import { CandidatesType, ComponentsType } from "./component";
 import { EfficiencyClass, EMachine } from "./emachine";
-import { EMachineComponent } from "./emachine-component";
+import {
+  EMachineComponent,
+  EMachineComponentModel,
+} from "./emachine-component";
 import { findEmCandidates, findTypeSpeedTorque } from "./emachine-sizing";
-import { FConverterComponent } from "./fconverter-component";
+import {
+  FConverterComponent,
+  FConverterComponentModel,
+} from "./fconverter-component";
 import { findFcConverters } from "./fconverter-sizing";
+import { GearboxComponentModel } from "./gearbox-component";
 import { findGearbox } from "./gearbox-sizing";
 import { Grid } from "./grid";
 import { System } from "./system";
-import { TrafoComponent } from "./trafo-component";
+import { SystemParamsType } from "./system-params";
+import { TrafoComponent, TrafoComponentModel } from "./trafo-component";
 import { findTrafoCandidates } from "./trafo-sizing";
+import { haveSameContent } from "./utils";
 import { findVoltageY } from "./voltage";
 
 export type Mechanism = {
@@ -106,6 +115,7 @@ function findEMachineCandidates(
 export function withCandidates(system: System): System {
   let candidates: CandidatesType = { ...system.candidates };
   let components: ComponentsType = { ...system.components };
+  let required: string[] = [];
 
   let mechanism = createMechanism(system);
   const trafoRatio =
@@ -114,6 +124,7 @@ export function withCandidates(system: System): System {
       : 1;
 
   if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
+    required.push(GearboxComponentModel.kind);
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
     candidates = { ...candidates, gearbox };
 
@@ -170,6 +181,7 @@ export function withCandidates(system: System): System {
   candidates = { ...candidates, fconverter };
 
   if (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr") {
+    required.push(TrafoComponentModel.kind);
     let trafo: TrafoComponent[] = [];
     if (components.emachine) {
       trafo = findTrafoCandidates(
@@ -182,7 +194,16 @@ export function withCandidates(system: System): System {
     candidates = { ...candidates, trafo };
   }
 
-  return { ...system, candidates, components };
+  const params = haveSameContent(Object.keys(components), [
+    ...required,
+    EMachineComponentModel.kind,
+    CableComponentModel.kind,
+    FConverterComponentModel.kind,
+  ])
+    ? calculateParams(components)
+    : undefined;
+
+  return { ...system, candidates, components, params };
 }
 
 function distinctFcByMounting(fconverter: FConverterComponent[]) {
@@ -190,4 +211,19 @@ function distinctFcByMounting(fconverter: FConverterComponent[]) {
   return Object.entries(grouping)
     .flatMap(([_, v]) => v?.sort((a, b) => a.currentLO - b.currentLO)[0])
     .filter((v) => typeof v != "undefined");
+}
+
+function calculateParams(components: ComponentsType): SystemParamsType {
+  return {
+    price: 1.23,
+    efficiency100: 1.23,
+    efficiency75: 1.23,
+    efficiency50: 1.23,
+    efficiency25: 1.23,
+    volume: 1.23,
+    footprint: 1.23,
+    weight: 1.23,
+    thdU: 1.23,
+    thdI: 1.23,
+  };
 }
