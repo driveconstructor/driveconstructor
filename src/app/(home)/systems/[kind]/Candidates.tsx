@@ -1,5 +1,8 @@
-import { ComponentParam, getComponentModel } from "@/model/component";
-import { round } from "@/model/utils";
+import {
+  ComponentParam,
+  getComponentModel,
+  renderComponentParam,
+} from "@/model/component";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
 import { SystemContext } from "./Input";
@@ -143,11 +146,7 @@ function Param({
     <div className="p-1">
       <div className="text-sm break-normal">{model.label}:</div>
       <div className="border break-normal" data-testid={id}>
-        {model.render
-          ? model.render(value)
-          : typeof value == "number"
-            ? round(value, model.precision)
-            : value}
+        {renderComponentParam(model, value)}
       </div>
     </div>
   );

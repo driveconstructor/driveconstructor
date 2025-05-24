@@ -9,6 +9,7 @@ import {
 } from "./fconverter-component";
 import { GearboxComponent, GearboxComponentModel } from "./gearbox-component";
 import { TrafoComponent, TrafoComponentModel } from "./trafo-component";
+import { round } from "./utils";
 
 export type ComponentParam<T = any> = {
   label: React.ReactNode;
@@ -17,6 +18,14 @@ export type ComponentParam<T = any> = {
   hidden?: boolean;
   render?: (value: T) => React.ReactNode;
 };
+
+export function renderComponentParam(model: ComponentParam, value: any) {
+  return model.render
+    ? model.render(value)
+    : typeof value == "number"
+      ? round(value, model.precision)
+      : value;
+}
 
 export type ComponentModel<T = any> = {
   kind: string;
