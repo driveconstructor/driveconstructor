@@ -21,6 +21,9 @@ export type CableComponent = Cable & {
   weight?: number;
   footprint?: number;
   volume?: number;
+  efficiency75?: number;
+  efficiency50?: number;
+  efficiency25?: number;
 };
 
 export const CableComponentModel: ComponentModel<CableComponent> = {

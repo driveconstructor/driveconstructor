@@ -43,6 +43,9 @@ export type TrafoComponent = {
   protection: EMachineProtectionType;
   footprint: number;
   volume: number;
+  efficiency75?: number;
+  efficiency50?: number;
+  efficiency25?: number;
 };
 
 export const TrafoComponentModel: ComponentModel<TrafoComponent> = {

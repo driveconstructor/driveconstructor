@@ -214,15 +214,43 @@ function distinctFcByMounting(fconverter: FConverterComponent[]) {
 }
 
 function calculateParams(components: ComponentsType): SystemParamsType {
+  type ComponentType = Exclude<ComponentsType[keyof ComponentsType], undefined>;
+
+  function apply(func: (v: ComponentType) => number) {
+    return Object.entries(components).map(([_, v]) => func(v));
+  }
+
+  function sum(func: (v: ComponentType) => number) {
+    return apply(func).reduce((a, b) => a + b, 0);
+  }
+
+  function multiply(func: (v: ComponentType) => number, base = 1) {
+    return apply(func).reduce((a, b) => (a * b) / base, 1) * base;
+  }
+
   return {
-    price: 1.23,
-    efficiency100: 1.23,
-    efficiency75: 1.23,
-    efficiency50: 1.23,
-    efficiency25: 1.23,
-    volume: 1.23,
-    footprint: 1.23,
-    weight: 1.23,
+    price: sum((v) => v.price),
+    efficiency100: multiply((v) => v.efficiency100, 100),
+    efficiency75: multiply(
+      (v) =>
+        typeof v.efficiency75 == "undefined" ? v.efficiency100 : v.efficiency75,
+      100,
+    ),
+    efficiency50: multiply(
+      (v) =>
+        typeof v.efficiency50 == "undefined" ? v.efficiency100 : v.efficiency50,
+      100,
+    ),
+    efficiency25: multiply(
+      (v) =>
+        typeof v.efficiency25 == "undefined" ? v.efficiency100 : v.efficiency25,
+      100,
+    ),
+    volume: sum((v) => (typeof v.volume == "undefined" ? 0 : v.volume)),
+    footprint: sum((v) =>
+      typeof v.footprint == "undefined" ? 0 : v.footprint,
+    ),
+    weight: sum((v) => (typeof v.weight == "undefined" ? 0 : v.weight)),
     thdU: 1.23,
     thdI: 1.23,
   };

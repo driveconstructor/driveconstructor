@@ -5,6 +5,7 @@ import {
 } from "@/model/component";
 import { System, SystemModel } from "@/model/system";
 import { getSystemParamModel, SystemParamsType } from "@/model/system-params";
+import { round } from "@/model/utils";
 import { useRouter } from "next/navigation";
 import Schema from "../Schema";
 
@@ -59,7 +60,7 @@ function SystemParams({ params }: { params: SystemParamsType }) {
           return (
             <div key={k} className="grid grid-cols-2">
               <div className="text-">{model.label}:</div>
-              <div className="text-left">{v}</div>
+              <div className="text-left">{round(v, model.precision)}</div>
             </div>
           );
         })}
@@ -81,14 +82,16 @@ function ComponentParams({ components }: { components: ComponentsType }) {
                 {model.title}
               </div>
               <div>
-                {Object.entries(model.params).map(([n, p]) => (
-                  <div key={n} className="grid grid-cols-2">
-                    <div className="text-">{p.label}:</div>
-                    <div className="text-left">
-                      {renderComponentParam(p, (v as any)[n])}
+                {Object.entries(model.params)
+                  .filter(([_, p]) => !p.hidden)
+                  .map(([n, p]) => (
+                    <div key={n} className="grid grid-cols-2">
+                      <div className="text-">{p.label}:</div>
+                      <div className="text-left">
+                        {renderComponentParam(p, (v as any)[n])}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           );
