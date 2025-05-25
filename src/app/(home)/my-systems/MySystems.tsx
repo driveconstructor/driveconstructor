@@ -1,34 +1,111 @@
 "use client";
 
-import { getSystems, IdAndSystem } from "@/model/store";
-import { getModel } from "@/model/system";
+import { deleteSystem, getSystems, IdAndSystem } from "@/model/store";
+import { customizeModel, getModel } from "@/model/system";
+import { getSystemParamModel, SystemParamsType } from "@/model/system-params";
+import { round } from "@/model/utils";
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import icon from "../../../images/open-link-svgrepo-com.svg";
 import Schema from "../systems/[kind]/Schema";
+import ComparisonGraph from "./ComparisonGraph";
 
 export function MySystems() {
+  const [systems, setSystems] = useState(getSystems());
+  const [selected, setSelected] = useState([] as string[]);
   return (
     <div className="flex-col">
-      {getSystems().map((v) => (
-        <SystemRow key={v.id} value={v} />
+      {systems.map((v) => (
+        <SystemRow
+          key={v.id}
+          value={v}
+          selected={selected}
+          setSelected={setSelected}
+        />
       ))}
+      <div className="flex p-2 gap-2">
+        <button
+          className="btn flex-none"
+          onClick={() => {
+            selected.forEach(deleteSystem);
+            setSystems(systems.filter((s) => !selected.includes(s.id)));
+            setSelected([]);
+          }}
+        >
+          Delete
+        </button>
+        <button className="btn flex-none" onClick={() => {}}>
+          Compare
+        </button>
+      </div>
+      <div className="grid grid-cols-2">
+        <div className="">Selected fields</div>
+        <ComparisonGraph />
+      </div>
     </div>
   );
 }
 
-export function SystemRow({ value }: { value: IdAndSystem }) {
+export function SystemRow({
+  value,
+  selected,
+  setSelected,
+}: {
+  selected: string[];
+  setSelected: (selected: string[]) => void;
+  value: IdAndSystem;
+}) {
   const { id, system } = value;
-  const model = getModel(system.kind);
+  const model = customizeModel(getModel(system.kind), system);
   return (
-    <div className="flex items-center border-2">
-      <input type="checkbox" className="m-2" />
-      <Link
-        href={`/systems/${system.kind}?id=${id}`}
-        className="hover:text-blue-500"
-      >
-        {system.name}
-      </Link>
-      <Schema model={model} />
-      <div>{JSON.stringify(system.params, null, 2)}</div>
+    <div className="grid grid-cols-12">
+      <div className="col-span-3 border-1">
+        <div className="flex flex-row items-center">
+          <input
+            type="checkbox"
+            className="m-2"
+            checked={selected.includes(id)}
+            onChange={(e) =>
+              e.target.checked
+                ? setSelected([...selected, id])
+                : setSelected(selected.filter((v) => v != id))
+            }
+          />
+          {system.name}
+          <Link href={`/systems/${system.kind}?id=${id}`}>
+            <Image
+              src={icon.src}
+              alt="goto"
+              width={16}
+              height={16}
+              className="m-2"
+            />
+          </Link>
+        </div>
+        <Schema model={model} />
+      </div>
+      <div className="col-span-9">
+        {system.params == null ? null : <SystemParams params={system.params} />}
+      </div>
+    </div>
+  );
+}
+
+function SystemParams({ params }: { params: SystemParamsType }) {
+  return (
+    <div className="grid grid-cols-4 lg:grid-cols-8">
+      {Object.entries(params).map(([k, v]) => {
+        const model = getSystemParamModel(k);
+        return (
+          <div key={k} className="break-normal border-1">
+            <div className="text-sm">{model.label}:</div>
+            <div className="text-left">
+              {v == null ? "N/A" : round(v, model.precision)}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

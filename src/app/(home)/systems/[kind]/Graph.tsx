@@ -5,8 +5,8 @@ import { emachineGraphData } from "@/model/emachine-graph";
 import { GraphPoint, systemGraphData } from "@/model/graph-data";
 import {
   CategoryScale,
+  Chart,
   ChartDataset,
-  Chart as ChartJS,
   Legend,
   LineElement,
   LinearScale,
@@ -16,7 +16,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-ChartJS.register(
+Chart.register(
   CategoryScale,
   LinearScale,
   PointElement,
