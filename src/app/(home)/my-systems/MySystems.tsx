@@ -61,7 +61,7 @@ export function SystemRow({
   return (
     <div className="grid grid-cols-12">
       <div className="col-span-3 border-1">
-        <div className="flex flex-row items-center">
+        <div className="flex flex-wrap items-center">
           <input
             type="checkbox"
             className="m-2"
