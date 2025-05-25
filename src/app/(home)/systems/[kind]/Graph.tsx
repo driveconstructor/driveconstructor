@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SystemContext } from "./Input";
+import { SystemContext } from "./System";
 
 import { emachineGraphData } from "@/model/emachine-graph";
 import { GraphPoint, systemGraphData } from "@/model/graph-data";

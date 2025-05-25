@@ -1,11 +1,12 @@
 import {
   ComponentParam,
+  customizeModel,
   getComponentModel,
   renderComponentParam,
 } from "@/model/component";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
-import { SystemContext } from "./Input";
+import { SystemContext } from "./System";
 
 export default function Candidates({
   onSelect,
@@ -73,13 +74,13 @@ function Candidate({
         {!collapsed && hasAdvanced && values.length != 0 ? (
           <>
             <div className="grow" />
-            <div
+            <button
               className="btn flex-none"
               onClick={() => setShowMore(!showMore)}
               data-testid={`${kind}.<more>`}
             >
               {showMore ? "Less..." : "More..."}
-            </div>
+            </button>
           </>
         ) : null}
       </div>
@@ -87,9 +88,7 @@ function Candidate({
         {values
           .filter(() => !collapsed)
           .map((v, i) => {
-            const updatedModel = model.customize
-              ? model.customize(model, v)
-              : model;
+            const updatedModel = customizeModel(model, v);
             return (
               <div
                 key={i}

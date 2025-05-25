@@ -1,25 +1,21 @@
 import {
   ComponentsType,
+  customizeModel,
   getComponentModel,
   renderComponentParam,
 } from "@/model/component";
 import { createNamedSystem } from "@/model/store";
-import { System, SystemModel } from "@/model/system";
 import { getSystemParamModel, SystemParamsType } from "@/model/system-params";
 import { round } from "@/model/utils";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import Schema from "../Schema";
+import { SystemContext } from "../System";
 
-export default function SystemReport({
-  id,
-  system,
-  model,
-}: {
-  id: string;
-  system: System;
-  model: SystemModel;
-}) {
+export default function SystemReport() {
   const router = useRouter();
+  const context = useContext(SystemContext);
+  const { id, system, model } = context;
   return (
     <>
       <div className="p-4 text-xl">Report</div>
@@ -31,13 +27,13 @@ export default function SystemReport({
           <div>Picture</div>
         </div>
         <div className="flex p-2 gap-2">
-          <div
+          <button
             className="btn flex-none"
             onClick={() => router.push(`/systems/${model.kind}?id=${id}`)}
           >
             Go back
-          </div>
-          <div
+          </button>
+          <button
             className="btn flex-none"
             onClick={() => {
               const name = prompt("Enter system name?", "System 1");
@@ -48,7 +44,7 @@ export default function SystemReport({
             }}
           >
             Save
-          </div>
+          </button>
         </div>
         {system.params ? (
           <div className="grid lg:grid-cols-3">
@@ -88,7 +84,7 @@ function ComponentParams({ components }: { components: ComponentsType }) {
   return (
     <>
       {Object.entries(components).map(([kind, v]) => {
-        const model = getComponentModel(kind);
+        const model = customizeModel(getComponentModel(kind), v);
         return (
           <div key={kind}>
             <div className="text-xl gap-4" key={kind}>

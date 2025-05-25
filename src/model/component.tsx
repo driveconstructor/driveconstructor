@@ -60,3 +60,10 @@ export type ComponentsType = {
 export type CandidatesType = {
   [P in keyof ComponentsType]: ComponentsType[P][];
 };
+
+export function customizeModel(
+  model: ComponentModel,
+  value: any,
+): ComponentModel {
+  return model.customize ? model.customize(model, value) : model;
+}

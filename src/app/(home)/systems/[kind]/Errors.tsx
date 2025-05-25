@@ -14,9 +14,9 @@ export default function Errors({
       </div>
       <div className="flex">
         <div className="grow" />
-        <div className="btn flex-none text-sm" onClick={handleDismissClick}>
+        <button className="btn flex-none text-sm" onClick={handleDismissClick}>
           Dismiss
-        </div>
+        </button>
       </div>
     </div>
   );

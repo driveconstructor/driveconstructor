@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import Element from "./Element";
-import { SystemContext } from "./Input";
+import { SystemContext } from "./System";
 
 export default function ElementButton({
   name,

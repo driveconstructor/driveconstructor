@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { SystemContext } from "./Input";
 import ParamInput from "./ParamInput";
 import ParamSelect from "./ParamSelect";
+import { SystemContext } from "./System";
 
 export type ChangeHandler = (v: string | number | null) => void;
 export const ANY = "#any";

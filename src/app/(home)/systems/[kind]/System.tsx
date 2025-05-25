@@ -1,10 +1,13 @@
 "use client";
 
-import { getSystem } from "@/model/store";
-import { SystemKind, getModel } from "@/model/system";
+import { getSystem, SystemContextType } from "@/model/store";
+import { customizeModel, getModel, SystemKind } from "@/model/system";
 import { useSearchParams } from "next/navigation";
+import { createContext, useState } from "react";
 import Input from "./Input";
 import SystemReport from "./report/SystemReport";
+
+export const SystemContext = createContext({} as SystemContextType);
 
 export default function System({
   kind,
@@ -19,8 +22,14 @@ export default function System({
     throw new Error(`id is not found: ${id}`);
   }
 
-  const system = getSystem(id);
+  const [system, setSystem] = useState(getSystem(id));
   const model = getModel(kind);
+
+  const context: SystemContextType = {
+    id,
+    model: customizeModel(model, system),
+    system,
+  };
   const draft = system.name == null;
 
   return (
@@ -38,11 +47,9 @@ export default function System({
           </span>
         </div>
       </div>
-      {showReport ? (
-        <SystemReport id={id} system={system} model={model} />
-      ) : (
-        <Input id={id} system={system} model={model} />
-      )}
+      <SystemContext.Provider value={context}>
+        {showReport ? <SystemReport /> : <Input setSystem={setSystem} />}
+      </SystemContext.Provider>
     </div>
   );
 }
