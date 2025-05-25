@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import logo from "../../images/logo.svg";
 
 export const metadata = {
   title: "Drive Constructor",
@@ -38,7 +40,10 @@ export default function RootLayout({
     <div className="container mx-auto flex h-screen flex-col justify-between">
       <nav className="flex items-center">
         <NavItem href="/" className="text-xl">
-          Drive Constructor
+          <div className="flex">
+            <Image src={logo.src} alt="logo" width={20} height={20} />
+            <div className="pl-1 hidden md:block">Drive Constructor</div>
+          </div>
         </NavItem>
         <NavItem href="/docs/textbook" className="text-m">
           Textbook
