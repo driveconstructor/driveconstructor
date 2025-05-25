@@ -4,10 +4,9 @@ import { deleteSystem, getSystems, IdAndSystem } from "@/model/store";
 import { customizeModel, getModel } from "@/model/system";
 import { getSystemParamModel, SystemParamsType } from "@/model/system-params";
 import { round } from "@/model/utils";
-import Image from "next/image";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useState } from "react";
-import icon from "../../../images/open-link-svgrepo-com.svg";
 import Schema from "../systems/[kind]/Schema";
 import ComparisonGraph from "./ComparisonGraph";
 
@@ -74,13 +73,7 @@ export function SystemRow({
           />
           {system.name}
           <Link href={`/systems/${system.kind}?id=${id}`}>
-            <Image
-              src={icon.src}
-              alt="goto"
-              width={16}
-              height={16}
-              className="m-2"
-            />
+            <ArrowTopRightOnSquareIcon className="m-2" width={16} height={16} />
           </Link>
         </div>
         <Schema model={model} />
