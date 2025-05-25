@@ -71,30 +71,30 @@ export function createSystem(model: SystemModel): System {
 }
 
 export function updateParam(
-  context: SystemContextType,
+  model: SystemModel,
+  system: System,
   paramName: string,
   value: any,
 ): System {
   const withParamValue: System = {
-    ...context.system,
+    ...system,
     input: {
-      ...context.system.input,
-      [context.system.element]: {
-        ...context.system.input[context.system.element],
+      ...system.input,
+      [system.element]: {
+        ...system.input[system.element],
         [paramName]: value,
       },
     },
   } as System;
 
   const withParamUpdate =
-    context.model.input[context.system.element].params[paramName].update?.(
+    model.input[system.element].params[paramName].update?.(
       withParamValue,
       value,
     ) ?? withParamValue;
-  const withModelUpdate =
-    context.model.update?.(withParamUpdate) ?? withParamUpdate;
+  const withModelUpdate = model.update?.(withParamUpdate) ?? withParamUpdate;
 
-  const input = updateSystemInput(context.model, withModelUpdate.input);
+  const input = updateSystemInput(model, withModelUpdate.input);
   const withCalculatedParams = {
     ...withModelUpdate,
     input,

@@ -20,8 +20,7 @@ export default function Input({
   const [errors, setErrors] = useState([] as string[]);
   const [showMore, setShowMore] = useState(false);
   const [update, setUpdate] = useState({ exclude: "", count: 0 });
-  const context = useContext(SystemContext);
-  const { system } = context;
+  const { system, model } = useContext(SystemContext);
 
   useEffect(() => {
     saveSystem(system);
@@ -45,7 +44,7 @@ export default function Input({
     >
       <div>
         <Schema
-          model={context.model}
+          model={model}
           onSelect={(element) => {
             setErrors([]);
             setSystem({ ...system, element });
@@ -53,7 +52,7 @@ export default function Input({
         />
         <div className="border p-2">
           <div className="grid gap-2 lg:grid-cols-3">
-            {Object.entries(context.model.input)
+            {Object.entries(model.input)
               .filter(([k, _]) => k == system.element)
               .flatMap(([_, v]) => Object.entries(v.params))
               .filter(([_, v]) => showMore || !v.advanced)
@@ -66,12 +65,12 @@ export default function Input({
               )
               .map(([k, _]) => (
                 <Param
-                  key={`${context.system.element}.${k}.${k == update.exclude ? "" : update.count}}`}
+                  key={`${system.element}.${k}.${k == update.exclude ? "" : update.count}}`}
                   name={k}
                   handleChange={(v) => {
-                    const updated = updateParam(context, k, v);
-                    const errors = context.model.validate
-                      ? context.model.validate(updated)
+                    const updated = updateParam(model, system, k, v);
+                    const errors = model.validate
+                      ? model.validate(updated)
                       : [];
                     setErrors(errors);
                     if (errors.length == 0) {
@@ -93,12 +92,10 @@ export default function Input({
           </button>
           <div className="grow" />
           <button
-            hidden={context.system.params == null}
+            hidden={system.params == null}
             className="btn flex-none"
             onClick={() =>
-              router.push(
-                `/systems/${context.model.kind}/report/?id=${system.id}`,
-              )
+              router.push(`/systems/${model.kind}/report/?id=${system.id}`)
             }
           >
             Show report
@@ -106,7 +103,7 @@ export default function Input({
           <button
             className="btn"
             onClick={() => {
-              const newSystem = createSystem(context.model);
+              const newSystem = createSystem(model);
               setErrors([]);
               setSystem(newSystem);
               setUpdate({ exclude: "", count: update.count + 1 });
@@ -126,12 +123,12 @@ export default function Input({
         <div className="text-2xl">Candidates</div>
         <Candidates
           onSelect={(name, candidate) => {
-            const system = {
-              ...context.system,
-              components: { ...context.system.components, [name]: candidate },
+            const updated = {
+              ...system,
+              components: { ...system.components, [name]: candidate },
             };
 
-            setSystem(withCandidates(system));
+            setSystem(withCandidates(updated));
           }}
         />
       </div>
