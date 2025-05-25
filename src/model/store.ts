@@ -12,13 +12,12 @@ export function getSystem(id: string): System {
   return JSON.parse(json);
 }
 
-export function saveSystem(id: string, system: System): void {
-  localStorage.setItem(prefix + id, JSON.stringify(system));
+export function saveSystem(system: System): void {
+  localStorage.setItem(prefix + system.id, JSON.stringify(system));
 }
 
 export type SystemContextType = {
   model: SystemModel;
-  id: string;
   system: System;
 };
 
@@ -55,22 +54,20 @@ export function initSystemInput(model: SystemModel) {
   }, {});
 }
 
-export function createSystem(model: SystemModel): {
-  id: string;
-  system: System;
-} {
+export function createSystem(model: SystemModel): System {
   const kind = model.kind;
   const input = updateSystemInput(model, initSystemInput(model));
 
   const id = "draft_" + kind;
   const result = {
+    id,
     kind,
     input,
     element: Object.keys(model.input)[0],
   } as System;
   const system = withCandidates(model.update?.(result) ?? result);
-  saveSystem(id, system);
-  return { id, system };
+  saveSystem(system);
+  return system;
 }
 
 export function updateParam(
@@ -112,26 +109,20 @@ export function updateParam(
   return withCandidates(withoutComponents);
 }
 
-export function createNamedSystem(id: string, name: string): string {
-  const system = getSystem(id);
-  const newId = window.crypto.randomUUID().replaceAll("-", "").substring(0, 7);
-  saveSystem(newId, { ...system, name });
-  return newId;
+export function createNamedSystem(oldId: string, name: string): string {
+  const system = getSystem(oldId);
+  const id = window.crypto.randomUUID().replaceAll("-", "").substring(0, 7);
+  saveSystem({ ...system, id, name });
+  return id;
 }
 
-export type IdAndSystem = { id: string; system: System };
-
-export function getSystems(): IdAndSystem[] {
+export function getSystems(): System[] {
   return typeof localStorage == "undefined"
     ? []
     : Object.keys(localStorage)
         .filter((k) => k.startsWith(prefix))
-        .map((k) => {
-          const id = k.substring(prefix.length);
-          const system = getSystem(id);
-          return { id, system };
-        })
-        .filter((v) => v.system.name != null);
+        .map((k) => getSystem(k.substring(prefix.length)))
+        .filter((v) => v.name != null);
 }
 
 export function deleteSystem(id: string) {

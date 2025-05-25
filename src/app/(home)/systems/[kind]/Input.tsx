@@ -21,11 +21,11 @@ export default function Input({
   const [showMore, setShowMore] = useState(false);
   const [update, setUpdate] = useState({ exclude: "", count: 0 });
   const context = useContext(SystemContext);
-  const { id, system } = context;
+  const { system } = context;
 
   useEffect(() => {
-    saveSystem(id, system);
-  }, [id, system]);
+    saveSystem(system);
+  }, [system]);
 
   const resetErrors = () => {
     setUpdate({ exclude: "", count: update.count + 1 });
@@ -96,7 +96,9 @@ export default function Input({
             hidden={context.system.params == null}
             className="btn flex-none"
             onClick={() =>
-              router.push(`/systems/${context.model.kind}/report/?id=${id}`)
+              router.push(
+                `/systems/${context.model.kind}/report/?id=${system.id}`,
+              )
             }
           >
             Show report
@@ -104,9 +106,9 @@ export default function Input({
           <button
             className="btn"
             onClick={() => {
-              const result = createSystem(context.model);
+              const newSystem = createSystem(context.model);
               setErrors([]);
-              setSystem(result.system);
+              setSystem(newSystem);
               setUpdate({ exclude: "", count: update.count + 1 });
             }}
           >

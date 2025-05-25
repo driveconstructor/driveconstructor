@@ -1,7 +1,7 @@
 "use client";
 
-import { deleteSystem, getSystems, IdAndSystem } from "@/model/store";
-import { customizeModel, getModel } from "@/model/system";
+import { deleteSystem, getSystems } from "@/model/store";
+import { customizeModel, getModel, System } from "@/model/system";
 import { getSystemParamModel, SystemParamsType } from "@/model/system-params";
 import { round } from "@/model/utils";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
@@ -18,7 +18,7 @@ export function MySystems() {
       {systems.map((v) => (
         <SystemRow
           key={v.id}
-          value={v}
+          system={v}
           selected={selected}
           setSelected={setSelected}
         />
@@ -47,15 +47,14 @@ export function MySystems() {
 }
 
 export function SystemRow({
-  value,
+  system,
   selected,
   setSelected,
 }: {
   selected: string[];
   setSelected: (selected: string[]) => void;
-  value: IdAndSystem;
+  system: System;
 }) {
-  const { id, system } = value;
   const model = customizeModel(getModel(system.kind), system);
   return (
     <div className="grid grid-cols-12">
@@ -64,15 +63,15 @@ export function SystemRow({
           <input
             type="checkbox"
             className="m-2"
-            checked={selected.includes(id)}
+            checked={selected.includes(system.id)}
             onChange={(e) =>
               e.target.checked
-                ? setSelected([...selected, id])
-                : setSelected(selected.filter((v) => v != id))
+                ? setSelected([...selected, system.id])
+                : setSelected(selected.filter((v) => v != system.id))
             }
           />
           {system.name}
-          <Link href={`/systems/${system.kind}?id=${id}`}>
+          <Link href={`/systems/${system.kind}?id=${system.id}`}>
             <ArrowTopRightOnSquareIcon className="m-2" width={16} height={16} />
           </Link>
         </div>

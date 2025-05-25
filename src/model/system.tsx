@@ -53,6 +53,7 @@ export type SystemModel = Model<any>;
 const models = applications.flatMap((a) => a.systems);
 
 export type BaseSystem = {
+  id: string;
   element: string;
   input: {
     emachine: EMachine;

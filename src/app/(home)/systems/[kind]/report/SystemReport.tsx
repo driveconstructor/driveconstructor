@@ -15,7 +15,7 @@ import { SystemContext } from "../System";
 export default function SystemReport() {
   const router = useRouter();
   const context = useContext(SystemContext);
-  const { id, system, model } = context;
+  const { system, model } = context;
   return (
     <>
       <div className="p-4 text-xl">Report</div>
@@ -29,7 +29,9 @@ export default function SystemReport() {
         <div className="flex p-2 gap-2">
           <button
             className="btn flex-none"
-            onClick={() => router.push(`/systems/${model.kind}?id=${id}`)}
+            onClick={() =>
+              router.push(`/systems/${model.kind}?id=${system.id}`)
+            }
           >
             Go back
           </button>
@@ -38,7 +40,7 @@ export default function SystemReport() {
             onClick={() => {
               const name = prompt("Enter system name?", "System 1");
               if (name) {
-                const newId = createNamedSystem(id, name);
+                const newId = createNamedSystem(system.id, name);
                 router.push(`/systems/${model.kind}?id=${newId}`);
               }
             }}

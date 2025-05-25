@@ -26,7 +26,6 @@ export default function System({
   const model = getModel(kind);
 
   const context: SystemContextType = {
-    id,
     model: customizeModel(model, system),
     system,
   };
