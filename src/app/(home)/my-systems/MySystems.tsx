@@ -4,7 +4,10 @@ import { deleteSystem, getSystems } from "@/model/store";
 import { customizeModel, getModel, System } from "@/model/system";
 import { getSystemParamModel, SystemParamsType } from "@/model/system-params";
 import { round } from "@/model/utils";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowTopRightOnSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useState } from "react";
 import Schema from "../systems/[kind]/Schema";
@@ -21,23 +24,10 @@ export function MySystems() {
           system={v}
           selected={selected}
           setSelected={setSelected}
+          systems={systems}
+          setSystems={setSystems}
         />
       ))}
-      <div className="flex p-2 gap-2">
-        <button
-          className="btn flex-none"
-          onClick={() => {
-            selected.forEach(deleteSystem);
-            setSystems(systems.filter((s) => !selected.includes(s.id)));
-            setSelected([]);
-          }}
-        >
-          Delete
-        </button>
-        <button className="btn flex-none" onClick={() => {}}>
-          Compare
-        </button>
-      </div>
       <div className="grid grid-cols-2">
         <div className="">Selected fields</div>
         <ComparisonGraph />
@@ -50,10 +40,14 @@ export function SystemRow({
   system,
   selected,
   setSelected,
+  systems,
+  setSystems,
 }: {
+  system: System;
   selected: string[];
   setSelected: (selected: string[]) => void;
-  system: System;
+  systems: System[];
+  setSystems: (selected: System[]) => void;
 }) {
   const model = customizeModel(getModel(system.kind), system);
   return (
@@ -62,7 +56,7 @@ export function SystemRow({
         <div className="flex flex-wrap items-center">
           <input
             type="checkbox"
-            className="m-2"
+            className="m-1"
             checked={selected.includes(system.id)}
             onChange={(e) =>
               e.target.checked
@@ -70,10 +64,30 @@ export function SystemRow({
                 : setSelected(selected.filter((v) => v != system.id))
             }
           />
-          {system.name}
-          <Link href={`/systems/${system.kind}?id=${system.id}`}>
-            <ArrowTopRightOnSquareIcon className="m-2" width={16} height={16} />
-          </Link>
+          <div>
+            <Link href={`/systems/${system.kind}?id=${system.id}`}>
+              <ArrowTopRightOnSquareIcon
+                className="m-1"
+                width={16}
+                height={16}
+              />
+            </Link>
+          </div>
+          <div
+            className="hover:cursor-pointer"
+            onClick={() => {
+              if (
+                confirm(`Are you sure you want to delete '${system.name}'?`)
+              ) {
+                deleteSystem(system.id);
+                setSystems(systems.filter((s) => s.id != system.id));
+                setSelected(selected.filter((s) => s != system.id));
+              }
+            }}
+          >
+            <TrashIcon className="m-1" width={16} height={16} />
+          </div>
+          <div className="m-1 border-1">{system.name}</div>
         </div>
         <Schema model={model} />
       </div>

@@ -2,6 +2,7 @@ import { withCandidates } from "./sizing";
 import { System, SystemModel } from "./system";
 
 const prefix = "dc-v1.system.";
+const draft_prefix = "draft_";
 
 export function getSystem(id: string): System {
   const json = localStorage.getItem(prefix + id);
@@ -58,12 +59,13 @@ export function createSystem(model: SystemModel): System {
   const kind = model.kind;
   const input = updateSystemInput(model, initSystemInput(model));
 
-  const id = "draft_" + kind;
+  const id = draft_prefix + kind;
   const result = {
     id,
     kind,
     input,
     element: Object.keys(model.input)[0],
+    name: "Unsaved draft",
   } as System;
   const system = withCandidates(model.update?.(result) ?? result);
   saveSystem(system);
@@ -109,11 +111,11 @@ export function updateParam(
   return withCandidates(withoutComponents);
 }
 
-export function createNamedSystem(oldId: string, name: string): string {
+export function createNamedSystem(oldId: string, name: string): System {
   const system = getSystem(oldId);
   const id = window.crypto.randomUUID().replaceAll("-", "").substring(0, 7);
-  saveSystem({ ...system, id, name });
-  return id;
+  const updated = { ...system, id, name };
+  return updated;
 }
 
 export function getSystems(): System[] {
@@ -122,9 +124,13 @@ export function getSystems(): System[] {
     : Object.keys(localStorage)
         .filter((k) => k.startsWith(prefix))
         .map((k) => getSystem(k.substring(prefix.length)))
-        .filter((v) => v.name != null);
+        .filter((v) => !isDraft(v));
 }
 
 export function deleteSystem(id: string) {
   localStorage.removeItem(prefix + id);
+}
+
+export function isDraft(system: System) {
+  return system.id.startsWith(draft_prefix);
 }

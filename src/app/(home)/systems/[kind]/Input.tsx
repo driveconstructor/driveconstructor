@@ -107,6 +107,7 @@ export default function Input({
               setErrors([]);
               setSystem(newSystem);
               setUpdate({ exclude: "", count: update.count + 1 });
+              router.push(`/systems/${model.kind}/?id=${newSystem.id}`);
             }}
           >
             Reset

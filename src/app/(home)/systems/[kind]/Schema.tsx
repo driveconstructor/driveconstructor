@@ -13,7 +13,12 @@ export default function Schema({
     onSelect ? (
       <ElementButton key={k} name={k} onSelect={onSelect} />
     ) : (
-      <Element key={k} icon={v.icon} width={60} height={60} />
+      <Element
+        key={k}
+        icon={v.icon}
+        width={v.iconWidth == 160 ? 120 : 60}
+        height={60}
+      />
     ),
   );
 

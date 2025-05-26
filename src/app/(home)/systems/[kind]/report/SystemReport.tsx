@@ -4,59 +4,47 @@ import {
   getComponentModel,
   renderComponentParam,
 } from "@/model/component";
-import { createNamedSystem } from "@/model/store";
 import { getSystemParamModel, SystemParamsType } from "@/model/system-params";
 import { round } from "@/model/utils";
-import { useRouter } from "next/navigation";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 import { useContext } from "react";
+import Graph from "../Graph";
 import Schema from "../Schema";
 import { SystemContext } from "../System";
 
 export default function SystemReport() {
-  const router = useRouter();
   const context = useContext(SystemContext);
   const { system, model } = context;
   return (
     <>
-      <div className="p-4 text-xl">Report</div>
-      <div>
-        <div className="grid gap-2 lg:grid-cols-2">
-          <div>
-            <Schema model={model} />
+      <div className="flex items-center">
+        <div>
+          <Link href={`/systems/${model.kind}?id=${system.id}`}>
+            <ArrowLeftStartOnRectangleIcon width={24} height={24} />
+          </Link>
+        </div>
+        <div className="p-2 text-xl">Report</div>
+      </div>
+      {system.params ? (
+        <div>
+          <div className="grid gap-2 lg:grid-cols-2">
+            <div>
+              <Schema model={model} />
+              <SystemParams params={system.params} />
+            </div>
+            <div>
+              <Graph />
+            </div>
           </div>
-          <div>Picture</div>
-        </div>
-        <div className="flex p-2 gap-2">
-          <button
-            className="btn flex-none"
-            onClick={() =>
-              router.push(`/systems/${model.kind}?id=${system.id}`)
-            }
-          >
-            Go back
-          </button>
-          <button
-            className="btn flex-none"
-            onClick={() => {
-              const name = prompt("Enter system name?", "System 1");
-              if (name) {
-                const newId = createNamedSystem(system.id, name);
-                router.push(`/systems/${model.kind}?id=${newId}`);
-              }
-            }}
-          >
-            Save
-          </button>
-        </div>
-        {system.params ? (
+
           <div className="grid lg:grid-cols-3">
-            <SystemParams params={system.params} />
             <ComponentParams components={system.components} />
           </div>
-        ) : (
-          <div className="text-lg text-red-600">Sizing is incomplete!</div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="text-lg text-red-600">Sizing is incomplete!</div>
+      )}
     </>
   );
 }

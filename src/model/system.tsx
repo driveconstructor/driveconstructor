@@ -63,7 +63,7 @@ export type BaseSystem = {
     grid: Grid;
   };
   params: SystemParamsType | null;
-  name: string | null;
+  name: string;
 };
 
 export type System = (PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr | WinchFc) & {
