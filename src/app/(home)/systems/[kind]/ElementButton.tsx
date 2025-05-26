@@ -20,7 +20,7 @@ export default function ElementButton({
     <Element
       name={name}
       icon={model.icon}
-      width={model.iconWidth ?? 80}
+      width={(model.iconScale ??= 1) * 80}
       height={80}
       active={dummy ? undefined : name == context.system.element}
       onClick={dummy ? undefined : () => onSelect(name)}

@@ -132,5 +132,5 @@ export function deleteSystem(id: string) {
 }
 
 export function isDraft(system: System) {
-  return system.id.startsWith(draft_prefix);
+  return system.id == null || system.id.startsWith(draft_prefix);
 }

@@ -16,7 +16,7 @@ export default function Schema({
       <Element
         key={k}
         icon={v.icon}
-        width={v.iconWidth == 160 ? 120 : 60}
+        width={(v.iconScale ??= 1) * 60}
         height={60}
       />
     ),
