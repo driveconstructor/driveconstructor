@@ -143,13 +143,13 @@ function FConverterElement(
       },
     },
     customize(model, system) {
-      const iconWidth = system.type.indexOf("SCHB") == -1 ? 160 : 80;
+      const iconScale = system.type.indexOf("SCHB") == -1 ? 2 : 1;
       const filters = customizeFilters(system.type);
 
       return {
         ...model,
         icon: customizeIcon(system.type),
-        iconWidth,
+        iconScale,
         params: {
           ...model.params,
           gridSideFilter: {

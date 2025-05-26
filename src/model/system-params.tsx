@@ -27,39 +27,41 @@ export type SystemParamModelType = {
   comparison?: boolean;
 };
 
-const SystemParamsModel: Record<keyof SystemParamsType, SystemParamModelType> =
-  {
-    ...PriceParam,
-    efficiency100: {
-      ...EfficiencyXXXParams.efficiency100,
-      max: 100,
-      min: 75,
-    },
-    efficiency75: {
-      ...EfficiencyXXXParams.efficiency75,
-      max: 100,
-      min: 75,
-    },
-    efficiency50: {
-      ...EfficiencyXXXParams.efficiency50,
-      max: 100,
-      min: 75,
-    },
-    efficiency25: {
-      ...EfficiencyXXXParams.efficiency25,
-      max: 100,
-      min: 75,
-    },
-    ...VolumeParam,
-    ...FootprintParam,
-    ...WeightParam,
-    thdU: {
-      label: "THD(u), %",
-    },
-    thdI: {
-      label: "THD(i), %",
-    },
-  };
+export const SystemParamsModel: Record<
+  keyof SystemParamsType,
+  SystemParamModelType
+> = {
+  ...PriceParam,
+  efficiency100: {
+    ...EfficiencyXXXParams.efficiency100,
+    max: 100,
+    min: 75,
+  },
+  efficiency75: {
+    ...EfficiencyXXXParams.efficiency75,
+    max: 100,
+    min: 75,
+  },
+  efficiency50: {
+    ...EfficiencyXXXParams.efficiency50,
+    max: 100,
+    min: 75,
+  },
+  efficiency25: {
+    ...EfficiencyXXXParams.efficiency25,
+    max: 100,
+    min: 75,
+  },
+  ...VolumeParam,
+  ...FootprintParam,
+  ...WeightParam,
+  thdU: {
+    label: "THD(u), %",
+  },
+  thdI: {
+    label: "THD(i), %",
+  },
+};
 
 export function getSystemParamModel(key: string): SystemParamModelType {
   return (SystemParamsModel as any)[key];

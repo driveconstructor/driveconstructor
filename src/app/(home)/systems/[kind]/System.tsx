@@ -41,6 +41,7 @@ export default function System({
 
   useEffect(() => {
     saveSystem(system);
+    setName(system.name);
   }, [system]);
 
   function handleSave() {
