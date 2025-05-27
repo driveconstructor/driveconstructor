@@ -20,12 +20,12 @@ import ComparisonGraph from "./ComparisonGraph";
 export function MySystems() {
   const [systems, setSystems] = useState(getSystems());
   const [selected, setSelected] = useState([] as string[]);
-  const defaultToCompare = Object.keys(SystemParamsModel).filter(
+  const nonNullParams = Object.keys(SystemParamsModel).filter(
     (k) =>
       systems.flatMap((s) => (s.params as any)[k]).filter((v) => v == null)
         .length == 0,
   );
-  const [toCompare, setToCompare] = useState(defaultToCompare);
+  const [comparableParams, setComparableParams] = useState(nonNullParams);
 
   function SystemRow({ system }: { system: System }) {
     const model = customizeModel(getModel(system.kind), system);
@@ -92,20 +92,24 @@ export function MySystems() {
           <div className="grid lg:grid-cols-12">
             <div className="col-span-4">
               <div className="flow">
+                <div className="pb-2">Parameter selection (minimum 3)</div>
                 {Object.entries(SystemParamsModel)
-                  .filter(([k, _]) => defaultToCompare.includes(k))
+                  .filter(([k, _]) => nonNullParams.includes(k))
                   .map(([k, v]) => {
                     return (
                       <div key={k}>
                         <input
                           type="checkbox"
-                          disabled={!defaultToCompare.includes(k)}
+                          checked={comparableParams.includes(k)}
                           className="m-1"
-                          onChange={(e) =>
+                          onChange={(e) => {
                             e.target.checked
-                              ? setToCompare([...toCompare, k])
-                              : setToCompare(toCompare.filter((c) => c != k))
-                          }
+                              ? setComparableParams([...comparableParams, k])
+                              : comparableParams.length <= 3 ||
+                                setComparableParams(
+                                  comparableParams.filter((c) => c != k),
+                                );
+                          }}
                         />
                         <label>{v.label}</label>
                       </div>
@@ -118,7 +122,7 @@ export function MySystems() {
                 systems={systems.filter((s) => selected.includes(s.id))}
                 model={Object.fromEntries(
                   Object.entries(SystemParamsModel).filter(([k, v]) =>
-                    toCompare.includes(k),
+                    comparableParams.includes(k),
                   ),
                 )}
               />
