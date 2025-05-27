@@ -8,7 +8,7 @@ import {
   SystemContextType,
 } from "@/model/store";
 import { customizeModel, getModel, SystemKind } from "@/model/system";
-import { ArrowDownTrayIcon, PencilIcon } from "@heroicons/react/24/solid";
+import { ArrowDownTrayIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import Input from "./Input";
@@ -44,26 +44,26 @@ export default function System({
     setName(system.name);
   }, [system]);
 
-  function handleSave() {
-    const newName = prompt("Enter system name:", "System 1");
+  function handleClick() {
+    const newName = prompt(
+      "Enter system name:",
+      isDraft(system) ? "System 1" : name,
+    );
     if (newName) {
       setName(newName);
-      const newSystem = createNamedSystem(system.id, newName);
-      setSystem(newSystem);
-      router.push(`/systems/${kind}/?id=${newSystem.id}`);
+      if (isDraft(system)) {
+        const newSystem = createNamedSystem(system.id, newName);
+        setSystem(newSystem);
+        router.push(`/systems/${kind}/?id=${newSystem.id}`);
+      } else {
+        setSystem({ ...system, name: newName });
+      }
     }
   }
 
-  function handleEdit() {
-    const newName = prompt("Edit system name:", name);
-    if (newName) {
-      setName(newName);
-      setSystem({ ...system, name: newName });
-    }
-  }
   const iconAttributes = {
-    width: 16,
-    height: 16,
+    width: 24,
+    height: 24,
     className: "hover:cursor-pointer m-2",
   };
 
@@ -72,11 +72,11 @@ export default function System({
       <div className="flex items-center">
         <div className="p-4 text-2xl">{model.title}</div>
         <div className="flex items-center">
-          <div hidden={system.params == null}>
+          <div hidden={system.params == null} onClick={handleClick}>
             {isDraft(system) ? (
-              <ArrowDownTrayIcon {...iconAttributes} onClick={handleSave} />
+              <ArrowDownTrayIcon {...iconAttributes} />
             ) : (
-              <PencilIcon {...iconAttributes} onClick={handleEdit} />
+              <PencilIcon {...iconAttributes} />
             )}
           </div>
           <div className={isDraft(system) ? "text-gray-500" : ""}>{name}</div>
