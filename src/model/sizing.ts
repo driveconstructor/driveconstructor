@@ -284,7 +284,7 @@ function thdU(
   }
 
   if (fconverter.type == "4Q-2L-VSC" && trafo.typeIII == "2-winding") {
-    return (115 * 100) / Math.pow(scr, 0.9);
+    return (150 * 100) / scr;
   }
 
   throw new Error("Unexpected value");

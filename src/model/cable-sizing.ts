@@ -57,10 +57,10 @@ export function findCableComponent(
                 ),
             );
             const losses =
-              ((Math.pow(emachine.workingCurrent, 2) * resistancePerMeter) /
+              (((Math.pow(emachine.workingCurrent, 2) * resistancePerMeter) /
                 1000) *
-              length *
-              3 *
+                length *
+                3) /
               numberOfRuns;
 
             const efficiency100 =
