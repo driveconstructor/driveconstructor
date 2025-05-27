@@ -27,10 +27,12 @@ export type SystemParamModelType = {
   comparison?: boolean;
 };
 
-export const SystemParamsModel: Record<
+export type SystemParamsModelType = Record<
   keyof SystemParamsType,
   SystemParamModelType
-> = {
+>;
+
+export const SystemParamsModel: SystemParamsModelType = {
   ...PriceParam,
   efficiency100: {
     ...EfficiencyXXXParams.efficiency100,

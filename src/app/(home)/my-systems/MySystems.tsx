@@ -20,6 +20,12 @@ import ComparisonGraph from "./ComparisonGraph";
 export function MySystems() {
   const [systems, setSystems] = useState(getSystems());
   const [selected, setSelected] = useState([] as string[]);
+  const defaultToCompare = Object.keys(SystemParamsModel).filter(
+    (k) =>
+      systems.flatMap((s) => (s.params as any)[k]).filter((v) => v == null)
+        .length == 0,
+  );
+  const [toCompare, setToCompare] = useState(defaultToCompare);
 
   function SystemRow({ system }: { system: System }) {
     const model = customizeModel(getModel(system.kind), system);
@@ -86,18 +92,36 @@ export function MySystems() {
           <div className="grid lg:grid-cols-12">
             <div className="col-span-4">
               <div className="flow">
-                {Object.entries(SystemParamsModel).map(([k, v]) => {
-                  return (
-                    <div key={k}>
-                      <input type="checkbox" className="m-1"></input>
-                      <label>{v.label}</label>
-                    </div>
-                  );
-                })}
+                {Object.entries(SystemParamsModel)
+                  .filter(([k, _]) => defaultToCompare.includes(k))
+                  .map(([k, v]) => {
+                    return (
+                      <div key={k}>
+                        <input
+                          type="checkbox"
+                          disabled={!defaultToCompare.includes(k)}
+                          className="m-1"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setToCompare([...toCompare, k])
+                              : setToCompare(toCompare.filter((c) => c != k))
+                          }
+                        />
+                        <label>{v.label}</label>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
             <div className="col-span-6">
-              <ComparisonGraph />
+              <ComparisonGraph
+                systems={systems.filter((s) => selected.includes(s.id))}
+                model={Object.fromEntries(
+                  Object.entries(SystemParamsModel).filter(([k, v]) =>
+                    toCompare.includes(k),
+                  ),
+                )}
+              />
             </div>
           </div>
         </>
