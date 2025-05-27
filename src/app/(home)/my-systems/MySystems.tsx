@@ -1,6 +1,11 @@
 "use client";
 
-import { deleteSystem, getSystems } from "@/model/store";
+import {
+  deleteSystem,
+  duplicateSystem,
+  getSystems,
+  saveSystem,
+} from "@/model/store";
 import { customizeModel, getModel, System } from "@/model/system";
 import {
   getSystemParamModel,
@@ -10,6 +15,8 @@ import {
 import { round } from "@/model/utils";
 import {
   ArrowTopRightOnSquareIcon,
+  DocumentDuplicateIcon,
+  PencilIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -29,6 +36,11 @@ export function MySystems() {
 
   function SystemRow({ system }: { system: System }) {
     const model = customizeModel(getModel(system.kind), system);
+    const iconAttributes = {
+      width: 16,
+      height: 16,
+      className: "m-1",
+    };
     return (
       <div className="grid grid-cols-12">
         <div className="col-span-3 border-1">
@@ -45,11 +57,7 @@ export function MySystems() {
             />
             <div>
               <Link href={`/systems/${system.kind}?id=${system.id}`}>
-                <ArrowTopRightOnSquareIcon
-                  className="m-1"
-                  width={16}
-                  height={16}
-                />
+                <ArrowTopRightOnSquareIcon {...iconAttributes} />
               </Link>
             </div>
             <div
@@ -64,7 +72,38 @@ export function MySystems() {
                 }
               }}
             >
-              <TrashIcon className="m-1" width={16} height={16} />
+              <TrashIcon {...iconAttributes} />
+            </div>
+            <div
+              className="hover:cursor-pointer"
+              onClick={() => {
+                const newName = prompt(
+                  "Enter new system name:",
+                  system.name + " copy",
+                );
+                if (newName) {
+                  const newSystem = duplicateSystem(system.id, newName);
+                  setSystems([...systems, newSystem]);
+                }
+              }}
+            >
+              <DocumentDuplicateIcon {...iconAttributes} />
+            </div>
+            <div
+              className="hover:cursor-pointer"
+              onClick={() => {
+                const newName = prompt("Enter system name:", system.name);
+                if (newName) {
+                  const newSystem = { ...system, name: newName };
+                  setSystems([
+                    ...systems.filter((s) => s.id != newSystem.id),
+                    newSystem,
+                  ]);
+                  saveSystem(newSystem);
+                }
+              }}
+            >
+              <PencilIcon {...iconAttributes} />
             </div>
             <div className="m-1 border-1">{system.name}</div>
           </div>
@@ -81,9 +120,11 @@ export function MySystems() {
 
   return (
     <div className="flex-col">
-      {systems.map((v) => (
-        <SystemRow key={v.id} system={v} />
-      ))}
+      {systems
+        .sort((a, b) => a.id.localeCompare(b.id))
+        .map((v) => (
+          <SystemRow key={v.id} system={v} />
+        ))}
       <div className="text-xl p-4">Comparison</div>
       {selected.length <= 1 ? (
         <div>Select 2 and more systems to compare...</div>

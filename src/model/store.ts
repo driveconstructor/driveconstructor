@@ -113,9 +113,13 @@ export function updateParam(
 
 export function createNamedSystem(oldId: string, name: string): System {
   const system = getSystem(oldId);
-  const id = window.crypto.randomUUID().replaceAll("-", "").substring(0, 7);
+  const id = generateSystemId();
   const updated = { ...system, id, name };
   return updated;
+}
+
+function generateSystemId() {
+  return window.crypto.randomUUID().replaceAll("-", "").substring(0, 7);
 }
 
 export function getSystems(): System[] {
@@ -133,4 +137,12 @@ export function deleteSystem(id: string) {
 
 export function isDraft(system: System) {
   return system.id == null || system.id.startsWith(draft_prefix);
+}
+
+export function duplicateSystem(id: string, name: string): System {
+  const system = getSystem(id);
+  const newId = generateSystemId();
+  const newSystem = { ...system, id: newId, name };
+  saveSystem(newSystem);
+  return newSystem;
 }
