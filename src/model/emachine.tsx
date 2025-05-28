@@ -41,8 +41,8 @@ export type EMachineMountingType = (typeof EMachineMounting)[number];
 export type EMachine = {
   type: EMachineTypeAlias | null;
   ratedPower: (typeof ERatedPower)[number] | null;
-  cooling: EMachineCoolingType | null;
-  protection: EMachineProtectionType | null;
+  cooling: EMachineCoolingType;
+  protection: EMachineProtectionType;
   frameMaterial: EMachineFrameMaterialType | null;
   efficiencyClass: EfficiencyClassType | null;
   mounting: EMachineMountingType | null;
@@ -76,9 +76,8 @@ export const EMachineElement: SystemElement<EMachine> = {
     cooling: {
       ...CoolingParam.cooling,
       type: "text",
-      options: [null, ...EMachineCooling],
+      options: [...EMachineCooling],
       optionLabels: [
-        null,
         "self-ventilation",
         "air forced ventilation",
         "water cooled",
@@ -88,7 +87,7 @@ export const EMachineElement: SystemElement<EMachine> = {
     protection: {
       ...ProtectionParam.protection,
       type: "text",
-      options: [null, ...EMachineProtection],
+      options: [...EMachineProtection],
       value: "IP21/23",
     },
     frameMaterial: {

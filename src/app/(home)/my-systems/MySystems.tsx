@@ -24,22 +24,29 @@ import { useEffect, useState } from "react";
 import Schema from "../systems/[kind]/Schema";
 import ComparisonGraph from "./ComparisonGraph";
 
+function nonNullParams(systems: System[], selected: string[]) {
+  return Object.keys(SystemParamsModel).filter(
+    (k) =>
+      systems
+        .filter((s) => selected.includes(s.id))
+        .filter((s) => s.params != null)
+        .flatMap((s) => (s.params as any)[k])
+        .filter((v) => v == null).length == 0,
+  );
+}
+
 export function MySystems() {
   const [systems, setSystems] = useState([] as System[]);
+  const [comparableParams, setComparableParams] = useState([] as string[]);
 
   useEffect(() => {
     setSystems(getSystems());
   }, []);
 
   const [selected, setSelected] = useState([] as string[]);
-  const nonNullParams = Object.keys(SystemParamsModel).filter(
-    (k) =>
-      systems
-        .filter((s) => s.params != null)
-        .flatMap((s) => (s.params as any)[k])
-        .filter((v) => v == null).length == 0,
-  );
-  const [comparableParams, setComparableParams] = useState(nonNullParams);
+  useEffect(() => {
+    setComparableParams(nonNullParams(systems, selected));
+  }, [systems, selected]);
 
   function SystemRow({ system }: { system: System }) {
     const model = customizeModel(getModel(system.kind), system);
@@ -143,7 +150,9 @@ export function MySystems() {
               <div className="flow">
                 <div className="pb-2">Parameter selection (minimum 3)</div>
                 {Object.entries(SystemParamsModel)
-                  .filter(([k, _]) => nonNullParams.includes(k))
+                  .filter(([k, _]) =>
+                    nonNullParams(systems, selected).includes(k),
+                  )
                   .map(([k, v]) => {
                     return (
                       <div key={k}>
