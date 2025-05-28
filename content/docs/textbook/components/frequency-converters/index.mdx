@@ -52,6 +52,9 @@ can be installed into existing cubicles or when the floor is wet wall mounted
 design can be the only way. For some powers (usually 200...250 kW) there exists
 both wall-mounted & floor-mounted versions.
 
+
+---
+
 ## FC topologies
 
 FC can be 2-quadrant (2Q) and 4-quadrant (4Q):
@@ -92,35 +95,35 @@ are usually LV.
 
 import afe_dc2l_dfe_IngImage from "./images/afe_dc2l_dfe_Ing.png";
 
-<img src={afe_dc2l_dfe_IngImage.src} width="60%" height="60%" /> _Fig.1a.
+<img src={afe_dc2l_dfe_IngImage.src} width="60%" height="60%" /> _Fig.4a.
 2Q-2L-VSC-6p_.
 
 import afe_dc2l_dfeImage from "./images/afe_dc2l_dfe.png";
 
-<img src={afe_dc2l_dfeImage.src} width="20%" height="20%" /> _Fig.1b. Icon
+<img src={afe_dc2l_dfeImage.src} width="20%" height="20%" /> _Fig.4b. Icon
 designation_.
 
-Note that on Fig.1a motor side of the FC is the right side, while on Fig.1b -
+Note that on Fig.4a motor side of the FC is the right side, while on Fig.4b -
 left side.
 
 import afe_dc2l_dfe12_IngImage from "./images/afe_dc2l_dfe12_Ing.png";
 
-<img src={afe_dc2l_dfe12_IngImage.src} width="90%" height="90%" /> _Fig.2a.
+<img src={afe_dc2l_dfe12_IngImage.src} width="90%" height="90%" /> _Fig.5a.
 2Q-2L-VSC-12p_.
 
 import afe_dc2l_dfe12Image from "./images/afe_dc2l_dfe12.png";
 
-<img src={afe_dc2l_dfe12Image.src} width="20%" height="20%" /> _Fig.2b. Icon
+<img src={afe_dc2l_dfe12Image.src} width="20%" height="20%" /> _Fig.5b. Icon
 designation_.
 
 import afe_dc2l_afe_IngImage from "./images/afe_dc2l_afe_Ing.png";
 
-<img src={afe_dc2l_afe_IngImage.src} width="60%" height="60%" /> _Fig.3a.
+<img src={afe_dc2l_afe_IngImage.src} width="60%" height="60%" /> _Fig.6a.
 4Q-2L-VSC_.
 
 import afe_dc2l_afeImage from "./images/afe_dc2l_afe.png";
 
-<img src={afe_dc2l_afeImage.src} width="20%" height="20%" /> _Fig.3b. Icon
+<img src={afe_dc2l_afeImage.src} width="20%" height="20%" /> _Fig.6b. Icon
 designation_.
 
 ### Converters with 3- and multi-level topologies
@@ -131,22 +134,22 @@ designation_.
 
 import afe_dc3l_dfe12_IngImage from "./images/afe_dc3l_dfe12_Ing.png";
 
-<img src={afe_dc3l_dfe12_IngImage.src} width="90%" height="90%" /> _Fig.4a.
+<img src={afe_dc3l_dfe12_IngImage.src} width="90%" height="90%" /> _Fig.7a.
 2Q-3L-NPC-VSC_.
 
 import afe_dc3l_afe12Image from "./images/afe_dc3l_afe12.png";
 
-<img src={afe_dc3l_afe12Image.src} width="20%" height="20%" /> _Fig.4b. Icon
+<img src={afe_dc3l_afe12Image.src} width="20%" height="20%" /> _Fig.7b. Icon
 designation_.
 
 import afe_dc3l_afe_IngImage from "./images/afe_dc3l_afe_Ing.png";
 
-<img src={afe_dc3l_afe_IngImage.src} width="70%" height="70%" /> _Fig.5a.
+<img src={afe_dc3l_afe_IngImage.src} width="70%" height="70%" /> _Fig.8a.
 4Q-3L-NPC-VSC_.
 
 import afe_dc3l_afeImage from "./images/afe_dc3l_afe.png";
 
-<img src={afe_dc3l_afeImage.src} width="20%" height="20%" /> _Fig.5b. Icon
+<img src={afe_dc3l_afeImage.src} width="20%" height="20%" /> _Fig.8b. Icon
 designation_.
 
 ##### 2Q-ML-SCHB-VSC and 4Q-ML-SCHB-VSC
@@ -155,28 +158,71 @@ SCHB stands for Series-Connected H-Bridge.
 
 import SCHB_2Image from "./images/SCHB_2.png";
 
-<img src={SCHB_2Image.src} width="50%" height="50%" /> _Fig.6a. 2Q-ML-SCHB-VSC
+<img src={SCHB_2Image.src} width="50%" height="50%" /> _Fig.9a. 2Q-ML-SCHB-VSC
 topology_.
 
 import SCHB_dfe_cellImage from "./images/SCHB_dfe_cell.png";
 
-<img src={SCHB_dfe_cellImage.src} width="40%" height="40%" /> _Fig.6b.
+<img src={SCHB_dfe_cellImage.src} width="40%" height="40%" /> _Fig.9b.
 2Q-ML-SCHB-VSC cell_.
 
 import sc_hb_simple2Image from "./images/sc_hb_simple2.png";
 
-<img src={sc_hb_simple2Image.src} width="20%" height="20%" /> _Fig.6c. Icon
+<img src={sc_hb_simple2Image.src} width="20%" height="20%" /> _Fig.9c. Icon
 designation_.
 
 import SCHB_afe_cellImage from "./images/SCHB_afe_cell.png";
 
-<img src={SCHB_afe_cellImage.src} width="40%" height="40%" /> _Fig.6d.
+<img src={SCHB_afe_cellImage.src} width="40%" height="40%" /> _Fig.9d.
 4Q-ML-SCHB-VSC cell_.
 
 import sc_hb_simple3Image from "./images/sc_hb_simple3.png";
 
-<img src={sc_hb_simple3Image.src} width="20%" height="20%" /> _Fig.6e. Icon
+<img src={sc_hb_simple3Image.src} width="20%" height="20%" /> _Fig.9e. Icon
 designation_.
+
+
+---
+
+
+## FC power, voltage and current
+
+### Rated power
+
+FC are rated according to [IEC standard](http://www.openelectrical.org/wiki/index.php?title=Standard_IEC_Ratings). The series  of powers in *DriveConstructor* is 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000 kW.
+If it is desirable that power is chosen automatically then choose "any" - it is the default setting.
+
+### Rated voltage
+
+The same voltage ranges are given both for grid side and machine side of the converter. In _DriveConstructor_ the variants to choose from are: 380-440, 650-700, 3200-3400, 5900-6700, 9000-12000 V. If it is desirable that voltage is chosen automatically then choose "any" - it is the default setting.
+
+In _DriveConstructor_ 3L-NPC topologies can have voltage rating of 2460 V, 3300 V and 4160 V, while ML-SCHB topologies – 6000 V, 6600 V, 10000 V and 11000 V.
+
+### Currents
+
+For almost any application it can be expected that load torque will vary with time going up and down. The pattern can be quite unpredictable.
+As current drawn from the FC is proportional to the load torque, the torque variation determines the current variation. In some application, e.g. pumps, the variation is not significant and can be called "low", while in other applications, e.g. conveyor or winch, the variation can be significant, and, therefore can be called "high". Examples of what can be called "high overloads" and "low overloads" are presented in Fig.1.
+
+import fc_lo_hoImage from "./images/fc_lo_ho.png";
+
+<img src={fc_lo_hoImage.src} width="60%" height="60%" /> _Fig.1. "High overloads" and "low overloads"_.
+
+Choosing the FC the designer should take this aspect into account. Each FC has certain overload capability determined by several physical limitations such as thermal current and maximum current.
+The overloads the FC can tolerate will be characterized by a certain amplitude, duration and cycle.
+
+The same converter can be used for "high overloads (HO)" and "low overloads (LO)" but its rated current in a catalogue will be presented in two variants; $$I_H$$ and $$I_L$$, where $$I_L$$ is always higher than $$I_H$$. The principle is that motor current $$I_m$$ should be lower than FC current. When choosing FC for LO application, e.g. a pump, $$I_L$$ should be used and $$I_L$$ should be higher than $$I_m$$. Usually for LO applications acceptable overloads are just 10% and FC current should then handle $$1.1*I_L$$.
+When choosing FC for HO application, e.g. a conveyor, $$I_H$$ should be used and $$I_H$$ should be higher than $$I_m$$. Usually for HO applications acceptable overloads are 50% and FC current should then handle $$1.5*I_H$$.
+
+Explanation is presented in Fig.10. Note $$I_c$$ which is rated continuous current, which is not used in practice.
+Short-term (10 s) high current of up to 200% of $$I_H$$ is acceptable for any converter.
+
+import fc_overloadsImage from "./images/fc_overloads.png";
+
+<img src={fc_overloadsImage.src} width="70%" height="70%" />
+_Fig.10. Current overloads of conventional FC_.
+
+---
+
 
 ## FC cooling
 
@@ -192,17 +238,17 @@ such as an electrical room.
 
 import fccoolingairnatImage from "./images/fc_cooling_air_nat.png";
 
-<img src={fccoolingairnatImage.src} width="28%" height="28%" /> _(a)_
+<img src={fccoolingairnatImage.src} width="40%" height="40%" /> _(a)_
 
 import fc_cooling_air_ACImage from "./images/fc_cooling_air_AC.png";
 
-<img src={fc_cooling_air_ACImage.src} width="28%" height="28%" /> _(b)_
+<img src={fc_cooling_air_ACImage.src} width="40%" height="40%" /> _(b)_
 
 import fc_cooling_air_WCImage from "./images/fc_cooling_air_WC.png";
 
-<img src={fc_cooling_air_WCImage.src} width="28%" height="28%" /> _(c)_
+<img src={fc_cooling_air_WCImage.src} width="40%" height="40%" /> _(c)_
 
-_Fig.1. Cooling types._
+_Fig.11. Cooling types._
 
 With the efficiency of 98% the 250 kW FC will produce 5 kW of heat. To remove
 the heat from the FC’s heatsink a quite powerful ventilation fan should be
@@ -259,6 +305,9 @@ Other factors to consider:
 
 [Recommended description by Siemens](http://w3.siemens.com/mcms/mc-solutions/en/converters/low-voltage-converters/sinamics-s/motion-control-drives/tabcardpages-system-architecture/pages/cooling.aspx)
 
+
+---
+
 ## Filters
 
 In many cases FC should be equipped with either input or output filters. Filters
@@ -289,7 +338,7 @@ import sin_filterImage from "./images/sin_filter.png";
 
 <img src={sin_filterImage.src} width="30%" height="30%" /> _(b)_
 
-_Fig. 1. “Classical” sin-filter topology (a) and product example (b)_.
+_Fig. 12. “Classical” sin-filter topology (a) and product example (b)_.
 
 import pwm_measuredImage from "./images/pwm_measured.png";
 
@@ -299,7 +348,7 @@ import after_sinImage from "./images/after_sin.png";
 
 <img src={after_sinImage.src} width="40%" height="40%" /> _(b)_
 
-_Fig. 2. The voltage waveforms at the input (a) and at the output (b) of the
+_Fig. 13. The voltage waveforms at the input (a) and at the output (b) of the
 sin-filter. Note different time span on the oscillograms_.
 
 Sin-filters have certain drawbacks (largely due to the high inductance value of
@@ -317,7 +366,7 @@ cost can be up to 30-40% of the cost of the FC (at low power - up to 50-70%).
 
 ##### du/dt-filter
 
-Structurally, the du/dt filter is a three-phase choke (Fig. 3,a), and from the
+Structurally, the du/dt filter is a three-phase choke (Fig. 14,a), and from the
 point of view of the electric circuit theory it is a concentrated inductive
 resistance. The inclusion of inductance in the equivalent electrical circuit of
 the cable increases the wave resistance of the cable line and brings down the
@@ -331,12 +380,12 @@ import dut_filterImage from "./images/dut_filter.png";
 
 <img src={dut_filterImage.src} width="30%" height="30%" /> _(b)_
 
-_Fig. 3. “Classical” du/dt-filter topology (a) and product example (b)_.
+_Fig. 14. “Classical” du/dt-filter topology (a) and product example (b)_.
 
 However, the main purpose of du/dt-filters is to eliminate du/dt-effect, i.e.
 decrease in the rise time of the voltage pulse. In addition, due to the inertial
 properties of the inductance, the filter also reduces the voltage surge at the
-leading edge of the pulse (Fig.4). The length of the cable is 30 m. Note
+leading edge of the pulse (Fig.15). The length of the cable is 30 m. Note
 different rise time: dt=220 ns, dt=820 ns.
 
 import before_dutImage from "./images/before_dut.png";
@@ -347,7 +396,7 @@ import after_dutImage from "./images/after_dut.png";
 
 <img src={after_dutImage.src} width="30%" height="30%" /> _(b)_
 
-_Fig. 4. Voltage pulses at the machine terminals without du/dt-filter (a) and
+_Fig. 15. Voltage pulses at the machine terminals without du/dt-filter (a) and
 with a filter (b)_.
 
 ##### Common recommendations on the use of du/dt-filters and other measures
@@ -370,7 +419,7 @@ example is presented in the table:
 ##### Chokes
 
 Influence of presence of the choke and its size on the harmonics injected into
-the grid is presented in Fig.5 and 6. The graphs show current waveform and the
+the grid is presented in Fig.16 and 17. The graphs show current waveform and the
 value of current distortion THD(i) as % of nominal current at full load.
 
 import a6p_no_chokeImage from "./images/6p_no_choke.png";
@@ -381,7 +430,7 @@ import THDi80Image from "./images/THDi80.png";
 
 <img src={THDi80Image.src} width="25%" height="25%" /> _(b)_
 
-_Fig. 5. 6-pulse rectifier without any choke (a) and current waveform for this
+_Fig. 16. 6-pulse rectifier without any choke (a) and current waveform for this
 topology (b)_.
 
 import a6p_with_chokeImage from "./images/6p_with_choke.png";
@@ -396,7 +445,7 @@ import THDi28Image from "./images/THDi28.png";
 
 <img src={THDi28Image.src} width="25%" height="25%" /> _(c)_
 
-_Fig. 6. 6-pulse rectifier with a choke (a) and current waveforms for small
+_Fig. 17. 6-pulse rectifier with a choke (a) and current waveforms for small
 choke (b) and big choke (c)_.
 
 ##### LCL filter
@@ -412,12 +461,12 @@ import THDi5Image from "./images/THDi5.png";
 
 <img src={THDi5Image.src} width="25%" height="25%" /> _(b)_
 
-_Fig. 7. Topology (a) and current waveform (b)_.
+_Fig. 18. Topology (a) and current waveform (b)_.
 
 ##### EMC filters
 
-EMC filters (Fig.8) is destined for emission reduction in MHz range. Example of
-the effect is presented in Fig.9.
+EMC filters (Fig.19) is destined for emission reduction in MHz range. Example of
+the effect is presented in Fig.20.
 
 import emc_filter_topologyImage from "./images/emc_filter_topology.png";
 
@@ -427,10 +476,10 @@ import emc_filter_acImage from "./images/emc_filter_ac.png";
 
 <img src={emc_filter_acImage.src} width="25%" height="25%" /> _(b)_
 
-_Fig. 8. EMC filters: topology (a), AC side filter product example (b)_.
+_Fig. 19. EMC filters: topology (a), AC side filter product example (b)_.
 
 import EMC_with_without_filterImage from "./images/EMC_with_without_filter.png";
 
 <img src={EMC_with_without_filterImage.src} width="75%" height="75%" />
 
-_Fig. 9. Effect of use of EMC-filter_.
+_Fig. 20. Effect of use of EMC-filter_.

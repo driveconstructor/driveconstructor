@@ -7,9 +7,9 @@ A gearbox uses combinations of cogwheels to provide speed and torque conversions
 Overall gear ratio is a product of ratios of all stages. Also overall efficiency is a product of efficiencies of all stages.
 
 import Image from "next/image";
-import gear_renkImage from "./images/gear_renk.png";
+import gear_renkImage from "./images/industrial-gearbox-free-image.png";
 
-<img src={gear_renkImage.src} width="25%" height="25%" /> _FIg.1. 1-stage helical gearbox_. [^1]
+<img src={gear_renkImage.src} width="50%" height="50%" /> _FIg.1. Gearbox example_.
 
 In *DriveConstructor* gearbox can have maximum three stages. However, in the real world some gearboxes may have more than three stages.
 
@@ -28,99 +28,86 @@ In *DriveConstructor* this procedure is present in a simplified version.
 
 ---
 
-[^1] [Source: Renk](http:renk.de)
-
 
 ## Stage types
 
 Stages may be of different types as is presented below. In one gearbox there can be combined stages of different types.
 
 ##### Helical
-Helical stage is presented in Fig.1. Gear ratios for helical gear stage can be in the range of 1,5...10. In *DriveConstructor* we narrow the possibility to choose from to 3...8.
+Helical stage is presented in Fig.2. Gear ratios for helical gear stage can be in the range of 1,5...10. In *DriveConstructor* we narrow the possibility to choose from to 3...8.
 Efficiency of helical gear is high – usually between 97 and 98%. In *DriveConstructor* we assume rated efficiency of 98%.
 This type of gear is cheap to manufacture and has good torque and noise properties, though it is generally expensive and requires many gear stages for large reductions.
 
-import gear_helical_stageImage from "./images/gear_helical_stage.png";
+import gear_helical_stageImage from "./images/gear_helical_stage3.png";
 
-<img src={gear_helical_stageImage.src} width="15%" height="15%" /> _Fig.1. Helical stage_. [^1]
+<img src={gear_helical_stageImage.src} width="20%" height="20%" /> _Fig.2. Helical stage_.
 
-import gear_wormImage from "./images/gear_worm.png";
+import gear_wormImage from "./images/gear_worm3.png";
 
-<img src={gear_wormImage.src} width="16%" height="16%" /> _Fig.2. Worm gear_. [^2]
+<img src={gear_wormImage.src} width="16%" height="16%" /> _Fig.3. Worm gear_.
 
 ##### Worm gear
-Worm stage is presented in Fig.2. Gear ratios for worm stage can be from 5 and up extremely high ratios (100!).  In *DriveConstructor* we narrow the possible to choose from to 10...40. Efficiency of worm gears goes down with the increase of the ratio (Fig.3). The possibility to have very high transmission ratios translates into greater cost-effectiveness. Also, worm gears typically ensure quiet, vibration-free operation. They are inherently a right-angle drive.
+Worm stage is presented in Fig.3. Gear ratios for worm stage can be from 5 and up extremely high ratios (100!).  In *DriveConstructor* we narrow the possible to choose from to 10...40. Efficiency of worm gears goes down with the increase of the ratio (Fig.4). The possibility to have very high transmission ratios translates into greater cost-effectiveness. Also, worm gears typically ensure quiet, vibration-free operation. They are inherently a right-angle drive.
 Their typically low efficiency suggests their use for low or middle-to-low power demand applications and/or those featuring intermittent duty. They can be ideal for applications that need to resist reversing.
 
 import worm_helical_effImage from "./images/worm_helical_eff.png";
 
-<img src={worm_helical_effImage.src} width="50%" height="50%" /> _Fig.3. Efficiency of worm gear for different ratios_.
+<img src={worm_helical_effImage.src} width="60%" height="60%" /> _Fig.4. Efficiency of worm gear for different ratios_.
 
 ##### Planetary gear
-Planetary stage is presented in Fig.4. Gear ratios for planetary stage can be in the range of 3...10. In *DriveConstructor* we narrow the possibility to choose from to 4...8.
+Planetary stage is presented in Fig.5. Gear ratios for planetary stage can be in the range of 3...10. In *DriveConstructor* we narrow the possibility to choose from to 4...8.
 Planetary gears can handle large reductions and give huge torque capability. They have high efficiency and are very compact.
 At the same time such gears are expensive to manufacture and can be noisy at high speeds.
 
-import gear_planetary_stageImage from "./images/gear_planetary_stage.png";
+import gear_planetary_stageImage from "./images/gear_planetary_stage2.png";
 
-<img src={gear_planetary_stageImage.src} width="15%" height="15%" /> _Fig.4. Planetary stage_. [^3]
+<img src={gear_planetary_stageImage.src} width="25%" height="25%" /> _Fig.5. Planetary stage_.
 
-import gear_bevel_stageImage from "./images/gear_bevel_stage.png";
+import gear_bevel_stageImage from "./images/gear_bevel_stage2.png";
 
-<img src={gear_bevel_stageImage.src} width="15%" height="15%" /> _Fig.5. Bevel stage_. [^4]
+<img src={gear_bevel_stageImage.src} width="25%" height="25%" /> _Fig.6. Bevel stage_.
 
 ##### Bevel gear
-Bevel stage is presented in Fig.5. Gear ratios for bevel stage can be in the range of 1,5...4. In _DriveConstructor_ we limit the choice to 2...3.
+Bevel stage is presented in Fig.6. Gear ratios for bevel stage can be in the range of 1,5...4. In _DriveConstructor_ we limit the choice to 2...3.
 
 ---
-
-[^1] [Picture courtesy Emerson Power Transmission Corp](http://science.howstuffworks.com/transport/engines-equipment/gear3.htm)
-[^2] [Picture courtesy Emerson Power Transmission Corp](http://science.howstuffworks.com/transport/engines-equipment/gear5.htm)
-[^3] [Source](http://bestanimations.com/Science/Gears/Gears2.html)
-[^4] [Picture courtesy Emerson Power Transmission Corp](http://science.howstuffworks.com/transport/engines-equipment/gear4.htm)
 
 
 ## Combinations of stages
 
 The stages can be put together in various combinations. Some examples are presented below.
 
-Gearboxes comprising several helical stages (Fig.1) are used generally in heavy-duty applications. They are quite efficient and can have many stages.
+Gearboxes comprising several helical stages (Fig.7) are used generally in heavy-duty applications. They are quite efficient and can have many stages.
 
-import gear_3_helical_stagesImage from "./images/gear_3_helical_stages.png";
+import gear_3_helical_stagesImage from "./images/hel-hel-hel-motor.png";
 
-<img src={gear_3_helical_stagesImage.src} width="25%" height="25%" /> _Fig.1. 3 helical stages_. [^1]
+<img src={gear_3_helical_stagesImage.src} width="50%" height="50%" /> _Fig.7. Gearbox with 3 helical stages and a motor_.
 
-In the configuration presented in Fig.2 the input and output shafts are arranged at right angles via a gear set with either intersecting (bevel helical) or non-intersecting (hypoid) axes. The right-angle helical design ensures great space efficiency interms of width, and provides the primary alternative to worm reducers in applications involving right angle drives. They are characterized by high efficiency and can extend to extremely high reduction ratios (even to 1700:1).
+In the configuration presented in Fig.8 the input and output shafts are arranged at right angles via a gear set with either intersecting (bevel helical) or non-intersecting (hypoid) axes. The right-angle helical design ensures great space efficiency interms of width, and provides the primary alternative to worm reducers in applications involving right angle drives. They are characterized by high efficiency and can extend to extremely high reduction ratios (even to 1700:1).
 
-import gear_3_helical_bevel_stagesImage from "./images/gear_3_helical_bevel_stages.png";
+import gear_3_helical_bevel_stagesImage from "./images/bel-3hel.png";
 
-<img src={gear_3_helical_bevel_stagesImage.src} width="30%" height="30%" /> _Fig.2. 1 bevel and 2 helical stages_. [^2]
+<img src={gear_3_helical_bevel_stagesImage.src} width="45%" height="45%" /> _Fig.8. 1 bevel and 1 helical stage_.
 
-Some more examples are presented in Fig. 3-5.
+Some more examples are presented in Fig. 9-10.
 
-import gear_helical_bevelImage from "./images/gear_helical_bevel.png";
+import gear_helical_bevelImage from "./images/worm-hel-conv.png";
 
-<img src={gear_helical_bevelImage.src} width="30%" height="30%" /> _Fig.3. Helical and bevel stages_. [^3]
+<img src={gear_helical_bevelImage.src} width="50%" height="50%" /> _Fig.9. Worm gear and helical stages for conveyor drive_.
 
-import gear_helical_bevel_planetaryImage from "./images/gear_helical_bevel_planetary.png";
+import gear_helical_bevel_planetaryImage from "./images/wind-turbine-gear-plan-hel-hel.png";
 
-<img src={gear_helical_bevel_planetaryImage.src} width="30%" height="30%" /> _Fig.4. Helical, bevel and planetary stages_. [^4]
+<img src={gear_helical_bevel_planetaryImage.src} width="40%" height="40%" /> _Fig.10. Gearbox with one planetary and two helical stages for a wind turbine._.
 
-import gear_helical_inlineImage from "./images/gear_helical_inline.png";
+import gear_helical_inlineImage from "./images/plan-plan-plan-hel.png";
 
-<img src={gear_helical_inlineImage.src} width="30%" height="30%" /> _Fig.5. Helical "inline"_. [^5]
+<img src={gear_helical_inlineImage.src} width="40%" height="40%" /> _Fig.11. Gearbox with three planetary and one helical stage for a wind turbine_.
 
 Efficiency of any combination is the product of efficiencies of the stages, therefore, efficiency of several stages is lower than single-stage solution.
-Fig.6 presents efficiencies of some combinations of stages. Note that lower rpm means higher gear ratio.
+Fig.12 presents efficiencies of some combinations of stages. Note that lower rpm means higher gear ratio.
 
 import gears_effsImage from "./images/gears_effs.png";
 
-<img src={gears_effsImage.src} width="40%" height="40%" /> _Fig.6. Efficiencies of various combinations_.
+<img src={gears_effsImage.src} width="70%" height="70%" /> _Fig.12. Efficiencies of various combinations_.
 
 ---
-
-[^6] [Source: Nord](https://www.nord.com/cms/us/product_catalogue/geared_motors/helical_inline_geared_motors/pdp_helical_inline_geared_motors_1511.jsp)
-[^7] [Source](http://www.indiantradebird.com/max-power-gears-split-casing-gear-motor?cpid=MzU5OCw3LDEsMw==)
-[^8] [Source](http://www.indiamart.com/generaldrive/gear-boxes-industrial.html)
-[^9] [Source](http://machinedesign.com/motion-control/world-planetary-gears)
-[^10] [Source](https://www.nord.com/cms/us/product_catalogue/geared_motors/helical_inline_geared_motors/pdp_helical_inline_geared_motors_1511.jsp)
