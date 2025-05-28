@@ -20,12 +20,17 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Schema from "../systems/[kind]/Schema";
 import ComparisonGraph from "./ComparisonGraph";
 
 export function MySystems() {
-  const [systems, setSystems] = useState(getSystems());
+  const [systems, setSystems] = useState([] as System[]);
+
+  useEffect(() => {
+    setSystems(getSystems());
+  }, []);
+
   const [selected, setSelected] = useState([] as string[]);
   const nonNullParams = Object.keys(SystemParamsModel).filter(
     (k) =>
