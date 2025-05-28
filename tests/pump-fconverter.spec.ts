@@ -16,7 +16,7 @@ test("Defaults", async ({ page }) => {
   await expect(page.getByLabel("Rated efficiency, %:")).toHaveValue("81");
 
   await expect(page.getByTestId("emachine[0].type")).toContainText("SCIM");
-  await expect(page.getByTestId("emachine[0].price")).toContainText("25093");
+  await expect(page.getByTestId("emachine[0].price")).toContainText("27882");
   await expect(page.getByTestId("emachine[0].ratedPower")).toContainText("132");
   await expect(page.getByTestId("emachine[0].ratedVoltageY")).toContainText(
     "360-440",
