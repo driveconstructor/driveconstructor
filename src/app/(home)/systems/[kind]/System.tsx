@@ -1,5 +1,6 @@
 "use client";
 
+import { findApplicationName } from "@/model/application";
 import {
   createNamedSystem,
   getSystem,
@@ -8,7 +9,7 @@ import {
   SystemContextType,
 } from "@/model/store";
 import { customizeModel, getModel, SystemKind } from "@/model/system";
-import { ArrowDownTrayIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, TagIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import Input from "./Input";
@@ -47,7 +48,7 @@ export default function System({
   function handleClick() {
     const newName = prompt(
       "Enter system name:",
-      isDraft(system) ? "System 1" : name,
+      isDraft(system) ? `New ${findApplicationName(kind)} system` : name,
     );
     if (newName) {
       setName(newName);
@@ -76,7 +77,7 @@ export default function System({
             {isDraft(system) ? (
               <ArrowDownTrayIcon {...iconAttributes} />
             ) : (
-              <PencilIcon {...iconAttributes} />
+              <TagIcon {...iconAttributes} />
             )}
           </div>
           <div className={isDraft(system) ? "text-gray-500" : ""}>{name}</div>

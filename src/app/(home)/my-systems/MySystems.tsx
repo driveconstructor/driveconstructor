@@ -14,9 +14,9 @@ import {
 } from "@/model/system-params";
 import { round } from "@/model/utils";
 import {
-  ArrowTopRightOnSquareIcon,
   DocumentDuplicateIcon,
   PencilIcon,
+  TagIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -29,8 +29,10 @@ export function MySystems() {
   const [selected, setSelected] = useState([] as string[]);
   const nonNullParams = Object.keys(SystemParamsModel).filter(
     (k) =>
-      systems.flatMap((s) => (s.params as any)[k]).filter((v) => v == null)
-        .length == 0,
+      systems
+        .filter((s) => s.params != null)
+        .flatMap((s) => (s.params as any)[k])
+        .filter((v) => v == null).length == 0,
   );
   const [comparableParams, setComparableParams] = useState(nonNullParams);
 
@@ -48,6 +50,7 @@ export function MySystems() {
             <input
               type="checkbox"
               className="m-1"
+              disabled={system.params == null}
               checked={selected.includes(system.id)}
               onChange={(e) =>
                 e.target.checked
@@ -57,7 +60,7 @@ export function MySystems() {
             />
             <div>
               <Link href={`/systems/${system.kind}?id=${system.id}`}>
-                <ArrowTopRightOnSquareIcon {...iconAttributes} />
+                <PencilIcon {...iconAttributes} />
               </Link>
             </div>
             <div
@@ -103,7 +106,7 @@ export function MySystems() {
                 }
               }}
             >
-              <PencilIcon {...iconAttributes} />
+              <TagIcon {...iconAttributes} />
             </div>
             <div className="m-1 border-1">{system.name}</div>
           </div>

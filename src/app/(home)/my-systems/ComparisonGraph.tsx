@@ -74,6 +74,22 @@ export default function ComparisonGraph({
         borderWidth: 3,
       },
     },
+    plugins: {
+      tooltip: {
+        enabled: true,
+        mode: "point",
+        callbacks: {
+          label: function (tooltipItem) {
+            const system = systems[tooltipItem.datasetIndex];
+            const data = Object.values(system.params as any)[
+              tooltipItem.dataIndex
+            ] as number;
+            // consider using precision from the model
+            return data.toFixed(2);
+          },
+        },
+      },
+    },
   };
   return (
     <div>
