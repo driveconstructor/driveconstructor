@@ -52,7 +52,6 @@ can be installed into existing cubicles or when the floor is wet wall mounted
 design can be the only way. For some powers (usually 200...250 kW) there exists
 both wall-mounted & floor-mounted versions.
 
-
 ---
 
 ## FC topologies
@@ -181,40 +180,65 @@ import sc_hb_simple3Image from "./images/sc_hb_simple3.png";
 <img src={sc_hb_simple3Image.src} width="20%" height="20%" /> _Fig.9e. Icon
 designation_.
 
-
 ---
-
 
 ## FC power, voltage and current
 
 ### Rated power
 
-FC are rated according to [IEC standard](http://www.openelectrical.org/wiki/index.php?title=Standard_IEC_Ratings). The series  of powers in *DriveConstructor* is 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900, 1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000 kW.
-If it is desirable that power is chosen automatically then choose "any" - it is the default setting.
+FC are rated according to
+[IEC standard](http://www.openelectrical.org/wiki/index.php?title=Standard_IEC_Ratings).
+The series of powers in _DriveConstructor_ is 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11,
+15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 280, 315, 355,
+400, 450, 500, 560, 630, 710, 800, 900, 1000, 1250, 1400, 1600, 2000, 2500,
+3150, 4000 kW. If it is desirable that power is chosen automatically then choose
+"any" - it is the default setting.
 
 ### Rated voltage
 
-The same voltage ranges are given both for grid side and machine side of the converter. In _DriveConstructor_ the variants to choose from are: 380-440, 650-700, 3200-3400, 5900-6700, 9000-12000 V. If it is desirable that voltage is chosen automatically then choose "any" - it is the default setting.
+The same voltage ranges are given both for grid side and machine side of the
+converter. In _DriveConstructor_ the variants to choose from are: 380-440,
+650-700, 3200-3400, 5900-6700, 9000-12000 V. If it is desirable that voltage is
+chosen automatically then choose "any" - it is the default setting.
 
-In _DriveConstructor_ 3L-NPC topologies can have voltage rating of 2460 V, 3300 V and 4160 V, while ML-SCHB topologies – 6000 V, 6600 V, 10000 V and 11000 V.
+In _DriveConstructor_ 3L-NPC topologies can have voltage rating of 2460 V, 3300
+V and 4160 V, while ML-SCHB topologies – 6000 V, 6600 V, 10000 V and 11000 V.
 
 ### Currents
 
-For almost any application it can be expected that load torque will vary with time going up and down. The pattern can be quite unpredictable.
-As current drawn from the FC is proportional to the load torque, the torque variation determines the current variation. In some application, e.g. pumps, the variation is not significant and can be called "low", while in other applications, e.g. conveyor or winch, the variation can be significant, and, therefore can be called "high". Examples of what can be called "high overloads" and "low overloads" are presented in Fig.1.
+For almost any application it can be expected that load torque will vary with
+time going up and down. The pattern can be quite unpredictable. As current drawn
+from the FC is proportional to the load torque, the torque variation determines
+the current variation. In some application, e.g. pumps, the variation is not
+significant and can be called "low", while in other applications, e.g. conveyor
+or winch, the variation can be significant, and, therefore can be called "high".
+Examples of what can be called "high overloads" and "low overloads" are
+presented in Fig.1.
 
 import fc_lo_hoImage from "./images/fc_lo_ho.png";
 
-<img src={fc_lo_hoImage.src} width="60%" height="60%" /> _Fig.1. "High overloads" and "low overloads"_.
+<img src={fc_lo_hoImage.src} width="60%" height="60%" /> _Fig.1. "High
+overloads" and "low overloads"_.
 
-Choosing the FC the designer should take this aspect into account. Each FC has certain overload capability determined by several physical limitations such as thermal current and maximum current.
-The overloads the FC can tolerate will be characterized by a certain amplitude, duration and cycle.
+Choosing the FC the designer should take this aspect into account. Each FC has
+certain overload capability determined by several physical limitations such as
+thermal current and maximum current. The overloads the FC can tolerate will be
+characterized by a certain amplitude, duration and cycle.
 
-The same converter can be used for "high overloads (HO)" and "low overloads (LO)" but its rated current in a catalogue will be presented in two variants; $$I_H$$ and $$I_L$$, where $$I_L$$ is always higher than $$I_H$$. The principle is that motor current $$I_m$$ should be lower than FC current. When choosing FC for LO application, e.g. a pump, $$I_L$$ should be used and $$I_L$$ should be higher than $$I_m$$. Usually for LO applications acceptable overloads are just 10% and FC current should then handle $$1.1*I_L$$.
-When choosing FC for HO application, e.g. a conveyor, $$I_H$$ should be used and $$I_H$$ should be higher than $$I_m$$. Usually for HO applications acceptable overloads are 50% and FC current should then handle $$1.5*I_H$$.
+The same converter can be used for "high overloads (HO)" and "low overloads
+(LO)" but its rated current in a catalogue will be presented in two variants;
+$$I_H$$ and $$I_L$$, where $$I_L$$ is always higher than $$I_H$$. The principle
+is that motor current $$I_m$$ should be lower than FC current. When choosing FC
+for LO application, e.g. a pump, $$I_L$$ should be used and $$I_L$$ should be
+higher than $$I_m$$. Usually for LO applications acceptable overloads are just
+10% and FC current should then handle $$1.1*I_L$$. When choosing FC for HO
+application, e.g. a conveyor, $$I_H$$ should be used and $$I_H$$ should be
+higher than $$I_m$$. Usually for HO applications acceptable overloads are 50%
+and FC current should then handle $$1.5*I_H$$.
 
-Explanation is presented in Fig.10. Note $$I_c$$ which is rated continuous current, which is not used in practice.
-Short-term (10 s) high current of up to 200% of $$I_H$$ is acceptable for any converter.
+Explanation is presented in Fig.10. Note $$I_c$$ which is rated continuous
+current, which is not used in practice. Short-term (10 s) high current of up to
+200% of $$I_H$$ is acceptable for any converter.
 
 import fc_overloadsImage from "./images/fc_overloads.png";
 
@@ -222,7 +246,6 @@ import fc_overloadsImage from "./images/fc_overloads.png";
 _Fig.10. Current overloads of conventional FC_.
 
 ---
-
 
 ## FC cooling
 
@@ -304,7 +327,6 @@ Other factors to consider:
   electronic boards
 
 [Recommended description by Siemens](http://w3.siemens.com/mcms/mc-solutions/en/converters/low-voltage-converters/sinamics-s/motion-control-drives/tabcardpages-system-architecture/pages/cooling.aspx)
-
 
 ---
 
@@ -408,8 +430,8 @@ depend in particular on the voltage level of the mains and on the power (size)
 of the machine. Different drive manufacturers can offer different measures. One
 example is presented in the table:
 
-|               | < 100 kW                                                   | >= 100 kW                                                                         | >= 350 kW                                                                                                                               |
-| ------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+|                  | < 100 kW                                                   | >= 100 kW                                                                         | >= 350 kW                                                                                                                               |
+| ---------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | $$U_r\leq500 V$$ | Standard machine                                           | Standard machine + isolated N-bearing                                             | Standard machine + isolated N-bearing + ferrite rings                                                                                   |
 | $$U_r\leq600 V$$ | (Standard machine + du/dt-filter) or Reinforced insulation | (Standard machine + du/dt-filter) or (Reinforced insulation + isolated N-bearing) | (Standard machine + isolated N-bearing + du/dt-filter + 1 ferrite ring) or (Reinforced insulation + isolated N-bearing + ferrite rings) |
 | $$U_r\leq690 V$$ | Reinforced insulation + du/dt-filter                       | Reinforced insulation + du/dt-filter                                              | Reinforced insulation + isolated N-bearing + du/dt-filter + 1 ferrite ring                                                              |

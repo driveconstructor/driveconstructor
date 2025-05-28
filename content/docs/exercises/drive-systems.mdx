@@ -96,20 +96,26 @@ import Link from "next/link";
 
 Parameters:
 
--	Rated flow 50 l/s, head 200 m, pump efficiency 81%, speed 2900 rpm
--	Grid voltage 690 V
--	Conditions in the electric room, where frequency converter is to be installed: dry environment, good ventilation ensuring heat removal, temperature not exceeding 40 degrees, cooling water is not available
--	Distance from the electric room to the pump (cable length) - 50 m
--	Conditions at the place of the pump installation, where the motor will be coupled to the pump: some moisture, temperature not exceeding 40 degrees, cooling water is not available
-
+- Rated flow 50 l/s, head 200 m, pump efficiency 81%, speed 2900 rpm
+- Grid voltage 690 V
+- Conditions in the electric room, where frequency converter is to be installed:
+  dry environment, good ventilation ensuring heat removal, temperature not
+  exceeding 40 degrees, cooling water is not available
+- Distance from the electric room to the pump (cable length) - 50 m
+- Conditions at the place of the pump installation, where the motor will be
+  coupled to the pump: some moisture, temperature not exceeding 40 degrees,
+  cooling water is not available
 
 Make and present three design variants:
 
--	1st variant: design for the lowest system cost
--	2nd variant: design for the highest system efficiency (lowest energy consumption)
--	3rd variant: design for the highest system efficiency with budget constraints on the investment in the new drive system of 39000 Euro
+- 1st variant: design for the lowest system cost
+- 2nd variant: design for the highest system efficiency (lowest energy
+  consumption)
+- 3rd variant: design for the highest system efficiency with budget constraints
+  on the investment in the new drive system of 39000 Euro
 
-Present benchmarking results as a spider diagram (one of the possible variants shown below). Comment on the diagram.
+Present benchmarking results as a spider diagram (one of the possible variants
+shown below). Comment on the diagram.
 
 import SpiderImage from "./images/Spider.png";
 
@@ -155,13 +161,18 @@ import SYS5tableImage from "./images/SYS5table.png";
 
 ## SYS-6. Filters, cable length and losses
 
-Design drive trains for four pumps (all have identical parameters: flow 250 l/s, head 280 m, efficiency 87%, rated speed 1450 rpm). Distance to the respective pumps from the electric room (with 6 kV voltage source) where the system driving the pumps are installed: 40 m, 250 m, 1000 m.
+Design drive trains for four pumps (all have identical parameters: flow 250 l/s,
+head 280 m, efficiency 87%, rated speed 1450 rpm). Distance to the respective
+pumps from the electric room (with 6 kV voltage source) where the system driving
+the pumps are installed: 40 m, 250 m, 1000 m.
 
 Try systems with LV and MV FC.
 
-First, set cable on «automatic selection». Then try higher and lower cross-sections and different number of runs. Compare the results. Try both copper and aluminum as the cable material. Compare the results. Summarize your findings in a table.
+First, set cable on «automatic selection». Then try higher and lower
+cross-sections and different number of runs. Compare the results. Try both
+copper and aluminum as the cable material. Compare the results. Summarize your
+findings in a table.
 
 import SYS6tableImage from "./images/sys6table.png";
 
 <img src={SYS6tableImage.src} width="90%" height="90%" />
-
