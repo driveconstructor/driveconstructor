@@ -73,7 +73,11 @@ export default function System({
       <div className="flex items-center">
         <div className="p-4 text-2xl">{model.title}</div>
         <div className="flex items-center">
-          <div hidden={system.params == null} onClick={handleClick}>
+          <div
+            hidden={system.params == null}
+            onClick={handleClick}
+            data-testid="edit"
+          >
             {isDraft(system) ? (
               <ArrowDownTrayIcon {...iconAttributes} />
             ) : (

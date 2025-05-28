@@ -69,14 +69,19 @@ export function MySystems() {
                   ? setSelected([...selected, system.id])
                   : setSelected(selected.filter((v) => v != system.id))
               }
+              data-testid={`select-${system.id}`}
             />
             <div>
-              <Link href={`/systems/${system.kind}?id=${system.id}`}>
+              <Link
+                href={`/systems/${system.kind}?id=${system.id}`}
+                data-testid={`edit-${system.id}`}
+              >
                 <PencilIcon {...iconAttributes} />
               </Link>
             </div>
             <div
               className="hover:cursor-pointer"
+              data-testid={`delete-${system.id}`}
               onClick={() => {
                 if (
                   confirm(`Are you sure you want to delete '${system.name}'?`)
@@ -91,6 +96,7 @@ export function MySystems() {
             </div>
             <div
               className="hover:cursor-pointer"
+              data-testid={`duplicate-${system.id}`}
               onClick={() => {
                 const newName = prompt(
                   "Enter new system name:",
@@ -106,6 +112,7 @@ export function MySystems() {
             </div>
             <div
               className="hover:cursor-pointer"
+              data-testid={`rename-${system.id}`}
               onClick={() => {
                 const newName = prompt("Enter system name:", system.name);
                 if (newName) {
