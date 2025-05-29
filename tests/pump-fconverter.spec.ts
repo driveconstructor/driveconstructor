@@ -16,7 +16,7 @@ test("Defaults", async ({ page }) => {
   await expect(page.getByLabel("Rated efficiency, %:")).toHaveValue("81");
 
   await expect(page.getByTestId("emachine[0].type")).toContainText("SCIM");
-  await expect(page.getByTestId("emachine[0].price")).toContainText("25093");
+  await expect(page.getByTestId("emachine[0].price")).toContainText("27882");
   await expect(page.getByTestId("emachine[0].ratedPower")).toContainText("132");
   await expect(page.getByTestId("emachine[0].ratedVoltageY")).toContainText(
     "360-440",
@@ -223,7 +223,7 @@ test("Fluid density", async ({ page }) => {
     "IM-250-LV-400-SH315-ACS-IP2x-CI-1500-B3-IE4",
   );
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
-    "2Q-2L-400-355-IP2x-AC-F-6p",
+    "2Q-2L-400-315-IP2x-AC-F-6p",
   );
   await expect(page.getByTestId("fconverter[0].<selected>")).toBeChecked();
 });

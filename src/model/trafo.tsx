@@ -9,7 +9,7 @@ import {
   FcCoolingType,
 } from "./cooling-protection";
 import { Environment, EnvironmentModel } from "./environment";
-import { SystemElement } from "./system";
+import { System, SystemElement } from "./system";
 export const TrafoVoltageHV = [
   "2200-2500",
   "2500-2800",
@@ -114,6 +114,19 @@ export const TrafoElement: SystemElement<Trafo> = {
       options: [...Integration],
       value: "stand-alone",
       advanced: true,
+      update(system, value) {
+        if (value == "integrated") {
+          return {
+            ...system,
+            input: {
+              ...system.input,
+              trafo: { ...system.input.trafo, typeIII: "multi-winding" },
+            },
+          } as System;
+        }
+
+        return system;
+      },
     },
     tappings: {
       label: "Tappings",
@@ -124,7 +137,7 @@ export const TrafoElement: SystemElement<Trafo> = {
       advanced: true,
     },
     ...FcCoolingModel,
-    ...EMachineProtectionModel,
+    protection: { ...EMachineProtectionModel.protection, value: "IP54/55" },
     ...EnvironmentModel,
     overallCurrentDerating: {
       label: "Overall current derating",
@@ -134,30 +147,21 @@ export const TrafoElement: SystemElement<Trafo> = {
         const deratingA =
           trafo.altitude > 1000 ? 1 - 0.00008 * (trafo.altitude - 1000) : 1;
 
-        let deratingT = 1;
-        let deratingC = 1;
+        switch (trafo.cooling) {
+          case "air": {
+            const K1 = trafo.ambientTemperature > 40 ? -0.008 : 0;
+            const deratingT = 1 + K1 * (trafo.ambientTemperature - 40);
+            return deratingA * deratingT;
+          }
+          case "water": {
+            const deratingC = 1 - 0.008 * (trafo.coolantTemperature - 35);
+            const deratingT = 1 - 0.004 * (trafo.ambientTemperature - 40);
 
-        if (trafo.cooling === "air") {
-          if (trafo.ambientTemperature > 40) {
-            deratingT = 1 - 0.008 * (trafo.ambientTemperature - 40);
-          }
-        } else if (trafo.cooling === "water") {
-          if (trafo.coolantTemperature > 35) {
-            deratingC = 1 - 0.008 * (trafo.coolantTemperature - 35);
-          } else {
-            deratingC = 1 + 0.008 * (trafo.coolantTemperature - 35);
-          }
-          if (trafo.ambientTemperature > 40) {
-            deratingT = 1 - 0.004 * (trafo.ambientTemperature - 40);
-          } else {
-            deratingT = 1 + 0.004 * (trafo.ambientTemperature - 40);
+            const derating1 = deratingA * deratingC;
+            const derating2 = deratingA * deratingT;
+            return Math.min(derating1, derating2);
           }
         }
-
-        const derating1 = deratingA * deratingC;
-        const derating2 = deratingA * deratingT;
-
-        return derating1 <= derating2 ? derating1 : derating2;
       },
     },
     voltageDerating: {
@@ -168,10 +172,24 @@ export const TrafoElement: SystemElement<Trafo> = {
         trafo.altitude > 2000 ? 1 - 0.00015 * (trafo.altitude - 2000) : 1,
     },
   },
-  customize(model, system) {
+  customize(model, trafo) {
+    model = {
+      ...model,
+      params: {
+        ...model.params,
+        typeIII: {
+          ...model.params.typeIII,
+          options:
+            trafo.typeIV == "integrated"
+              ? ["multi-winding"]
+              : TrafoElement.params.typeIII.options,
+        },
+      },
+    };
+
     return {
       ...model,
-      icon: customizeIcon(system.typeIII),
+      icon: customizeIcon(trafo.typeIII),
     };
   },
 };

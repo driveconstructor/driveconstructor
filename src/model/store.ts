@@ -2,6 +2,7 @@ import { withCandidates } from "./sizing";
 import { System, SystemModel } from "./system";
 
 const prefix = "dc-v1.system.";
+const draft_prefix = "draft_";
 
 export function getSystem(id: string): System {
   const json = localStorage.getItem(prefix + id);
@@ -12,13 +13,12 @@ export function getSystem(id: string): System {
   return JSON.parse(json);
 }
 
-export function saveSystem(id: string, system: System): void {
-  localStorage.setItem(prefix + id, JSON.stringify(system));
+export function saveSystem(system: System): void {
+  localStorage.setItem(prefix + system.id, JSON.stringify(system));
 }
 
 export type SystemContextType = {
   model: SystemModel;
-  id: string;
   system: System;
 };
 
@@ -55,49 +55,48 @@ export function initSystemInput(model: SystemModel) {
   }, {});
 }
 
-export function createSystem(model: SystemModel): {
-  id: string;
-  system: System;
-} {
+export function createSystem(model: SystemModel): System {
   const kind = model.kind;
   const input = updateSystemInput(model, initSystemInput(model));
 
-  const id = "draft_" + kind;
+  const id = draft_prefix + kind;
   const result = {
+    id,
     kind,
     input,
     element: Object.keys(model.input)[0],
+    name: "Unsaved draft",
   } as System;
   const system = withCandidates(model.update?.(result) ?? result);
-  saveSystem(id, system);
-  return { id, system };
+  saveSystem(system);
+  return system;
 }
 
 export function updateParam(
-  context: SystemContextType,
+  model: SystemModel,
+  system: System,
   paramName: string,
   value: any,
 ): System {
   const withParamValue: System = {
-    ...context.system,
+    ...system,
     input: {
-      ...context.system.input,
-      [context.system.element]: {
-        ...context.system.input[context.system.element],
+      ...system.input,
+      [system.element]: {
+        ...system.input[system.element],
         [paramName]: value,
       },
     },
   } as System;
 
   const withParamUpdate =
-    context.model.input[context.system.element].params[paramName].update?.(
+    model.input[system.element].params[paramName].update?.(
       withParamValue,
       value,
     ) ?? withParamValue;
-  const withModelUpdate =
-    context.model.update?.(withParamUpdate) ?? withParamUpdate;
+  const withModelUpdate = model.update?.(withParamUpdate) ?? withParamUpdate;
 
-  const input = updateSystemInput(context.model, withModelUpdate.input);
+  const input = updateSystemInput(model, withModelUpdate.input);
   const withCalculatedParams = {
     ...withModelUpdate,
     input,
@@ -110,4 +109,40 @@ export function updateParam(
   };
 
   return withCandidates(withoutComponents);
+}
+
+export function createNamedSystem(oldId: string, name: string): System {
+  const system = getSystem(oldId);
+  const id = generateSystemId();
+  const updated = { ...system, id, name };
+  return updated;
+}
+
+function generateSystemId() {
+  return window.crypto.randomUUID().replaceAll("-", "").substring(0, 7);
+}
+
+export function getSystems(): System[] {
+  return typeof localStorage == "undefined"
+    ? []
+    : Object.keys(localStorage)
+        .filter((k) => k.startsWith(prefix))
+        .map((k) => getSystem(k.substring(prefix.length)))
+        .filter((v) => !isDraft(v));
+}
+
+export function deleteSystem(id: string) {
+  localStorage.removeItem(prefix + id);
+}
+
+export function isDraft(system: System) {
+  return system.id == null || system.id.startsWith(draft_prefix);
+}
+
+export function duplicateSystem(id: string, name: string): System {
+  const system = getSystem(id);
+  const newId = generateSystemId();
+  const newSystem = { ...system, id: newId, name };
+  saveSystem(newSystem);
+  return newSystem;
 }

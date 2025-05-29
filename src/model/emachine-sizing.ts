@@ -21,7 +21,6 @@ import { EMachineComponent } from "./emachine-component";
 import { getEfficiency100, getPartialEfficiency } from "./emachine-efficiency";
 import { emachineDesignation, emachineTypeFilter } from "./emachine-utils";
 import { Mechanism } from "./sizing";
-import { closest } from "./utils";
 import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
@@ -96,7 +95,11 @@ export function findEmCandidates(
           ).flatMap((protection) =>
             [...EfficiencyClass, null]
               .filter(
-                (ec) => em.efficiencyClass == null || ec == em.efficiencyClass,
+                (ec) =>
+                  em.efficiencyClass == null ||
+                  ec == em.efficiencyClass ||
+                  // pass any class down
+                  ec == null,
               )
               .flatMap((efficiencyClass) =>
                 typeSpeedTorqueList.map((typeSpeedTorque) => {
@@ -154,6 +157,7 @@ export function findEmCandidates(
                     frameMaterial,
                     mounting,
                     efficiencyClass,
+                    cooling,
                   );
 
                   const designation = emachineDesignation(
@@ -291,7 +295,6 @@ function getK8(
         case "IP21/23":
           return 0.8;
       }
-      break;
     case "IC71W":
       return 0.7;
   }
@@ -413,18 +416,20 @@ function getPrice(
   frameMaterial: EMachineFrameMaterialType,
   mounting: EMachineMountingType,
   efficiencyClass: EfficiencyClassType | null,
+  cooling: EMachineCoolingType,
 ) {
   const K11 = ratedVoltageY.value > 1000 ? 30 : 20;
   const a = ratedVoltageY.value > 1000 ? 0.8 : 0.9;
   const K9 = typeSpeedTorque.ratedSynchSpeed === 1500 ? 0.95 : 1;
   const price =
-    1000 *
-    K11 *
-    getK3(typeSpeedTorque.type) *
-    getK5(protection) *
-    getK6(frameMaterial) *
-    getK7(mounting) *
-    K9 *
+    ((1000 *
+      K11 *
+      getK3(typeSpeedTorque.type) *
+      getK5(protection) *
+      getK6(frameMaterial) *
+      getK7(mounting) *
+      K9) /
+      getK14(cooling, protection)) *
     Math.pow(weight / 1000, a);
   return (
     price +
@@ -437,6 +442,35 @@ function getPrice(
   );
 }
 
+// K14 = 0,975 for IC411 IP54/55,
+// K14 = 0,9 for IC411 IP21/23,
+// K14 = 1 for IC416 IP54/55,
+// K14 = 0,925 for IC416 IP21/23,
+// K14 = 0,85 for IC71W
+
+function getK14(
+  cooling: EMachineCoolingType,
+  protection: EMachineProtectionType,
+) {
+  switch (cooling) {
+    case "IC411":
+      switch (protection) {
+        case "IP54/55":
+          return 0.975;
+        case "IP21/23":
+          return 0.9;
+      }
+    case "IC416":
+      switch (protection) {
+        case "IP54/55":
+          return 1;
+        case "IP21/23":
+          return 0.925;
+      }
+    case "IC71W":
+      return 0.85;
+  }
+}
 function getTorqueOverload(type: EMachineTypeAlias) {
   switch (type) {
     case "SCIM":
@@ -450,7 +484,7 @@ function getTorqueOverload(type: EMachineTypeAlias) {
 function getShaftHeight(ratedPower: number, volume: number) {
   const DtoLcurve = 1.4 + 0.2 * Math.pow(ratedPower, 0.2);
   const SHapprox = 0.5 * Math.pow(((volume / DtoLcurve) * 4) / 3.1416, 1 / 3);
-  return closest(ShaftHeight, SHapprox * 1000);
+  return ShaftHeight.findLast((v) => v <= SHapprox * 1000);
 }
 
 function getMomentOfInertia(ratedPower: number, weight: number) {

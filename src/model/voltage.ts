@@ -1,22 +1,31 @@
-import { closest } from "./utils";
+export type VoltageYType = "LV" | "MV";
 
-export type VoltageY = {
-  value: (typeof Voltage)[number];
+export type VoltageY<V = VoltageYType> = {
+  value: number;
   min: number;
   max: number;
-  type: "LV" | "MV";
+  type: V;
 };
 
 const LowVoltage = [400, 660];
-
 const MediumVoltage = [3300, 6600, 10000];
 
 export const Voltage = [...LowVoltage, ...MediumVoltage];
 
-export function findVoltageY(deratedVoltage: number): VoltageY {
-  const value = closest(Voltage, deratedVoltage) as (typeof Voltage)[number];
+export function isIn(array: number[], value: number) {
+  return value <= array[array.length - 1] && value >= array[0];
+}
 
-  const type = LowVoltage.includes(value) ? "LV" : "MV";
+export function findVoltageY(voltage: number): VoltageY | null {
+  const value = Voltage.find((v) => v * 1.05 >= voltage);
+  if (value == null) {
+    return null;
+  }
 
-  return { min: value * 0.9, value, max: value * 1.1, type };
+  return {
+    min: Math.round(value * 0.9),
+    value,
+    max: Math.round(value * 1.1),
+    type: isIn(LowVoltage, value) ? "LV" : "MV",
+  };
 }

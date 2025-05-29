@@ -3,13 +3,13 @@ export default function PageTemplate({
   text,
   children,
 }: {
-  title: React.ReactNode;
+  title?: React.ReactNode;
   text?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <div>
-      <div className="p-4 text-2xl">{title}</div>
+      {title ? <div className="p-4 text-2xl">{title}</div> : null}
       {text ? <div className="p-4">{text}</div> : null}
       {children}
     </div>

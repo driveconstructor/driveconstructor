@@ -1,8 +1,12 @@
-import { ComponentParam, getComponentModel } from "@/model/component";
-import { round } from "@/model/utils";
+import {
+  ComponentParam,
+  customizeModel,
+  getComponentModel,
+  renderComponentParam,
+} from "@/model/component";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
-import { SystemContext } from "./Input";
+import { SystemContext } from "./System";
 
 export default function Candidates({
   onSelect,
@@ -64,19 +68,19 @@ function Candidate({
             <ChevronDownIcon className="h-6 text-gray-500" />
           )}
           <div className="text-lg text-gray-500">
-            {model.title + (collapsed ? `(${values.length})` : "")}
+            {`${model.title} (${values.length})`}
           </div>
         </div>
         {!collapsed && hasAdvanced && values.length != 0 ? (
           <>
             <div className="grow" />
-            <div
+            <button
               className="btn flex-none"
               onClick={() => setShowMore(!showMore)}
               data-testid={`${kind}.<more>`}
             >
               {showMore ? "Less..." : "More..."}
-            </div>
+            </button>
           </>
         ) : null}
       </div>
@@ -84,9 +88,7 @@ function Candidate({
         {values
           .filter(() => !collapsed)
           .map((v, i) => {
-            const updatedModel = model.customize
-              ? model.customize(model, v)
-              : model;
+            const updatedModel = customizeModel(model, v);
             return (
               <div
                 key={i}
@@ -143,11 +145,7 @@ function Param({
     <div className="p-1">
       <div className="text-sm break-normal">{model.label}:</div>
       <div className="border break-normal" data-testid={id}>
-        {model.render
-          ? model.render(value)
-          : typeof value == "number"
-            ? round(value, model.precision)
-            : value}
+        {renderComponentParam(model, value)}
       </div>
     </div>
   );

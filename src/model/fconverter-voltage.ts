@@ -1,30 +1,34 @@
-import { closest } from "./utils";
-
-export type FcVoltageY = {
-  value: (typeof FcVoltage)[number];
-  min: number;
-  max: number;
-  type: "LV" | "MV1" | "MV2";
-};
+import { isIn, VoltageY } from "./voltage";
+export type FcVoltageYType = "LV" | "MV1" | "MV2";
+export type FcVoltageY = VoltageY<FcVoltageYType>;
 
 const LowVoltage = [400, 660];
 const MediumVoltage1 = [2460, 3300, 4160];
 const MediumVoltage2 = [6000, 6600, 10000, 11000];
 
-export const FcVoltage = [
-  ...LowVoltage,
-  ...MediumVoltage1,
-  ...MediumVoltage2,
-] as const satisfies number[];
+export const FcVoltage = [...LowVoltage, ...MediumVoltage1, ...MediumVoltage2];
 
-export function findFcVoltageY(voltage: number): FcVoltageY {
-  const value = closest(FcVoltage, voltage) as (typeof FcVoltage)[number];
+export function findFcVoltageY(voltage: number): FcVoltageY | null {
+  let type: FcVoltageYType;
+  if (isIn(LowVoltage, voltage)) {
+    type = "LV";
+  } else if (isIn(MediumVoltage1, voltage)) {
+    type = "MV1";
+  } else if (isIn(MediumVoltage2, voltage)) {
+    type = "MV2";
+  } else {
+    return null;
+  }
 
-  const type = LowVoltage.includes(value)
-    ? "LV"
-    : MediumVoltage1.includes(value)
-      ? "MV1"
-      : "MV2";
+  const value = FcVoltage.find((v) => v >= voltage);
+  if (value == null) {
+    return null;
+  }
 
-  return { min: value * 0.9, value, max: value * 1.05, type };
+  return {
+    min: Math.round(value * 0.9),
+    value,
+    max: Math.round(value * 1.05),
+    type,
+  };
 }

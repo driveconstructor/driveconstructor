@@ -3,7 +3,6 @@ import {
   DepthParam,
   DesignationParam,
   HeightParam,
-  LengthParam,
   PriceParam,
   WeightParam,
   WidthParam,
@@ -42,30 +41,65 @@ export type TrafoComponent = {
   typeIV: TypeIVAlias;
   cooling: FcCoolingType;
   protection: EMachineProtectionType;
+  footprint: number;
+  volume: number;
+  efficiency75?: number;
+  efficiency50?: number;
+  efficiency25?: number;
 };
 
 export const TrafoComponentModel: ComponentModel<TrafoComponent> = {
   kind: "trafo",
   title: "Trafo",
   params: {
-    voltageLVmax: { label: "LV side voltage (max)" },
-    voltageHVmax: { label: "HV side voltage (max)" },
-    currentHVmax: { label: "HV side current (max)" },
-    currentLVmax: { label: "LV side current (max)" },
+    voltageLVmax: {
+      label: "LV side voltage (max)",
+      precision: 2,
+    },
+    voltageHVmax: {
+      label: "HV side voltage (max)",
+      precision: 2,
+    },
+    currentHVmax: {
+      label: "HV side current (max)",
+      precision: 2,
+    },
+    currentLVmax: {
+      label: "LV side current (max)",
+      precision: 2,
+    },
     ...EfficiencyParam,
-    ratedCoolantTemperature: { label: null, hidden: true },
-    ratedPower: { label: TrafoElement.params.ratedPower.label },
-    typeII: { label: TrafoElement.params.typeII.label },
-    typeIII: { label: TrafoElement.params.typeIII.label },
-    typeIV: { label: TrafoElement.params.typeIV.label },
+    ratedCoolantTemperature: {
+      label: null,
+      hidden: true,
+    },
+    ratedPower: {
+      label: TrafoElement.params.ratedPower.label,
+    },
+    typeII: {
+      label: TrafoElement.params.typeII.label,
+    },
+    typeIII: {
+      label: TrafoElement.params.typeIII.label,
+    },
+    typeIV: {
+      label: TrafoElement.params.typeIV.label,
+    },
     ...CoolingParam,
     ...ProtectionParam,
     ...WeightParam,
-    ...LengthParam,
     ...HeightParam,
     ...WidthParam,
     ...PriceParam,
     ...DepthParam,
     ...DesignationParam,
+    footprint: {
+      label: null,
+      hidden: true,
+    },
+    volume: {
+      label: null,
+      hidden: true,
+    },
   },
 };

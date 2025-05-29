@@ -178,7 +178,7 @@ export const PumpGbFcTrModel: Model<PumpGbFcTr> = {
     </div>
   ),
   input: {
-    pump: PumpElement,
+    pump: { ...PumpGbFcModel.input.pump },
     gearbox: GearboxElement,
     emachine: EMachineElement,
     cable: CableElement,

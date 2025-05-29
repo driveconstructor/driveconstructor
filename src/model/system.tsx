@@ -6,6 +6,7 @@ import { EMachine } from "./emachine";
 import { FConverter } from "./fconverter";
 import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
+import { SystemParamsType } from "./system-params";
 import { WinchFc } from "./winch-system";
 
 export type ParamType = "text" | "number";
@@ -28,7 +29,7 @@ export type SystemParam<V = any, E = any> = {
 
 export type SystemElement<T = any> = {
   icon: StaticImageData;
-  iconWidth?: number;
+  iconScale?: number; // defaults to 1
   customize?: (model: SystemElement<T>, value: T) => SystemElement<T>;
   params: {
     [P in keyof T]: SystemParam<T[P], T>;
@@ -52,6 +53,7 @@ export type SystemModel = Model<any>;
 const models = applications.flatMap((a) => a.systems);
 
 export type BaseSystem = {
+  id: string;
   element: string;
   input: {
     emachine: EMachine;
@@ -60,6 +62,8 @@ export type BaseSystem = {
     switch: {};
     grid: Grid;
   };
+  params: SystemParamsType | null;
+  name: string;
 };
 
 export type System = (PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr | WinchFc) & {

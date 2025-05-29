@@ -8,7 +8,7 @@ import {
   PumpGbFcModel,
   PumpGbFcTrModel,
 } from "./pump-system";
-import { SystemModel } from "./system";
+import { SystemKind, SystemModel } from "./system";
 import { WinchFcModel } from "./winch-system";
 
 export type ApplicationModel = {
@@ -59,3 +59,9 @@ const applications: ApplicationModel[] = [
 ];
 
 export default applications;
+
+export function findApplicationName(kind: SystemKind): string {
+  return applications.filter((a) =>
+    a.systems.map((s) => s.kind).includes(kind),
+  )[0].name;
+}

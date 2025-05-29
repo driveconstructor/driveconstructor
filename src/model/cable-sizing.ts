@@ -1,7 +1,6 @@
 import {
   Cable,
   CrossSection,
-  CrossSectionType,
   Material,
   MaterialType,
   NumberOfRuns,
@@ -9,7 +8,6 @@ import {
 } from "./cable";
 import { CableComponent } from "./cable-component";
 import { EMachineComponent } from "./emachine-component";
-import { closest } from "./utils";
 
 const Voltage = [1, 3, 6, 10, 15];
 
@@ -17,63 +15,73 @@ export function findCableComponent(
   cable: Cable,
   emachine: EMachineComponent,
 ): CableComponent[] {
-  const { numberOfRuns, crossSection } = calculateCable(cable, emachine);
+  const calculatedCable = calculateCable(cable, emachine);
+  if (calculatedCable == null) {
+    return [];
+  }
+  const { numberOfRuns, minCrossSection } = calculatedCable;
 
   return Voltage.filter(
     (voltage) => voltage >= emachine.ratedVoltageY.max / 1000,
   )
     .flatMap((voltage) => {
       return Material.filter((material) => material == cable.material).flatMap(
-        (material) => {
-          const resistancePerMeter =
-            (getRho(material) / (crossSection * 1e-6)) * 1.15;
-          const ins = (1.1 * voltage) / 2.5;
-          const ds = Math.sqrt(crossSection / 3.1416);
-          const reactancePerHz =
-            (0.55 + 0.2 * Math.log(2 + (4 * ins) / ds)) * 2 * 3.1416 * 1e-3;
-          const K1 = getK1(material);
-          const pricePerMeter =
-            K1 * (1 + voltage * 0.03) * Math.pow(crossSection, 0.8);
-          const designation = getDesignation(material, crossSection, voltage);
-          const length = cable.length;
-          const price = length * numberOfRuns * pricePerMeter;
-          const voltageDrop = Math.sqrt(
-            Math.pow(emachine.workingCurrent * resistancePerMeter * length, 2) +
+        (material) =>
+          CrossSection.filter(
+            (crossSection) => crossSection >= minCrossSection,
+          ).flatMap((crossSection) => {
+            const resistancePerMeter =
+              (getRho(material) / (crossSection * 1e-6)) * 1.15;
+            const ins = (1.1 * voltage) / 2.5;
+            const ds = Math.sqrt(crossSection / 3.1416);
+            const reactancePerHz =
+              (0.55 + 0.2 * Math.log(2 + (4 * ins) / ds)) * 2 * 3.1416 * 1e-3;
+            const K1 = getK1(material);
+            const pricePerMeter =
+              K1 * (1 + voltage * 0.03) * Math.pow(crossSection, 0.8);
+            const designation = getDesignation(material, crossSection, voltage);
+            const length = cable.length;
+            const price = length * numberOfRuns * pricePerMeter;
+            const voltageDrop = Math.sqrt(
               Math.pow(
-                (emachine.workingCurrent *
-                  reactancePerHz *
-                  length *
-                  50) /*Gz*/ /
-                  1000,
+                emachine.workingCurrent * resistancePerMeter * length,
                 2,
-              ),
-          );
-          const losses =
-            ((Math.pow(emachine.workingCurrent, 2) * resistancePerMeter) /
-              1000) *
-            length *
-            3 *
-            numberOfRuns;
+              ) +
+                Math.pow(
+                  (emachine.workingCurrent *
+                    reactancePerHz *
+                    length *
+                    50) /*Gz*/ /
+                    1000,
+                  2,
+                ),
+            );
+            const losses =
+              (((Math.pow(emachine.workingCurrent, 2) * resistancePerMeter) /
+                1000) *
+                length *
+                3) /
+              numberOfRuns;
 
-          const efficiency100 =
-            ((emachine.ratedPower - losses) / emachine.ratedPower) * 100;
+            const efficiency100 =
+              ((emachine.ratedPower - losses) / emachine.ratedPower) * 100;
 
-          return {
-            length,
-            material,
-            crossSection,
-            numberOfRuns,
-            voltage,
-            reactancePerHz,
-            resistancePerMeter,
-            pricePerMeter,
-            price,
-            designation,
-            voltageDrop,
-            losses,
-            efficiency100,
-          };
-        },
+            return {
+              length,
+              material,
+              crossSection,
+              numberOfRuns,
+              voltage,
+              reactancePerHz,
+              resistancePerMeter,
+              pricePerMeter,
+              price,
+              designation,
+              voltageDrop,
+              losses,
+              efficiency100,
+            };
+          }),
       );
     })
     .filter((cable) => {
@@ -180,18 +188,17 @@ function calculateCable(cable: Cable, emachine: EMachineComponent) {
     result = { maxCurrentDensity, numberOfRuns: cable.numberOfRuns };
   }
 
-  let crossSection;
+  let minCrossSection;
   if (cable.crossSection == null) {
     const crossSectionCalc =
       workingCurrent / result.numberOfRuns / result.maxCurrentDensity;
-    crossSection = closest(
-      CrossSection,
-      crossSectionCalc,
-      true,
-    ) as CrossSectionType;
+    minCrossSection = CrossSection.find((v) => v >= crossSectionCalc);
+    if (minCrossSection == null) {
+      return null;
+    }
   } else {
-    crossSection = cable.crossSection;
+    minCrossSection = cable.crossSection;
   }
 
-  return { ...result, crossSection };
+  return { ...result, minCrossSection };
 }
