@@ -5,7 +5,6 @@ import { NoTrafoFConverterElement } from "./fconverter";
 import { GridElement } from "./grid";
 import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
-import { Winch, WinchElement } from "./winch";
 import { Wind, WindElement } from "./wind";
 
 export type WindFc = BaseSystem & {
@@ -23,7 +22,10 @@ export const WindFcModel: Model<WindFc> = {
   description: (
     <div>
       <p>
-TODO
+        This simple system topology can be used at low powers when it is
+        possible to find a generator matching speed of the turbine blades and
+        when both, the generator and the FC, have voltage rating close to that
+        of the grid.
       </p>
     </div>
   ),

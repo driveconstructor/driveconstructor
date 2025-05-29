@@ -33,6 +33,7 @@ function nonNullParams(systems: System[], selected: string[]) {
 }
 
 export function MySystems() {
+  // use init flag to indicate that systems are loaded from local storage
   const [init, setInit] = useState(false);
   const [systems, setSystems] = useState([] as System[]);
   const [comparableParams, setComparableParams] = useState([] as string[]);

@@ -86,7 +86,7 @@ function createMechanism(system: System): Mechanism {
       gearRatio: 1,
     };
   } else {
-    throw new Error("Unsupported ty");
+    throw new Error("Unsupported type");
   }
 }
 

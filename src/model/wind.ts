@@ -1,4 +1,4 @@
-import icon from "../images/el-winch.svg";
+import icon from "../images/el-wind.svg";
 import { SystemElement } from "./system";
 
 export type Wind = {

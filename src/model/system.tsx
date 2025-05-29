@@ -68,7 +68,14 @@ export type BaseSystem = {
   timeUpdated: number;
 };
 
-export type System = (PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr | WinchFc | WindFc) & {
+export type System = (
+  | PumpFc
+  | PumpGbFc
+  | PumpFcTr
+  | PumpGbFcTr
+  | WinchFc
+  | WindFc
+) & {
   // to make type script access different types for systems
   input: Record<string, Record<string, any>>;
 };
