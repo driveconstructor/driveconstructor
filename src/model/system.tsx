@@ -64,6 +64,7 @@ export type BaseSystem = {
   };
   params: SystemParamsType | null;
   name: string;
+  timeUpdated: number;
 };
 
 export type System = (PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr | WinchFc) & {

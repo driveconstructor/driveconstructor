@@ -13,8 +13,11 @@ export function getSystem(id: string): System {
   return JSON.parse(json);
 }
 
-export function saveSystem(system: System): void {
-  localStorage.setItem(prefix + system.id, JSON.stringify(system));
+export function saveSystem(system: System): System {
+  const updated = { ...system, timeUpdated: Date.now() };
+  localStorage.setItem(prefix + system.id, JSON.stringify(updated));
+
+  return updated;
 }
 
 export type SystemContextType = {
@@ -143,6 +146,5 @@ export function duplicateSystem(id: string, name: string): System {
   const system = getSystem(id);
   const newId = generateSystemId();
   const newSystem = { ...system, id: newId, name };
-  saveSystem(newSystem);
-  return newSystem;
+  return saveSystem(newSystem);
 }

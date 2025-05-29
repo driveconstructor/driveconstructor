@@ -48,7 +48,7 @@ export function MySystems() {
     setComparableParams(nonNullParams(systems, selected));
   }, [systems, selected]);
 
-  function SystemRow({ system }: { system: System }) {
+  function SystemRow({ index, system }: { index: number; system: System }) {
     const model = customizeModel(getModel(system.kind), system);
     const iconAttributes = {
       width: 16,
@@ -69,19 +69,19 @@ export function MySystems() {
                   ? setSelected([...selected, system.id])
                   : setSelected(selected.filter((v) => v != system.id))
               }
-              data-testid={`select-${system.id}`}
+              data-testid={`system[${index}].<select>`}
             />
             <div>
               <Link
                 href={`/systems/${system.kind}?id=${system.id}`}
-                data-testid={`edit-${system.id}`}
+                data-testid={`system[${index}].<edit>`}
               >
                 <PencilIcon {...iconAttributes} />
               </Link>
             </div>
             <div
               className="hover:cursor-pointer"
-              data-testid={`delete-${system.id}`}
+              data-testid={`system[${index}].<delete>`}
               onClick={() => {
                 if (
                   confirm(`Are you sure you want to delete '${system.name}'?`)
@@ -96,7 +96,7 @@ export function MySystems() {
             </div>
             <div
               className="hover:cursor-pointer"
-              data-testid={`duplicate-${system.id}`}
+              data-testid={`system[${index}].<duplicate>`}
               onClick={() => {
                 const newName = prompt(
                   "Enter new system name:",
@@ -112,7 +112,7 @@ export function MySystems() {
             </div>
             <div
               className="hover:cursor-pointer"
-              data-testid={`rename-${system.id}`}
+              data-testid={`system[${index}].<rename>`}
               onClick={() => {
                 const newName = prompt("Enter system name:", system.name);
                 if (newName) {
@@ -127,13 +127,21 @@ export function MySystems() {
             >
               <TagIcon {...iconAttributes} />
             </div>
-            <div className="m-1 border-1">{system.name}</div>
+            <div
+              className="m-1 border-1"
+              data-testid={`system[${index}].<name>`}
+            >
+              {system.name}
+            </div>
           </div>
           <Schema model={model} />
+          <div className="text-xs">
+            Updated: {new Date(system.timeUpdated).toLocaleString()}
+          </div>
         </div>
         <div className="col-span-9">
           {system.params == null ? null : (
-            <SystemParams params={system.params} />
+            <SystemParams index={index} params={system.params} />
           )}
         </div>
       </div>
@@ -143,9 +151,9 @@ export function MySystems() {
   return (
     <div className="flex-col">
       {systems
-        .sort((a, b) => a.id.localeCompare(b.id))
-        .map((v) => (
-          <SystemRow key={v.id} system={v} />
+        .sort((a, b) => b.timeUpdated - a.timeUpdated)
+        .map((v, index) => (
+          <SystemRow key={v.id} index={index} system={v} />
         ))}
       <div className="text-xl p-4">Comparison</div>
       {selected.length <= 1 ? (
@@ -199,7 +207,13 @@ export function MySystems() {
   );
 }
 
-function SystemParams({ params }: { params: SystemParamsType }) {
+function SystemParams({
+  index,
+  params,
+}: {
+  index: number;
+  params: SystemParamsType;
+}) {
   return (
     <div className="grid grid-cols-4 lg:grid-cols-8">
       {Object.entries(params).map(([k, v]) => {
@@ -207,7 +221,7 @@ function SystemParams({ params }: { params: SystemParamsType }) {
         return (
           <div key={k} className="break-normal border-1">
             <div className="text-sm">{model.label}:</div>
-            <div className="text-left">
+            <div className="text-left" data-testid={`system[${index}][${k}]`}>
               {v == null ? "N/A" : round(v, model.precision)}
             </div>
           </div>

@@ -20,7 +20,10 @@ export default function SystemReport() {
     <>
       <div className="flex items-center">
         <div>
-          <Link href={`/systems/${model.kind}?id=${system.id}`}>
+          <Link
+            href={`/systems/${model.kind}?id=${system.id}`}
+            data-testid="go-back-link"
+          >
             <ArrowLeftStartOnRectangleIcon width={24} height={24} />
           </Link>
         </div>
@@ -59,7 +62,7 @@ function SystemParams({ params }: { params: SystemParamsType }) {
           return (
             <div key={k} className="grid grid-cols-2">
               <div className="text-">{model.label}:</div>
-              <div className="text-left">
+              <div className="text-left" data-testid={k}>
                 {v == null ? "N/A" : round(v, model.precision)}
               </div>
             </div>
@@ -86,7 +89,7 @@ function ComponentParams({ components }: { components: ComponentsType }) {
                 .map(([n, p]) => (
                   <div key={n} className="grid grid-cols-2">
                     <div className="text-">{p.label}:</div>
-                    <div className="text-left">
+                    <div className="text-left" data-testid={`${kind}[${n}]`}>
                       {renderComponentParam(p, (v as any)[n])}
                     </div>
                   </div>
