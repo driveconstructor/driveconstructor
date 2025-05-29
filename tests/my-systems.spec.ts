@@ -11,7 +11,7 @@ test.beforeEach(async ({ browserName, page }) => {
   test.skip(browserName.toLowerCase() != "firefox", "Test only for firefox!");
 });
 
-test("report and my-systems", async ({ page }) => {
+test("Report and save", async ({ page }) => {
   await expect(page.getByTestId("system-name")).toContainText("Unsaved draft");
   await page.getByTestId("fconverter[0].<selected>").check();
   await page.getByTestId("save").click();
@@ -62,7 +62,7 @@ test("report and my-systems", async ({ page }) => {
   );
 });
 
-test("export", async ({ page }) => {
+test("Export and delete", async ({ page }) => {
   await page.getByRole("link", { name: "My systems" }).click();
   await page
     .getByTestId("import")
@@ -84,5 +84,13 @@ test("export", async ({ page }) => {
   await page.getByTestId("system[1].<select>").check();
   await expect(page.getByRole("main")).toContainText(
     "Parameter selection (minimum 3)",
+  );
+  await page.getByTestId("system[0].<delete>").click();
+  await expect(page.getByTestId("system[0].<name>")).toContainText(
+    "Test pump system 1",
+  );
+  page.reload();
+  await expect(page.getByTestId("system[0].<name>")).toContainText(
+    "Test pump system 1",
   );
 });

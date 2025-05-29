@@ -46,7 +46,7 @@ export function MySystems() {
     if (init) {
       saveSystems(systems);
     }
-  }, [systems]);
+  }, [init, systems]);
 
   const [selected, setSelected] = useState([] as string[]);
   useEffect(() => {
