@@ -1,6 +1,6 @@
 "use client";
 
-import { duplicateSystem, getSystems, saveSystem } from "@/model/store";
+import { duplicateSystem, getSystems, saveSystems } from "@/model/store";
 import { customizeModel, getModel, System } from "@/model/system";
 import {
   getSystemParamModel,
@@ -9,7 +9,8 @@ import {
 } from "@/model/system-params";
 import { round } from "@/model/utils";
 import {
-  ArrowDownOnSquareIcon,
+  ArrowDownOnSquareStackIcon,
+  ArrowUpOnSquareStackIcon,
   DocumentDuplicateIcon,
   PencilIcon,
   TagIcon,
@@ -32,15 +33,19 @@ function nonNullParams(systems: System[], selected: string[]) {
 }
 
 export function MySystems() {
+  const [init, setInit] = useState(false);
   const [systems, setSystems] = useState([] as System[]);
   const [comparableParams, setComparableParams] = useState([] as string[]);
 
   useEffect(() => {
+    setInit(true);
     setSystems(getSystems());
   }, []);
 
   useEffect(() => {
-    systems.forEach(saveSystem);
+    if (init) {
+      saveSystems(systems);
+    }
   }, [systems]);
 
   const [selected, setSelected] = useState([] as string[]);
@@ -181,9 +186,9 @@ export function MySystems() {
       <div className="flex items-center">
         <div className="text-2xl p-4">My systems</div>
         <div className="flex">
-          <ArrowDownOnSquareIcon
+          <ArrowUpOnSquareStackIcon
             title="Export..."
-            className="hover:cursor-pointer rotate-180"
+            className="hover:cursor-pointer"
             width={24}
             height={24}
             onClick={() => {
@@ -200,10 +205,10 @@ export function MySystems() {
                 link.click();
               }
             }}
-          ></ArrowDownOnSquareIcon>
+          />
 
           <label title="Import...">
-            <ArrowDownOnSquareIcon
+            <ArrowDownOnSquareStackIcon
               width={24}
               height={24}
               className="hover:cursor-pointer"
@@ -214,6 +219,7 @@ export function MySystems() {
               style={{ display: "none" }}
               type="file"
               accept="application/json"
+              data-testid="import"
               onChange={(e) => {
                 const reader = new FileReader();
                 if (e.target.files != null) {

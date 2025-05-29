@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import path from "path";
 
 test.beforeEach(async ({ browserName, page }) => {
   await page.goto("/");
@@ -54,6 +55,31 @@ test("report and my-systems", async ({ page }) => {
   await page.getByRole("link", { name: "My systems" }).click();
   await expect(page.getByTestId("system[0][price]")).toContainText("37892");
   await expect(page.getByTestId("system[1][price]")).toContainText("42089");
+  await page.getByTestId("system[0].<select>").check();
+  await page.getByTestId("system[1].<select>").check();
+  await expect(page.getByRole("main")).toContainText(
+    "Parameter selection (minimum 3)",
+  );
+});
+
+test("export", async ({ page }) => {
+  await page.getByRole("link", { name: "My systems" }).click();
+  await page
+    .getByTestId("import")
+    .setInputFiles([path.join(__dirname, "test.my-systems.json")]);
+
+  await expect(page.getByTestId("system[0].<name>")).toContainText(
+    "Test pump system 1",
+  );
+  await expect(page.getByTestId("system[0][price]")).toContainText("37892");
+  await page.getByTestId("system[0].<duplicate>").click();
+  await expect(page.getByTestId("system[0].<name>")).toContainText(
+    "Test pump system 1 copy",
+  );
+  page.reload();
+  await expect(page.getByTestId("system[0].<name>")).toContainText(
+    "Test pump system 1 copy",
+  );
   await page.getByTestId("system[0].<select>").check();
   await page.getByTestId("system[1].<select>").check();
   await expect(page.getByRole("main")).toContainText(

@@ -21,6 +21,17 @@ export function saveSystem(system: System) {
   localStorage.setItem(prefix + system.id, JSON.stringify(system));
 }
 
+export function saveSystems(systems: System[]) {
+  Object.keys(localStorage)
+    .filter((k) => k.startsWith(prefix))
+    .map((k) => k.substring(prefix.length))
+    .filter((id) => !id.startsWith(draft_prefix))
+    // delete non-matching
+    .filter((id) => !systems.map((s) => s.id).includes(id))
+    .forEach(deleteSystem);
+  systems.forEach(saveSystem);
+}
+
 export type SystemContextType = {
   model: SystemModel;
   system: System;
