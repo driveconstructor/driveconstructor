@@ -15,6 +15,7 @@ import { findFcConverters } from "./fconverter-sizing";
 import { GearboxComponentModel } from "./gearbox-component";
 import { findGearbox } from "./gearbox-sizing";
 import { Grid } from "./grid";
+import { updateSystem } from "./store";
 import { System } from "./system";
 import { SystemParamsType } from "./system-params";
 import { TrafoComponent, TrafoComponentModel } from "./trafo-component";
@@ -203,7 +204,7 @@ export function withCandidates(system: System): System {
     ? calculateParams(components, system.input.grid.shortCircuitPower)
     : null;
 
-  return { ...system, candidates, components, params };
+  return updateSystem({ ...system, candidates, components, params });
 }
 
 function distinctFcByMounting(fconverter: FConverterComponent[]) {

@@ -4,7 +4,7 @@ import { MySystems } from "./MySystems";
 
 export default function Page() {
   return (
-    <PageTemplate title="My systems">
+    <PageTemplate>
       <Suspense>
         <MySystems />
       </Suspense>

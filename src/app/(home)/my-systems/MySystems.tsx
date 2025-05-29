@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  deleteSystem,
-  duplicateSystem,
-  getSystems,
-  saveSystem,
-} from "@/model/store";
+import { duplicateSystem, getSystems, saveSystem } from "@/model/store";
 import { customizeModel, getModel, System } from "@/model/system";
 import {
   getSystemParamModel,
@@ -14,6 +9,7 @@ import {
 } from "@/model/system-params";
 import { round } from "@/model/utils";
 import {
+  ArrowDownOnSquareIcon,
   DocumentDuplicateIcon,
   PencilIcon,
   TagIcon,
@@ -42,6 +38,10 @@ export function MySystems() {
   useEffect(() => {
     setSystems(getSystems());
   }, []);
+
+  useEffect(() => {
+    systems.forEach(saveSystem);
+  }, [systems]);
 
   const [selected, setSelected] = useState([] as string[]);
   useEffect(() => {
@@ -86,7 +86,6 @@ export function MySystems() {
                 if (
                   confirm(`Are you sure you want to delete '${system.name}'?`)
                 ) {
-                  deleteSystem(system.id);
                   setSystems(systems.filter((s) => s.id != system.id));
                   setSelected(selected.filter((s) => s != system.id));
                 }
@@ -121,7 +120,6 @@ export function MySystems() {
                     ...systems.filter((s) => s.id != newSystem.id),
                     newSystem,
                   ]);
-                  saveSystem(newSystem);
                 }
               }}
             >
@@ -148,61 +146,125 @@ export function MySystems() {
     );
   }
 
+  function ParameterSelection() {
+    return (
+      <div className="flow">
+        <div className="pb-2">Parameter selection (minimum 3)</div>
+        {Object.entries(SystemParamsModel)
+          .filter(([k, _]) => nonNullParams(systems, selected).includes(k))
+          .map(([k, v]) => {
+            return (
+              <div key={k}>
+                <input
+                  type="checkbox"
+                  checked={comparableParams.includes(k)}
+                  className="m-1"
+                  onChange={(e) => {
+                    e.target.checked
+                      ? setComparableParams([...comparableParams, k])
+                      : comparableParams.length <= 3 ||
+                        setComparableParams(
+                          comparableParams.filter((c) => c != k),
+                        );
+                  }}
+                />
+                <label>{v.label}</label>
+              </div>
+            );
+          })}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex-col">
-      {systems
-        .sort((a, b) => b.timeUpdated - a.timeUpdated)
-        .map((v, index) => (
-          <SystemRow key={v.id} index={index} system={v} />
-        ))}
-      <div className="text-xl p-4">Comparison</div>
-      {selected.length <= 1 ? (
-        <div>Select 2 and more systems to compare...</div>
-      ) : (
-        <>
-          <div className="grid lg:grid-cols-12">
-            <div className="col-span-4">
-              <div className="flow">
-                <div className="pb-2">Parameter selection (minimum 3)</div>
-                {Object.entries(SystemParamsModel)
-                  .filter(([k, _]) =>
-                    nonNullParams(systems, selected).includes(k),
-                  )
-                  .map(([k, v]) => {
-                    return (
-                      <div key={k}>
-                        <input
-                          type="checkbox"
-                          checked={comparableParams.includes(k)}
-                          className="m-1"
-                          onChange={(e) => {
-                            e.target.checked
-                              ? setComparableParams([...comparableParams, k])
-                              : comparableParams.length <= 3 ||
-                                setComparableParams(
-                                  comparableParams.filter((c) => c != k),
-                                );
-                          }}
-                        />
-                        <label>{v.label}</label>
-                      </div>
-                    );
-                  })}
+    <div>
+      <div className="flex items-center">
+        <div className="text-2xl p-4">My systems</div>
+        <div className="flex">
+          <ArrowDownOnSquareIcon
+            title="Export..."
+            className="hover:cursor-pointer rotate-180"
+            width={24}
+            height={24}
+            onClick={() => {
+              const file = prompt(
+                "Enter export file name:",
+                "dc.my-systems.json",
+              );
+              if (file != null) {
+                const link = document.createElement("a");
+                link.download = file;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.href = `data:application/json,${encodeURIComponent(JSON.stringify(systems))}`;
+                link.click();
+              }
+            }}
+          ></ArrowDownOnSquareIcon>
+
+          <label title="Import...">
+            <ArrowDownOnSquareIcon
+              width={24}
+              height={24}
+              className="hover:cursor-pointer"
+            />
+
+            <input
+              id="file-import"
+              style={{ display: "none" }}
+              type="file"
+              accept="application/json"
+              onChange={(e) => {
+                const reader = new FileReader();
+                if (e.target.files != null) {
+                  reader.onload = () => {
+                    if (typeof reader.result == "string") {
+                      const imported = JSON.parse(reader.result) as System[];
+                      setSystems([
+                        // keep non-matching systems
+                        ...systems.filter(
+                          (s) => !imported.map((i) => i.id).includes(s.id),
+                        ),
+                        ...imported,
+                      ]);
+                    }
+                  };
+                  reader.readAsText(e.target.files[0]);
+                }
+              }}
+            ></input>
+          </label>
+        </div>
+      </div>
+      <div className="flex-col">
+        {systems
+          .sort((a, b) => b.timeUpdated - a.timeUpdated)
+          .map((v, index) => (
+            <SystemRow key={v.id} index={index} system={v} />
+          ))}
+        <div className="text-xl p-4">Comparison</div>
+        {selected.length <= 1 ? (
+          <div>Select 2 and more systems to compare...</div>
+        ) : (
+          <>
+            <div className="grid lg:grid-cols-12">
+              <div className="col-span-4">
+                <ParameterSelection />
+              </div>
+              <div className="col-span-6">
+                <ComparisonGraph
+                  systems={systems.filter((s) => selected.includes(s.id))}
+                  model={Object.fromEntries(
+                    Object.entries(SystemParamsModel).filter(([k, v]) =>
+                      comparableParams.includes(k),
+                    ),
+                  )}
+                />
               </div>
             </div>
-            <div className="col-span-6">
-              <ComparisonGraph
-                systems={systems.filter((s) => selected.includes(s.id))}
-                model={Object.fromEntries(
-                  Object.entries(SystemParamsModel).filter(([k, v]) =>
-                    comparableParams.includes(k),
-                  ),
-                )}
-              />
-            </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

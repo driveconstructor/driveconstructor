@@ -7,6 +7,7 @@ import {
   isDraft,
   saveSystem,
   SystemContextType,
+  updateSystem,
 } from "@/model/store";
 import { customizeModel, getModel, SystemKind } from "@/model/system";
 import { ArrowDownTrayIcon, TagIcon } from "@heroicons/react/24/outline";
@@ -41,7 +42,7 @@ export default function System({
   const router = useRouter();
 
   useEffect(() => {
-    saveSystem(system);
+    saveSystem(updateSystem(system));
     setName(system.name);
   }, [system]);
 

@@ -1,4 +1,6 @@
+import { Metadata } from "next";
 import { Inter } from "next/font/google";
+import favicon from "../images/logo.svg";
 import "./global.css";
 
 const inter = Inter({
@@ -16,10 +18,13 @@ const cspHeader = `
     object-src 'none';
     base-uri 'self';
     form-action 'self';
-    frame-ancestors 'none';
     upgrade-insecure-requests;
     connect-src 'self';
 `;
+
+export const metadata: Metadata = {
+  icons: [{ rel: "icon", url: favicon.src, type: "image/svg+xml" }],
+};
 
 export default function RootLayout({
   children,

@@ -13,11 +13,12 @@ export function getSystem(id: string): System {
   return JSON.parse(json);
 }
 
-export function saveSystem(system: System): System {
-  const updated = { ...system, timeUpdated: Date.now() };
-  localStorage.setItem(prefix + system.id, JSON.stringify(updated));
+export function updateSystem(system: System): System {
+  return { ...system, timeUpdated: Date.now() };
+}
 
-  return updated;
+export function saveSystem(system: System) {
+  localStorage.setItem(prefix + system.id, JSON.stringify(system));
 }
 
 export type SystemContextType = {
@@ -145,6 +146,5 @@ export function isDraft(system: System) {
 export function duplicateSystem(id: string, name: string): System {
   const system = getSystem(id);
   const newId = generateSystemId();
-  const newSystem = { ...system, id: newId, name };
-  return saveSystem(newSystem);
+  return updateSystem({ ...system, id: newId, name });
 }
