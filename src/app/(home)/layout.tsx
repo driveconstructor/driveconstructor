@@ -56,14 +56,11 @@ export default function RootLayout({
         <NavItem href="/my-systems" className="text-m">
           My systems
         </NavItem>
-        {typeof feedbackFormUrl == "undefined" ? null : (
-          <NavItem
-            href="https://goo.gl/forms/CCOGxQskx9X9PhoD2"
-            className="text-m"
-          >
+        {feedbackFormUrl ? (
+          <NavItem href={feedbackFormUrl} className="text-m">
             Send feedback
           </NavItem>
-        )}
+        ) : null}
       </nav>
       <main className="mb-auto"> {children}</main>
       <footer className="my-2 flex justify-end">
