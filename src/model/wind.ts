@@ -5,6 +5,8 @@ export type Wind = {
   ratedSpeedOfBlades: number;
   ratedTorque: number;
   overSpeed: number;
+  // calculated
+  ratedSpeed: number;
 };
 
 export const WindElement: SystemElement<Wind> = {
@@ -37,6 +39,11 @@ export const WindElement: SystemElement<Wind> = {
         max: 1.4,
         step: 0.05,
       },
+    },
+    ratedSpeed: {
+      label: "Rated speed",
+      type: "number",
+      value: (wind) => wind.ratedSpeedOfBlades * wind.overSpeed,
     },
   },
 };

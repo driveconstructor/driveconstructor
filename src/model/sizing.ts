@@ -15,6 +15,7 @@ import { findFcConverters } from "./fconverter-sizing";
 import { GearboxComponentModel } from "./gearbox-component";
 import { findGearbox } from "./gearbox-sizing";
 import { Grid } from "./grid";
+import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { updateSystem } from "./store";
 import { System } from "./system";
 import { SystemParamsType } from "./system-params";
@@ -22,6 +23,7 @@ import { TrafoComponent, TrafoComponentModel } from "./trafo-component";
 import { findTrafoCandidates } from "./trafo-sizing";
 import { haveSameContent } from "./utils";
 import { findVoltageY } from "./voltage";
+import { WindFc } from "./wind-system";
 
 export type Mechanism = {
   ratedSpeed: number;
@@ -65,14 +67,18 @@ function distinctEmBySecondaryParams(emachines: EMachineComponent[]) {
 }
 
 function createMechanism(system: System): Mechanism {
-  const input = system.input;
-
   if (
     system.kind == "pump-fc" ||
     system.kind == "pump-fc-tr" ||
     system.kind == "pump-gb-fc" ||
     system.kind == "pump-gb-fc-tr"
   ) {
+    const input = system.input as (
+      | PumpFc
+      | PumpFcTr
+      | PumpGbFc
+      | PumpGbFcTr
+    )["input"];
     return {
       ratedSpeed: input.pump.ratedSpeed,
       ratedTorque:
@@ -83,6 +89,21 @@ function createMechanism(system: System): Mechanism {
         input.emachine.cooling == "IC411" &&
         input.pump.type == "positive displacement",
       torqueOverload: input.pump.torqueOverload,
+      gearRatio: 1,
+    };
+  } else if (system.kind == "wind-fc") {
+    const input = system.input as WindFc["input"];
+
+    // kNm => Nm
+    const ratedTorque = input.wind.ratedTorque * 1000;
+    const powerOnShaft = (input.wind.ratedSpeed / 9.55) * ratedTorque;
+    return {
+      ratedSpeed: input.wind.ratedSpeed,
+      ratedTorque,
+      powerOnShaft,
+      minimalSpeed: 0,
+      linear: true,
+      torqueOverload: 0,
       gearRatio: 1,
     };
   } else {

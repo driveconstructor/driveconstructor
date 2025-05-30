@@ -46,19 +46,6 @@ const applications: ApplicationModel[] = [
     url: "TBD",
   },
   {
-    name: "winch",
-    icon: appWinch,
-    title: "Winch",
-    description: (
-      <div>
-        Design optimal systems for winches with both motoring and generating
-        operation modes
-      </div>
-    ),
-    systems: [WinchFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
-    url: "TBD",
-  },
-  {
     name: "wind",
     icon: appWind,
     title: "Wind/tidal mill",
@@ -70,6 +57,19 @@ const applications: ApplicationModel[] = [
     ),
     systems: [WindFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
     url: "/docs/tbd",
+  },
+  {
+    name: "winch",
+    icon: appWinch,
+    title: "Winch",
+    description: (
+      <div>
+        Design optimal systems for winches with both motoring and generating
+        operation modes
+      </div>
+    ),
+    systems: [WinchFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
+    url: "TBD",
   },
 ];
 
