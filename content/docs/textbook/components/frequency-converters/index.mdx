@@ -71,7 +71,7 @@ operational requirements in applications which typically require 2Q, may require
 capability to slow down in reasonably short time.
 
 FC can be low-voltage (LV) and medium-voltage (MV). LV FC usually have only
-2-level (2L) topology, MV – several alternative topologies (3L-NPC, SCHB, etc.).
+2-level (2L) topology, MV - several alternative topologies (3L-NPC, SCHB, etc.).
 Both the LV and MV topologies can be 2Q and 4Q.
 
 The choice of LV or MV is usually defined by the power level, but other features
@@ -86,8 +86,8 @@ the software and presented below have "VSC" in the designations.
 
 ##### 2Q-2L-VSC-6p, 2Q-2L-VSC-12p and 4Q-2L-VSC
 
-2Q FC inventor scheme at the grid side can be 6-pulse («6p») and 12-pulse
-(«12p»). Difference between «6p» and «12p» is in size, weight, cost, efficiency
+2Q FC inventor scheme at the grid side can be 6-pulse ("6p") and 12-pulse
+("12p"). Difference between "6p" and "12p" is in size, weight, cost, efficiency
 and influence on the grid (THD). 4Q FC is larger, heavier, more expensive and
 has lower efficiency than 2Q FC. 4Q produce lower THD in the grid. 2-level FC
 are usually LV.
@@ -202,7 +202,7 @@ converter. In _DriveConstructor_ the variants to choose from are: 380-440,
 chosen automatically then choose "any" - it is the default setting.
 
 In _DriveConstructor_ 3L-NPC topologies can have voltage rating of 2460 V, 3300
-V and 4160 V, while ML-SCHB topologies – 6000 V, 6600 V, 10000 V and 11000 V.
+V and 4160 V, while ML-SCHB topologies - 6000 V, 6600 V, 10000 V and 11000 V.
 
 ### Currents
 
@@ -274,7 +274,7 @@ import fc_cooling_air_WCImage from "./images/fc_cooling_air_WC.png";
 _Fig.11. Cooling types._
 
 With the efficiency of 98% the 250 kW FC will produce 5 kW of heat. To remove
-the heat from the FC’s heatsink a quite powerful ventilation fan should be
+the heat from the FC's heatsink a quite powerful ventilation fan should be
 integrated into the FC enclosure. For the 250 kW power the volume of air pumped
 through the heatsink should be in the order of 2000-3000 m3/h. Filtering may be
 required if the environment is dusty or dirty. This can be a maintenance
@@ -314,7 +314,7 @@ system parameters/ performances when benchmarking alternative systems (cooling
 solutions). Liquid to liquid (water-to-water) heat exchangers are used when a
 cooling liquid is readily available. Liquid to air (water-to-air) heat
 exchangers are used primarily when air conditioning is not desired, or in
-dusty/dirty environments where air cooled VFD’s can be adversely affected by
+dusty/dirty environments where air cooled VFD's can be adversely affected by
 these conditions (plugged heat sinks, electronics covered in dust, complicated
 maintenance routines. Challenges of water cooling: condensation, electrochemical
 corrosion (mostly related to HEx)
@@ -335,8 +335,8 @@ Other factors to consider:
 In many cases FC should be equipped with either input or output filters. Filters
 can help to solve various EMC issues on both grid side and machine side.
 However, the pay is extra size, weight, cost and losses. Some MV topologies do
-not require output filters. In DC it is possible to choose “choke” and
-“choke+RFI” for input filter and du/dt filter and sin-filter for output filter.
+not require output filters. In DC it is possible to choose "choke" and
+"choke+RFI" for input filter and du/dt filter and sin-filter for output filter.
 
 ### Output filters
 
@@ -360,7 +360,7 @@ import sin_filterImage from "./images/sin_filter.png";
 
 <img src={sin_filterImage.src} width="30%" height="30%" /> _(b)_
 
-_Fig. 12. “Classical” sin-filter topology (a) and product example (b)_.
+_Fig. 12. "Classical" sin-filter topology (a) and product example (b)_.
 
 import pwm_measuredImage from "./images/pwm_measured.png";
 
@@ -402,7 +402,7 @@ import dut_filterImage from "./images/dut_filter.png";
 
 <img src={dut_filterImage.src} width="30%" height="30%" /> _(b)_
 
-_Fig. 14. “Classical” du/dt-filter topology (a) and product example (b)_.
+_Fig. 14. "Classical" du/dt-filter topology (a) and product example (b)_.
 
 However, the main purpose of du/dt-filters is to eliminate du/dt-effect, i.e.
 decrease in the rise time of the voltage pulse. In addition, due to the inertial

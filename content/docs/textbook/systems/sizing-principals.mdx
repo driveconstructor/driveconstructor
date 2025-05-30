@@ -23,7 +23,7 @@ For the system part between electric machine and the grid the components are
 selected according to the electrical parameter - voltages and currents.
 
 - For systems without transformers:
-- electric machine’s voltage and current must match voltage of the frequency
+- electric machine's voltage and current must match voltage of the frequency
   converter
 - frequency converter voltage must match voltage of the grid
 
@@ -32,7 +32,7 @@ import mot_fc_gridImage from "./images/mot_fc_grid.png";
 <img src={mot_fc_gridImage.src} width="40%" height="40%" /> _Fig. 2_.
 
 - For systems with transformer between the grid and the frequency converter:
-- electric machine’s voltage and current must match voltage and current of the
+- electric machine's voltage and current must match voltage and current of the
   frequency converter
 - frequency converter voltage and current must match LV-side voltage and current
   of the transformer
@@ -47,7 +47,7 @@ For the system part between the electric machine and the mechanism the
 components are selected according to mechanical parameters - torques and speeds.
 
 - For systems without gearbox:
-- electric machine’s torque and speed must match torque and speed of the
+- electric machine's torque and speed must match torque and speed of the
   mechanism
 
 import mech_motImage from "./images/mech_mot.png";
@@ -57,7 +57,7 @@ _Fig. 4_.
 
 - For systems with gearbox:
 - gearbox torque and speed must match torque and speed of the mechanism
-- electric machine’s torque and speed must match torque and speed of the gearbox
+- electric machine's torque and speed must match torque and speed of the gearbox
 
 import mech_gear_motImage from "./images/mech_gear_mot.png";
 
@@ -66,7 +66,7 @@ _Fig. 5_.
 
 ##### Matching the torques
 
-All points of the drive system’s rated torque curve should be higher than those
+All points of the drive system's rated torque curve should be higher than those
 of the driven mechanism as shown in Fig. 6 for the different mechanisms; pump
 (Fig. 6,a), wind turbine (Fig. 6,b), conveyor (Fig. 6,c,d) and winch (Fig.
 6,e,f). Note than overload curves of the drive system should be above the

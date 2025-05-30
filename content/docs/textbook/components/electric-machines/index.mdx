@@ -8,9 +8,9 @@ description: Relevant information
 Only rotating AC machines with cylindrical cores with inner rotor are included
 into this version of _DriveConstructor_. It is possible to choose between:
 
-- _SCIM_ – Squirrel Cage Induction Machine (Fig.1),
-- _SyRM_ – Synchronous Reluctance Machine (Fig.2),
-- _PMSM_ – Permanent Magnet Synchronous Machine (rotor shown in Fig.3).
+- _SCIM_ - Squirrel Cage Induction Machine (Fig.1),
+- _SyRM_ - Synchronous Reluctance Machine (Fig.2),
+- _PMSM_ - Permanent Magnet Synchronous Machine (rotor shown in Fig.3).
 
 import Image from "next/image";
 import SCIMImage from "./images/SCIM.png";
@@ -78,9 +78,9 @@ Our list is shorter than the IEC one as we picked up only the most used powers.
 #### Rated voltage
 
 Electric machines may be designed for different supply voltages (from converter
-or grid). Machines are usually designed for «standard» ranges of rated voltage,
-e.g. 380-400 V or 650-700 V, as it is easier to connect a «standard» machine to
-a typical grid or a «standard» frequency converter. In Europe and America the
+or grid). Machines are usually designed for "standard" ranges of rated voltage,
+e.g. 380-400 V or 650-700 V, as it is easier to connect a "standard" machine to
+a typical grid or a "standard" frequency converter. In Europe and America the
 standard ranges are different. In Europe it is usual to differentiate between
 _LV_ (below 1 kV) and _MV_ (above 1 kV).
 
@@ -98,7 +98,7 @@ which allows putting more copper in the slots and makes heat removal easier.
 It is normally not possible to design LV machines for very high powers as
 currents would become too high and cables would become too thick to be
 practical. LV machines are normally produced for powers from fractions of kW up
-to a few MW (in _DriveConstructor_ up to 2 MW), MV machines – from about 0,2 MW
+to a few MW (in _DriveConstructor_ up to 2 MW), MV machines - from about 0,2 MW
 to 10...20 MW (in _DriveConstructor_ up to 5 MW), in some cases up to 100 MW!
 
 Slot designs of LV and MV machines look quite different:
@@ -123,7 +123,7 @@ few percent. SyRM and PMSM have rated speed equal rated synchronous speed.
 
 It is obvious that a machine designed for delivering high power is bigger than a
 machine designed for delivering low power. It is less obvious that the rated
-speed the machine is designed for affects it’s weight, compactness, rotor
+speed the machine is designed for affects it's weight, compactness, rotor
 inertia and cost. However, if the power is fixed, the machine with lower speed
 will have higher torque ($$T\sim P/n$$). To be able to provide higher torque the
 machine has to be larger, heavier and as the consequence more expensive.
@@ -210,10 +210,10 @@ use of water-cooling.
 
 #### Mounting variants
 
-There are three basic variants of mounting included in _DriveConstructor_: B3 –
-foot-mounted, B5 – flange-mounted, B35 – machine with both feet and flange. The
+There are three basic variants of mounting included in _DriveConstructor_: B3 -
+foot-mounted, B5 - flange-mounted, B35 - machine with both feet and flange. The
 difference between mounting variants is reflected in price. Flange-mounted
-machine would have 1-3% higher price and flange&foot-mounted – by 5%, compared
+machine would have 1-3% higher price and flange&foot-mounted - by 5%, compared
 to the basic foot-mounted design.
 
 import EM_mounting1Image from "./images/EM_mounting1.png";
@@ -242,7 +242,7 @@ Standard shaft heights row in mm: 56, 63, 71, 80, 90, 100, 112, 132, 160, 180,
 of the driven mechanism is set, then it can be beneficial to choose electric
 machine with the same or close shaft height to simplify coupling of the motor
 and the mechanism. If the shaft height of the driven mechanism is unknown then
-for the electric machine “any” can be chosen instead of some concrete value.
+for the electric machine "any" can be chosen instead of some concrete value.
 Shaft height is approximately equal to half the diameter (_h=OD/2_).
 
 #### Frame material
@@ -257,7 +257,7 @@ are given below:
 - vs CI&S: Aluminum is almost two-three times lighter than steel or cast iron
   but several times more expensive
 - vs CI&S: Aluminum is a better heat conductor than steel or cast iron. The
-  extrusion process enhances aluminum’s heat conducting properties by allowing
+  extrusion process enhances aluminum's heat conducting properties by allowing
   the frame sections to have thinner fins placed closer together. The result is
   more fins and greater surface area for maximum cooling. So, machines with
   aluminum frames will be more compact and lighter
@@ -277,7 +277,7 @@ are given below:
   as much metal to approach the performance of steel. And when it comes to
   impact loads, steel provides much greater resistance to cracking.
 
-Aluminum frames are usually used up to 60 kW, steel and cast iron frames – to MW
+Aluminum frames are usually used up to 60 kW, steel and cast iron frames - to MW
 level.
 
 ## Insulation classes

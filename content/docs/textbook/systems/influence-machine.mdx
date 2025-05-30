@@ -6,8 +6,8 @@ title: Frequency converter influence on the electric machine
 
 Voltage rise time of IGBT can be within 0.1-0.2 microseconds. When powering the
 FC from the 400 V mains, the voltage in the DC link is about 540 V, so the rate
-of voltage rise in the IGBT can be up to 5 kV/μs. Influence of the sequence of
-pulse fronts with du/dt of 5 kV/μs on the system
+of voltage rise in the IGBT can be up to 5 kV/$$\mu$$s. Influence of the
+sequence of pulse fronts with du/dt of 5 kV/$$\mu$$ on the system
 "FC-cable-machine-reducer-driven mechanism" is in many ways similar to the
 action of a sinusoidal voltage of the same amplitude, but with a frequency of
 the order of several megahertz. That is why the negative effects caused by the
@@ -90,9 +90,9 @@ The PWM modulation of the output voltage leads to a common-mode (CM) voltage. In
 Fig. 4 switching pattern is shown, and it can be observed how the common-mode
 (CM) voltage is generated. This voltage is obtained by adding the three voltages
 resulting from the three inverter legs. Having the DC-link mid-point as a
-reference, the voltages Va, Vb and Vc can either be +Vdc/2 or –Vdc/2, where Vdc
+reference, the voltages Va, Vb and Vc can either be +Vdc/2 or -Vdc/2, where Vdc
 is the DC-link voltage. As a result, depending on the state of the switches, the
-common mode voltage can take one of the values ±Vdc/2 and ±Vdc/6.
+common mode voltage can take one of the values $$\pm$$Vdc/2 and $$\pm$$Vdc/6.
 
 import common_mode_voltageImage from "./images/common_mode_voltage.png";
 
@@ -102,7 +102,7 @@ _Fig. 4. Common-mode voltage_.
 
 CM voltages lead to appearance of CM high-frequency currents flow through
 complex circuits/paths some of which are presented in Fig.5. The HF currents
-circulating through the bearings of the machine (called “bearing currents”) can
+circulating through the bearings of the machine (called "bearing currents") can
 lead to premature bearing failures. Another example of the negative impacts is
 HF leakage currents through ground cables which can interfere with control
 cables.
