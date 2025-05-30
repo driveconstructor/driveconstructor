@@ -7,6 +7,7 @@ import {
   isDraft,
   saveSystem,
   SystemContextType,
+  updateSystem,
 } from "@/model/store";
 import { customizeModel, getModel, SystemKind } from "@/model/system";
 import { ArrowDownTrayIcon, TagIcon } from "@heroicons/react/24/outline";
@@ -41,7 +42,7 @@ export default function System({
   const router = useRouter();
 
   useEffect(() => {
-    saveSystem(system);
+    saveSystem(updateSystem(system));
     setName(system.name);
   }, [system]);
 
@@ -66,6 +67,7 @@ export default function System({
     width: 24,
     height: 24,
     className: "hover:cursor-pointer m-2",
+    "data-testid": "save-icon",
   };
 
   return (
@@ -76,7 +78,7 @@ export default function System({
           <div
             hidden={system.params == null}
             onClick={handleClick}
-            data-testid="edit"
+            data-testid="save"
           >
             {isDraft(system) ? (
               <ArrowDownTrayIcon {...iconAttributes} />
@@ -84,7 +86,12 @@ export default function System({
               <TagIcon {...iconAttributes} />
             )}
           </div>
-          <div className={isDraft(system) ? "text-gray-500" : ""}>{name}</div>
+          <div
+            className={isDraft(system) ? "text-gray-500" : ""}
+            data-testid="system-name"
+          >
+            {name}
+          </div>
         </div>
       </div>
       <SystemContext.Provider value={context}>

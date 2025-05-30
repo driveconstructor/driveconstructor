@@ -2,6 +2,7 @@ import { StaticImageData } from "next/image";
 import React from "react";
 import appPump from "../images/app-pump.svg";
 import appWinch from "../images/app-winch.svg";
+import appWind from "../images/app-wind.svg";
 import {
   PumpFcModel,
   PumpFcTrModel,
@@ -10,6 +11,7 @@ import {
 } from "./pump-system";
 import { SystemKind, SystemModel } from "./system";
 import { WinchFcModel } from "./winch-system";
+import { WindFcModel } from "./wind-system";
 
 export type ApplicationModel = {
   name: string;
@@ -41,7 +43,7 @@ const applications: ApplicationModel[] = [
       </div>
     ),
     systems: [PumpFcModel, PumpGbFcModel, PumpFcTrModel, PumpGbFcTrModel],
-    url: "/docs/TextBook/Applications/Pump_type.html  ",
+    url: "TBD",
   },
   {
     name: "winch",
@@ -54,6 +56,19 @@ const applications: ApplicationModel[] = [
       </div>
     ),
     systems: [WinchFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
+    url: "TBD",
+  },
+  {
+    name: "wind",
+    icon: appWind,
+    title: "Wind/tidal mill",
+    description: (
+      <div>
+        Experiment with different drive train topologies, design systems for
+        lowest cost of energy.
+      </div>
+    ),
+    systems: [WindFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
     url: "/docs/tbd",
   },
 ];

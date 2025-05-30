@@ -101,7 +101,7 @@ function Candidate({
               >
                 <div className="grid grid-cols-4 lg:grid-cols-8">
                   <div className="justify-self-center">
-                    <label>
+                    <label data-testid={`${kind}[${i}].label.<selected>`}>
                       <input
                         type="radio"
                         checked={selected == i}

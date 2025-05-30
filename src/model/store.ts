@@ -13,8 +13,23 @@ export function getSystem(id: string): System {
   return JSON.parse(json);
 }
 
-export function saveSystem(system: System): void {
+export function updateSystem(system: System): System {
+  return { ...system, timeUpdated: Date.now() };
+}
+
+export function saveSystem(system: System) {
   localStorage.setItem(prefix + system.id, JSON.stringify(system));
+}
+
+export function saveSystems(systems: System[]) {
+  Object.keys(localStorage)
+    .filter((k) => k.startsWith(prefix))
+    .map((k) => k.substring(prefix.length))
+    .filter((id) => !id.startsWith(draft_prefix))
+    // delete non-matching
+    .filter((id) => !systems.map((s) => s.id).includes(id))
+    .forEach(deleteSystem);
+  systems.forEach(saveSystem);
 }
 
 export type SystemContextType = {
@@ -142,7 +157,5 @@ export function isDraft(system: System) {
 export function duplicateSystem(id: string, name: string): System {
   const system = getSystem(id);
   const newId = generateSystemId();
-  const newSystem = { ...system, id: newId, name };
-  saveSystem(newSystem);
-  return newSystem;
+  return updateSystem({ ...system, id: newId, name });
 }
