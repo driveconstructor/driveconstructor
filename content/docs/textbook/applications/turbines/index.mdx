@@ -1,0 +1,66 @@
+---
+title: Wind and tidal turbines
+---
+
+Drive train of wind or tidal turbine in most cases include a gearbox and a
+generator (Fig.1). The gearbox and the generator can be mechanically integrated.
+Direct drives are usually bulky and heavy. There are, though, special designs
+usually based on integration with the turbine structure, in order to reduce
+weight.
+
+import Image from "next/image";
+import wt1Image from "./images/wind-turbine-1.png";
+
+<img src={wt1Image.src} alt="wind-turbine-1" width="40%" height="40%" />
+
+_Fig.1. Wind turbine with a gearbox and a generator._
+
+The nacelle of a wind or a tidal turbine can contain not only the gearbox and
+the generator, but also other equipment (Fig. 2-3), like frequency converter and
+transformer.
+
+import wtnImage from "./images/wt-nacelle.png";
+
+<img src={wtnImage.src} alt="wt-nacelle" width="40%" height="40%" />
+*Fig.2. Equipment in the nacelle.*
+
+import tt1Image from "./images/tidal-turbine-1.png";
+
+<img src={tt1Image.src} alt="tidal-turbine-1" width="40%" height="40%" />
+*Fig.3. Tidal turbine.*
+
+### Load characteristics
+
+There is theoretical maximum power which is possible to extract following the
+maximum torque curve shown in Fig. 3-4. It can be seen that generator speed
+increases in Region II and is kept almost constant in Region III.
+
+import wtgentorqueImage from "./images/wt-gen-torque.png";
+
+<img src={wtgentorqueImage.src} alt="wt-gen-torque" width="60%" height="60%" />
+*Fig.4. Generator speed vs torque.*
+
+import wtgenpowerspeedImage from "./images/wt-gen-power-speed.png";
+
+<img
+  src={wtgenpowerspeedImage.src}
+  alt="wt-gen-power-speed"
+  width="60%"
+  height="60%"
+/>
+*Fig.5. Wind speed vs turbine speed and power.*
+
+There should be kept some safety torque margin (between $$n_1$$ and $$n_2$$ in
+Fig.6) due to possible wind gusts.
+
+import wtc1Image from "./images/wind-curve-1.png";
+
+<img src={wtc1Image.src} alt="wind-curve-1" width="50%" height="50%" />
+*Fig.6. Turbine load torque curve.*
+
+### Parameters of wind (or tidal) turbine
+
+    - Rated speed of the propeller (above this speed maximum energy is extracted)
+    - "Cut off" speed, which is maximum allowed speed (turbine and generator are not run above this speed)
+    - Rated torque (at this torque maximum energy is extracted)
+    - Extra torque (torque margin) is needed to prevent runaway of the turbine in case of wind gusts and very strong wind in general.

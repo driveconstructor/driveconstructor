@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "electric-machines",
+    "frequency-converters",
+    "gearboxes",
+    "transformers",
+    "power-cables",
+    "grid",
+    "altitude-derating",
+    "ambient-coolant",
+    "protection",
+    "duties-overloads"
+  ],
+  "defaultOpen": true
+}

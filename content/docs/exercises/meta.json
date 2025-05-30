@@ -1,5 +1,13 @@
 {
   "defaultOpen": true,
-  "pages": ["electric-machines", "drive-systems", "frequency-converters"],
+  "pages": [
+    "electric-machines",
+    "frequency-converters",
+    "drive-systems",
+    "pumps",
+    "conveyors",
+    "turbines",
+    "winches"
+  ],
   "root": true
 }

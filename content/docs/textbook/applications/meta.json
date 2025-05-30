@@ -1,3 +1,4 @@
 {
+  "pages": ["pumps", "conveyors", "turbines", "winches"],
   "defaultOpen": true
 }

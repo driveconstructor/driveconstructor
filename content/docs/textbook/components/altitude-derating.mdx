@@ -1,0 +1,57 @@
+---
+title: Altitude and derating
+---
+
+When equipment is expected to work at high altitudes de-rating factors should be
+applied when choosing rating of the components. At high altitudes, where there
+is a reduced atmospheric pressure, the cooling of electrical equipment is
+degraded due to reduced ability of the air to remove the heat from the cooling
+surfaces of the machine or transformer or heat-sink of the converter. Different
+equipment providers give slightly different derating factors. One possible
+collection of factors is presented in tables 1 and 2. In _DriveConstructor_
+derating is done automatically when the user sets the right altitude for the
+components.
+
+### Power derating
+
+The coefficient of power derating with altitude $$k_h$$ is defined as
+permissible power output in % of rated power.
+
+_Table 1. Power derating $$k_h$$ as function of altitude._
+
+| Altitude | Electric machine & Transformer | Frequency converter | Cable |
+| -------- | ------------------------------ | ------------------- | ----- |
+| 1000 m   | 100%                           | 100%                | 100%  |
+| 2000 m   | 92%                            | 90%                 | 99%   |
+| 3000 m   | 84%                            | 85%                 | 96%   |
+| 4000 m   | 76%                            | 81%                 | 90%   |
+
+When the component needs to be de-rated for both temperature and altitude, the
+de-rating factors given in the respective tables should be multiplied together.
+When a component, like liquid-cooled FC, has both air- and water-cooled parts,
+derating should be calculated for both parts of the respective ambient- and
+coolant temperatures. In addition derating for altitude (if needed) should be
+implemented. Smallest of the products $$k_h*k_a$$ and $$k_h*k_w$$ should be
+taken as the overall overload.
+
+Temperature of the coolant may help to solve the high-altitude problem for
+liquid-cooled equipment - it is possible to compensate high altitude with lower
+temperature of the coolant.
+
+### Voltage derating
+
+The coefficient of voltage derating with altitude $$k_v$$ is defined as
+permissible voltage in % of rated voltage.
+
+_Table 2. Voltage derating $$k_v$$ as function of altitude._
+
+| Altitude | Electric machine & Transformer | Frequency converter |
+| -------- | ------------------------------ | ------------------- |
+| 1000 m   | 100%                           | 100%                |
+| 2000 m   | 90%                            | 100%                |
+| 3000 m   | 80%                            | 88%                 |
+| 4000 m   | 72%                            | 76%                 |
+
+As the cable between the machine and the converter can be long (in special cases
+up to several km) the altitude can be quite different for the machine and the
+converter.
