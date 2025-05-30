@@ -31,6 +31,8 @@ const version = `${process.env.npm_package_version}-${
   process.env.GITHUB_SHA?.substring(0, 6) ?? "snapshot"
 }`;
 
+const feedbackFormUrl = process.env.FEEDBACK_FORM_URL;
+
 export default function RootLayout({
   children,
 }: {
@@ -54,6 +56,14 @@ export default function RootLayout({
         <NavItem href="/my-systems" className="text-m">
           My systems
         </NavItem>
+        {typeof feedbackFormUrl == "undefined" ? null : (
+          <NavItem
+            href="https://goo.gl/forms/CCOGxQskx9X9PhoD2"
+            className="text-m"
+          >
+            Send feedback
+          </NavItem>
+        )}
       </nav>
       <main className="mb-auto"> {children}</main>
       <footer className="my-2 flex justify-end">

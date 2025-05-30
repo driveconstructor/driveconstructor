@@ -9,7 +9,12 @@ import {
   SystemContextType,
   updateSystem,
 } from "@/model/store";
-import { customizeModel, getModel, SystemKind } from "@/model/system";
+import {
+  customizeModel,
+  getModel,
+  SystemKind,
+  System as SystemType,
+} from "@/model/system";
 import { ArrowDownTrayIcon, TagIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
@@ -25,28 +30,38 @@ export default function System({
   kind: SystemKind;
   showReport: boolean;
 }) {
+  const [system, setSystem] = useState(undefined as SystemType | undefined);
+  const [name, setName] = useState(system?.name);
+  const router = useRouter();
+
   const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  if (id == null) {
-    throw new Error(`id is not found: ${id}`);
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id == null) {
+      throw new Error(`id is not found: ${id}`);
+    }
+
+    setSystem(getSystem(id));
+  }, [searchParams]);
+
+  useEffect(() => {
+    // system is never undefined at this point
+    saveSystem(updateSystem(system as SystemType));
+    setName(system?.name);
+  }, [system]);
+
+  if (typeof system == "undefined") {
+    return;
   }
 
-  const [system, setSystem] = useState(getSystem(id));
   const model = getModel(kind);
 
   const context: SystemContextType = {
     model: customizeModel(model, system),
     system,
   };
-  const [name, setName] = useState(system.name);
-  const router = useRouter();
 
-  useEffect(() => {
-    saveSystem(updateSystem(system));
-    setName(system.name);
-  }, [system]);
-
-  function handleClick() {
+  function handleClick(system: SystemType) {
     const newName = prompt(
       "Enter system name:",
       isDraft(system) ? `New ${findApplicationName(kind)} system` : name,
@@ -77,7 +92,7 @@ export default function System({
         <div className="flex items-center">
           <div
             hidden={system.params == null}
-            onClick={handleClick}
+            onClick={() => handleClick(system)}
             data-testid="save"
           >
             {isDraft(system) ? (

@@ -33,28 +33,39 @@ function nonNullParams(systems: System[], selected: string[]) {
 }
 
 export function MySystems() {
-  // use init flag to indicate that systems are loaded from local storage
-  const [init, setInit] = useState(false);
-  const [systems, setSystems] = useState([] as System[]);
+  const [systems, setSystems] = useState(undefined as System[] | undefined);
   const [comparableParams, setComparableParams] = useState([] as string[]);
 
   useEffect(() => {
-    setInit(true);
     setSystems(getSystems());
   }, []);
 
   useEffect(() => {
-    if (init) {
+    if (typeof systems != "undefined") {
       saveSystems(systems);
     }
-  }, [init, systems]);
+  }, [systems]);
 
   const [selected, setSelected] = useState([] as string[]);
   useEffect(() => {
-    setComparableParams(nonNullParams(systems, selected));
+    if (typeof systems != "undefined") {
+      setComparableParams(nonNullParams(systems, selected));
+    }
   }, [systems, selected]);
 
-  function SystemRow({ index, system }: { index: number; system: System }) {
+  if (typeof systems == "undefined") {
+    return;
+  }
+
+  function SystemRow({
+    index,
+    system,
+    systems,
+  }: {
+    index: number;
+    system: System;
+    systems: System[];
+  }) {
     const model = customizeModel(getModel(system.kind), system);
     const iconAttributes = {
       width: 16,
@@ -152,7 +163,7 @@ export function MySystems() {
     );
   }
 
-  function ParameterSelection() {
+  function ParameterSelection({ systems }: { systems: System[] }) {
     return (
       <div className="flow">
         <div className="pb-2">Parameter selection (minimum 3)</div>
@@ -247,7 +258,7 @@ export function MySystems() {
         {systems
           .sort((a, b) => b.timeUpdated - a.timeUpdated)
           .map((v, index) => (
-            <SystemRow key={v.id} index={index} system={v} />
+            <SystemRow key={v.id} index={index} system={v} systems={systems} />
           ))}
         <div className="text-xl p-4">Comparison</div>
         {selected.length <= 1 ? (
@@ -256,7 +267,7 @@ export function MySystems() {
           <>
             <div className="grid lg:grid-cols-12">
               <div className="col-span-4">
-                <ParameterSelection />
+                <ParameterSelection systems={systems} />
               </div>
               <div className="col-span-6">
                 <ComparisonGraph
