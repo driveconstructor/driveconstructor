@@ -63,37 +63,35 @@ export default function Graph() {
   }
 
   return (
-    <div className="min-h-60">
-      <Line
-        data={{
-          datasets,
-        }}
-        options={{
-          animation: {
-            duration: 0,
+    <Line
+      data={{
+        datasets,
+      }}
+      options={{
+        animation: {
+          duration: 0,
+        },
+        plugins: {
+          legend: {
+            position: "bottom",
           },
-          plugins: {
-            legend: {
-              position: "bottom",
+        },
+        scales: {
+          x: {
+            type: "linear",
+            title: {
+              text: "Speed (rpm)",
+              display: true,
             },
           },
-          scales: {
-            x: {
-              type: "linear",
-              title: {
-                text: "Speed (rpm)",
-                display: true,
-              },
-            },
-            y: {
-              title: {
-                text: "Torque (Nm)",
-                display: true,
-              },
+          y: {
+            title: {
+              text: "Torque (Nm)",
+              display: true,
             },
           },
-        }}
-      />
-    </div>
+        },
+      }}
+    />
   );
 }
