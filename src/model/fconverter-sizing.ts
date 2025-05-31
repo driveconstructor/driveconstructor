@@ -30,6 +30,7 @@ export function findFcConverters(
   fconverter: FConverter,
   emachineWorkingCurrent: number,
   trafoRatio: number,
+  wind: boolean,
 ): FConverterComponent[] {
   const deratedVoltage =
     systemVoltage / fconverter.voltageDerating / trafoRatio;
@@ -179,7 +180,9 @@ export function findFcConverters(
     )
     .filter((fc) => FConverterVoltageFiltering[fc.type](fc))
     .filter((fc) => {
-      const efficiencyK = cableEfficiency100 / 100;
+      const efficiencyK = wind
+        ? 100 / cableEfficiency100
+        : cableEfficiency100 / 100;
       const current =
         emachineWorkingCurrent /
         fconverter.overallCurrentDerating /

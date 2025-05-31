@@ -94,15 +94,15 @@ function createMechanism(system: System): Mechanism {
   } else if (system.kind == "wind-fc") {
     const input = system.input as WindFc["input"];
 
-    // kNm => Nm
-    const ratedTorque = input.wind.ratedTorque * 1000;
-    const powerOnShaft = (input.wind.ratedSpeed / 9.55) * ratedTorque;
+    const powerOnShaft =
+      (input.wind.ratedSpeed / 9.55) * input.wind.ratedTorque;
     return {
       ratedSpeed: input.wind.ratedSpeed,
-      ratedTorque,
+      // kNm => Nm
+      ratedTorque: input.wind.ratedTorque * 1000,
       powerOnShaft,
       minimalSpeed: 0,
-      linear: true,
+      linear: false,
       torqueOverload: 0,
       gearRatio: 1,
     };
@@ -193,6 +193,7 @@ export function withCandidates(system: System): System {
       system.input.fconverter,
       components.emachine.workingCurrent,
       trafoRatio,
+      system.kind == "wind-fc",
     );
 
     fconverter = distinctFcByMounting(fconverter);

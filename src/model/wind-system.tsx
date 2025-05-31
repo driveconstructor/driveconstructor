@@ -31,7 +31,16 @@ export const WindFcModel: Model<WindFc> = {
   ),
   input: {
     wind: WindElement,
-    emachine: EMachineElement,
+    emachine: {
+      ...EMachineElement,
+      params: {
+        ...EMachineElement.params,
+        type: {
+          ...EMachineElement.params.type,
+          value: "PMSM",
+        },
+      },
+    },
     cable: CableElement,
     fconverter: NoTrafoFConverterElement,
     switch: SwitchElement,

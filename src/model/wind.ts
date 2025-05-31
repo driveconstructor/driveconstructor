@@ -34,6 +34,7 @@ export const WindElement: SystemElement<Wind> = {
       label: "Overspeed",
       type: "number",
       value: 1.2,
+      precision: 1,
       range: {
         min: 1,
         max: 1.4,
