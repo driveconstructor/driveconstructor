@@ -65,7 +65,7 @@ test("Report and save", async ({ page }) => {
 test("Export and delete", async ({ page }) => {
   await page.getByRole("link", { name: "My systems" }).click();
   await page
-    .getByTestId("import")
+    .getByTitle("Import")
     .setInputFiles([path.join(__dirname, "test.my-systems.json")]);
 
   await expect(page.getByTestId("system[0].<name>")).toContainText(
@@ -82,10 +82,20 @@ test("Export and delete", async ({ page }) => {
   );
   await page.getByTestId("system[0].<select>").check();
   await page.getByTestId("system[1].<select>").check();
-  await expect(page.getByRole("main")).toContainText(
-    "Parameter selection (minimum 3)",
-  );
-  await page.getByTestId("system[0].<delete>").click();
+  await expect(page.getByText("Parameter selection (minimum 3)")).toBeVisible();
+
+  await page.locator("svg").filter({ hasText: "Deselect all" }).click();
+  await expect(
+    page.getByText("Select 2 and more systems to compare..."),
+  ).toBeVisible();
+
+  await page.getByTestId("system[1].<select>").check();
+  await expect(
+    page.getByText("Select 2 and more systems to compare..."),
+  ).toBeVisible();
+
+  await page.locator("svg").filter({ hasText: "Delete" }).click();
+
   await expect(page.getByTestId("system[0].<name>")).toContainText(
     "Test pump system 1",
   );

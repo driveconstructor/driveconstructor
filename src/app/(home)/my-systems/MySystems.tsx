@@ -11,6 +11,7 @@ import { round } from "@/model/utils";
 import {
   ArrowDownOnSquareStackIcon,
   ArrowUpOnSquareStackIcon,
+  ClipboardDocumentCheckIcon,
   DocumentDuplicateIcon,
   PencilIcon,
   TagIcon,
@@ -98,20 +99,6 @@ export function MySystems() {
             </div>
             <div
               className="hover:cursor-pointer"
-              data-testid={`system[${index}].<delete>`}
-              onClick={() => {
-                if (
-                  confirm(`Are you sure you want to delete '${system.name}'?`)
-                ) {
-                  setSystems(systems.filter((s) => s.id != system.id));
-                  setSelected(selected.filter((s) => s != system.id));
-                }
-              }}
-            >
-              <TrashIcon {...iconAttributes} />
-            </div>
-            <div
-              className="hover:cursor-pointer"
               data-testid={`system[${index}].<duplicate>`}
               onClick={() => {
                 const newName = prompt(
@@ -193,37 +180,42 @@ export function MySystems() {
     );
   }
 
-  return (
-    <div>
+  function Toolbox({ systems }: { systems: System[] }) {
+    const iconAttributes = {
+      width: 24,
+      height: 24,
+    };
+
+    const defaultClassName = "hover:cursor-pointer";
+    const selectedClassName =
+      selected.length > 0 ? defaultClassName : "pointer-events-none opacity-50";
+
+    return (
       <div className="flex items-center">
         <div className="text-2xl p-4">My systems</div>
         <div className="flex">
           <ArrowUpOnSquareStackIcon
-            title="Export..."
-            className="hover:cursor-pointer"
-            width={24}
-            height={24}
+            className={selectedClassName}
+            title="Export selected"
+            {...iconAttributes}
             onClick={() => {
               const file = prompt(
                 "Enter export file name:",
                 "dc.my-systems.json",
               );
               if (file != null) {
-                const link = document.createElement("a");
-                link.download = file;
-                link.target = "_blank";
-                link.rel = "noopener noreferrer";
-                link.href = `data:application/json,${encodeURIComponent(JSON.stringify(systems))}`;
-                link.click();
+                saveSelectedSystems(
+                  file,
+                  systems.filter((s) => selected.includes(s.id)),
+                );
               }
             }}
           />
 
-          <label title="Import...">
+          <label title="Import">
             <ArrowDownOnSquareStackIcon
-              width={24}
-              height={24}
-              className="hover:cursor-pointer"
+              {...iconAttributes}
+              className={defaultClassName}
             />
 
             <input
@@ -252,8 +244,41 @@ export function MySystems() {
               }}
             ></input>
           </label>
+
+          <ClipboardDocumentCheckIcon
+            {...iconAttributes}
+            className={defaultClassName}
+            title={
+              selected.length == systems.length ? "Deselect all" : "Select all"
+            }
+            onClick={() => {
+              if (selected.length == systems.length) {
+                setSelected([]);
+              } else {
+                setSelected(systems.map((s) => s.id));
+              }
+            }}
+          />
+
+          <TrashIcon
+            {...iconAttributes}
+            title="Delete"
+            className={selectedClassName}
+            onClick={() => {
+              if (confirm(`Confirm removal of ${selected.length} systems?`)) {
+                setSystems(systems.filter((s) => !selected.includes(s.id)));
+                setSelected([]);
+              }
+            }}
+          />
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div>
+      <Toolbox systems={systems} />
       <div className="flex-col">
         {systems
           .sort((a, b) => b.timeUpdated - a.timeUpdated)
@@ -309,4 +334,13 @@ function SystemParams({
       })}
     </div>
   );
+}
+
+function saveSelectedSystems(file: string, systems: System[]) {
+  const link = document.createElement("a");
+  link.download = file;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.href = `data:application/json,${encodeURIComponent(JSON.stringify(systems))}`;
+  link.click();
 }
