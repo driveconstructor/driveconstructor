@@ -1,3 +1,10 @@
+import {
+  AcademicCapIcon,
+  BookOpenIcon,
+  ClipboardDocumentCheckIcon,
+  EnvelopeIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -41,24 +48,46 @@ export default function RootLayout({
   return (
     <div className="container mx-auto flex h-screen flex-col justify-between">
       <nav className="flex items-center">
-        <NavItem href="/" className="text-xl">
-          <div className="flex">
-            <Image src={logo.src} alt="logo" width={20} height={20} />
-            <div className="pl-1 hidden md:block">Drive Constructor</div>
+        <NavItem href="/" className="text-xl flex items-center">
+          <Image
+            src={logo.src}
+            alt="logo"
+            width={20}
+            height={20}
+            title="Home"
+          />
+          <div className="pl-1 hidden md:block" title="Home">
+            Drive Constructor
           </div>
         </NavItem>
-        <NavItem href="/docs/textbook" className="text-m">
-          Textbook
+        <NavItem href="/docs/textbook" className="text-m flex items-center">
+          <BookOpenIcon width={20} height={20} title="Textbook"></BookOpenIcon>
+          <div className="pl-1 hidden md:block">Textbook</div>
         </NavItem>
-        <NavItem href="/docs/exercises" className="text-m">
-          Exercises
+        <NavItem href="/docs/exercises" className="flex items-center text-m">
+          <AcademicCapIcon
+            width={20}
+            height={20}
+            title="Exercises"
+          ></AcademicCapIcon>
+          <div className="pl-1 hidden md:block">Exercises</div>
         </NavItem>
-        <NavItem href="/my-systems" className="text-m">
-          My systems
+        <NavItem href="/my-systems" className="flex items-center text-m">
+          <ClipboardDocumentCheckIcon
+            width={20}
+            height={20}
+            title="My systems"
+          ></ClipboardDocumentCheckIcon>
+          <div className="pl-1 hidden md:block">My systems</div>
         </NavItem>
         {feedbackFormUrl ? (
-          <NavItem href={feedbackFormUrl} className="text-m">
-            Send feedback
+          <NavItem href={feedbackFormUrl} className="flex items-center text-m">
+            <PaperAirplaneIcon
+              width={20}
+              height={20}
+              title="Feedback"
+            ></PaperAirplaneIcon>
+            <div className="pl-1 hidden md:block">Send feedback</div>
           </NavItem>
         ) : null}
       </nav>
