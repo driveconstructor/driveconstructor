@@ -67,14 +67,22 @@ export function findTypeSpeedTorque(
           o.ratedTorque < mechanism.ratedTorque / 0.6 &&
           o.ratedTorque * o.ratedSpeed >=
             mechanism.ratedSpeed * mechanism.ratedTorque &&
-          (!mechanism.linear ||
-            (o.ratedTorque / o.ratedSpeed) * mechanism.minimalSpeed +
+          (mechanism.ratedMinimalSpeed == null ||
+            (o.ratedTorque / o.ratedSpeed) * mechanism.ratedMinimalSpeed +
               o.ratedTorque / 2 >
               mechanism.ratedTorque),
       ),
     ),
   );
 }
+
+/*   (mechanism.linear
+            ? (o.ratedTorque / o.ratedSpeed) * mechanism.minimalSpeed +
+                o.ratedTorque / 2 >
+              mechanism.ratedTorque
+            : (o.ratedTorque / o.ratedSpeed / 2) * mechanism.ratedSpeed +
+                o.ratedTorque / 2 >
+              mechanism.ratedTorque),*/
 
 export function findEmCandidates(
   em: EMachine,

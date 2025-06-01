@@ -30,7 +30,7 @@ export type Mechanism = {
   ratedTorque: number;
   powerOnShaft: number;
   minimalSpeed: number;
-  linear: boolean;
+  ratedMinimalSpeed: number | null;
   torqueOverload: number;
   gearRatio: number;
 };
@@ -85,9 +85,11 @@ function createMechanism(system: System): Mechanism {
         input.pump.ratedTorque / input.emachine.overallTorqueDerating,
       powerOnShaft: input.pump.powerOnShaft,
       minimalSpeed: input.pump.minimalSpeed,
-      linear:
+      ratedMinimalSpeed:
         input.emachine.cooling == "IC411" &&
-        input.pump.type == "positive displacement",
+        input.pump.type == "positive displacement"
+          ? input.pump.minimalSpeed
+          : null,
       torqueOverload: input.pump.torqueOverload,
       gearRatio: 1,
     };
@@ -102,7 +104,7 @@ function createMechanism(system: System): Mechanism {
       ratedTorque: input.wind.ratedTorque * 1000,
       powerOnShaft,
       minimalSpeed: 0,
-      linear: false,
+      ratedMinimalSpeed: input.wind.ratedSpeedOfBlades,
       torqueOverload: 0,
       gearRatio: 1,
     };

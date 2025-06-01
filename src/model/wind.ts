@@ -17,8 +17,8 @@ export const WindElement: SystemElement<Wind> = {
       type: "number",
       value: 100,
       range: {
-        min: 5,
-        max: 200,
+        min: 30,
+        max: 400,
       },
     },
     ratedTorque: {
