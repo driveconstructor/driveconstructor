@@ -31,9 +31,8 @@ export type Mechanism = {
   ratedTorque: number;
   powerOnShaft: number;
   minimalSpeed: number;
+  torqueOverload: number | null;
   ratedMinimalSpeed: number | null;
-  torqueOverload: number;
-  gearRatio: number;
 };
 
 function efficiencyClass(em: EMachineComponent): number {
@@ -92,7 +91,6 @@ function createMechanism(system: System): Mechanism {
           ? input.pump.minimalSpeed
           : null,
       torqueOverload: input.pump.torqueOverload,
-      gearRatio: 1,
     };
   } else if (system.kind == "wind-fc" || system.kind == "wind-gb-fc") {
     const input = system.input as WindFc["input"];
@@ -106,8 +104,7 @@ function createMechanism(system: System): Mechanism {
       powerOnShaft,
       minimalSpeed: 0,
       ratedMinimalSpeed: input.wind.ratedSpeedOfBlades,
-      torqueOverload: 0,
-      gearRatio: 1,
+      torqueOverload: null,
     };
   } else {
     throw new Error("Unsupported type");
@@ -164,7 +161,7 @@ export function withCandidates(system: System): System {
       const gearEfficiency = gearbox[0].efficiency100;
       const K =
         applicationType == "wind"
-          ? 1 / ((gearRatio * gearEfficiency) / 100)
+          ? (gearRatio * 100) / gearEfficiency
           : (gearRatio * gearEfficiency) / 100;
 
       mechanism = {
@@ -172,8 +169,14 @@ export function withCandidates(system: System): System {
         ratedSpeed: mechanism.ratedSpeed * gearRatio,
         minimalSpeed: mechanism.minimalSpeed * gearRatio,
         ratedTorque: mechanism.ratedTorque / K,
-        torqueOverload: mechanism.ratedTorque / K,
-        gearRatio,
+        ratedMinimalSpeed:
+          mechanism.ratedMinimalSpeed == null
+            ? null
+            : mechanism.ratedMinimalSpeed * gearRatio,
+        torqueOverload:
+          mechanism.torqueOverload == null
+            ? null
+            : mechanism.torqueOverload / gearRatio,
       };
       components = { ...components, gearbox: gearbox[0] };
     }
