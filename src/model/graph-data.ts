@@ -1,7 +1,7 @@
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { System } from "./system";
 import { WinchFc } from "./winch-system";
-import { WindFc } from "./wind-system";
+import { WindFc, WindGbFc } from "./wind-system";
 
 export type GraphPoint = { speed: number; torque: number };
 
@@ -15,6 +15,7 @@ export function systemGraphData(system: System): GraphPoint[] {
     case "winch-fc":
       return winchGraphData(system);
     case "wind-fc":
+    case "wind-gb-fc":
       return windGraphData(system);
     default:
       throw new Error("Unsupported system kind");
@@ -73,7 +74,7 @@ function winchGraphData(system: WinchFc) {
   return result;
 }
 
-function windGraphData(system: WindFc) {
+function windGraphData(system: WindFc | WindGbFc) {
   const wind = system.input.wind;
   const maxSpeed = wind.ratedSpeed;
   const ratedSpeed = wind.ratedSpeedOfBlades;

@@ -11,10 +11,10 @@ import {
 } from "./pump-system";
 import { SystemKind, SystemModel } from "./system";
 import { WinchFcModel } from "./winch-system";
-import { WindFcModel } from "./wind-system";
-
+import { WindFcModel, WindGbFcModel } from "./wind-system";
+export type ApplicationType = "pump" | "wind" | "winch" | "conveyor";
 export type ApplicationModel = {
-  name: string;
+  name: ApplicationType;
   icon: StaticImageData;
   title: React.ReactNode;
   description: React.ReactNode;
@@ -55,7 +55,7 @@ const applications: ApplicationModel[] = [
         lowest cost of energy.
       </div>
     ),
-    systems: [WindFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
+    systems: [WindFcModel, WindGbFcModel /*", "WinchFcTr", "WinchGbFcTr"*/],
     url: "/docs/tbd",
   },
   {
@@ -75,7 +75,7 @@ const applications: ApplicationModel[] = [
 
 export default applications;
 
-export function findApplicationName(kind: SystemKind): string {
+export function getApplicationType(kind: SystemKind): ApplicationType {
   return applications.filter((a) =>
     a.systems.map((s) => s.kind).includes(kind),
   )[0].name;

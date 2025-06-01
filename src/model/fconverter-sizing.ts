@@ -1,3 +1,4 @@
+import { ApplicationType } from "./application";
 import { FcCooling, FcCoolingType, FcProtection } from "./cooling-protection";
 import {
   FConverter,
@@ -30,7 +31,7 @@ export function findFcConverters(
   fconverter: FConverter,
   emachineWorkingCurrent: number,
   trafoRatio: number,
-  wind: boolean,
+  applicationType: ApplicationType,
 ): FConverterComponent[] {
   const deratedVoltage =
     systemVoltage / fconverter.voltageDerating / trafoRatio;
@@ -153,9 +154,9 @@ export function findFcConverters(
                     weight,
                     gridSideFilter,
                     machineSideFilter,
-                    efficiency75: efficiency75(efficiency100),
-                    efficiency50: efficiency50(efficiency100),
-                    efficiency25: efficiency25(efficiency100),
+                    efficiency75: efficiency75(efficiency100, applicationType),
+                    efficiency50: efficiency50(efficiency100, applicationType),
+                    efficiency25: efficiency25(efficiency100, applicationType),
                     footprint: width * height,
                     volume,
                     ratedPower: ratedPowerLO,
@@ -180,16 +181,16 @@ export function findFcConverters(
     )
     .filter((fc) => FConverterVoltageFiltering[fc.type](fc))
     .filter((fc) => {
-      const efficiencyK = wind
-        ? 100 / cableEfficiency100
-        : cableEfficiency100 / 100;
+      const efficiencyK =
+        applicationType == "wind"
+          ? 100 / cableEfficiency100
+          : cableEfficiency100 / 100;
       const current =
         emachineWorkingCurrent /
         fconverter.overallCurrentDerating /
         efficiencyK;
       return fc.currentLO >= current;
     });
-  // .slice(0, 5);
 }
 
 function getK1(cooling: FcCoolingType) {
@@ -330,35 +331,50 @@ function getEfficiency(efficiency100: number, K: number) {
   return 100 - (100 - efficiency100) * K;
 }
 
-function efficiency25(efficiency100: number) {
+function efficiency25(efficiency100: number, applicationType: ApplicationType) {
   let K;
-  //if (this.input.pump || this.input.wind) {
-  K = 1.37;
-  //} else if (this.input.conveyor || this.input.winch) {
-  // K = 0.85;
-  // }
+  switch (applicationType) {
+    case "pump":
+    case "wind":
+      K = 1.37;
+      break;
+    case "conveyor":
+    case "winch":
+      K = 0.85;
+      break;
+  }
 
   return getEfficiency(efficiency100, K);
 }
 
-function efficiency50(efficiency100: number) {
+function efficiency50(efficiency100: number, applicationType: ApplicationType) {
   let K;
-  // if (this.input.pump || this.input.wind) {
-  K = 1.13;
-  //} else if (this.input.conveyor || this.input.winch) {
-  // K = 0.87;
-  //}
+  switch (applicationType) {
+    case "pump":
+    case "wind":
+      K = 1.13;
+      break;
+    case "conveyor":
+    case "winch":
+      K = 0.87;
+      break;
+  }
 
   return getEfficiency(efficiency100, K);
 }
 
-function efficiency75(efficiency100: number) {
+function efficiency75(efficiency100: number, applicationType: ApplicationType) {
   let K;
-  //if (this.input.pump || this.input.wind) {
-  K = 1.05;
-  //} else if (this.input.conveyor || this.input.winch) {
-  // K = 0.93;
-  //}
+  switch (applicationType) {
+    case "pump":
+    case "wind":
+      K = 1.05;
+      break;
+    case "conveyor":
+    case "winch":
+      K = 0.93;
+      break;
+  }
 
   return getEfficiency(efficiency100, K);
 }

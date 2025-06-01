@@ -1,6 +1,6 @@
 "use client";
 
-import { findApplicationName } from "@/model/application";
+import { getApplicationType } from "@/model/application";
 import {
   createNamedSystem,
   getSystem,
@@ -64,7 +64,7 @@ export default function System({
   function handleClick(system: SystemType) {
     const newName = prompt(
       "Enter system name:",
-      isDraft(system) ? `New ${findApplicationName(kind)} system` : name,
+      isDraft(system) ? `New ${getApplicationType(kind)} system` : name,
     );
     if (newName) {
       setName(newName);

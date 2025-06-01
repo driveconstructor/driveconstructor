@@ -1,3 +1,4 @@
+import { ApplicationType, getApplicationType } from "./application";
 import { CableComponent, CableComponentModel } from "./cable-component";
 import { findCableComponent } from "./cable-sizing";
 import { CandidatesType, ComponentsType } from "./component";
@@ -93,7 +94,7 @@ function createMechanism(system: System): Mechanism {
       torqueOverload: input.pump.torqueOverload,
       gearRatio: 1,
     };
-  } else if (system.kind == "wind-fc") {
+  } else if (system.kind == "wind-fc" || system.kind == "wind-gb-fc") {
     const input = system.input as WindFc["input"];
 
     const powerOnShaft =
@@ -137,6 +138,8 @@ function findEMachineCandidates(
 }
 
 export function withCandidates(system: System): System {
+  const applicationType: ApplicationType = getApplicationType(system.kind);
+
   let candidates: CandidatesType = { ...system.candidates };
   let components: ComponentsType = { ...system.components };
   let required: string[] = [];
@@ -147,14 +150,23 @@ export function withCandidates(system: System): System {
       ? system.input.trafo.ratio
       : 1;
 
-  if (system.kind == "pump-gb-fc" || system.kind == "pump-gb-fc-tr") {
+  if (
+    system.kind == "pump-gb-fc" ||
+    system.kind == "pump-gb-fc-tr" ||
+    system.kind == "wind-gb-fc"
+  ) {
     required.push(GearboxComponentModel.kind);
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
     candidates = { ...candidates, gearbox };
 
     if (gearbox.length == 1) {
       const gearRatio = gearbox[0].gearRatio;
-      const K = (gearRatio * gearbox[0].efficiency100) / 100;
+      const gearEfficiency = gearbox[0].efficiency100;
+      const K =
+        applicationType == "wind"
+          ? 1 / ((gearRatio * gearEfficiency) / 100)
+          : (gearRatio * gearEfficiency) / 100;
+
       mechanism = {
         ...mechanism,
         ratedSpeed: mechanism.ratedSpeed * gearRatio,
@@ -195,7 +207,7 @@ export function withCandidates(system: System): System {
       system.input.fconverter,
       components.emachine.workingCurrent,
       trafoRatio,
-      system.kind == "wind-fc",
+      applicationType,
     );
 
     fconverter = distinctFcByMounting(fconverter);
