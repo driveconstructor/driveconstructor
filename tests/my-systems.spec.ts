@@ -2,13 +2,14 @@ import { expect, test } from "@playwright/test";
 import path from "path";
 
 test.beforeEach(async ({ browserName, page }) => {
+  // for some reason dialogs are not working im chromium
+  test.skip(browserName.toLowerCase() != "firefox", "Test only for firefox!");
   await page.goto("/");
+    await page.evaluate(() => window.localStorage.clear());
 
   await page.getByTestId("pump").click();
   await page.getByTestId("pump-fc").click();
   page.on("dialog", (dialog) => dialog.accept());
-  // for some reason dialogs are not working im chromium
-  test.skip(browserName.toLowerCase() != "firefox", "Test only for firefox!");
 });
 
 test("Report and save", async ({ page }) => {
