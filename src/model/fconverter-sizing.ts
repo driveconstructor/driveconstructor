@@ -182,9 +182,7 @@ export function findFcConverters(
     .filter((fc) => FConverterVoltageFiltering[fc.type](fc))
     .filter((fc) => {
       const efficiencyK =
-        applicationType == "wind"
-          ? 100 / cableEfficiency100
-          : cableEfficiency100 / 100;
+        applicationType == "wind" ? 1 : cableEfficiency100 / 100;
       const current =
         emachineWorkingCurrent /
         fconverter.overallCurrentDerating /

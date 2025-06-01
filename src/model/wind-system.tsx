@@ -75,7 +75,7 @@ export const WindGbFcModel: Model<WindGbFc> = {
         ratedSpeedOfBlades: {
           ...WindElement.params.ratedSpeedOfBlades,
           value: 20,
-          range: { min: 10, max: 25 },
+          range: { min: 10, max: 400 },
         },
         ratedTorque: {
           ...WindElement.params.ratedTorque,
