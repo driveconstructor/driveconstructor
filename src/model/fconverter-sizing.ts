@@ -122,20 +122,29 @@ export function findFcConverters(
                     type == "4Q-2L-VSC" ||
                     type == "2Q-2L-VSC-12p"
                   ) {
-                    if (ratedPowerLO <= 5 && ratedPowerLO < 10 && width < 0.1) {
-                      height = 0.4;
-                      width = 0.2;
-                    } else if (ratedPowerLO < 5 && width < 0.06) {
-                      height = 0.35;
-                      width = 0.15;
-                    } else if (ratedPowerLO > 10 && width < 0.2) {
-                      height = 0.8;
-                      width = 0.3;
-                    }
-
-                    if (mounting == "floor" && width < 0.5) {
-                      height = 2;
-                      width = 0.4;
+                    switch (mounting) {
+                      case "wall":
+                        if (
+                          ratedPowerLO <= 5 &&
+                          ratedPowerLO < 10 &&
+                          width < 0.1
+                        ) {
+                          height = 0.4;
+                          width = 0.2;
+                        } else if (ratedPowerLO < 5 && width < 0.06) {
+                          height = 0.35;
+                          width = 0.15;
+                        } else if (ratedPowerLO > 10 && width < 0.2) {
+                          height = 0.8;
+                          width = 0.3;
+                        }
+                        break;
+                      case "floor":
+                        if (width < 0.5) {
+                          height = 2;
+                          width = 0.4;
+                        }
+                        break;
                     }
 
                     width = volume / height / depth;
