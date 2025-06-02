@@ -125,24 +125,24 @@ export function findFcConverters(
                     switch (mounting) {
                       case "wall":
                         if (
-                          ratedPowerLO <= 5 &&
+                          ratedPowerLO >= 5 &&
                           ratedPowerLO < 10 &&
                           width < 0.1
                         ) {
                           height = 0.4;
-                          width = 0.2;
+                          depth = 0.2;
                         } else if (ratedPowerLO < 5 && width < 0.06) {
                           height = 0.35;
-                          width = 0.15;
+                          depth = 0.15;
                         } else if (ratedPowerLO > 10 && width < 0.2) {
                           height = 0.8;
-                          width = 0.3;
+                          depth = 0.3;
                         }
                         break;
                       case "floor":
                         if (width < 0.5) {
                           height = 2;
-                          width = 0.4;
+                          depth = 0.4;
                         }
                         break;
                     }

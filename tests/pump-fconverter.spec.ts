@@ -129,7 +129,7 @@ test("Defaults", async ({ page }) => {
     "0.4165",
   );
   await expect(page.getByTestId("fconverter[1].footprint")).toContainText(
-    "0.3471",
+    "0.5206",
   );
 });
 
