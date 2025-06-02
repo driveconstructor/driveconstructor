@@ -74,9 +74,7 @@ test("Change voltage", async ({ page }) => {
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
     "2Q-2L-2460-132-IP2x-AC-W-6p",
   );
-  await expect(page.getByTestId("fconverter[1].designation")).toContainText(
-    "2Q-2L-2460-200-IP2x-AC-F-6p",
-  );
+  await expect(page.getByTestId("fconverter[0].<selected>")).toBeChecked();
   await expect(page.getByTestId("trafo[0].designation")).toContainText(
     "D-S-00175-06600-AC-IP5x",
   );

@@ -98,8 +98,6 @@ export function findFcConverters(
                     efficiency100,
                     cosFi100,
                   );
-                  const depth = getDepth(type, mounting, ratedPowerLO);
-                  const height = getHeight(type, mounting, ratedPowerLO);
 
                   const volume =
                     getVolume(
@@ -113,8 +111,36 @@ export function findFcConverters(
                     ) +
                     addFilter(gridSideFilter, (f) => f.volume) +
                     addFilter(machineSideFilter, (f) => f.volume);
+                  let depth = getDepth(type, mounting, ratedPowerLO);
+                  let height = getHeight(type, mounting, ratedPowerLO);
 
-                  const width = volume / height / depth;
+                  let width = volume / height / depth;
+
+                  // adjust for 2L
+                  if (
+                    type == "2Q-2L-VSC-6p" ||
+                    type == "4Q-2L-VSC" ||
+                    type == "2Q-2L-VSC-12p"
+                  ) {
+                    if (ratedPowerLO <= 5 && ratedPowerLO < 10 && width < 0.1) {
+                      height = 0.4;
+                      width = 0.2;
+                    } else if (ratedPowerLO < 5 && width < 0.06) {
+                      height = 0.35;
+                      width = 0.15;
+                    } else if (ratedPowerLO > 10 && width < 0.2) {
+                      height = 0.8;
+                      width = 0.3;
+                    }
+
+                    if (mounting == "floor" && width < 0.5) {
+                      height = 2;
+                      width = 0.4;
+                    }
+
+                    width = volume / height / depth;
+                  }
+
                   const weight =
                     getWeight(
                       type,
@@ -187,7 +213,11 @@ export function findFcConverters(
         emachineWorkingCurrent /
         fconverter.overallCurrentDerating /
         efficiencyK;
-      return fc.currentLO >= current;
+
+      return (
+        fc.currentLO >= current &&
+        (fc.mounting != "floor" || fc.currentLO <= current * 1.5)
+      );
     });
 }
 
@@ -376,3 +406,23 @@ function efficiency75(efficiency100: number, applicationType: ApplicationType) {
 
   return getEfficiency(efficiency100, K);
 }
+/*function calculateWidthHightDepth(): {
+  type: FConverterTypeAlias;
+  mounting: FConverterMountingType;
+  ratedPowerLO: number;
+  width: number;
+  height: number;
+  depth: number;
+} {
+  if (type ==
+    "2Q-2L-VSC-6p" ||
+    type == "2Q-2L-VSC-12p" ||
+    type == "4Q-2L-VSC" )
+      switch (mounting) {
+        case "floor":
+          return 2.2;
+        case "wall":
+          return ratedPowerLO < 10 ? 0.5 : 1;
+      }
+    })
+}*/

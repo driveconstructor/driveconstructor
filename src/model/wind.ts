@@ -42,7 +42,7 @@ export const WindElement: SystemElement<Wind> = {
       },
     },
     ratedSpeed: {
-      label: "Rated speed",
+      label: "Overspeed, rpm",
       type: "number",
       value: (wind) => wind.ratedSpeedOfBlades * wind.overSpeed,
     },
