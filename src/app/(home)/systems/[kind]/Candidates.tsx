@@ -60,7 +60,7 @@ function Candidate({
       <div className="flex p-2">
         <div
           onClick={() => setCollapsed(!collapsed)}
-          className="flex flex-nowrap hover:cursor-pointer"
+          className="flex flex-nowrap cursor-pointer"
         >
           {collapsed ? (
             <ChevronRightIcon className="h-6 text-gray-500" />

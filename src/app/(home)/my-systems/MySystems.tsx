@@ -98,7 +98,7 @@ export function MySystems() {
               </Link>
             </div>
             <div
-              className="hover:cursor-pointer"
+              className="cursor-pointer"
               data-testid={`system[${index}].<duplicate>`}
               onClick={() => {
                 const newName = prompt(
@@ -114,7 +114,7 @@ export function MySystems() {
               <DocumentDuplicateIcon {...iconAttributes} />
             </div>
             <div
-              className="hover:cursor-pointer"
+              className="cursor-pointer"
               data-testid={`system[${index}].<rename>`}
               onClick={() => {
                 const newName = prompt("Enter system name:", system.name);
@@ -186,7 +186,7 @@ export function MySystems() {
       height: 24,
     };
 
-    const defaultClassName = "hover:cursor-pointer";
+    const defaultClassName = "cursor-pointer";
     const selectedClassName =
       selected.length > 0 ? defaultClassName : "pointer-events-none opacity-50";
 

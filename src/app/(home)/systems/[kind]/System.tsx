@@ -56,7 +56,7 @@ export default function System({
     }
 
     setSystem(getSystem(id));
-  }, [searchParams]);
+  }, [kind, router, searchParams]);
 
   useEffect(() => {
     // system is never undefined at this point
@@ -95,7 +95,7 @@ export default function System({
   const iconAttributes = {
     width: 24,
     height: 24,
-    className: "hover:cursor-pointer m-2",
+    className: "cursor-pointer m-2",
     "data-testid": "save-icon",
   };
 
@@ -122,7 +122,7 @@ export default function System({
             {name}
           </div>
           <div
-            className="m-1 hover:cursor-pointer"
+            className="m-1 cursor-pointer"
             title="Copy permanent link"
             onClick={() => {
               const encoded = packValues(model, system);
