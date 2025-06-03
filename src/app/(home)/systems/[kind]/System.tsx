@@ -19,6 +19,7 @@ import {
 import { packValues, unpackValues } from "@/model/system-utils";
 import {
   ArrowDownTrayIcon,
+  CheckIcon,
   LinkIcon,
   TagIcon,
 } from "@heroicons/react/24/outline";
@@ -38,6 +39,7 @@ export default function System({
 }) {
   const [system, setSystem] = useState(undefined as SystemType | undefined);
   const [name, setName] = useState(system?.name);
+  const [copied, setCopied] = useState(false);
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -128,9 +130,15 @@ export default function System({
               const encoded = packValues(model, system);
               const url = window.location.href.split("?")[0];
               navigator.clipboard.writeText(url + "?values=" + encoded);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 500);
             }}
           >
-            <LinkIcon width={20} height={20} />
+            {copied ? (
+              <CheckIcon width={20} height={20} />
+            ) : (
+              <LinkIcon width={20} height={20} />
+            )}
           </div>
         </div>
       </div>
