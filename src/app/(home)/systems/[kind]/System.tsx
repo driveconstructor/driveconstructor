@@ -3,6 +3,7 @@
 import { getApplicationType } from "@/model/application";
 import {
   createNamedSystem,
+  createSystem,
   getSystem,
   isDraft,
   saveSystem,
@@ -15,7 +16,12 @@ import {
   SystemKind,
   System as SystemType,
 } from "@/model/system";
-import { ArrowDownTrayIcon, TagIcon } from "@heroicons/react/24/outline";
+import { packValues, unpackValues } from "@/model/system-utils";
+import {
+  ArrowDownTrayIcon,
+  LinkIcon,
+  TagIcon,
+} from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import Input from "./Input";
@@ -36,6 +42,14 @@ export default function System({
 
   const searchParams = useSearchParams();
   useEffect(() => {
+    const values = searchParams.get("values");
+    if (values != null) {
+      const unpackedValues = unpackValues(values);
+      const system = createSystem(getModel(kind), unpackedValues);
+      router.push(`/systems/${kind}/?id=${system.id}`);
+      return;
+    }
+
     const id = searchParams.get("id");
     if (id == null) {
       throw new Error(`id is not found: ${id}`);
@@ -102,11 +116,22 @@ export default function System({
             )}
           </div>
           <div
-            className={isDraft(system) ? "text-gray-500" : ""}
+            className={(isDraft(system) ? "text-gray-500" : "") + "m-1"}
             data-testid="system-name"
           >
             {name}
           </div>
+          <LinkIcon
+            className="m-1 hover:cursor-pointer"
+            width={20}
+            height={20}
+            onClick={() => {
+              const encoded = packValues(model, system);
+              const url = window.location.href.split("?")[0];
+              navigator.clipboard.writeText(url + "?values=" + encoded);
+            }}
+            title="Copy permanent link"
+          />
         </div>
       </div>
       <SystemContext.Provider value={context}>
