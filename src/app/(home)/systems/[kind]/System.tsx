@@ -121,17 +121,17 @@ export default function System({
           >
             {name}
           </div>
-          <LinkIcon
+          <div
             className="m-1 hover:cursor-pointer"
-            width={20}
-            height={20}
+            title="Copy permanent link"
             onClick={() => {
               const encoded = packValues(model, system);
               const url = window.location.href.split("?")[0];
               navigator.clipboard.writeText(url + "?values=" + encoded);
             }}
-            title="Copy permanent link"
-          />
+          >
+            <LinkIcon width={20} height={20} />
+          </div>
         </div>
       </div>
       <SystemContext.Provider value={context}>
