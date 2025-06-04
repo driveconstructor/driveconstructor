@@ -92,7 +92,11 @@ function createMechanism(system: System): Mechanism {
           : null,
       torqueOverload: input.pump.torqueOverload,
     };
-  } else if (system.kind == "wind-fc" || system.kind == "wind-gb-fc") {
+  } else if (
+    system.kind == "wind-fc" ||
+    system.kind == "wind-gb-fc" ||
+    system.kind == "wind-fc-tr"
+  ) {
     const input = system.input as WindFc["input"];
 
     const powerOnShaft =
@@ -143,7 +147,9 @@ export function withCandidates(system: System): System {
 
   let mechanism = createMechanism(system);
   const trafoRatio =
-    system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr"
+    system.kind == "pump-fc-tr" ||
+    system.kind == "pump-gb-fc-tr" ||
+    system.kind == "wind-fc-tr"
       ? system.input.trafo.ratio
       : 1;
 
@@ -220,7 +226,11 @@ export function withCandidates(system: System): System {
   }
   candidates = { ...candidates, fconverter };
 
-  if (system.kind == "pump-fc-tr" || system.kind == "pump-gb-fc-tr") {
+  if (
+    system.kind == "pump-fc-tr" ||
+    system.kind == "pump-gb-fc-tr" ||
+    system.kind == "wind-fc-tr"
+  ) {
     required.push(TrafoComponentModel.kind);
     let trafo: TrafoComponent[] = [];
     if (components.emachine) {

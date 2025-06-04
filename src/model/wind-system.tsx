@@ -1,11 +1,13 @@
 import { CableElement } from "./cable";
 import { CandidatesType, ComponentsType } from "./component";
 import { EMachineElement } from "./emachine";
-import { NoTrafoFConverterElement } from "./fconverter";
+import { NoTrafoFConverterElement, TrafoFConverterElement } from "./fconverter";
 import { Gearbox, GearboxElement } from "./gearbox";
 import { GridElement } from "./grid";
 import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
+import { Trafo, TrafoElement } from "./trafo";
+import { updateTrSystem } from "./trafo-system-utils";
 import { Wind, WindElement } from "./wind";
 
 export type WindFc = BaseSystem & {
@@ -47,6 +49,42 @@ export const WindFcModel: Model<WindFc> = {
     switch: SwitchElement,
     grid: GridElement,
   },
+};
+
+export type WindFcTr = BaseSystem & {
+  kind: "wind-fc-tr";
+  input: { wind: Wind; trafo: Trafo };
+  candidates: CandidatesType;
+  components: ComponentsType;
+};
+
+export const WindFcTrModel: Model<WindFcTr> = {
+  kind: "wind-fc-tr",
+  title: "Drive train with FC and transformer",
+  description: (
+    <div>
+      In this solution the transformer is used for matching the voltage in the
+      grid and FC&apos;s rated voltage and for galvanic insulation. It is
+      possible to find a generator matching speed of the turbine blades without
+      any gearbox.
+    </div>
+  ),
+  input: {
+    wind: WindElement,
+    emachine: { ...WindFcModel.input.emachine },
+    cable: CableElement,
+    fconverter: TrafoFConverterElement,
+    trafo: TrafoElement,
+    switch: SwitchElement,
+    grid: {
+      ...GridElement,
+      params: {
+        ...GridElement.params,
+        voltage: { ...GridElement.params.voltage, value: 6000 },
+      },
+    },
+  },
+  update: updateTrSystem,
 };
 
 export type WindGbFc = BaseSystem & {
