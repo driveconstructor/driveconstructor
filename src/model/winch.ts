@@ -2,8 +2,6 @@ import icon from "../images/el-winch.svg";
 import { SystemElement } from "./system";
 
 export type Winch = {
-  torque: number;
-  ratedSpeed: number;
   emptyDrumDiameter: number;
   fullDrumDiameter: number;
   forceOnLine: number;
@@ -13,21 +11,14 @@ export type Winch = {
   overloadDuration: number;
   overloadAmplitude: number;
   overloadCyclePeriod: number;
+  // calculated
+  ratedTorque: number;
+  ratedSpeed: number;
 };
 
 export const WinchElement: SystemElement<Winch> = {
   icon,
   params: {
-    torque: {
-      label: "Torque, kNm",
-      type: "number",
-      value: 100,
-    },
-    ratedSpeed: {
-      label: "Rated speed, rpm",
-      type: "number",
-      value: 200,
-    },
     emptyDrumDiameter: {
       type: "number",
       range: {
@@ -35,6 +26,7 @@ export const WinchElement: SystemElement<Winch> = {
         max: 1.8,
         step: 0.1,
       },
+      precision: 1,
       value: 0.3,
       label: "Drum diameter (empty), m",
     },
@@ -46,6 +38,7 @@ export const WinchElement: SystemElement<Winch> = {
         step: 0.1,
       },
       value: 0.5,
+      precision: 1,
       label: "Drum diameter (full), m",
     },
     forceOnLine: {
@@ -55,6 +48,7 @@ export const WinchElement: SystemElement<Winch> = {
         max: 100,
         step: 0.1,
       },
+      precision: 1,
       value: 10,
       label: "Force on the line (rated), kN",
     },
@@ -65,6 +59,7 @@ export const WinchElement: SystemElement<Winch> = {
         max: 20,
         step: 0.5,
       },
+      precision: 1,
       value: 3,
       label: "Speed of the line (rated), m/s",
     },
@@ -85,6 +80,7 @@ export const WinchElement: SystemElement<Winch> = {
         min: 0.1,
         max: 100,
       },
+      precision: 1,
       value: 1,
       label: "Duty cycle period, min",
       advanced: true,
@@ -118,6 +114,18 @@ export const WinchElement: SystemElement<Winch> = {
       value: 60,
       label: "Overload cycle period, sec",
       advanced: true,
+    },
+    ratedTorque: {
+      label: "Torque, kNm",
+      type: "number",
+      precision: 2,
+      value: (winch) => (winch.forceOnLine * winch.fullDrumDiameter) / 2,
+    },
+    ratedSpeed: {
+      label: "Rated speed, rpm",
+      type: "number",
+      value: (winch) =>
+        (winch.speedOfLine * 9.55 * 2) / winch.emptyDrumDiameter,
     },
   },
 };

@@ -24,6 +24,7 @@ import { TrafoComponent, TrafoComponentModel } from "./trafo-component";
 import { findTrafoCandidates } from "./trafo-sizing";
 import { haveSameContent } from "./utils";
 import { findVoltageY } from "./voltage";
+import { WinchFc } from "./winch-system";
 import { WindFc } from "./wind-system";
 
 export type Mechanism = {
@@ -109,6 +110,18 @@ function createMechanism(system: System): Mechanism {
       powerOnShaft,
       minimalSpeed: 0,
       ratedMinimalSpeed: input.wind.ratedSpeedOfBlades,
+      torqueOverload: null,
+    };
+  } else if (system.kind == "winch-fc") {
+    const input = system.input as WinchFc["input"];
+
+    const powerOnShaft = 0;
+    return {
+      ratedSpeed: input.winch.ratedSpeed,
+      ratedTorque: input.winch.ratedTorque,
+      powerOnShaft,
+      minimalSpeed: 0,
+      ratedMinimalSpeed: 0,
       torqueOverload: null,
     };
   } else {
