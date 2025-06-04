@@ -8,7 +8,7 @@ import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { SystemParamsType } from "./system-params";
 import { WinchFc } from "./winch-system";
-import { WindFc, WindFcTr, WindGbFc } from "./wind-system";
+import { WindFc, WindFcTr, WindGbFc, WindGbFcTr } from "./wind-system";
 
 export type ParamType = "text" | "number";
 
@@ -77,6 +77,7 @@ export type System = (
   | WindFc
   | WindGbFc
   | WindFcTr
+  | WindGbFcTr
 ) & {
   // to make type script access different types for systems
   input: Record<string, Record<string, any>>;

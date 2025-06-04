@@ -15,6 +15,8 @@ export function packValues(model: SystemModel, system: System): string {
       }),
   );
 
+  // {cable: 1}
+
   return encodeURIComponent(JSON.stringify(values));
 }
 

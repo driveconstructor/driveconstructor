@@ -11,7 +11,12 @@ import {
 } from "./pump-system";
 import { SystemKind, SystemModel } from "./system";
 import { WinchFcModel } from "./winch-system";
-import { WindFcModel, WindFcTrModel, WindGbFcModel } from "./wind-system";
+import {
+  WindFcModel,
+  WindFcTrModel,
+  WindGbFcModel,
+  WindGbFcTrModel,
+} from "./wind-system";
 export type ApplicationType = "pump" | "wind" | "winch" | "conveyor";
 export type ApplicationModel = {
   name: ApplicationType;
@@ -55,7 +60,7 @@ const applications: ApplicationModel[] = [
         lowest cost of energy.
       </div>
     ),
-    systems: [WindFcModel, WindGbFcModel, WindFcTrModel /*", "WinchGbFcTr"*/],
+    systems: [WindFcModel, WindGbFcModel, WindFcTrModel, WindGbFcTrModel],
     url: "/docs/tbd",
   },
   {

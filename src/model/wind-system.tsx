@@ -130,3 +130,36 @@ export const WindGbFcModel: Model<WindGbFc> = {
     grid: GridElement,
   },
 };
+
+export type WindGbFcTr = BaseSystem & {
+  kind: "wind-gb-fc-tr";
+  input: { wind: Wind; gearbox: Gearbox; trafo: Trafo };
+  candidates: CandidatesType;
+  components: ComponentsType;
+};
+
+export const WindGbFcTrModel: Model<WindGbFcTr> = {
+  kind: "wind-gb-fc-tr",
+  title: "Drive train with gearbox, electric machine, FC and transformer",
+  description: (
+    <div>
+      This solution can be used when the turbine blades have too low rated speed
+      to be matched by the double-fed machine, and the transformer is used for
+      matching the voltage in the grid and FC&apos;s and for galvanic
+      insulation.
+    </div>
+  ),
+  input: {
+    wind: { ...WindGbFcModel.input.wind },
+    gearbox: GearboxElement,
+    emachine: { ...WindFcModel.input.emachine },
+    cable: CableElement,
+    fconverter: TrafoFConverterElement,
+    trafo: TrafoElement,
+    switch: SwitchElement,
+    grid: {
+      ...WindFcTrModel.input.grid,
+    },
+  },
+  update: updateTrSystem,
+};

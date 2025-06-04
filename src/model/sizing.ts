@@ -95,7 +95,8 @@ function createMechanism(system: System): Mechanism {
   } else if (
     system.kind == "wind-fc" ||
     system.kind == "wind-gb-fc" ||
-    system.kind == "wind-fc-tr"
+    system.kind == "wind-fc-tr" ||
+    system.kind == "wind-gb-fc-tr"
   ) {
     const input = system.input as WindFc["input"];
 
@@ -149,14 +150,16 @@ export function withCandidates(system: System): System {
   const trafoRatio =
     system.kind == "pump-fc-tr" ||
     system.kind == "pump-gb-fc-tr" ||
-    system.kind == "wind-fc-tr"
+    system.kind == "wind-fc-tr" ||
+    system.kind == "wind-gb-fc-tr"
       ? system.input.trafo.ratio
       : 1;
 
   if (
     system.kind == "pump-gb-fc" ||
     system.kind == "pump-gb-fc-tr" ||
-    system.kind == "wind-gb-fc"
+    system.kind == "wind-gb-fc" ||
+    system.kind == "wind-gb-fc-tr"
   ) {
     required.push(GearboxComponentModel.kind);
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
@@ -229,7 +232,8 @@ export function withCandidates(system: System): System {
   if (
     system.kind == "pump-fc-tr" ||
     system.kind == "pump-gb-fc-tr" ||
-    system.kind == "wind-fc-tr"
+    system.kind == "wind-fc-tr" ||
+    system.kind == "wind-gb-fc-tr"
   ) {
     required.push(TrafoComponentModel.kind);
     let trafo: TrafoComponent[] = [];

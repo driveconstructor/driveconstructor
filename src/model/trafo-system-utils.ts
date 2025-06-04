@@ -1,10 +1,10 @@
 import { PumpFcTr, PumpGbFcTr } from "./pump-system";
 import { splitRange } from "./utils";
-import { WindFcTr } from "./wind-system";
+import { WindFcTr, WindGbFcTr } from "./wind-system";
 
-export function updateTrSystem<T extends PumpFcTr | PumpGbFcTr | WindFcTr>(
-  system: T,
-): T {
+export function updateTrSystem<
+  T extends PumpFcTr | PumpGbFcTr | WindFcTr | WindGbFcTr,
+>(system: T): T {
   const trafo = system.input.trafo;
   const grid = system.input.grid;
 

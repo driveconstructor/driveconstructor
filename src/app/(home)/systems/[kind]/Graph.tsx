@@ -48,18 +48,16 @@ export default function Graph() {
 
   if (emachines) {
     const gearRatio = context.system.components.gearbox?.gearRatio || 1;
-    emachines
-      .filter((em) => typeof em != "undefined")
-      .forEach((em, index) => {
-        const emGraphData = emachineGraphData(gearRatio, em);
-        const color = colors[index % colors.length];
-        datasets.push({
-          label: `${gearRatio == 1 ? "" : "Gearbox+"}${em.designation}`,
-          data: emGraphData.map(toPoint),
-          backgroundColor: color,
-          borderColor: color,
-        });
+    emachines.forEach((em, index) => {
+      const emGraphData = emachineGraphData(gearRatio, em);
+      const color = colors[index % colors.length];
+      datasets.push({
+        label: `${gearRatio == 1 ? "" : "Gearbox+"}${em.designation}`,
+        data: emGraphData.map(toPoint),
+        backgroundColor: color,
+        borderColor: color,
       });
+    });
   }
 
   return (
