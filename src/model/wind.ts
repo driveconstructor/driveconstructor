@@ -7,6 +7,7 @@ export type Wind = {
   overSpeed: number;
   // calculated
   ratedSpeed: number;
+  powerOnShaft: number;
 };
 
 export const WindElement: SystemElement<Wind> = {
@@ -45,6 +46,12 @@ export const WindElement: SystemElement<Wind> = {
       label: "Overspeed, rpm",
       type: "number",
       value: (wind) => wind.ratedSpeedOfBlades * wind.overSpeed,
+    },
+    powerOnShaft: {
+      label: "Power on shaft, kW",
+      type: "number",
+      precision: 1,
+      value: (wind) => (wind.ratedSpeed / 9.55) * wind.ratedTorque,
     },
   },
 };

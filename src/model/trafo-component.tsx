@@ -75,6 +75,7 @@ export const TrafoComponentModel: ComponentModel<TrafoComponent> = {
     },
     ratedPower: {
       label: TrafoElement.params.ratedPower.label,
+      precision: 1,
     },
     typeII: {
       label: TrafoElement.params.typeII.label,

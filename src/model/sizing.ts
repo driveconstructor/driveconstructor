@@ -101,13 +101,11 @@ function createMechanism(system: System): Mechanism {
   ) {
     const input = system.input as WindFc["input"];
 
-    const powerOnShaft =
-      (input.wind.ratedSpeed / 9.55) * input.wind.ratedTorque;
     return {
       ratedSpeed: input.wind.ratedSpeed,
       // kNm => Nm
       ratedTorque: input.wind.ratedTorque * 1000,
-      powerOnShaft,
+      powerOnShaft: input.wind.powerOnShaft,
       minimalSpeed: 0,
       ratedMinimalSpeed: input.wind.ratedSpeedOfBlades,
       torqueOverload: null,

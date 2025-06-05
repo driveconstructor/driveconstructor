@@ -55,6 +55,7 @@ export type EMachine = {
 export const RatedPowerParam = {
   ratedPower: {
     label: "Rated power, kW",
+    precision: 1,
   },
 };
 
