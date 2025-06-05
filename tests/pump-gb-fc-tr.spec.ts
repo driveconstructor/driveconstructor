@@ -69,10 +69,14 @@ test("Defaults", async ({ page }) => {
 });
 
 test("Change voltage", async ({ page }) => {
+  await page.getByTestId("fconverter.<icon>").click();
+  await page.getByLabel("Type:").selectOption("4Q-3L-NPC-VSC");
+
   await page.getByTestId("trafo.<icon>").click();
   await page.getByLabel("Voltage (LV):").selectOption("2200-2550");
+
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
-    "2Q-2L-2460-132-IP2x-AC-W-6p",
+    "4Q-NPC-2.46k-200-IP2x-AC-F",
   );
   await expect(page.getByTestId("fconverter[0].<selected>")).toBeChecked();
   await expect(page.getByTestId("trafo[0].designation")).toContainText(

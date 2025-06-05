@@ -29,7 +29,6 @@ function mediumVoltage1(fc: FConverterComponent) {
   ) {
     return true;
   }
-
   return false;
 }
 

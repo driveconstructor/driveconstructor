@@ -1,10 +1,10 @@
 "use client";
 
 import { withCandidates } from "@/model/sizing";
-import { createSystem, saveSystem, updateParam } from "@/model/store";
+import { createSystem, updateParam } from "@/model/store";
 import { System } from "@/model/system";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Candidates from "./Candidates";
 import Errors from "./Errors";
 import Graph from "./Graph";
@@ -21,10 +21,6 @@ export default function Input({
   const [showMore, setShowMore] = useState(false);
   const [update, setUpdate] = useState({ exclude: "", count: 0 });
   const { system, model } = useContext(SystemContext);
-
-  useEffect(() => {
-    saveSystem(system);
-  }, [system]);
 
   const resetErrors = () => {
     setUpdate({ exclude: "", count: update.count + 1 });

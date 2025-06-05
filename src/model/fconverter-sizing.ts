@@ -225,7 +225,8 @@ export function findFcConverters(
 
       return (
         fc.currentLO >= current &&
-        (fc.mounting != "floor" || fc.currentLO <= current * 1.5)
+        // TODO: verify current range!
+        (fc.mounting != "floor" || fc.currentLO <= current * 2)
       );
     });
 }

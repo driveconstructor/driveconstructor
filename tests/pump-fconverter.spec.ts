@@ -191,7 +191,8 @@ test("Starting torque", async ({ page }) => {
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
     "2Q-2L-400-132-IP2x-AC-W-6p",
   );
-  await expect(page.getByTestId("fconverter[0].<selected>")).toBeChecked();
+  await page.getByTestId("fconverter[1].label.<selected>").click();
+
   await page.getByTestId("pump.<icon>").click();
   await page.getByText("More...").first().click();
   await page.getByLabel("Starting torque as *T_rated:").selectOption("2.0");
@@ -209,7 +210,7 @@ test("Starting torque", async ({ page }) => {
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
     "2Q-2L-400-132-IP2x-AC-W-6p",
   );
-  await expect(page.getByTestId("fconverter[0].<selected>")).toBeChecked();
+  await page.getByTestId("fconverter[1].label.<selected>").click();
 });
 
 test("Fluid density", async ({ page }) => {

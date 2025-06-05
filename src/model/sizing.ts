@@ -334,7 +334,7 @@ function thdU(
   fconverter: FConverterComponent,
   trafo: TrafoComponent,
   shortCircuitPower: number,
-): number {
+): number | null {
   let scr = (shortCircuitPower * 1000) / fconverter.ratedPower;
   if (scr < 20) {
     scr = 20;
@@ -352,10 +352,13 @@ function thdU(
     return (150 * 100) / scr;
   }
 
-  throw new Error("Unexpected value");
+  return null;
 }
 
-function thdI(fconverter: FConverterComponent, trafo: TrafoComponent): number {
+function thdI(
+  fconverter: FConverterComponent,
+  trafo: TrafoComponent,
+): number | null {
   if (fconverter.type === "2Q-2L-VSC-6p" && trafo.typeIII === "2-winding") {
     return 28;
   }
@@ -368,5 +371,5 @@ function thdI(fconverter: FConverterComponent, trafo: TrafoComponent): number {
     return 4;
   }
 
-  throw new Error("Unexpected value");
+  return null;
 }
