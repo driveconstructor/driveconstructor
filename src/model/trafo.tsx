@@ -74,7 +74,6 @@ export const TrafoElement: SystemElement<Trafo> = {
       value: null,
       options: [null, ...Power],
       advanced: true,
-      precision: 1,
     },
     sideVoltageHV: {
       type: "number",
