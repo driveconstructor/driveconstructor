@@ -174,7 +174,6 @@ export function findFcConverters(
                     ) +
                     addFilter(gridSideFilter, (f) => f.price) +
                     addFilter(machineSideFilter, (f) => f.price);
-
                   return {
                     voltage,
                     price,
