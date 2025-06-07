@@ -33,12 +33,14 @@ export default function Graph() {
   const toPoint = (row: GraphPoint) => {
     return { x: row.speed, y: row.torque };
   };
-  const datasets: ChartDataset<"line">[] = [
-    {
-      label: Object.keys(context.model.input)[0],
-      data: graphData.map(toPoint),
-    },
-  ];
+
+  const datasets: ChartDataset<"line">[] = graphData.map((gd, i) => {
+    return {
+      label: gd.label,
+      borderDash: i == 0 ? undefined : [6 + i, 10],
+      data: gd.points.map(toPoint),
+    };
+  });
 
   const colors = ["blue", "green", "brown", "olive", "red", "orange"];
 

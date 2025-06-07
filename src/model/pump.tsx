@@ -1,4 +1,5 @@
 import icon from "../images/el-pump.svg";
+import { MinimalSpeedParam, PowerOnShaftParam } from "./mechanism-params";
 import { SystemElement } from "./system";
 
 const PumpType = ["centrifugal", "positive displacement"] as const;
@@ -55,8 +56,7 @@ export const PumpElement: SystemElement<Pump> = {
       value: 1450,
     },
     minimalSpeed: {
-      label: "Minimal speed, rpm",
-      type: "number",
+      ...MinimalSpeedParam,
       range: {
         min: 0,
         max: 3500,
@@ -95,9 +95,7 @@ export const PumpElement: SystemElement<Pump> = {
       advanced: true,
     },
     powerOnShaft: {
-      label: "Power on shaft, kW",
-      type: "number",
-      precision: 0,
+      ...PowerOnShaftParam,
       value: function (pump: Pump): number {
         const flowM3h = (pump.flow * 3600) / 1000;
         const powerOnShaft =

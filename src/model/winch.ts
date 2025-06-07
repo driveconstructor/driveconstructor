@@ -1,4 +1,5 @@
 import icon from "../images/el-winch.svg";
+import { MinimalSpeedParam, PowerOnShaftParam } from "./mechanism-params";
 import { SystemElement } from "./system";
 
 export type Winch = {
@@ -12,8 +13,12 @@ export type Winch = {
   overloadAmplitude: number;
   overloadCyclePeriod: number;
   // calculated
+  minimalSpeed: number;
+  powerOnShaft: number;
   ratedTorque: number;
   ratedSpeed: number;
+  lowTorque: number;
+  dutyCorrection: number;
 };
 
 export const WinchElement: SystemElement<Winch> = {
@@ -115,6 +120,12 @@ export const WinchElement: SystemElement<Winch> = {
       label: "Overload cycle period, sec",
       advanced: true,
     },
+    minimalSpeed: {
+      ...MinimalSpeedParam,
+      value: (winch) => {
+        return (winch.speedOfLine * 9.55 * 2) / winch.fullDrumDiameter;
+      },
+    },
     ratedTorque: {
       label: "Torque, kNm",
       type: "number",
@@ -126,6 +137,46 @@ export const WinchElement: SystemElement<Winch> = {
       type: "number",
       value: (winch) =>
         (winch.speedOfLine * 9.55 * 2) / winch.emptyDrumDiameter,
+    },
+    powerOnShaft: {
+      ...PowerOnShaftParam,
+      value: (winch) => (winch.ratedSpeed / 9.55) * winch.ratedTorque,
+    },
+    lowTorque: {
+      label: "Low torque, kNm",
+      type: "number",
+      precision: 1,
+      value: (winch) => (winch.forceOnLine * winch.emptyDrumDiameter) / 2,
+    },
+    dutyCorrection: {
+      label: "Duty correction",
+      type: "number",
+      precision: 2,
+      value: (winch) => {
+        const emWeight =
+          3000 *
+          Math.pow((winch.ratedTorque * winch.ratedSpeed) / 9.55 / 1000, 0.8) *
+          Math.pow(400 / Math.pow(1000, 0.9) + 1, 1.43);
+
+        const emThermalConstant =
+          0.15 * Math.pow(Math.log10(emWeight + 1), 1.5);
+
+        const K = ((winch.dutyCyclePeriod / 60) * winch.duty) / 100;
+
+        if (emThermalConstant <= 0.5 * K) {
+          return 1;
+        }
+
+        if (emThermalConstant >= 2 * K) {
+          return winch.duty / 100;
+        }
+
+        return (
+          (emThermalConstant / ((1.5 * winch.duty) / 100) - 1 / 3) *
+            (1 - winch.duty / 100) +
+          winch.duty / 100
+        );
+      },
     },
   },
 };
