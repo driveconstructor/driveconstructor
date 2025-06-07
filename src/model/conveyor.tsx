@@ -13,7 +13,7 @@ export type Conveyor = {
   startingTorque: number;
 };
 
-export const WinchElement: SystemElement<Conveyor> = {
+export const ConveyorElement: SystemElement<Conveyor> = {
   icon,
   params: {
     ratedTorque: {

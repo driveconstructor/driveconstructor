@@ -1,8 +1,11 @@
 import { StaticImageData } from "next/image";
 import React from "react";
+import appConveyor from "../images/app-conveyor.svg";
 import appPump from "../images/app-pump.svg";
 import appWinch from "../images/app-winch.svg";
 import appWind from "../images/app-wind.svg";
+
+import { ConveyorFcModel } from "./conveyor-system";
 import {
   PumpFcModel,
   PumpFcTrModel,
@@ -74,6 +77,19 @@ const applications: ApplicationModel[] = [
       </div>
     ),
     systems: [WinchFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
+    url: "TBD",
+  },
+  {
+    name: "conveyor",
+    icon: appConveyor,
+    title: "Conveyor",
+    description: (
+      <div>
+        Try different gear solutions and motor speeds to design for lowest cost
+        and compactness.
+      </div>
+    ),
+    systems: [ConveyorFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
     url: "TBD",
   },
 ];

@@ -28,6 +28,8 @@ export function systemGraphData(system: System): GraphData {
     case "wind-fc-tr":
     case "wind-gb-fc-tr":
       return windGraphData(system);
+    case "conveyor-fc":
+      return { label: "conveyor", overload: true, points: [] };
   }
 }
 

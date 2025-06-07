@@ -92,7 +92,8 @@ export default function RootLayout({
       </nav>
       <main className="mb-auto"> {children}</main>
       <footer className="flex text-xs p-2 justify-end">
-          A.Gavrilov, A.Matveev 2025 (c) &nbsp; version: {version}. built at: {process.env.build_at}
+        A.Gavrilov, A.Matveev 2025 (c) &nbsp; version: {version}. built at:{" "}
+        {process.env.build_at}
       </footer>
     </div>
   );
