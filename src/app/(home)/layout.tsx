@@ -91,11 +91,8 @@ export default function RootLayout({
         ) : null}
       </nav>
       <main className="mb-auto"> {children}</main>
-      <footer className="my-2 flex justify-end">
-        <div className="text-xm">A.Matveev, A.Gavrilov 2015-2025 (c)</div>
-        <div className="my-1 text-xs">
-          &nbsp; version: {version}. built at: {process.env.build_at}
-        </div>
+      <footer className="flex text-xs p-2 justify-end">
+          A.Gavrilov, A.Matveev 2025 (c) &nbsp; version: {version}. built at: {process.env.build_at}
       </footer>
     </div>
   );
