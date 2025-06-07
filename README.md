@@ -1,4 +1,4 @@
-# Drive Constructor
+# DriveConstructor
 
 An open source educational tool for electrical engineers.
 

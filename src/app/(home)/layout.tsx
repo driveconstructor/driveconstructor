@@ -10,7 +10,7 @@ import React from "react";
 import logo from "../../images/logo.svg";
 
 export const metadata = {
-  title: "Drive Constructor",
+  title: "DriveConstructor",
   description: "Online education tool for electrical engineering students",
 };
 
@@ -56,7 +56,7 @@ export default function RootLayout({
             title="Home"
           />
           <div className="pl-1 hidden md:block" title="Home">
-            Drive Constructor
+            DriveConstructor
           </div>
         </NavItem>
         <NavItem href="/docs/textbook" className="text-m flex items-center">
@@ -92,7 +92,7 @@ export default function RootLayout({
       </nav>
       <main className="mb-auto"> {children}</main>
       <footer className="my-2 flex justify-end">
-        <div>drive constructor 2015-2025 (c)</div>
+        <div className="text-xm">A.Matveev, A.Gavrilov 2015-2025 (c)</div>
         <div className="my-1 text-xs">
           &nbsp; version: {version}. built at: {process.env.build_at}
         </div>
