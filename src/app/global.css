@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/black.css";
 @import "fumadocs-ui/css/preset.css";
 
 .btn {
@@ -7,7 +7,7 @@
 }
 
 /*
-  Override Fumadocs background color to match the reset of the application
+  Override Fumadocs background color to match the rest of the application
 */
 :root {
   --color-fd-background: hsl(0, 0%, 100%);
