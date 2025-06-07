@@ -26,6 +26,8 @@ Chart.register(
   Legend,
 );
 
+const borderDash = [8, 10];
+
 export default function Graph() {
   const context = useContext(SystemContext);
 
@@ -33,14 +35,27 @@ export default function Graph() {
   const toPoint = (row: GraphPoint) => {
     return { x: row.speed, y: row.torque };
   };
+  const toPointOverload = (row: GraphPoint) => {
+    if (typeof row.torqueOverload == "undefined") {
+      throw new Error();
+    }
 
-  const datasets: ChartDataset<"line">[] = graphData.map((gd, i) => {
-    return {
-      label: gd.label,
-      borderDash: i == 0 ? undefined : [6 + i, 10],
-      data: gd.points.map(toPoint),
-    };
+    return { x: row.speed, y: row.torqueOverload };
+  };
+
+  const datasets: ChartDataset<"line">[] = [];
+
+  datasets.push({
+    label: graphData.label,
+    data: graphData.points.map(toPoint),
   });
+  if (graphData.overload) {
+    datasets.push({
+      label: graphData.label + "-overload",
+      borderDash,
+      data: graphData.points.map(toPointOverload),
+    });
+  }
 
   const colors = ["blue", "green", "brown", "olive", "red", "orange"];
 
@@ -52,13 +67,25 @@ export default function Graph() {
     const gearRatio = context.system.components.gearbox?.gearRatio || 1;
     emachines.forEach((em, index) => {
       const emGraphData = emachineGraphData(gearRatio, em);
+      const label = `${gearRatio == 1 ? "" : "Gearbox+"}${em.designation}`;
       const color = colors[index % colors.length];
       datasets.push({
-        label: `${gearRatio == 1 ? "" : "Gearbox+"}${em.designation}`,
+        label,
         data: emGraphData.map(toPoint),
         backgroundColor: color,
         borderColor: color,
       });
+      if (graphData.overload) {
+        datasets.push({
+          label: label + "-overload",
+          data: emGraphData.map((row) => {
+            return { x: row.speed, y: row.torqueOverload };
+          }),
+          borderDash,
+          backgroundColor: color,
+          borderColor: color,
+        });
+      }
     });
   }
 

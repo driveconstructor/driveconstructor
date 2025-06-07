@@ -3,10 +3,18 @@ import { System } from "./system";
 import { WinchFc } from "./winch-system";
 import { WindFc, WindFcTr, WindGbFc, WindGbFcTr } from "./wind-system";
 
-export type GraphPoint = { speed: number; torque: number };
-export type GraphData = { label: string; points: GraphPoint[] };
+export type GraphPoint = {
+  speed: number;
+  torque: number;
+  torqueOverload?: number;
+};
+export type GraphData = {
+  label: string;
+  overload: boolean;
+  points: GraphPoint[];
+};
 
-export function systemGraphData(system: System): GraphData[] {
+export function systemGraphData(system: System): GraphData {
   switch (system.kind) {
     case "pump-fc":
     case "pump-gb-fc":
@@ -48,12 +56,11 @@ function pumpGraphData(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
     }
   }
 
-  return [{ label: "pump", points }];
+  return { label: "pump", overload: false, points };
 }
 
 function winchGraphData(system: WinchFc) {
   const points: GraphPoint[] = [];
-  const pointsOverload: GraphPoint[] = [];
 
   const numberOfPoints = 12;
   const winch = system.input.winch;
@@ -66,18 +73,16 @@ function winchGraphData(system: WinchFc) {
     const torque =
       ((winch.forceOnLine * winch.speedOfLine * 9.55) / speed) * 1000;
     const torqueOverload = torque * (1 + winch.overloadAmplitude / 100);
-
-    points.push({ speed, torque: torque * (winch.dutyCorrection || 1) });
-    pointsOverload.push({
+    const point = {
       speed,
-      torque: torqueOverload * (winch.dutyCorrection || 1),
-    });
+      torque: torque * (winch.dutyCorrection || 1),
+      torqueOverload: torqueOverload * (winch.dutyCorrection || 1),
+    };
+
+    points.push(point);
   }
 
-  return [
-    { label: "winch", points },
-    { label: "winch-overload", points: pointsOverload },
-  ];
+  return { label: "winch", overload: true, points };
 }
 
 function windGraphData(system: WindFc | WindGbFc | WindFcTr | WindGbFcTr) {
@@ -103,5 +108,5 @@ function windGraphData(system: WindFc | WindGbFc | WindFcTr | WindGbFcTr) {
     }
   }
 
-  return [{ label: "wind", points }];
+  return { label: "wind", overload: false, points };
 }

@@ -185,3 +185,14 @@ function customizeIcon(type: (typeof EMachineType)[number]) {
       return iconSyRM;
   }
 }
+
+export const EMachinePMSMElement: SystemElement<EMachine> = {
+  ...EMachineElement,
+  params: {
+    ...EMachineElement.params,
+    type: {
+      ...EMachineElement.params.type,
+      value: "PMSM",
+    },
+  },
+};

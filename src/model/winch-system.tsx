@@ -1,6 +1,6 @@
 import { CableElement } from "./cable";
 import { CandidatesType, ComponentsType } from "./component";
-import { EMachineElement } from "./emachine";
+import { EMachinePMSMElement } from "./emachine";
 import { NoTrafoFConverterElement } from "./fconverter";
 import { GridElement } from "./grid";
 import { SwitchElement } from "./switch";
@@ -30,7 +30,9 @@ export const WinchFcModel: Model<WinchFc> = {
   ),
   input: {
     winch: WinchElement,
-    emachine: EMachineElement,
+    emachine: {
+      ...EMachinePMSMElement,
+    },
     cable: CableElement,
     fconverter: NoTrafoFConverterElement,
     switch: SwitchElement,

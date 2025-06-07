@@ -27,7 +27,7 @@ export function unpackValues(json: string): OverrideFunction {
     return { ...o, [e]: { ...o[e], [p]: v } };
   }, {} as any);
 
-  console.log(object);
+  console.log("Unpacked values: " + JSON.stringify(2, null, object));
 
   return (e, p, v) => {
     if (typeof object[e] == "undefined") {

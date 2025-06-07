@@ -19,6 +19,7 @@ export type Winch = {
   ratedSpeed: number;
   lowTorque: number;
   dutyCorrection: number;
+  torqueOverload: number;
 };
 
 export const WinchElement: SystemElement<Winch> = {
@@ -147,6 +148,12 @@ export const WinchElement: SystemElement<Winch> = {
       type: "number",
       precision: 1,
       value: (winch) => (winch.forceOnLine * winch.emptyDrumDiameter) / 2,
+    },
+    torqueOverload: {
+      label: "Torque overload, kNm",
+      type: "number",
+      precision: 1,
+      value: (winch) => winch.ratedTorque * (1 + winch.overloadAmplitude / 100),
     },
     dutyCorrection: {
       label: "Duty correction",

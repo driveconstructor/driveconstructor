@@ -113,14 +113,13 @@ function createMechanism(system: System): Mechanism {
   } else if (system.kind == "winch-fc") {
     const input = system.input as WinchFc["input"];
 
-    const powerOnShaft = 0;
     return {
       ratedSpeed: input.winch.ratedSpeed,
-      ratedTorque: input.winch.ratedTorque,
-      powerOnShaft,
-      minimalSpeed: 0,
-      ratedMinimalSpeed: 0,
-      torqueOverload: null,
+      ratedTorque: input.winch.ratedTorque * 1000,
+      powerOnShaft: input.winch.powerOnShaft,
+      minimalSpeed: input.winch.minimalSpeed,
+      ratedMinimalSpeed: input.winch.minimalSpeed,
+      torqueOverload: input.winch.torqueOverload * 1000,
     };
   } else {
     throw new Error("Unsupported type");
