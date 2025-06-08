@@ -4,6 +4,8 @@ import {
   getComponentModel,
   renderComponentParam,
 } from "@/model/component";
+import { getEMachineComponentColor } from "@/model/emachine-utils";
+import { System } from "@/model/system";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
 import { SystemContext } from "./System";
@@ -25,6 +27,7 @@ export default function Candidates({
         return (
           <div key={k}>
             <Candidate
+              system={context.system}
               kind={k}
               values={v}
               selected={selected}
@@ -38,11 +41,13 @@ export default function Candidates({
 }
 
 function Candidate({
+  system,
   kind,
   values,
   selected,
   setSelected,
 }: {
+  system: System;
   kind: string;
   values: any[];
   selected: number;
@@ -89,6 +94,14 @@ function Candidate({
           .filter(() => !collapsed)
           .map((v, i) => {
             const updatedModel = customizeModel(model, v);
+            const colorBox =
+              model.kind == "emachine" && system.candidates.emachine
+                ? "border-" +
+                  getEMachineComponentColor(system.candidates.emachine, v) +
+                  "-900"
+                : undefined;
+            // TODO: show color of machine type
+            console.log(colorBox);
             return (
               <div
                 key={i}
@@ -107,9 +120,11 @@ function Candidate({
                         checked={selected == i}
                         onChange={() => setSelected(i)}
                         data-testid={`${kind}[${i}].<selected>`}
-                      />{" "}
+                        className="mx-2"
+                      />
                       Selected
                     </label>
+                    {colorBox ? <div className={colorBox}>&nbsp;</div> : null}
                   </div>
                   {Object.keys(updatedModel.params)
                     .filter((k) => !updatedModel.params[k].hidden)

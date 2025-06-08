@@ -2,7 +2,9 @@ import { useContext } from "react";
 import { SystemContext } from "./System";
 
 import { emachineGraphData } from "@/model/emachine-graph";
+import { getEMachineComponentColor } from "@/model/emachine-utils";
 import { GraphPoint, systemGraphData } from "@/model/graph-data";
+import { round } from "@/model/utils";
 import {
   CategoryScale,
   Chart,
@@ -33,14 +35,14 @@ export default function Graph() {
 
   const graphData = systemGraphData(context.system);
   const toPoint = (row: GraphPoint) => {
-    return { x: row.speed, y: row.torque };
+    return { x: round(row.speed, 1), y: round(row.torque) };
   };
   const toPointOverload = (row: GraphPoint) => {
     if (typeof row.torqueOverload == "undefined") {
       throw new Error();
     }
 
-    return { x: row.speed, y: row.torqueOverload };
+    return { x: round(row.speed, 1), y: round(row.torqueOverload) };
   };
 
   const datasets: ChartDataset<"line">[] = [];
@@ -57,8 +59,6 @@ export default function Graph() {
     });
   }
 
-  const colors = ["blue", "green", "brown", "olive", "red", "orange"];
-
   const emachines = context.system.components.emachine
     ? [context.system.components.emachine]
     : context.system.candidates.emachine;
@@ -68,7 +68,9 @@ export default function Graph() {
     emachines.forEach((em, index) => {
       const emGraphData = emachineGraphData(gearRatio, em);
       const label = `${gearRatio == 1 ? "" : "Gearbox+"}${em.designation}`;
-      const color = colors[index % colors.length];
+      const color = context.system.candidates.emachine
+        ? getEMachineComponentColor(context.system.candidates.emachine, em)
+        : undefined;
       datasets.push({
         label,
         data: emGraphData.map(toPoint),
@@ -100,6 +102,7 @@ export default function Graph() {
         },
         plugins: {
           legend: {
+            display: false,
             position: "bottom",
           },
         },

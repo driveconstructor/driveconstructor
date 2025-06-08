@@ -195,3 +195,16 @@ export function emachineTypeFilter(em: EMachineComponent): boolean {
       return false;
   }
 }
+
+const colors = ["blue", "green", "brown", "olive", "red", "orange"];
+export function getEMachineComponentColor(
+  candidates: EMachineComponent[],
+  em: EMachineComponent,
+) {
+  const index = candidates.findIndex((ec) => ec.designation == em.designation);
+  if (index == -1) {
+    throw new Error("Unable to find emachine");
+  }
+
+  return colors[index % colors.length];
+}
