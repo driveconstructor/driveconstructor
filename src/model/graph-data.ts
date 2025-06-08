@@ -1,6 +1,6 @@
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { System } from "./system";
-import { WinchFc } from "./winch-system";
+import { WinchFc, WinchGbFc } from "./winch-system";
 import { WindFc, WindFcTr, WindGbFc, WindGbFcTr } from "./wind-system";
 
 export type GraphPoint = {
@@ -22,6 +22,7 @@ export function systemGraphData(system: System): GraphData {
     case "pump-gb-fc-tr":
       return pumpGraphData(system);
     case "winch-fc":
+    case "winch-gb-fc":
       return winchGraphData(system);
     case "wind-fc":
     case "wind-gb-fc":
@@ -61,7 +62,7 @@ function pumpGraphData(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
   return { label: "pump", overload: false, points };
 }
 
-function winchGraphData(system: WinchFc) {
+function winchGraphData(system: WinchFc | WinchGbFc) {
   const points: GraphPoint[] = [];
 
   const numberOfPoints = 12;

@@ -110,7 +110,7 @@ function createMechanism(system: System): Mechanism {
       ratedMinimalSpeed: input.wind.ratedSpeedOfBlades,
       torqueOverload: null,
     };
-  } else if (system.kind == "winch-fc") {
+  } else if (system.kind == "winch-fc" || system.kind == "winch-gb-fc") {
     const input = system.input as WinchFc["input"];
 
     return {
@@ -169,7 +169,8 @@ export function withCandidates(system: System): System {
     system.kind == "pump-gb-fc" ||
     system.kind == "pump-gb-fc-tr" ||
     system.kind == "wind-gb-fc" ||
-    system.kind == "wind-gb-fc-tr"
+    system.kind == "wind-gb-fc-tr" ||
+    system.kind == "winch-gb-fc"
   ) {
     required.push(GearboxComponentModel.kind);
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);

@@ -13,7 +13,7 @@ import {
   PumpGbFcTrModel,
 } from "./pump-system";
 import { SystemKind, SystemModel } from "./system";
-import { WinchFcModel } from "./winch-system";
+import { WinchFcModel, WinchGbFcModel } from "./winch-system";
 import {
   WindFcModel,
   WindFcTrModel,
@@ -76,7 +76,7 @@ const applications: ApplicationModel[] = [
         operation modes
       </div>
     ),
-    systems: [WinchFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
+    systems: [WinchFcModel, WinchGbFcModel /*, "WinchFcTr", "WinchGbFcTr"*/],
     url: "/docs/textbook/applications/winches/",
   },
   {
