@@ -51,7 +51,7 @@ const applications: ApplicationModel[] = [
       </div>
     ),
     systems: [PumpFcModel, PumpGbFcModel, PumpFcTrModel, PumpGbFcTrModel],
-    url: "TBD",
+    url: "/docs/textbook/applications/pumps/",
   },
   {
     name: "wind",
@@ -64,7 +64,7 @@ const applications: ApplicationModel[] = [
       </div>
     ),
     systems: [WindFcModel, WindGbFcModel, WindFcTrModel, WindGbFcTrModel],
-    url: "/docs/tbd",
+    url: "/docs/textbook/applications/turbines/",
   },
   {
     name: "winch",
@@ -77,7 +77,7 @@ const applications: ApplicationModel[] = [
       </div>
     ),
     systems: [WinchFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
-    url: "TBD",
+    url: "/docs/textbook/applications/winches/",
   },
   {
     name: "conveyor",
@@ -90,7 +90,7 @@ const applications: ApplicationModel[] = [
       </div>
     ),
     systems: [ConveyorFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
-    url: "TBD",
+    url: "/docs/textbook/applications/conveyors/",
   },
 ];
 
