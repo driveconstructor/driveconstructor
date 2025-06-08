@@ -1,5 +1,11 @@
 import icon from "../images/el-winch.svg";
-import { MinimalSpeedParam, PowerOnShaftParam } from "./mechanism-params";
+import {
+  DutyCorrectionParam,
+  MinimalSpeedParam,
+  PowerOnShaftParam,
+  RatedSpeedParam,
+  TorqueOverloadParam,
+} from "./mechanism-params";
 import { SystemElement } from "./system";
 
 export type Winch = {
@@ -134,8 +140,7 @@ export const WinchElement: SystemElement<Winch> = {
       value: (winch) => (winch.forceOnLine * winch.fullDrumDiameter) / 2,
     },
     ratedSpeed: {
-      label: "Rated speed, rpm",
-      type: "number",
+      ...RatedSpeedParam,
       value: (winch) =>
         (winch.speedOfLine * 9.55 * 2) / winch.emptyDrumDiameter,
     },
@@ -150,40 +155,11 @@ export const WinchElement: SystemElement<Winch> = {
       value: (winch) => (winch.forceOnLine * winch.emptyDrumDiameter) / 2,
     },
     torqueOverload: {
-      label: "Torque overload, kNm",
-      type: "number",
-      precision: 1,
+      ...TorqueOverloadParam,
       value: (winch) => winch.ratedTorque * (1 + winch.overloadAmplitude / 100),
     },
     dutyCorrection: {
-      label: "Duty correction",
-      type: "number",
-      precision: 2,
-      value: (winch) => {
-        const emWeight =
-          3000 *
-          Math.pow((winch.ratedTorque * winch.ratedSpeed) / 9.55 / 1000, 0.8) *
-          Math.pow(400 / Math.pow(1000, 0.9) + 1, 1.43);
-
-        const emThermalConstant =
-          0.15 * Math.pow(Math.log10(emWeight + 1), 1.5);
-
-        const K = ((winch.dutyCyclePeriod / 60) * winch.duty) / 100;
-
-        if (emThermalConstant <= 0.5 * K) {
-          return 1;
-        }
-
-        if (emThermalConstant >= 2 * K) {
-          return winch.duty / 100;
-        }
-
-        return (
-          (emThermalConstant / ((1.5 * winch.duty) / 100) - 1 / 3) *
-            (1 - winch.duty / 100) +
-          winch.duty / 100
-        );
-      },
+      ...DutyCorrectionParam,
     },
   },
 };

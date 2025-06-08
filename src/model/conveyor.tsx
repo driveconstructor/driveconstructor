@@ -1,4 +1,10 @@
 import icon from "../images/el-conveyor.svg";
+import {
+  DutyCorrectionParam,
+  PowerOnShaftParam,
+  RatedSpeedParam,
+  TorqueOverloadParam,
+} from "./mechanism-params";
 import { SystemElement } from "./system";
 
 export type Conveyor = {
@@ -11,6 +17,11 @@ export type Conveyor = {
   overloadAmplitude: number;
   overloadCyclePeriod: number;
   startingTorque: number;
+  // calculated
+  ratedSpeed: number;
+  powerOnShaft: number;
+  torqueOverload: number;
+  dutyCorrection: number;
 };
 
 export const ConveyorElement: SystemElement<Conveyor> = {
@@ -99,6 +110,22 @@ export const ConveyorElement: SystemElement<Conveyor> = {
       },
       precision: 1,
       advanced: true,
+    },
+    ratedSpeed: {
+      ...RatedSpeedParam,
+      value: (conveyor) => conveyor.maximumSpeed,
+    },
+    powerOnShaft: {
+      ...PowerOnShaftParam,
+      value: (conveyor) => (conveyor.ratedSpeed / 9.55) * conveyor.ratedTorque,
+    },
+    torqueOverload: {
+      ...TorqueOverloadParam,
+      value: (conveyor) =>
+        conveyor.ratedTorque * (1 + conveyor.overloadAmplitude / 100),
+    },
+    dutyCorrection: {
+      ...DutyCorrectionParam,
     },
   },
 };

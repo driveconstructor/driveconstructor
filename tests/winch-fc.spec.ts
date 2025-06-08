@@ -19,10 +19,10 @@ test("Defaults", async ({ page }) => {
     "CU-3x025-01kV",
   );
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
-    "2Q-2L-400-55-IP2x-AC-W-6p",
+    "2Q-2L-400-90-IP2x-AC-W-6p",
   );
   await expect(page.getByTestId("emachine[0].price")).toContainText("61013");
   await expect(page.getByTestId("emachine[0].weight")).toContainText("1682.99");
-  await expect(page.getByTestId("fconverter[0].price")).toContainText("3438");
-  await expect(page.getByTestId("fconverter[0].weight")).toContainText("28.63");
+  await expect(page.getByTestId("fconverter[0].price")).toContainText("5356");
+  await expect(page.getByTestId("fconverter[0].weight")).toContainText("46.86");
 });

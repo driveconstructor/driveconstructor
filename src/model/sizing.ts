@@ -2,6 +2,8 @@ import { ApplicationType, getApplicationType } from "./application";
 import { CableComponent, CableComponentModel } from "./cable-component";
 import { findCableComponent } from "./cable-sizing";
 import { CandidatesType, ComponentsType } from "./component";
+import { Conveyor } from "./conveyor";
+import { ConveyorFc } from "./conveyor-system";
 import { EfficiencyClass, EMachine } from "./emachine";
 import {
   EMachineComponent,
@@ -16,6 +18,7 @@ import { findFcConverters } from "./fconverter-sizing";
 import { GearboxComponentModel } from "./gearbox-component";
 import { findGearbox } from "./gearbox-sizing";
 import { Grid } from "./grid";
+import { getCurrentK } from "./mechanism-params";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { updateSystem } from "./store";
 import { System } from "./system";
@@ -24,6 +27,7 @@ import { TrafoComponent, TrafoComponentModel } from "./trafo-component";
 import { findTrafoCandidates } from "./trafo-sizing";
 import { haveSameContent } from "./utils";
 import { findVoltageY } from "./voltage";
+import { Winch } from "./winch";
 import { WinchFc } from "./winch-system";
 import { WindFc } from "./wind-system";
 
@@ -34,6 +38,7 @@ export type Mechanism = {
   minimalSpeed: number;
   torqueOverload: number | null;
   ratedMinimalSpeed: number | null;
+  currentK: number | null;
 };
 
 function efficiencyClass(em: EMachineComponent): number {
@@ -92,6 +97,7 @@ function createMechanism(system: System): Mechanism {
           ? input.pump.minimalSpeed
           : null,
       torqueOverload: input.pump.torqueOverload,
+      currentK: null,
     };
   } else if (
     system.kind == "wind-fc" ||
@@ -109,6 +115,7 @@ function createMechanism(system: System): Mechanism {
       minimalSpeed: 0,
       ratedMinimalSpeed: input.wind.ratedSpeedOfBlades,
       torqueOverload: null,
+      currentK: null,
     };
   } else if (
     system.kind == "winch-fc" ||
@@ -117,18 +124,27 @@ function createMechanism(system: System): Mechanism {
     system.kind == "winch-gb-fc-tr"
   ) {
     const input = system.input as WinchFc["input"];
-
-    return {
-      ratedSpeed: input.winch.ratedSpeed,
-      ratedTorque: input.winch.ratedTorque * 1000,
-      powerOnShaft: input.winch.powerOnShaft,
-      minimalSpeed: input.winch.minimalSpeed,
-      ratedMinimalSpeed: input.winch.minimalSpeed,
-      torqueOverload: input.winch.torqueOverload * 1000,
-    };
+    return createWinchOrConveyor(input.winch);
+  } else if (system.kind == "conveyor-fc") {
+    const input = system.input as ConveyorFc["input"];
+    return createWinchOrConveyor(input.conveyor);
   } else {
     throw new Error("Unsupported type");
   }
+}
+
+function createWinchOrConveyor(input: Winch | Conveyor) {
+  const currentK = getCurrentK(input);
+
+  return {
+    ratedSpeed: input.ratedSpeed,
+    ratedTorque: input.ratedTorque * 1000,
+    powerOnShaft: input.powerOnShaft,
+    minimalSpeed: input.minimalSpeed,
+    ratedMinimalSpeed: input.minimalSpeed,
+    torqueOverload: input.torqueOverload * 1000,
+    currentK,
+  };
 }
 
 function findEMachineCandidates(
@@ -239,6 +255,7 @@ export function withCandidates(system: System): System {
       components.emachine.workingCurrent,
       trafoRatio,
       applicationType,
+      mechanism.currentK,
     );
 
     fconverter = distinctFcByMounting(fconverter);

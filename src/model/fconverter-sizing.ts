@@ -32,6 +32,7 @@ export function findFcConverters(
   emachineWorkingCurrent: number,
   trafoRatio: number,
   applicationType: ApplicationType,
+  currentK: number | null,
 ): FConverterComponent[] {
   const deratedVoltage =
     systemVoltage / fconverter.voltageDerating / trafoRatio;
@@ -222,9 +223,12 @@ export function findFcConverters(
         fconverter.overallCurrentDerating /
         efficiencyK;
 
+      if (currentK) {
+        return fc.currentHO >= current * currentK;
+      }
+
       return (
         fc.currentLO >= current &&
-        // TODO: verify current range!
         (fc.mounting != "floor" || fc.currentLO <= current * 2)
       );
     });
