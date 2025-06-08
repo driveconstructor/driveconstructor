@@ -8,7 +8,7 @@ import { FConverter } from "./fconverter";
 import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { SystemParamsType } from "./system-params";
-import { WinchFc, WinchFcTr, WinchGbFc } from "./winch-system";
+import { WinchFc, WinchFcTr, WinchGbFc, WinchGbFcTr } from "./winch-system";
 import { WindFc, WindFcTr, WindGbFc, WindGbFcTr } from "./wind-system";
 
 export type ParamType = "text" | "number";
@@ -78,6 +78,7 @@ export type System = (
   | WindFc
   | WinchGbFc
   | WinchFcTr
+  | WinchGbFcTr
   | WindGbFc
   | WindFcTr
   | WindGbFcTr

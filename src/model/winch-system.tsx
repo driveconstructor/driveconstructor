@@ -134,3 +134,35 @@ export const WinchFcTrModel: Model<WinchFcTr> = {
   },
   update: updateTrSystem,
 };
+
+export type WinchGbFcTr = BaseSystem & {
+  kind: "winch-gb-fc-tr";
+  input: { winch: Winch; gearbox: Gearbox; trafo: Trafo };
+  candidates: CandidatesType;
+  components: ComponentsType;
+};
+
+export const WinchGbFcTrModel: Model<WinchGbFcTr> = {
+  kind: "winch-gb-fc-tr",
+  title: "Drive train with gearbox, electric machine, FC and transformer",
+  description: (
+    <div>
+      This solution can be used when the winch drum has too low rated speed to
+      be matched by an electric motor, and the braking resistor is used for
+      burning energy generated when lowering the weight.
+    </div>
+  ),
+  input: {
+    winch: { ...WinchGbFcModel.input.winch },
+    gearbox: GearboxElement,
+    emachine: { ...WinchFcModel.input.emachine },
+    cable: CableElement,
+    fconverter: TrafoFConverterElement,
+    trafo: TrafoElement,
+    switch: SwitchElement,
+    grid: {
+      ...WinchFcTrModel.input.grid,
+    },
+  },
+  update: updateTrSystem,
+};
