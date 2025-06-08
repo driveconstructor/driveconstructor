@@ -110,7 +110,11 @@ function createMechanism(system: System): Mechanism {
       ratedMinimalSpeed: input.wind.ratedSpeedOfBlades,
       torqueOverload: null,
     };
-  } else if (system.kind == "winch-fc" || system.kind == "winch-gb-fc") {
+  } else if (
+    system.kind == "winch-fc" ||
+    system.kind == "winch-gb-fc" ||
+    system.kind == "winch-fc-tr"
+  ) {
     const input = system.input as WinchFc["input"];
 
     return {
@@ -161,7 +165,8 @@ export function withCandidates(system: System): System {
     system.kind == "pump-fc-tr" ||
     system.kind == "pump-gb-fc-tr" ||
     system.kind == "wind-fc-tr" ||
-    system.kind == "wind-gb-fc-tr"
+    system.kind == "wind-gb-fc-tr" ||
+    system.kind == "winch-fc-tr"
       ? system.input.trafo.ratio
       : 1;
 
@@ -244,7 +249,8 @@ export function withCandidates(system: System): System {
     system.kind == "pump-fc-tr" ||
     system.kind == "pump-gb-fc-tr" ||
     system.kind == "wind-fc-tr" ||
-    system.kind == "wind-gb-fc-tr"
+    system.kind == "wind-gb-fc-tr" ||
+    system.kind == "winch-fc-tr"
   ) {
     required.push(TrafoComponentModel.kind);
     let trafo: TrafoComponent[] = [];
