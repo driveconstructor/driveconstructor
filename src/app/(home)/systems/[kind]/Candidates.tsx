@@ -115,7 +115,7 @@ function Candidate({
                   <div className="justify-self-center text-sm">
                     <label
                       data-testid={`${kind}[${i}].label.<selected>`}
-                      className={"mx-1 " + colorClass}
+                      className={colorClass}
                     >
                       <input
                         type="radio"
@@ -126,7 +126,7 @@ function Candidate({
                         className="m-1"
                         data-testid={`${kind}[${i}].<selected>`}
                       />
-                      Selected
+                      Select
                     </label>
                   </div>
                   {Object.keys(updatedModel.params)

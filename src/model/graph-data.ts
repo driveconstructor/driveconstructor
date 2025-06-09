@@ -1,3 +1,4 @@
+import { ConveyorFc } from "./conveyor-system";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { System } from "./system";
 import { WinchFc, WinchFcTr, WinchGbFc, WinchGbFcTr } from "./winch-system";
@@ -32,7 +33,7 @@ export function systemGraphData(system: System): GraphData {
     case "wind-gb-fc-tr":
       return windGraphData(system);
     case "conveyor-fc":
-      return { label: "conveyor", overload: true, points: [] };
+      return conveyorGraphData(system);
   }
 }
 
@@ -88,6 +89,38 @@ function winchGraphData(system: WinchFc | WinchGbFc | WinchFcTr | WinchGbFcTr) {
   }
 
   return { label: "winch", overload: true, points };
+}
+
+function conveyorGraphData(system: ConveyorFc) {
+  const points: GraphPoint[] = [];
+
+  const numberOfPoints = 12;
+  const conveyor = system.input.conveyor;
+
+  for (let i = 0; i <= numberOfPoints; i++) {
+    const speed = (conveyor.maximumSpeed * i) / numberOfPoints;
+
+    let torque;
+    let torqueOverload;
+    if (conveyor.minimalSpeed <= speed && speed <= conveyor.maximumSpeed) {
+      torque = conveyor.ratedTorque * (conveyor.dutyCorrection || 1) * 1000;
+      torqueOverload =
+        conveyor.torqueOverload * (conveyor.dutyCorrection || 1) * 1000;
+    } else {
+      torque = undefined;
+      torqueOverload = undefined;
+    }
+
+    if (typeof torque != "undefined") {
+      points.push({
+        speed,
+        torque,
+        torqueOverload,
+      });
+    }
+  }
+
+  return { label: "conveyor", overload: true, points };
 }
 
 function windGraphData(system: WindFc | WindGbFc | WindFcTr | WindGbFcTr) {
