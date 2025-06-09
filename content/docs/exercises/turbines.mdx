@@ -130,27 +130,25 @@ and the river turbines, draw conclusions.
 
 ## WT-5. Small high-speed WT
 
-Given:
+Given characteristics of the wind turbine:
 
-- rated propeller speed - 200 rpm
-- torque - 1 kNm
-- WT height - 30 m,
-- Distance from the tower to the power house - 50 m
-- Transformer with 400 V is available the power house - 50 m
+-	rated blade rotation speed - 200 rpm,
+-	rated torque – 1 kNm,
+-	turbine’s height (H) – 30 m,
+-	grid/connected transformer with 400 V low-voltage winding is available in the powerhouse close to the turbine,
+-	distance from the turbine’s tower to the powerhouse (L) – 50 m.
+
 
 The task: design systems for the following drive trains configurations:
 
-- without gear (DD),
-- with 1-stage gearbox,
-- with 2-stage gearbox,
-- with 3-stage gearbox.
+1. without gear (DD),
+1. with 1-stage gearbox,
+1. with 2-stage gearbox.
 
-Draw conclusions on efficiency vs cost. First take only induction machine and
-try different efficiency classes. Then try PM machine. Summarize the design
-results (system efficiency and cost) in a table.
+Design for highest efficiency at rated (100%) load. Limit system cost (capital expenditures, CAPEX) to 20000 Euro. 
+Keep in mind that different types of gear stages you choose have different efficiency. Try different cable materials and cross-sections. 
+Draw conclusions on efficiency vs cost for each of the three system variants. Which system is the most efficient and is still under 20000 Euro in cost? Which system is the lightest? Which is the cheapest? First take induction machine (SCIM) and try different efficiency classes, then try SyRM and PMSM. 
 
-Finally, design the system for highest efficiency. Limit system cost to 30000
-Euro.
 
 import WT5Image from "./images/WT5.png";
 
