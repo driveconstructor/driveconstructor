@@ -1,4 +1,5 @@
 import icon from "../images/el-wind.svg";
+import { PowerOnShaftParam } from "./mechanism-params";
 import { SystemElement } from "./system";
 
 export type Wind = {
@@ -48,9 +49,7 @@ export const WindElement: SystemElement<Wind> = {
       value: (wind) => wind.ratedSpeedOfBlades * wind.overSpeed,
     },
     powerOnShaft: {
-      label: "Power on shaft, kW",
-      type: "number",
-      precision: 1,
+      ...PowerOnShaftParam,
       value: (wind) => (wind.ratedSpeed / 9.55) * wind.ratedTorque,
     },
   },

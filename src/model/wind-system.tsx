@@ -1,6 +1,6 @@
 import { CableElement } from "./cable";
 import { CandidatesType, ComponentsType } from "./component";
-import { EMachineElement } from "./emachine";
+import { EMachinePMSMElement } from "./emachine";
 import { NoTrafoFConverterElement, TrafoFConverterElement } from "./fconverter";
 import { Gearbox, GearboxElement } from "./gearbox";
 import { GridElement } from "./grid";
@@ -35,14 +35,7 @@ export const WindFcModel: Model<WindFc> = {
   input: {
     wind: WindElement,
     emachine: {
-      ...EMachineElement,
-      params: {
-        ...EMachineElement.params,
-        type: {
-          ...EMachineElement.params.type,
-          value: "PMSM",
-        },
-      },
+      ...EMachinePMSMElement,
     },
     cable: CableElement,
     fconverter: NoTrafoFConverterElement,
