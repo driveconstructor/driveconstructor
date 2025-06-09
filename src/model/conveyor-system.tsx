@@ -10,6 +10,18 @@ import { BaseSystem, Model } from "./system";
 import { Trafo, TrafoElement } from "./trafo";
 import { updateTrSystem } from "./trafo-system-utils";
 
+function validate(
+  system: ConveyorFc | ConveyorFcTr | ConveyorGbFc | ConveyorGbFcTr,
+) {
+  const result = [];
+  const conveyor = system.input.conveyor;
+  if (conveyor.minimalSpeed > conveyor.maximumSpeed) {
+    result.push("The minimal speed may not be greater than the maximum speed!");
+  }
+
+  return result;
+}
+
 export type ConveyorFc = BaseSystem & {
   kind: "conveyor-fc";
   input: {
@@ -39,6 +51,7 @@ export const ConveyorFcModel: Model<ConveyorFc> = {
     switch: SwitchElement,
     grid: GridElement,
   },
+  validate,
 };
 
 export type ConveyorGbFc = BaseSystem & {
@@ -70,6 +83,7 @@ export const ConveyorGbFcModel: Model<ConveyorGbFc> = {
     switch: SwitchElement,
     grid: GridElement,
   },
+  validate,
 };
 
 export type ConveyorFcTr = BaseSystem & {
@@ -106,6 +120,7 @@ export const ConveyorFcTrModel: Model<ConveyorFcTr> = {
     },
   },
   update: updateTrSystem,
+  validate,
 };
 
 export type ConveyorGbFcTr = BaseSystem & {
@@ -139,4 +154,5 @@ export const ConveyorGbFcTrModel: Model<ConveyorGbFcTr> = {
     },
   },
   update: updateTrSystem,
+  validate,
 };

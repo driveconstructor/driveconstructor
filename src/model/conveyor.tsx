@@ -5,7 +5,7 @@ import {
   RatedSpeedParam,
   TorqueOverloadParam,
 } from "./mechanism-params";
-import { SystemElement } from "./system";
+import { System, SystemElement } from "./system";
 
 export type Conveyor = {
   ratedTorque: number;
@@ -42,7 +42,16 @@ export const ConveyorElement: SystemElement<Conveyor> = {
       value: 100,
       range: {
         min: 10,
-        max: 300,
+        max: 3000,
+      },
+      update(system, value) {
+        return {
+          ...system,
+          input: {
+            ...system.input,
+            conveyor: { ...system.input.conveyor, minimalSpeed: value * 0.2 },
+          },
+        } as System;
       },
     },
     minimalSpeed: {
@@ -51,7 +60,7 @@ export const ConveyorElement: SystemElement<Conveyor> = {
       value: 50,
       range: {
         min: 1,
-        max: 200,
+        max: 2000,
       },
     },
     duty: {
