@@ -112,7 +112,7 @@ function Candidate({
                 onClick={() => setSelected(i)}
               >
                 <div className="grid grid-cols-4 lg:grid-cols-8">
-                  <div className={"justify-self-center"}>
+                  <div className="justify-self-center text-sm">
                     <label
                       data-testid={`${kind}[${i}].label.<selected>`}
                       className={"mx-1 " + colorClass}
@@ -123,9 +123,10 @@ function Candidate({
                         onChange={() => {
                           /* no-op */
                         }}
+                        className="m-1"
                         data-testid={`${kind}[${i}].<selected>`}
                       />
-                      &nbsp; Selected
+                      Selected
                     </label>
                   </div>
                   {Object.keys(updatedModel.params)
