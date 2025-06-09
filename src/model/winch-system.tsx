@@ -24,11 +24,9 @@ export const WinchFcModel: Model<WinchFc> = {
   title: "Drive train with just variable speed drive",
   description: (
     <div>
-      <p>
-        This simple system topology can be used when it is possible to find a
-        motor matching speed of the winch drum and when both, the motor and the
-        FC, have similar voltage rating to that of the grid.
-      </p>
+      This simple system topology can be used when it is possible to find a
+      motor matching speed of the winch drum and when both, the motor and the
+      FC, have similar voltage rating to that of the grid.
     </div>
   ),
   input: {
@@ -58,11 +56,9 @@ export const WinchGbFcModel: Model<WinchGbFc> = {
   title: "Drive train with speed gearing",
   description: (
     <div>
-      <p>
-        This simple system topology can be used when it is possible to find a
-        motor matching speed of the winch drum and when both, the motor and the
-        FC, have similar voltage rating to that of the grid.
-      </p>
+      This simple system topology can be used when it is possible to find a
+      motor matching speed of the winch drum and when both, the motor and the
+      FC, have similar voltage rating to that of the grid.
     </div>
   ),
   input: {

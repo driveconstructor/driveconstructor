@@ -1,3 +1,4 @@
+import { ConveyorFcTr } from "./conveyor-system";
 import { PumpFcTr, PumpGbFcTr } from "./pump-system";
 import { splitRange } from "./utils";
 import { WinchFcTr, WinchGbFcTr } from "./winch-system";
@@ -10,7 +11,8 @@ export function updateTrSystem<
     | WindFcTr
     | WindGbFcTr
     | WinchFcTr
-    | WinchGbFcTr,
+    | WinchGbFcTr
+    | ConveyorFcTr,
 >(system: T): T {
   const trafo = system.input.trafo;
   const grid = system.input.grid;

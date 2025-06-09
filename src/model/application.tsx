@@ -5,7 +5,11 @@ import appPump from "../images/app-pump.svg";
 import appWinch from "../images/app-winch.svg";
 import appWind from "../images/app-wind.svg";
 
-import { ConveyorFcModel, ConveyorGbFcModel } from "./conveyor-system";
+import {
+  ConveyorFcModel,
+  ConveyorFcTrModel,
+  ConveyorGbFcModel,
+} from "./conveyor-system";
 import {
   PumpFcModel,
   PumpFcTrModel,
@@ -96,7 +100,8 @@ const applications: ApplicationModel[] = [
     ),
     systems: [
       ConveyorFcModel,
-      ConveyorGbFcModel /*"WinchFcTr", "WinchGbFcTr"*/,
+      ConveyorGbFcModel,
+      ConveyorFcTrModel /*"WinchFcTr", "WinchGbFcTr"*/,
     ],
     url: "/docs/textbook/applications/conveyors/",
   },

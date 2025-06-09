@@ -125,7 +125,11 @@ function createMechanism(system: System): Mechanism {
   ) {
     const input = system.input as WinchFc["input"];
     return createWinchOrConveyor(input.winch);
-  } else if (system.kind == "conveyor-fc" || system.kind == "conveyor-gb-fc") {
+  } else if (
+    system.kind == "conveyor-fc" ||
+    system.kind == "conveyor-gb-fc" ||
+    system.kind == "conveyor-fc-tr"
+  ) {
     const input = system.input as ConveyorFc["input"];
     return createWinchOrConveyor(input.conveyor);
   } else {
@@ -184,7 +188,8 @@ export function withCandidates(system: System): System {
     system.kind == "wind-fc-tr" ||
     system.kind == "wind-gb-fc-tr" ||
     system.kind == "winch-fc-tr" ||
-    system.kind == "winch-gb-fc-tr"
+    system.kind == "winch-gb-fc-tr" ||
+    system.kind == "conveyor-fc-tr"
       ? system.input.trafo.ratio
       : 1;
 

@@ -24,12 +24,9 @@ export const WindFcModel: Model<WindFc> = {
   title: "Drive train with just variable speed drive",
   description: (
     <div>
-      <p>
-        This simple system topology can be used at low powers when it is
-        possible to find a generator matching speed of the turbine blades and
-        when both, the generator and the FC, have voltage rating close to that
-        of the grid.
-      </p>
+      This simple system topology can be used at low powers when it is possible
+      to find a generator matching speed of the turbine blades and when both,
+      the generator and the FC, have voltage rating close to that of the grid.
     </div>
   ),
   input: {
