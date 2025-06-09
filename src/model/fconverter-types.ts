@@ -29,7 +29,6 @@ function mediumVoltage1(fc: FConverterComponent) {
   ) {
     return true;
   }
-
   return false;
 }
 
@@ -40,7 +39,7 @@ function mediumVoltage2(fc: FConverterComponent) {
 
   if (
     fc.voltage.type == "MV1" &&
-    fc.voltage.value <= 6000 &&
+    fc.voltage.value < 6000 &&
     fc.ratedPower >= 200 &&
     fc.ratedPower <= 5800
   ) {
@@ -49,7 +48,7 @@ function mediumVoltage2(fc: FConverterComponent) {
 
   if (
     fc.voltage.type == "MV2" &&
-    fc.voltage.value > 6000 &&
+    fc.voltage.value >= 6000 &&
     fc.ratedPower >= 200 &&
     fc.ratedPower <= 13700
   ) {

@@ -1,10 +1,21 @@
+import { ConveyorFc } from "./conveyor-system";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { System } from "./system";
-import { WinchFc } from "./winch-system";
+import { WinchFc, WinchFcTr, WinchGbFc, WinchGbFcTr } from "./winch-system";
+import { WindFc, WindFcTr, WindGbFc, WindGbFcTr } from "./wind-system";
 
-export type GraphPoint = { speed: number; torque: number };
+export type GraphPoint = {
+  speed: number;
+  torque: number;
+  torqueOverload?: number;
+};
+export type GraphData = {
+  label: string;
+  overload: boolean;
+  points: GraphPoint[];
+};
 
-export function systemGraphData(system: System): GraphPoint[] {
+export function systemGraphData(system: System): GraphData {
   switch (system.kind) {
     case "pump-fc":
     case "pump-gb-fc":
@@ -12,9 +23,17 @@ export function systemGraphData(system: System): GraphPoint[] {
     case "pump-gb-fc-tr":
       return pumpGraphData(system);
     case "winch-fc":
+    case "winch-gb-fc":
+    case "winch-fc-tr":
+    case "winch-gb-fc-tr":
       return winchGraphData(system);
-    default:
-      throw new Error("Unsupported system kind");
+    case "wind-fc":
+    case "wind-gb-fc":
+    case "wind-fc-tr":
+    case "wind-gb-fc-tr":
+      return windGraphData(system);
+    case "conveyor-fc":
+      return conveyorGraphData(system);
   }
 }
 
@@ -26,46 +45,106 @@ function pumpGraphData(system: PumpFc | PumpGbFc | PumpFcTr | PumpGbFcTr) {
   );
   const maximumSpeed = pump.ratedSpeed;
 
-  const result: GraphPoint[] = [];
+  const points: GraphPoint[] = [];
   for (let i = 0; i <= numberOfPoints; i++) {
     const speed =
       ((maximumSpeed - pump.minimalSpeed) * i) / numberOfPoints +
       pump.minimalSpeed;
     if (pump.type == "positive displacement") {
       if (pump.minimalSpeed <= speed && speed <= maximumSpeed) {
-        result.push({ speed, torque: pump.ratedTorque });
+        points.push({ speed, torque: pump.ratedTorque });
       }
     } else {
       // n^2 /  ratedSpeed^2 x ratedTorque
       const torque =
         (Math.pow(speed, 2) * pump.ratedTorque) / Math.pow(pump.ratedSpeed, 2);
-      result.push({ speed, torque });
+      points.push({ speed, torque });
     }
   }
 
-  return result;
+  return { label: "pump", overload: false, points };
 }
 
-function winchGraphData(system: WinchFc) {
-  const result: GraphPoint[] = []; //[[], []];
+function winchGraphData(system: WinchFc | WinchGbFc | WinchFcTr | WinchGbFcTr) {
+  const points: GraphPoint[] = [];
 
-  const numberOfPoints = 10;
+  const numberOfPoints = 12;
   const winch = system.input.winch;
 
-  /* for (let i = 0; i <= numberOfPoints; i++) {
+  for (let i = 0; i <= numberOfPoints; i++) {
     const speed =
       winch.minimalSpeed +
       ((winch.ratedSpeed - winch.minimalSpeed) * i) / numberOfPoints;
 
-    const torque = (winch.forceOnLine * winch.speedOfLine * 9.55) / speed;
+    const torque =
+      ((winch.forceOnLine * winch.speedOfLine * 9.55) / speed) * 1000;
     const torqueOverload = torque * (1 + winch.overloadAmplitude / 100);
-
-    result[0].push({ speed, torque: torque * (winch.dutyCorrection || 1) });
-    result[1].push({
+    const point = {
       speed,
-      torque: torqueOverload * (winch.dutyCorrection || 1),
-    });
-  }*/
+      torque: torque * (winch.dutyCorrection || 1),
+      torqueOverload: torqueOverload * (winch.dutyCorrection || 1),
+    };
 
-  return result;
+    points.push(point);
+  }
+
+  return { label: "winch", overload: true, points };
+}
+
+function conveyorGraphData(system: ConveyorFc) {
+  const points: GraphPoint[] = [];
+
+  const numberOfPoints = 12;
+  const conveyor = system.input.conveyor;
+
+  for (let i = 0; i <= numberOfPoints; i++) {
+    const speed = (conveyor.maximumSpeed * i) / numberOfPoints;
+
+    let torque;
+    let torqueOverload;
+    if (conveyor.minimalSpeed <= speed && speed <= conveyor.maximumSpeed) {
+      torque = conveyor.ratedTorque * (conveyor.dutyCorrection || 1) * 1000;
+      torqueOverload =
+        conveyor.torqueOverload * (conveyor.dutyCorrection || 1) * 1000;
+    } else {
+      torque = undefined;
+      torqueOverload = undefined;
+    }
+
+    if (typeof torque != "undefined") {
+      points.push({
+        speed,
+        torque,
+        torqueOverload,
+      });
+    }
+  }
+
+  return { label: "conveyor", overload: true, points };
+}
+
+function windGraphData(system: WindFc | WindGbFc | WindFcTr | WindGbFcTr) {
+  const wind = system.input.wind;
+  const maxSpeed = wind.ratedSpeed;
+  const ratedSpeed = wind.ratedSpeedOfBlades;
+  const numberOfPoints = 15;
+  const ratedTorque = wind.ratedTorque * 1000;
+
+  const points: GraphPoint[] = []; //[[], []];
+
+  let pointAdded = false;
+  for (let i = 0; i <= numberOfPoints; i++) {
+    const speed = (maxSpeed * i) / numberOfPoints;
+    if (speed >= ratedSpeed) {
+      if (!pointAdded) {
+        points.push({ speed: ratedSpeed, torque: ratedTorque });
+        pointAdded = true;
+      }
+      points.push({ speed, torque: ratedTorque });
+    } else {
+      points.push({ speed, torque: (speed * ratedTorque) / ratedSpeed });
+    }
+  }
+
+  return { label: "wind", overload: false, points };
 }

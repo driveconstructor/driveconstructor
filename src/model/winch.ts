@@ -1,9 +1,14 @@
 import icon from "../images/el-winch.svg";
+import {
+  DutyCorrectionParam,
+  MinimalSpeedParam,
+  PowerOnShaftParam,
+  RatedSpeedParam,
+  TorqueOverloadParam,
+} from "./mechanism-params";
 import { SystemElement } from "./system";
 
 export type Winch = {
-  torque: number;
-  ratedSpeed: number;
   emptyDrumDiameter: number;
   fullDrumDiameter: number;
   forceOnLine: number;
@@ -13,21 +18,19 @@ export type Winch = {
   overloadDuration: number;
   overloadAmplitude: number;
   overloadCyclePeriod: number;
+  // calculated
+  minimalSpeed: number;
+  powerOnShaft: number;
+  ratedTorque: number;
+  ratedSpeed: number;
+  lowTorque: number;
+  dutyCorrection: number;
+  torqueOverload: number;
 };
 
 export const WinchElement: SystemElement<Winch> = {
   icon,
   params: {
-    torque: {
-      label: "Torque, kNm",
-      type: "number",
-      value: 100,
-    },
-    ratedSpeed: {
-      label: "Rated speed, rpm",
-      type: "number",
-      value: 200,
-    },
     emptyDrumDiameter: {
       type: "number",
       range: {
@@ -35,6 +38,7 @@ export const WinchElement: SystemElement<Winch> = {
         max: 1.8,
         step: 0.1,
       },
+      precision: 1,
       value: 0.3,
       label: "Drum diameter (empty), m",
     },
@@ -46,6 +50,7 @@ export const WinchElement: SystemElement<Winch> = {
         step: 0.1,
       },
       value: 0.5,
+      precision: 1,
       label: "Drum diameter (full), m",
     },
     forceOnLine: {
@@ -55,6 +60,7 @@ export const WinchElement: SystemElement<Winch> = {
         max: 100,
         step: 0.1,
       },
+      precision: 1,
       value: 10,
       label: "Force on the line (rated), kN",
     },
@@ -65,6 +71,7 @@ export const WinchElement: SystemElement<Winch> = {
         max: 20,
         step: 0.5,
       },
+      precision: 1,
       value: 3,
       label: "Speed of the line (rated), m/s",
     },
@@ -85,6 +92,7 @@ export const WinchElement: SystemElement<Winch> = {
         min: 0.1,
         max: 100,
       },
+      precision: 1,
       value: 1,
       label: "Duty cycle period, min",
       advanced: true,
@@ -118,6 +126,40 @@ export const WinchElement: SystemElement<Winch> = {
       value: 60,
       label: "Overload cycle period, sec",
       advanced: true,
+    },
+    minimalSpeed: {
+      ...MinimalSpeedParam,
+      value: (winch) => {
+        return (winch.speedOfLine * 9.55 * 2) / winch.fullDrumDiameter;
+      },
+    },
+    ratedTorque: {
+      label: "Torque, kNm",
+      type: "number",
+      precision: 2,
+      value: (winch) => (winch.forceOnLine * winch.fullDrumDiameter) / 2,
+    },
+    ratedSpeed: {
+      ...RatedSpeedParam,
+      value: (winch) =>
+        (winch.speedOfLine * 9.55 * 2) / winch.emptyDrumDiameter,
+    },
+    powerOnShaft: {
+      ...PowerOnShaftParam,
+      value: (winch) => (winch.ratedSpeed / 9.55) * winch.ratedTorque,
+    },
+    lowTorque: {
+      label: "Low torque, kNm",
+      type: "number",
+      precision: 1,
+      value: (winch) => (winch.forceOnLine * winch.emptyDrumDiameter) / 2,
+    },
+    torqueOverload: {
+      ...TorqueOverloadParam,
+      value: (winch) => winch.ratedTorque * (1 + winch.overloadAmplitude / 100),
+    },
+    dutyCorrection: {
+      ...DutyCorrectionParam,
     },
   },
 };

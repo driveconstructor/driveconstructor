@@ -1,8 +1,11 @@
 import { StaticImageData } from "next/image";
 import React from "react";
+import appConveyor from "../images/app-conveyor.svg";
 import appPump from "../images/app-pump.svg";
 import appWinch from "../images/app-winch.svg";
 import appWind from "../images/app-wind.svg";
+
+import { ConveyorFcModel } from "./conveyor-system";
 import {
   PumpFcModel,
   PumpFcTrModel,
@@ -10,11 +13,21 @@ import {
   PumpGbFcTrModel,
 } from "./pump-system";
 import { SystemKind, SystemModel } from "./system";
-import { WinchFcModel } from "./winch-system";
-import { WindFcModel } from "./wind-system";
-
+import {
+  WinchFcModel,
+  WinchFcTrModel,
+  WinchGbFcModel,
+  WinchGbFcTrModel,
+} from "./winch-system";
+import {
+  WindFcModel,
+  WindFcTrModel,
+  WindGbFcModel,
+  WindGbFcTrModel,
+} from "./wind-system";
+export type ApplicationType = "pump" | "wind" | "winch" | "conveyor";
 export type ApplicationModel = {
-  name: string;
+  name: ApplicationType;
   icon: StaticImageData;
   title: React.ReactNode;
   description: React.ReactNode;
@@ -43,20 +56,7 @@ const applications: ApplicationModel[] = [
       </div>
     ),
     systems: [PumpFcModel, PumpGbFcModel, PumpFcTrModel, PumpGbFcTrModel],
-    url: "TBD",
-  },
-  {
-    name: "winch",
-    icon: appWinch,
-    title: "Winch",
-    description: (
-      <div>
-        Design optimal systems for winches with both motoring and generating
-        operation modes
-      </div>
-    ),
-    systems: [WinchFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
-    url: "TBD",
+    url: "/docs/textbook/applications/pumps/",
   },
   {
     name: "wind",
@@ -68,14 +68,40 @@ const applications: ApplicationModel[] = [
         lowest cost of energy.
       </div>
     ),
-    systems: [WindFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
-    url: "/docs/tbd",
+    systems: [WindFcModel, WindGbFcModel, WindFcTrModel, WindGbFcTrModel],
+    url: "/docs/textbook/applications/turbines/",
+  },
+  {
+    name: "winch",
+    icon: appWinch,
+    title: "Winch",
+    description: (
+      <div>
+        Design optimal systems for winches with both motoring and generating
+        operation modes
+      </div>
+    ),
+    systems: [WinchFcModel, WinchGbFcModel, WinchFcTrModel, WinchGbFcTrModel],
+    url: "/docs/textbook/applications/winches/",
+  },
+  {
+    name: "conveyor",
+    icon: appConveyor,
+    title: "Conveyor",
+    description: (
+      <div>
+        Try different gear solutions and motor speeds to design for lowest cost
+        and compactness.
+      </div>
+    ),
+    systems: [ConveyorFcModel /*, "WinchGbFc", "WinchFcTr", "WinchGbFcTr"*/],
+    url: "/docs/textbook/applications/conveyors/",
   },
 ];
 
 export default applications;
 
-export function findApplicationName(kind: SystemKind): string {
+export function getApplicationType(kind: SystemKind): ApplicationType {
   return applications.filter((a) =>
     a.systems.map((s) => s.kind).includes(kind),
   )[0].name;

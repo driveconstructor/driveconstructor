@@ -38,7 +38,7 @@ function renderSystemModel(model: SystemModel): React.ReactNode {
       <div className="grow"></div>
       <div className="flex justify-end space-x-1 self-end p-2">
         <NewSystemButton kind={model.kind} />
-        <Link className="btn" href="#tbd">
+        <Link className="btn" href="/docs/textbook/systems/">
           Help
         </Link>
       </div>

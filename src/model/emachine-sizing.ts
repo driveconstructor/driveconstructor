@@ -67,8 +67,8 @@ export function findTypeSpeedTorque(
           o.ratedTorque < mechanism.ratedTorque / 0.6 &&
           o.ratedTorque * o.ratedSpeed >=
             mechanism.ratedSpeed * mechanism.ratedTorque &&
-          (!mechanism.linear ||
-            (o.ratedTorque / o.ratedSpeed) * mechanism.minimalSpeed +
+          (mechanism.ratedMinimalSpeed == null ||
+            (o.ratedTorque / o.ratedSpeed) * mechanism.ratedMinimalSpeed +
               o.ratedTorque / 2 >
               mechanism.ratedTorque),
       ),
@@ -80,7 +80,7 @@ export function findEmCandidates(
   em: EMachine,
   typeSpeedTorqueList: TypeSpeedTorque[],
   ratedVoltageY: VoltageY,
-  mechanismTorqueOverload?: number,
+  mechanismTorqueOverload: number | null,
 ): EMachineComponent[] {
   return EMachineCooling.filter((c) => em.cooling == null || c == em.cooling)
     .flatMap((cooling) =>
@@ -219,7 +219,7 @@ export function findEmCandidates(
     .filter((ec) => em.shaftHeight == null || ec.shaftHeight == em.shaftHeight)
     .filter(
       (ec) =>
-        typeof mechanismTorqueOverload == "undefined" ||
+        mechanismTorqueOverload == null ||
         ec.torqueOverload * ec.ratedTorque >= mechanismTorqueOverload,
     );
 }
