@@ -55,6 +55,7 @@ export type EMachine = {
 export const RatedPowerParam = {
   ratedPower: {
     label: "Rated power, kW",
+    precision: 1,
   },
 };
 
@@ -184,3 +185,14 @@ function customizeIcon(type: (typeof EMachineType)[number]) {
       return iconSyRM;
   }
 }
+
+export const EMachinePMSMElement: SystemElement<EMachine> = {
+  ...EMachineElement,
+  params: {
+    ...EMachineElement.params,
+    type: {
+      ...EMachineElement.params.type,
+      value: "PMSM",
+    },
+  },
+};

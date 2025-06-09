@@ -88,14 +88,6 @@ export const PumpGbFcModel: Model<PumpGbFc> = {
       },
     },
     gearbox: GearboxElement,
-    /* TODO: use this for wind
-   emachine: {
-      ...EMachineElement,
-      params: {
-        ...EMachineElement.params,
-        type: { ...EMachineElement.params.type, value: "PMSM" },
-      },
-    },*/
     emachine: EMachineElement,
     cable: CableElement,
     fconverter: NoTrafoFConverterElement,

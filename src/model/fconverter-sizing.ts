@@ -1,3 +1,4 @@
+import { ApplicationType } from "./application";
 import { FcCooling, FcCoolingType, FcProtection } from "./cooling-protection";
 import {
   FConverter,
@@ -30,6 +31,8 @@ export function findFcConverters(
   fconverter: FConverter,
   emachineWorkingCurrent: number,
   trafoRatio: number,
+  applicationType: ApplicationType,
+  currentK: number | null,
 ): FConverterComponent[] {
   const deratedVoltage =
     systemVoltage / fconverter.voltageDerating / trafoRatio;
@@ -96,8 +99,6 @@ export function findFcConverters(
                     efficiency100,
                     cosFi100,
                   );
-                  const depth = getDepth(type, mounting, ratedPowerLO);
-                  const height = getHeight(type, mounting, ratedPowerLO);
 
                   const volume =
                     getVolume(
@@ -111,8 +112,45 @@ export function findFcConverters(
                     ) +
                     addFilter(gridSideFilter, (f) => f.volume) +
                     addFilter(machineSideFilter, (f) => f.volume);
+                  let depth = getDepth(type, mounting, ratedPowerLO);
+                  let height = getHeight(type, mounting, ratedPowerLO);
 
-                  const width = volume / height / depth;
+                  let width = volume / height / depth;
+
+                  // adjust for 2L
+                  if (
+                    type == "2Q-2L-VSC-6p" ||
+                    type == "4Q-2L-VSC" ||
+                    type == "2Q-2L-VSC-12p"
+                  ) {
+                    switch (mounting) {
+                      case "wall":
+                        if (
+                          ratedPowerLO >= 5 &&
+                          ratedPowerLO < 10 &&
+                          width < 0.1
+                        ) {
+                          height = 0.4;
+                          depth = 0.2;
+                        } else if (ratedPowerLO < 5 && width < 0.06) {
+                          height = 0.35;
+                          depth = 0.15;
+                        } else if (ratedPowerLO > 10 && width < 0.2) {
+                          height = 0.8;
+                          depth = 0.3;
+                        }
+                        break;
+                      case "floor":
+                        if (width < 0.5) {
+                          height = 2;
+                          depth = 0.4;
+                        }
+                        break;
+                    }
+
+                    width = volume / height / depth;
+                  }
+
                   const weight =
                     getWeight(
                       type,
@@ -137,7 +175,6 @@ export function findFcConverters(
                     ) +
                     addFilter(gridSideFilter, (f) => f.price) +
                     addFilter(machineSideFilter, (f) => f.price);
-
                   return {
                     voltage,
                     price,
@@ -152,9 +189,9 @@ export function findFcConverters(
                     weight,
                     gridSideFilter,
                     machineSideFilter,
-                    efficiency75: efficiency75(efficiency100),
-                    efficiency50: efficiency50(efficiency100),
-                    efficiency25: efficiency25(efficiency100),
+                    efficiency75: efficiency75(efficiency100, applicationType),
+                    efficiency50: efficiency50(efficiency100, applicationType),
+                    efficiency25: efficiency25(efficiency100, applicationType),
                     footprint: width * height,
                     volume,
                     ratedPower: ratedPowerLO,
@@ -179,14 +216,22 @@ export function findFcConverters(
     )
     .filter((fc) => FConverterVoltageFiltering[fc.type](fc))
     .filter((fc) => {
-      const efficiencyK = cableEfficiency100 / 100;
+      const efficiencyK =
+        applicationType == "wind" ? 1 : cableEfficiency100 / 100;
       const current =
         emachineWorkingCurrent /
         fconverter.overallCurrentDerating /
         efficiencyK;
-      return fc.currentLO >= current;
+
+      if (currentK) {
+        return fc.currentHO >= current * currentK;
+      }
+
+      return (
+        fc.currentLO >= current &&
+        (fc.mounting != "floor" || fc.currentLO <= current * 2)
+      );
     });
-  // .slice(0, 5);
 }
 
 function getK1(cooling: FcCoolingType) {
@@ -327,35 +372,70 @@ function getEfficiency(efficiency100: number, K: number) {
   return 100 - (100 - efficiency100) * K;
 }
 
-function efficiency25(efficiency100: number) {
+function efficiency25(efficiency100: number, applicationType: ApplicationType) {
   let K;
-  //if (this.input.pump || this.input.wind) {
-  K = 1.37;
-  //} else if (this.input.conveyor || this.input.winch) {
-  // K = 0.85;
-  // }
+  switch (applicationType) {
+    case "pump":
+    case "wind":
+      K = 1.37;
+      break;
+    case "conveyor":
+    case "winch":
+      K = 0.85;
+      break;
+  }
 
   return getEfficiency(efficiency100, K);
 }
 
-function efficiency50(efficiency100: number) {
+function efficiency50(efficiency100: number, applicationType: ApplicationType) {
   let K;
-  // if (this.input.pump || this.input.wind) {
-  K = 1.13;
-  //} else if (this.input.conveyor || this.input.winch) {
-  // K = 0.87;
-  //}
+  switch (applicationType) {
+    case "pump":
+    case "wind":
+      K = 1.13;
+      break;
+    case "conveyor":
+    case "winch":
+      K = 0.87;
+      break;
+  }
 
   return getEfficiency(efficiency100, K);
 }
 
-function efficiency75(efficiency100: number) {
+function efficiency75(efficiency100: number, applicationType: ApplicationType) {
   let K;
-  //if (this.input.pump || this.input.wind) {
-  K = 1.05;
-  //} else if (this.input.conveyor || this.input.winch) {
-  // K = 0.93;
-  //}
+  switch (applicationType) {
+    case "pump":
+    case "wind":
+      K = 1.05;
+      break;
+    case "conveyor":
+    case "winch":
+      K = 0.93;
+      break;
+  }
 
   return getEfficiency(efficiency100, K);
 }
+/*function calculateWidthHightDepth(): {
+  type: FConverterTypeAlias;
+  mounting: FConverterMountingType;
+  ratedPowerLO: number;
+  width: number;
+  height: number;
+  depth: number;
+} {
+  if (type ==
+    "2Q-2L-VSC-6p" ||
+    type == "2Q-2L-VSC-12p" ||
+    type == "4Q-2L-VSC" )
+      switch (mounting) {
+        case "floor":
+          return 2.2;
+        case "wall":
+          return ratedPowerLO < 10 ? 0.5 : 1;
+      }
+    })
+}*/

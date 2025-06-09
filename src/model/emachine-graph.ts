@@ -1,9 +1,4 @@
 import { EMachineComponent } from "./emachine-component";
-import { GraphPoint } from "./graph-data";
-
-export type EMachinGraphPoint = GraphPoint & {
-  torqueOverload: number;
-};
 
 const numberOfPoints = 20;
 

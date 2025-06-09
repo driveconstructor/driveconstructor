@@ -40,6 +40,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          FEEDBACK_FORM_URL: ${{ vars.FEEDBACK_FORM_URL }}
 
       - name: Install playwright dependencies
         run: npx playwright install --with-deps

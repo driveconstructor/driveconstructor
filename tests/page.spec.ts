@@ -8,7 +8,7 @@ test("CSS is working", async ({ browserName, page }) => {
   );
 
   await page.goto("/");
-  const label = page.getByRole("link", { name: "Drive Constructor" });
+  const label = page.getByRole("link", { name: "DriveConstructor" });
   await label.hover();
   const backgroundColor = await label.evaluate(
     (l) => getComputedStyle(l).backgroundColor,

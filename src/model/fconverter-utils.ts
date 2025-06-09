@@ -21,15 +21,15 @@ export function getDesignation(
 
   if (type.includes("2L")) {
     result.push("2L");
-  } else if (type.includes("3LNPC")) {
-    result.push("SCHB");
+  } else if (type.includes("3L-NPC")) {
+    result.push("NPC");
   } else if (type.includes("SCHB")) {
     result.push("SCHB");
   } else {
     result.push("XXX");
   }
 
-  if ((voltage.type = "LV")) {
+  if (voltage.type == "LV") {
     result.push(voltage.value);
   } else {
     const number = parseFloat((voltage.value / 1000).toFixed(2));

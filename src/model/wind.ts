@@ -1,10 +1,14 @@
 import icon from "../images/el-wind.svg";
+import { PowerOnShaftParam } from "./mechanism-params";
 import { SystemElement } from "./system";
 
 export type Wind = {
   ratedSpeedOfBlades: number;
   ratedTorque: number;
   overSpeed: number;
+  // calculated
+  ratedSpeed: number;
+  powerOnShaft: number;
 };
 
 export const WindElement: SystemElement<Wind> = {
@@ -15,8 +19,8 @@ export const WindElement: SystemElement<Wind> = {
       type: "number",
       value: 100,
       range: {
-        min: 5,
-        max: 200,
+        min: 30,
+        max: 400,
       },
     },
     ratedTorque: {
@@ -32,11 +36,21 @@ export const WindElement: SystemElement<Wind> = {
       label: "Overspeed",
       type: "number",
       value: 1.2,
+      precision: 1,
       range: {
         min: 1,
         max: 1.4,
         step: 0.05,
       },
+    },
+    ratedSpeed: {
+      label: "Overspeed, rpm",
+      type: "number",
+      value: (wind) => wind.ratedSpeedOfBlades * wind.overSpeed,
+    },
+    powerOnShaft: {
+      ...PowerOnShaftParam,
+      value: (wind) => (wind.ratedSpeed / 9.55) * wind.ratedTorque,
     },
   },
 };

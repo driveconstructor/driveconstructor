@@ -2,13 +2,14 @@ import { StaticImageData } from "next/image";
 import React from "react";
 import applications from "./application";
 import { Cable } from "./cable";
+import { ConveyorFc } from "./conveyor-system";
 import { EMachine } from "./emachine";
 import { FConverter } from "./fconverter";
 import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { SystemParamsType } from "./system-params";
-import { WinchFc } from "./winch-system";
-import { WindFc } from "./wind-system";
+import { WinchFc, WinchFcTr, WinchGbFc, WinchGbFcTr } from "./winch-system";
+import { WindFc, WindFcTr, WindGbFc, WindGbFcTr } from "./wind-system";
 
 export type ParamType = "text" | "number";
 
@@ -75,6 +76,13 @@ export type System = (
   | PumpGbFcTr
   | WinchFc
   | WindFc
+  | WinchGbFc
+  | WinchFcTr
+  | WinchGbFcTr
+  | WindGbFc
+  | WindFcTr
+  | WindGbFcTr
+  | ConveyorFc
 ) & {
   // to make type script access different types for systems
   input: Record<string, Record<string, any>>;

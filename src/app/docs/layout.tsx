@@ -9,7 +9,12 @@ import { source } from "./source";
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <RootProvider search={{ enabled: false }}>
+      <RootProvider
+        search={{ enabled: false }}
+        theme={{
+          enabled: false,
+        }}
+      >
         <DocsLayout
           tree={source.pageTree}
           sidebar={{

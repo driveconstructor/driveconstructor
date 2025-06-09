@@ -4,12 +4,14 @@ import {
   DesignationParam,
   FootprintParam,
   HeightParam,
+  PriceParam,
   VolumeParam,
   WeightParam,
   WidthParam,
 } from "./component-params";
 import { FcCoolingType, FcProtectionType } from "./cooling-protection";
 import { EfficiencyXXXParams } from "./efficiency-component";
+import { RatedPowerParam } from "./emachine";
 import {
   FConverterMounting,
   FConverterPower,
@@ -52,12 +54,8 @@ export const FConverterComponentModel: ComponentModel<FConverterComponent> = {
     type: {
       label: "Type",
     },
-    price: {
-      label: "Price, EUR",
-    },
-    ratedPower: {
-      label: "Rated power, kW",
-    },
+    ...PriceParam,
+    ...RatedPowerParam,
     voltage: {
       label: "Voltage, V",
       render: (v) => v.min + "-" + v.max,

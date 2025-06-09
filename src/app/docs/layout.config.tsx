@@ -14,7 +14,7 @@ export const baseOptions: BaseLayoutProps = {
     title: (
       <>
         <Image src={logo} width={24} height={24} alt="DriveConstructor logo" />
-        Drive Constructor
+        DriveConstructor
       </>
     ),
   },

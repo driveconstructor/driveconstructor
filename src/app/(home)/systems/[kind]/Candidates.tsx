@@ -4,6 +4,8 @@ import {
   getComponentModel,
   renderComponentParam,
 } from "@/model/component";
+import { findColorEntry } from "@/model/emachine-utils";
+import { System } from "@/model/system";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
 import { SystemContext } from "./System";
@@ -25,6 +27,7 @@ export default function Candidates({
         return (
           <div key={k}>
             <Candidate
+              system={context.system}
               kind={k}
               values={v}
               selected={selected}
@@ -38,11 +41,13 @@ export default function Candidates({
 }
 
 function Candidate({
+  system,
   kind,
   values,
   selected,
   setSelected,
 }: {
+  system: System;
   kind: string;
   values: any[];
   selected: number;
@@ -60,7 +65,7 @@ function Candidate({
       <div className="flex p-2">
         <div
           onClick={() => setCollapsed(!collapsed)}
-          className="flex flex-nowrap hover:cursor-pointer"
+          className="flex flex-nowrap cursor-pointer"
         >
           {collapsed ? (
             <ChevronRightIcon className="h-6 text-gray-500" />
@@ -89,6 +94,13 @@ function Candidate({
           .filter(() => !collapsed)
           .map((v, i) => {
             const updatedModel = customizeModel(model, v);
+            const colorClass: string =
+              model.kind == "emachine" &&
+              system.candidates.emachine &&
+              (selected == i || !system.components.emachine)
+                ? "border-b-3 p-1 " +
+                  findColorEntry(system.candidates.emachine, v)[0]
+                : "";
             return (
               <div
                 key={i}
@@ -100,15 +112,21 @@ function Candidate({
                 onClick={() => setSelected(i)}
               >
                 <div className="grid grid-cols-4 lg:grid-cols-8">
-                  <div className="justify-self-center">
-                    <label data-testid={`${kind}[${i}].label.<selected>`}>
+                  <div className="justify-self-center text-sm">
+                    <label
+                      data-testid={`${kind}[${i}].label.<selected>`}
+                      className={colorClass}
+                    >
                       <input
                         type="radio"
                         checked={selected == i}
-                        onChange={() => setSelected(i)}
+                        onChange={() => {
+                          /* no-op */
+                        }}
+                        className="m-1"
                         data-testid={`${kind}[${i}].<selected>`}
-                      />{" "}
-                      Selected
+                      />
+                      Select
                     </label>
                   </div>
                   {Object.keys(updatedModel.params)

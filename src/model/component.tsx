@@ -58,7 +58,7 @@ export type ComponentsType = {
 };
 
 export type CandidatesType = {
-  [P in keyof ComponentsType]: ComponentsType[P][];
+  [P in keyof ComponentsType]: NonNullable<ComponentsType[P]>[];
 };
 
 export function customizeModel(

@@ -1,5 +1,5 @@
 import { isIn, VoltageY } from "./voltage";
-export type FcVoltageYType = "LV" | "MV1" | "MV2";
+export type FcVoltageYType = "LV" | "MV1" | "MV2" | "LVX";
 export type FcVoltageY = VoltageY<FcVoltageYType>;
 
 const LowVoltage = [400, 660];

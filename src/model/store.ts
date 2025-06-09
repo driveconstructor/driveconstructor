@@ -55,7 +55,9 @@ export function updateSystemInput(
   }, {});
 }
 
-export function initSystemInput(model: SystemModel) {
+export type OverrideFunction = (e: string, p: string, v: any) => any;
+
+function initSystemInput(model: SystemModel, override?: OverrideFunction) {
   // initialize with default values
   return Object.entries(model.input).reduce((a, [e, p]) => {
     return {
@@ -63,16 +65,20 @@ export function initSystemInput(model: SystemModel) {
       [e]: Object.entries(p.params).reduce((b, [k, v]) => {
         return {
           ...b,
-          [k]: v.value,
+          [k]:
+            typeof override == "undefined" ? v.value : override(e, k, v.value),
         };
       }, {}),
     };
   }, {});
 }
 
-export function createSystem(model: SystemModel): System {
+export function createSystem(
+  model: SystemModel,
+  override?: OverrideFunction,
+): System {
   const kind = model.kind;
-  const input = updateSystemInput(model, initSystemInput(model));
+  const input = updateSystemInput(model, initSystemInput(model, override));
 
   const id = draft_prefix + kind;
   const result = {
