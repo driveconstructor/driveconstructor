@@ -4,7 +4,7 @@ import {
   getComponentModel,
   renderComponentParam,
 } from "@/model/component";
-import { getEMachineComponentColor } from "@/model/emachine-utils";
+import { findColorEntry } from "@/model/emachine-utils";
 import { System } from "@/model/system";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
@@ -94,14 +94,13 @@ function Candidate({
           .filter(() => !collapsed)
           .map((v, i) => {
             const updatedModel = customizeModel(model, v);
-            const colorBox =
-              model.kind == "emachine" && system.candidates.emachine
-                ? "border-" +
-                  getEMachineComponentColor(system.candidates.emachine, v) +
-                  "-900"
-                : undefined;
-            // TODO: show color of machine type
-            console.log(colorBox);
+            const colorClass: string =
+              model.kind == "emachine" &&
+              system.candidates.emachine &&
+              (selected == i || !system.components.emachine)
+                ? "border-b-3 p-1 " +
+                  findColorEntry(system.candidates.emachine, v)[0]
+                : "";
             return (
               <div
                 key={i}
@@ -113,18 +112,21 @@ function Candidate({
                 onClick={() => setSelected(i)}
               >
                 <div className="grid grid-cols-4 lg:grid-cols-8">
-                  <div className="justify-self-center">
-                    <label data-testid={`${kind}[${i}].label.<selected>`}>
+                  <div className={"justify-self-center"}>
+                    <label
+                      data-testid={`${kind}[${i}].label.<selected>`}
+                      className={"mx-1 " + colorClass}
+                    >
                       <input
                         type="radio"
                         checked={selected == i}
-                        onChange={() => setSelected(i)}
+                        onChange={() => {
+                          /* no-op */
+                        }}
                         data-testid={`${kind}[${i}].<selected>`}
-                        className="mx-2"
                       />
-                      Selected
+                      &nbsp; Selected
                     </label>
-                    {colorBox ? <div className={colorBox}>&nbsp;</div> : null}
                   </div>
                   {Object.keys(updatedModel.params)
                     .filter((k) => !updatedModel.params[k].hidden)

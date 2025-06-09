@@ -1,7 +1,7 @@
+import colors from "tailwindcss/colors";
 import { EMachineComponent } from "./emachine-component";
 import { TypeSpeedTorque } from "./emachine-sizing";
 import { VoltageY } from "./voltage";
-
 export function emachineDesignation(
   typeSpeedTorque: TypeSpeedTorque,
   ratedVoltageY: VoltageY,
@@ -196,15 +196,40 @@ export function emachineTypeFilter(em: EMachineComponent): boolean {
   }
 }
 
-const colors = ["blue", "green", "brown", "olive", "red", "orange"];
-export function getEMachineComponentColor(
+/*const colorMap = {
+  blue: "border-b-4 p-1 border-blue-500",
+  violet: "border-b-4 p-1 border-violet-500",
+  fuchsia: "border-b-4 p-1 border-fuchsia-500",
+  green: "border-b-4 p-1 border-green-500",
+  teal: "border-b-4 p-1 border-teal-500",
+  cyan: "border-b-4 p-1 border-cyan-500",
+  pink: "border-b-4 p-1 border-pink-500",
+  red: "border-b-4 p-1 border-red-500",
+  orange: "border-b-4 p-1 border-orange-500",
+};*/
+
+const colorMap = {
+  "border-blue-500": colors.blue[500],
+  "border-violet-500": colors.violet[500],
+  "border-fuchsia-500": colors.fuchsia[500],
+  "border-green-500": colors.green[500],
+  "border-teal-500": colors.teal[500],
+  "border-cyan-500": colors.cyan[500],
+  "border-pink-500": colors.pink[500],
+  "border-red-500": colors.red[500],
+  "border-orange-500": colors.orange[500],
+};
+
+export function findColorEntry(
   candidates: EMachineComponent[],
   em: EMachineComponent,
 ) {
+  const colorEntries = Object.entries(colorMap);
+
   const index = candidates.findIndex((ec) => ec.designation == em.designation);
   if (index == -1) {
     throw new Error("Unable to find emachine");
   }
 
-  return colors[index % colors.length];
+  return colorEntries[index % colorEntries.length];
 }

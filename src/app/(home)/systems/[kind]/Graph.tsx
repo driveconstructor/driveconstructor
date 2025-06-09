@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { SystemContext } from "./System";
 
 import { emachineGraphData } from "@/model/emachine-graph";
-import { getEMachineComponentColor } from "@/model/emachine-utils";
+import { findColorEntry } from "@/model/emachine-utils";
 import { GraphPoint, systemGraphData } from "@/model/graph-data";
 import { round } from "@/model/utils";
 import {
@@ -69,7 +69,7 @@ export default function Graph() {
       const emGraphData = emachineGraphData(gearRatio, em);
       const label = `${gearRatio == 1 ? "" : "Gearbox+"}${em.designation}`;
       const color = context.system.candidates.emachine
-        ? getEMachineComponentColor(context.system.candidates.emachine, em)
+        ? findColorEntry(context.system.candidates.emachine, em)[1]
         : undefined;
       datasets.push({
         label,
