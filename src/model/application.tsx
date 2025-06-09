@@ -9,6 +9,7 @@ import {
   ConveyorFcModel,
   ConveyorFcTrModel,
   ConveyorGbFcModel,
+  ConveyorGbFcTrModel,
 } from "./conveyor-system";
 import {
   PumpFcModel,
@@ -101,7 +102,8 @@ const applications: ApplicationModel[] = [
     systems: [
       ConveyorFcModel,
       ConveyorGbFcModel,
-      ConveyorFcTrModel /*"WinchFcTr", "WinchGbFcTr"*/,
+      ConveyorFcTrModel,
+      ConveyorGbFcTrModel,
     ],
     url: "/docs/textbook/applications/conveyors/",
   },

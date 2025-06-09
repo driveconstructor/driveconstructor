@@ -107,3 +107,36 @@ export const ConveyorFcTrModel: Model<ConveyorFcTr> = {
   },
   update: updateTrSystem,
 };
+
+export type ConveyorGbFcTr = BaseSystem & {
+  kind: "conveyor-gb-fc-tr";
+  input: { conveyor: Conveyor; gearbox: Gearbox; trafo: Trafo };
+  candidates: CandidatesType;
+  components: ComponentsType;
+};
+
+export const ConveyorGbFcTrModel: Model<ConveyorGbFcTr> = {
+  kind: "conveyor-gb-fc-tr",
+  title: "Drive train with gearbox, electric machine, FC and transformer",
+  description: (
+    <div>
+      This solution can be used when the conveyor drum has too low rated speed
+      to be matched by an electric motor, and the transformer is used for
+      matching the voltage in the grid and FC&apos;s and/or for galvanic
+      insulation.
+    </div>
+  ),
+  input: {
+    conveyor: { ...ConveyorGbFcModel.input.conveyor },
+    gearbox: GearboxElement,
+    emachine: { ...ConveyorGbFcModel.input.emachine },
+    cable: CableElement,
+    fconverter: TrafoFConverterElement,
+    trafo: TrafoElement,
+    switch: SwitchElement,
+    grid: {
+      ...ConveyorFcTrModel.input.grid,
+    },
+  },
+  update: updateTrSystem,
+};

@@ -1,4 +1,9 @@
-import { ConveyorFc, ConveyorFcTr, ConveyorGbFc } from "./conveyor-system";
+import {
+  ConveyorFc,
+  ConveyorFcTr,
+  ConveyorGbFc,
+  ConveyorGbFcTr,
+} from "./conveyor-system";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { System } from "./system";
 import { WinchFc, WinchFcTr, WinchGbFc, WinchGbFcTr } from "./winch-system";
@@ -35,6 +40,7 @@ export function systemGraphData(system: System): GraphData {
     case "conveyor-fc":
     case "conveyor-gb-fc":
     case "conveyor-fc-tr":
+    case "conveyor-gb-fc-tr":
       return conveyorGraphData(system);
   }
 }
@@ -93,7 +99,9 @@ function winchGraphData(system: WinchFc | WinchGbFc | WinchFcTr | WinchGbFcTr) {
   return { label: "winch", overload: true, points };
 }
 
-function conveyorGraphData(system: ConveyorFc | ConveyorGbFc | ConveyorFcTr) {
+function conveyorGraphData(
+  system: ConveyorFc | ConveyorGbFc | ConveyorFcTr | ConveyorGbFcTr,
+) {
   const points: GraphPoint[] = [];
 
   const numberOfPoints = 12;

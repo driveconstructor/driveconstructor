@@ -128,7 +128,8 @@ function createMechanism(system: System): Mechanism {
   } else if (
     system.kind == "conveyor-fc" ||
     system.kind == "conveyor-gb-fc" ||
-    system.kind == "conveyor-fc-tr"
+    system.kind == "conveyor-fc-tr" ||
+    system.kind == "conveyor-gb-fc-tr"
   ) {
     const input = system.input as ConveyorFc["input"];
     return createWinchOrConveyor(input.conveyor);
@@ -189,7 +190,8 @@ export function withCandidates(system: System): System {
     system.kind == "wind-gb-fc-tr" ||
     system.kind == "winch-fc-tr" ||
     system.kind == "winch-gb-fc-tr" ||
-    system.kind == "conveyor-fc-tr"
+    system.kind == "conveyor-fc-tr" ||
+    system.kind == "conveyor-gb-fc-tr"
       ? system.input.trafo.ratio
       : 1;
 
@@ -200,7 +202,8 @@ export function withCandidates(system: System): System {
     system.kind == "wind-gb-fc-tr" ||
     system.kind == "winch-gb-fc" ||
     system.kind == "winch-gb-fc-tr" ||
-    system.kind == "conveyor-gb-fc"
+    system.kind == "conveyor-gb-fc" ||
+    system.kind == "conveyor-gb-fc-tr"
   ) {
     required.push(GearboxComponentModel.kind);
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
@@ -277,7 +280,9 @@ export function withCandidates(system: System): System {
     system.kind == "wind-fc-tr" ||
     system.kind == "wind-gb-fc-tr" ||
     system.kind == "winch-fc-tr" ||
-    system.kind == "winch-gb-fc-tr"
+    system.kind == "winch-gb-fc-tr" ||
+    system.kind == "conveyor-fc-tr" ||
+    system.kind == "conveyor-gb-fc-tr"
   ) {
     required.push(TrafoComponentModel.kind);
     let trafo: TrafoComponent[] = [];

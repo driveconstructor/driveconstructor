@@ -2,7 +2,12 @@ import { StaticImageData } from "next/image";
 import React from "react";
 import applications from "./application";
 import { Cable } from "./cable";
-import { ConveyorFc, ConveyorFcTr, ConveyorGbFc } from "./conveyor-system";
+import {
+  ConveyorFc,
+  ConveyorFcTr,
+  ConveyorGbFc,
+  ConveyorGbFcTr,
+} from "./conveyor-system";
 import { EMachine } from "./emachine";
 import { FConverter } from "./fconverter";
 import { Grid } from "./grid";
@@ -85,6 +90,7 @@ export type System = (
   | ConveyorFc
   | ConveyorGbFc
   | ConveyorFcTr
+  | ConveyorGbFcTr
 ) & {
   // to make type script access different types for systems
   input: Record<string, Record<string, any>>;

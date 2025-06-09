@@ -34,9 +34,9 @@ function renderSystemModel(model: SystemModel): React.ReactNode {
     <div key={model.kind} className="flex flex-col border border-gray-200 p-2">
       <Schema model={model} />
       <h3 className="py-4 text-xl">{model.title}</h3>
-      <div>{model.description}</div>
       <div className="grow"></div>
-      <div className="flex justify-end space-x-1 self-end p-2">
+      <div className="justify-end">{model.description}</div>
+      <div className="flex justify-end space-x-1 self-end m-4">
         <NewSystemButton kind={model.kind} />
         <Link className="btn" href="/docs/textbook/systems/">
           Help
