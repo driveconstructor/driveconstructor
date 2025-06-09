@@ -125,7 +125,7 @@ function createMechanism(system: System): Mechanism {
   ) {
     const input = system.input as WinchFc["input"];
     return createWinchOrConveyor(input.winch);
-  } else if (system.kind == "conveyor-fc") {
+  } else if (system.kind == "conveyor-fc" || system.kind == "conveyor-gb-fc") {
     const input = system.input as ConveyorFc["input"];
     return createWinchOrConveyor(input.conveyor);
   } else {
@@ -194,7 +194,8 @@ export function withCandidates(system: System): System {
     system.kind == "wind-gb-fc" ||
     system.kind == "wind-gb-fc-tr" ||
     system.kind == "winch-gb-fc" ||
-    system.kind == "winch-gb-fc-tr"
+    system.kind == "winch-gb-fc-tr" ||
+    system.kind == "conveyor-gb-fc"
   ) {
     required.push(GearboxComponentModel.kind);
     const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);

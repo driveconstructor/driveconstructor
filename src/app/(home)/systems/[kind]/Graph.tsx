@@ -34,15 +34,22 @@ export default function Graph() {
   const context = useContext(SystemContext);
 
   const graphData = systemGraphData(context.system);
+  const kN = Math.max(...graphData.points.map((p) => p.torque)) >= 10000;
   const toPoint = (row: GraphPoint) => {
-    return { x: round(row.speed, 1), y: round(row.torque) };
+    return {
+      x: round(row.speed, 1),
+      y: round(row.torque / (kN ? 1000 : 1), kN ? 1 : 0),
+    };
   };
   const toPointOverload = (row: GraphPoint) => {
     if (typeof row.torqueOverload == "undefined") {
       throw new Error();
     }
 
-    return { x: round(row.speed, 1), y: round(row.torqueOverload) };
+    return {
+      x: round(row.speed, 1),
+      y: round(row.torqueOverload / (kN ? 1000 : 1), kN ? 1 : 0),
+    };
   };
 
   const datasets: ChartDataset<"line">[] = [];
@@ -65,7 +72,7 @@ export default function Graph() {
 
   if (emachines) {
     const gearRatio = context.system.components.gearbox?.gearRatio || 1;
-    emachines.forEach((em, index) => {
+    emachines.forEach((em) => {
       const emGraphData = emachineGraphData(gearRatio, em);
       const label = `${gearRatio == 1 ? "" : "Gearbox+"}${em.designation}`;
       const color = context.system.candidates.emachine
@@ -80,9 +87,7 @@ export default function Graph() {
       if (graphData.overload) {
         datasets.push({
           label: label + "-overload",
-          data: emGraphData.map((row) => {
-            return { x: row.speed, y: row.torqueOverload };
-          }),
+          data: emGraphData.map(toPointOverload),
           borderDash,
           backgroundColor: color,
           borderColor: color,
@@ -116,7 +121,7 @@ export default function Graph() {
           },
           y: {
             title: {
-              text: "Torque (Nm)",
+              text: "Torque " + (kN ? "(kNm)" : "(Nm)"),
               display: true,
             },
           },
