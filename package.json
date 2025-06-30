@@ -28,7 +28,7 @@
     "eslint-config-next": "15.3.3",
     "eslint-config-prettier": "10.1.5",
     "eslint-plugin-prettier": "5.4.1",
-    "fumadocs-core": "15.5.1",
+    "fumadocs-core": "15.5.5",
     "fumadocs-mdx": "11.6.7",
     "fumadocs-ui": "15.5.1",
     "jest": "29.7.0",
