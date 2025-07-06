@@ -32,9 +32,10 @@ function validate(system: PumpFc | PumpGbFc) {
 
   if (difference != null && difference > 0.2) {
     result.push(
-      'Power of the pump and the motor do not match! \
-      Either adjust power of the motor or set it to "any". Alternatively \
-      check inputs for the pump.',
+      `
+        Power of the pump and the motor do not match! Either adjust power of the
+        motor or set it to "any". Alternatively check inputs for the pump
+      `,
     );
   }
 

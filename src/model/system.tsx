@@ -9,7 +9,7 @@ import {
   ConveyorGbFcTr,
 } from "./conveyor-system";
 import { EMachine } from "./emachine";
-import { FConverter } from "./fconverter";
+import { FConverter, LowVoltageType } from "./fconverter";
 import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { SystemParamsType } from "./system-params";
@@ -124,5 +124,33 @@ export function customizeModel<T extends System>(
     return { ...o, [k]: customized };
   }, {});
 
-  return { ...model, input };
+  return customizeSystemModel({ ...model, input }, value.input);
+}
+
+// TODO: introduce a model public method
+// customize the model of an element based on input
+function customizeSystemModel(
+  model: SystemModel,
+  input: System["input"],
+): SystemModel {
+  if (input.emachine.type == "SyRM") {
+    return {
+      ...model,
+      input: {
+        ...model.input,
+        fconverter: {
+          ...model.input.fconverter,
+          params: {
+            ...model.input.fconverter.params,
+            type: {
+              ...model.input.fconverter.params.type,
+              options: LowVoltageType,
+            },
+          },
+        },
+      },
+    };
+  }
+
+  return model;
 }

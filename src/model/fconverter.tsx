@@ -59,10 +59,12 @@ export type FConverter = {
   protection: FcProtectionType;
 } & Environment;
 
-export const NoTrafoFConverterElement = FConverterElement([
+export const LowVoltageType: FConverterTypeAlias[] = [
   "2Q-2L-VSC-6p",
   "4Q-2L-VSC",
-]);
+];
+
+export const NoTrafoFConverterElement = FConverterElement(LowVoltageType);
 
 export const TrafoFConverterElement = FConverterElement([...FConverterType]);
 
