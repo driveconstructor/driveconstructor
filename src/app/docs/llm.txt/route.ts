@@ -30,8 +30,26 @@ ${processed.value}`;
 // cached forever
 export const revalidate = false;
 
+function walk(urls: string[], children: any[]) {
+  children.forEach((c) => {
+    if (c.type == "page") {
+      urls.push(c.url);
+    } else if (c.type == "folder") {
+      urls.push(c.index.url);
+      walk(urls, c.children);
+    }
+  });
+}
+
 export async function GET() {
-  const scan = source.getPages().map(getLLMText);
+  const urls: string[] = [];
+  walk(urls, source.getPageTree().children);
+
+  // documentation preserving order
+  const scan = source
+    .getPages()
+    .sort((a, b) => urls.indexOf(a.url) - urls.indexOf(b.url))
+    .map(getLLMText);
   const scanned = await Promise.all(scan);
 
   return new Response(scanned.join("\n\n"));
