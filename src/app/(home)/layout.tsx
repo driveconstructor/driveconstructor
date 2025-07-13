@@ -7,10 +7,11 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import logo from "../../images/logo.svg";
+
+const { title, logo } = await import("./branding.mjs");
 
 export const metadata = {
-  title: "DriveConstructor",
+  title,
   description: "Online education tool for electrical engineering students",
 };
 
@@ -56,7 +57,7 @@ export default function RootLayout({
             title="Home"
           />
           <div className="pl-1 hidden md:block" title="Home">
-            DriveConstructor
+            {title}
           </div>
         </NavItem>
         <NavItem href="/docs/textbook" className="text-m flex items-center">
