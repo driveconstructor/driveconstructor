@@ -29,7 +29,7 @@
     "eslint-config-prettier": "10.1.5",
     "eslint-plugin-prettier": "5.5.1",
     "fumadocs-core": "15.6.1",
-    "fumadocs-mdx": "11.6.10",
+    "fumadocs-mdx": "11.6.11",
     "fumadocs-ui": "15.6.1",
     "jest": "30.0.4",
     "jest-environment-jsdom": "30.0.4",
