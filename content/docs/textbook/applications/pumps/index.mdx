@@ -24,10 +24,22 @@ exist many different types of pumps. The most common - centrifugal pump - is
 presented in Fig.1. Another example - progressive cavity pump - is presented in
 Fig.2.
 
-![Centrifugal pump](./images/centrifugal-pump.png)
+import Image from "next/image";
+import dcImage from "./images/centrifugal-pump.png";
+
+<img src={dcImage.src} alt="Centrifugal pump" width="35%" height="35%" />
+
 _Fig.1. Centrifugal pump._
 
-![Progressing cavity pump](./images/progressing-cavity-pump.png)
+import pcpImage from "./images/progressing-cavity-pump.png";
+
+<img
+  src={pcpImage.src}
+  alt="Progressing cavity pump"
+  width="50%"
+  height="50%"
+/>
+
 _Fig.2. Progressing cavity pump with a motor._
 
 Rated rotational speed of the pump's shaft is given for any pump in the

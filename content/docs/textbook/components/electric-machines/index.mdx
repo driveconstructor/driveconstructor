@@ -12,23 +12,34 @@ into this version of _DriveConstructor_. It is possible to choose between:
 - _SyRM_ - Synchronous Reluctance Machine (Fig.2),
 - _PMSM_ - Permanent Magnet Synchronous Machine (rotor shown in Fig.3).
 
-![SCIM](./images/SCIM.png)
-_Fig.1A. SCIM_.
+import Image from "next/image";
+import SCIMImage from "./images/SCIM.png";
 
-![SCIM icon](./images/scim_simple1.png)
-_Fig.1B. icon of SCIM_.
+<img src={SCIMImage.src} width="40%" height="40%" /> _Fig.1A. SCIM_.
 
-![SyRM](./images/SyRM.png)
-_Fig.2A. SyRM_.
+import scim_simple1Image from "./images/scim_simple1.png";
 
-![SyRM icon](./images/syrm_simple1.png)
-_Fig.2B. icon of SyRM_.
+<img src={scim_simple1Image.src} width="15%" height="15%" /> _Fig.1B. icon of
+SCIM_.
 
-![PMSM rotor](./images/PMSM_rotor.png)
-_Fig.3A. Rotor of PMSM_.
+import SyRMImage from "./images/SyRM.png";
 
-![PMSM icon](./images/pm_motor_simple1.png)
-_Fig.3B. icon of PMSM_.
+<img src={SyRMImage.src} width="40%" height="40%" /> _Fig.2A. SyRM_.
+
+import syrm_simple1Image from "./images/syrm_simple1.png";
+
+<img src={syrm_simple1Image.src} width="15%" height="15%" /> _Fig.2B. icon of
+SyRM_.
+
+import PMSM_rotorImage from "./images/PMSM_rotor.png";
+
+<img src={PMSM_rotorImage.src} width="25%" height="25%" /> _Fig.3A. Rotor of
+PMSM_.
+
+import pm_motor_simple1Image from "./images/pm_motor_simple1.png";
+
+<img src={pm_motor_simple1Image.src} width="15%" height="15%" /> _Fig.3B. icon
+of PMSM_.
 
 SCIM, PMSM and SyRM can be selected for any application and any drive train
 topology. SyRM are available for quite limited range of powers. So far only LV
@@ -48,7 +59,9 @@ Power rating of the electric machines available in _DriveConstructor_ is
 according to IEC 60072-1 which suggests the following preferred ratings (based
 on a subset of the R40 series) for motors (in kW) and generators (in kVA):
 
-![EM rated powers](./images/EM_rated_powers.png)
+import EM_rated_powersImage from "./images/EM_rated_powers.png";
+
+<img src={EM_rated_powersImage.src} width="100%" height="100%" />
 [Source:
 IEC](http://www.openelectrical.org/wiki/index.php?title=Standard_IEC_Ratings)
 
@@ -90,11 +103,13 @@ to 10...20 MW (in _DriveConstructor_ up to 5 MW), in some cases up to 100 MW!
 
 Slot designs of LV and MV machines look quite different:
 
-![LV slot](./images/LV_slot.png)
-_Fig.4. LV slot._
+import LV_slotImage from "./images/LV_slot.png";
 
-![HV slot](./images/HV_slot.png)
-_Fig.5. HV slot._
+<img src={LV_slotImage.src} width="30%" height="30%" /> _Fig.4. LV slot._
+
+import HV_slotImage from "./images/HV_slot.png";
+
+<img src={HV_slotImage.src} width="50%" height="50%" /> _Fig.5. HV slot._
 
 #### Rated synchronous speed
 
@@ -131,14 +146,18 @@ to determine the efficiency level for their minimum energy performance standards
 (or IE2 in combination with a variable frequency drive) from 2015 for smaller
 motors and from 2017 covering also larger motors.
 
-![Efficiency class 1](./images/Efficiency_class1.png)
+import Efficiency_class1Image from "./images/Efficiency_class1.png";
+
+<img src={Efficiency_class1Image.src} width="90%" height="90%" />
 
 _Fig.6. Cut-away of standard, energy-efficient, and premium efficiency motors._
 
 Efficiency value for a certain class depends on power as shown on the diagram
 below:
 
-![Efficiency class 3](./images/Efficiency_class3.png)
+import Efficiency_class3Image from "./images/Efficiency_class3.png";
+
+<img src={Efficiency_class3Image.src} width="70%" height="70%" />
 
 _Fig.7. Efficiency classes for 4-pole motors._
 
@@ -160,21 +179,28 @@ the three classes presented below:
   shaft)
 - water-cooled _IC71W_
 
-![IC411 cooling](./images/Cooling1.png)
-_Fig.8. IC411_.
+import Cooling1Image from "./images/Cooling1.png";
 
-![IC416 cooling](./images/Cooling2.png)
-_Fig.9. IC416. Note separate motor for driving the fan_.
+<img src={Cooling1Image.src} width="40%" height="40%" /> _Fig.8. IC411_.
 
-![IC71W cooling](./images/Cooling3.png)
-_Fig.10. IC71W. Note the cooling mantle_.
+import Cooling2Image from "./images/Cooling2.png";
+
+<img src={Cooling2Image.src} width="48%" height="48%" /> _Fig.9. IC416. Note
+separate motor for driving the fan_.
+
+import Cooling3Image from "./images/Cooling3.png";
+
+<img src={Cooling3Image.src} width="40%" height="40%" /> _Fig.10. IC71W. Note
+the cooling mantle_.
 
 Fig. 11 shows that _IC416_ provides more load capacity at low speeds than
 _IC411_. It is because the independently fed fan motor of _IC416_ configuration
 allows maintaining the cooling air flow independently on the rotor speed.
 
-![IC411 vs IC416](./images/cooling_411_vs_416.png)
-_Fig.11. IC411 vs IC416_.
+import cooling_411_vs_416Image from "./images/cooling_411_vs_416.png";
+
+<img src={cooling_411_vs_416Image.src} width="60%" height="60%" /> _Fig.11.
+IC411 vs IC416_.
 
 Water-cooled machines can be 20-40% smaller than air-cooled IP54/55 machines. If
 cooling water is available, some economies in motor size can be obtained by the
@@ -190,21 +216,26 @@ difference between mounting variants is reflected in price. Flange-mounted
 machine would have 1-3% higher price and flange&foot-mounted - by 5%, compared
 to the basic foot-mounted design.
 
-![B3 mounting](./images/EM_mounting1.png)
-_Fig.12. B3_
+import EM_mounting1Image from "./images/EM_mounting1.png";
 
-![B5 mounting](./images/EM_mountingB5.png)
-_Fig.13. B5_
+<img src={EM_mounting1Image.src} width="20%" height="20%" /> _Fig.12. B3_
 
-![B35 mounting](./images/EM_mountingB35.png)
-_Fig.14. B35_
+import EM_mountingB5Image from "./images/EM_mountingB5.png";
+
+<img src={EM_mountingB5Image.src} width="20%" height="20%" /> _Fig.13. B5_
+
+import EM_mountingB35Image from "./images/EM_mountingB35.png";
+
+<img src={EM_mountingB35Image.src} width="20%" height="20%" /> _Fig.14. B35_
 
 #### Shaft height
 
 IEC and NEMA has standardized motor dimensions, including shaft height.
 
-![Shaft height](./images/Shaft_height.png)
-_Fig.15. Shaft height illustration._
+import Shaft_heightImage from "./images/Shaft_height.png";
+
+<img src={Shaft_heightImage.src} width="40%" height="40%" /> _Fig.15. Shaft
+height illustration._
 
 Standard shaft heights row in mm: 56, 63, 71, 80, 90, 100, 112, 132, 160, 180,
 200, 225, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710. If the shaft height

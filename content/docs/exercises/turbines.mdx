@@ -60,7 +60,11 @@ euro.
 
 Summarize and present all key results in a table.
 
-![Wind turbine drive train configuration](./images/WT2.png)
+import Image from "next/image";
+
+import WT2Image from "./images/WT2.png";
+
+<img src={WT2Image.src} width="50%" height="50%" />
 
 ## WT-3. Inertia of the drive train as protection against tidal turbine runaway
 
@@ -150,4 +154,6 @@ Euro in cost? Which system is the lightest? Which is the cheapest? First take
 induction machine (SCIM) and try different efficiency classes, then try SyRM and
 PMSM.
 
-![Small high-speed wind turbine configuration](./images/WT5.png)
+import WT5Image from "./images/WT5.png";
+
+<img src={WT5Image.src} width="40%" height="40%" />

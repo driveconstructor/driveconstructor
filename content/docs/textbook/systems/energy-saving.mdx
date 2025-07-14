@@ -10,7 +10,10 @@ variable speed usually demonstrate impressive energy savings compared to
 constant speed operation. The way of achieving the savings can be demonstrated
 for a basic water supply system shown in Fig. 1.
 
-![Water supply with throttle regulation](./images/Pump.png)
+import Image from "next/image";
+import PumpImage from "./images/Pump.png";
+
+<img src={PumpImage.src} width="40%" height="40%" />
 
 _Fig. 1. Water supply with throttle regulation_.
 
@@ -42,11 +45,17 @@ Another problem of throttling is reduced efficiency of the pump when the pump's
 operating point is shifted from the rated due to the change in the performance
 of the hydraulic network (the throttle is part of the network).
 
-![Throttle control - normal operation](./images/Pump_chars.png) _(a)_
+import Pump_charsImage from "./images/Pump_chars.png";
 
-![Throttle control - reduced flow](./images/Pump_chars2.png) _(b)_
+<img src={Pump_charsImage.src} width="40%" height="40%" /> _(a)_
 
-![Throttle control - energy distribution](./images/Pump_chars_energies.png) _(c)_
+import Pump_chars2Image from "./images/Pump_chars2.png";
+
+<img src={Pump_chars2Image.src} width="40%" height="40%" /> _(b)_
+
+import Pump_chars_energiesImage from "./images/Pump_chars_energies.png";
+
+<img src={Pump_chars_energiesImage.src} width="40%" height="40%" /> _(c)_
 
 _Fig. 2. Throttle control_.
 
@@ -61,7 +70,9 @@ pump, _h_ is _head_ in _m_ and _q_ is _flow_ in $$m^3 / h$$.
 Thus, lower efficiency of the pump lead to increase power consumption. Fig. 3
 shows the efficiency map of the pump (lines of equal efficiency).
 
-![Pump efficiency](./images/Pump_chars_efficiency.png)
+import Pump_chars_efficiencyImage from "./images/Pump_chars_efficiency.png";
+
+<img src={Pump_chars_efficiencyImage.src} width="40%" height="40%" />
 
 _Fig. 3. Pump efficiency_.
 
@@ -71,7 +82,9 @@ performed by changing the rotational speed of the pump's impeller. Typically, a
 system with pump speed control operates in a closed loop on the feedback signal
 from the pressure sensor (Fig. 4).
 
-![Water supply FC control](./images/Pump_fc.png)
+import Pump_fcImage from "./images/Pump_fc.png";
+
+<img src={Pump_fcImage.src} width="40%" height="40%" />
 
 _Fig. 4. Water supply FC control_.
 
@@ -81,11 +94,17 @@ pump speed, which increases the flow rate and the pressure. Likewise, when the
 pressure rises above a preset value, the flow rate needs to be reduced - this is
 done by reducing the pump's speed.
 
-![Impeller speed regulation - characteristics](./images/Pump_chars_fc.png) _(a)_
+import Pump_chars_fcImage from "./images/Pump_chars_fc.png";
 
-![Impeller speed regulation - energy](./images/Pump_chars_energy.png) _(b)_
+<img src={Pump_chars_fcImage.src} width="40%" height="40%" /> _(a)_
 
-![Impeller speed regulation - efficiency](./images/Pump_chars_efficiency_fc.png) _(c)_
+import Pump_chars_energyImage from "./images/Pump_chars_energy.png";
+
+<img src={Pump_chars_energyImage.src} width="40%" height="40%" /> _(b)_
+
+import Pump_chars_efficiency_fcImage from "./images/Pump_chars_efficiency_fc.png";
+
+<img src={Pump_chars_efficiency_fcImage.src} width="40%" height="40%" /> _(c)_
 
 _Fig. 5. Impeller speed regulation_.
 

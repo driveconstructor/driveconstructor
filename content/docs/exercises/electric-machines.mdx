@@ -5,7 +5,10 @@ description: Electric machines exercises
 
 ## EM-1. Voltage level and insulation
 
-![Drive system diagram with motor and frequency converter](./images/pm_fc_tr.png)
+import Image from "next/image";
+import pm_fc_trImage from "./images/pm_fc_tr.png";
+
+<img src={pm_fc_trImage.src} width="50%" height="50%" />
 
 Investigate influence of the rated voltage level on size and cost of the
 electric motors by working with the system consisting of a motor and a frequency
@@ -42,11 +45,15 @@ Consider two system architectures; with gearbox and without one (direct drive).
 
 #### System 1:
 
-![Conveyor drive system without gearbox](./images/cn_em_fc.png)
+import cn_em_fcImage from "./images/cn_em_fc.png";
+
+<img src={cn_em_fcImage.src} width="50%" height="50%" />
 
 #### System 2:
 
-![Conveyor drive system with gearbox](./images/cn_gb_em_fc.png)
+import cn_gb_em_fcImage from "./images/cn_gb_em_fc.png";
+
+<img src={cn_gb_em_fcImage.src} width="50%" height="50%" />
 
 For the systems 1 and 2 above investigate influence of the gear ratio on size,
 cost and inertia of electric motor.
@@ -70,7 +77,9 @@ _Use PM machines only!_
 
 ## EM-3. Efficiency class, lifecycle analysis
 
-![Drive system for pump with efficiency analysis](./images/pmp_fc_EM3_2.png)
+import pmp_fc_EM3_2Image from "./images/pmp_fc_EM3_2.png";
+
+<img src={pmp_fc_EM3_2Image.src} width="50%" height="50%" />
 
 You are a chief engineer at a plant. Consider replacement of old induction motor
 (cooling IC411, protection IP21) on a centrifugal pump with either IE3 motor or
@@ -89,7 +98,9 @@ Find LCC (cost of ownership) for all the alternatives
 - Operational time - 8000 hours/year
 - Service life - 5 years (another variant 10 years)
 
-![Life cycle cost analysis chart](./images/EM3_1.png)
+import EM3_1Image from "./images/EM3_1.png";
+
+<img src={EM3_1Image.src} width="50%" height="50%" />
 
 So, there are all together eight variants to consider:
 
@@ -113,7 +124,9 @@ What general conclusion can you draw on dominating cost components?
 
 ## EM-4. Comparison of machine technologies
 
-![Drive system for pump with efficiency analysis](./images/pmp_fc_EM3_2.png)
+import pmpfcEM32Image from "./images/pmp_fc_EM3_2.png";
+
+<img src={pmpfcEM32Image.src} width="50%" height="50%" />
 
 Design drive train for a pump (_head_ 50 m, _flow_ 50 l/s, _efficiency_ 82%,
 _speed_ 1450 rpm).
@@ -126,7 +139,9 @@ Try _SCIM (IE2)_, _SyRM_, _PMSM_ as the motor type. Calculate Life Cycle Cost
 (LCC) for each motor variant. Compare the variants on spider diagram. Consider
 strong and weak sides of the technologies.
 
-![Life cycle cost analysis chart](./images/EM3_1.png)
+import EM31Image from "./images/EM3_1.png";
+
+<img src={EM31Image.src} width="50%" height="50%" />
 
 - Energy price - 0,2 Euro/kWh
 - Operational time - 8000 hours/year
@@ -214,7 +229,9 @@ Application - food & beverages (wet, acids, etc.)
 
 Take CONVEYOR with drive system with just frequency converter.
 
-![Conveyor drive system without gearbox](./images/cn_em_fc.png)
+import cnemfcImage from "./images/cn_em_fc.png";
+
+<img src={cnemfcImage.src} width="50%" height="50%" />
 
 Available information:
 
@@ -258,7 +275,9 @@ First consider _SCIM_ only. Then solve the problem using other motor types.
 
 Note that density of oil is not the same as density of water.
 
-![Pump with motor assembly](./images/pump-with-motor.png)
+import pwmImage from "./images/pump-with-motor.png";
+
+<img src={pwmImage.src} width="30%" height="30%" />
 
 ## EM-10. Thermal capacity & insulation class
 
