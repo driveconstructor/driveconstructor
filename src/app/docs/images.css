@@ -2,900 +2,900 @@
 
 /* Electric Machines - Exercises */
 @layer base {
-  img[alt="pm-fc-tr"] {
+  img[alt="doc-pm-fc-tr"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="pm-fc-tr-large"] {
+  img[alt="doc-pm-fc-tr-large"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="cn-em-fc"] {
+  img[alt="doc-cn-em-fc"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="cn-em-fc-alt"] {
+  img[alt="doc-cn-em-fc-alt"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="cn-gb-em-fc"] {
+  img[alt="doc-cn-gb-em-fc"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="pmp-fc-em3-2"] {
+  img[alt="doc-pmp-fc-em3-2"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="pmp-fc-em3-2-alt"] {
+  img[alt="doc-pmp-fc-em3-2-alt"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="em3-1"] {
+  img[alt="doc-em3-1"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="em3-1-alt"] {
+  img[alt="doc-em3-1-alt"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="pump-with-motor"] {
+  img[alt="doc-pump-with-motor"] {
     width: 30%;
     height: 30%;
   }
 
   /* Frequency Converters - Exercises */
-  img[alt="wt-gb-fc-tr"] {
+  img[alt="doc-wt-gb-fc-tr"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="fc3"] {
+  img[alt="doc-fc3"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="fc6"] {
+  img[alt="doc-fc6"] {
     width: 50%;
     height: 50%;
   }
 
   /* Conveyors - Exercises */
-  img[alt="c1"] {
+  img[alt="doc-c1"] {
     width: 60%;
     height: 60%;
   }
 
   /* Pumps - Exercises */
-  img[alt="p5-1"] {
+  img[alt="doc-p5-1"] {
     width: 75%;
     height: 75%;
   }
 
-  img[alt="p6-1"] {
+  img[alt="doc-p6-1"] {
     width: 25%;
     height: 25%;
   }
 
   /* Winches - Exercises */
-  img[alt="w1"] {
+  img[alt="doc-w1"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="w2"] {
+  img[alt="doc-w2"] {
     width: 25%;
     height: 25%;
   }
 
   /* Electric Machines - Textbook */
-  img[alt="scim"] {
+  img[alt="doc-scim"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="scim-simple1"] {
+  img[alt="doc-scim-simple1"] {
     width: 15%;
     height: 15%;
   }
 
-  img[alt="syrm"] {
+  img[alt="doc-syrm"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="syrm-simple1"] {
+  img[alt="doc-syrm-simple1"] {
     width: 15%;
     height: 15%;
   }
 
-  img[alt="pmsm-rotor"] {
+  img[alt="doc-pmsm-rotor"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="pm-motor-simple1"] {
+  img[alt="doc-pm-motor-simple1"] {
     width: 15%;
     height: 15%;
   }
 
-  img[alt="lv-slot"] {
+  img[alt="doc-lv-slot"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="hv-slot"] {
+  img[alt="doc-hv-slot"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="efficiency-class1"] {
+  img[alt="doc-efficiency-class1"] {
     width: 90%;
     height: 90%;
   }
 
-  img[alt="efficiency-class3"] {
+  img[alt="doc-efficiency-class3"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="cooling1"] {
+  img[alt="doc-cooling1"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="cooling2"] {
+  img[alt="doc-cooling2"] {
     width: 48%;
     height: 48%;
   }
 
-  img[alt="cooling3"] {
+  img[alt="doc-cooling3"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="cooling-411-vs-416"] {
+  img[alt="doc-cooling-411-vs-416"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="em-mounting1"] {
+  img[alt="doc-em-mounting1"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="em-mountingb5"] {
+  img[alt="doc-em-mountingb5"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="em-mountingb35"] {
+  img[alt="doc-em-mountingb35"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="shaft-height"] {
+  img[alt="doc-shaft-height"] {
     width: 40%;
     height: 40%;
   }
 
   /* Frequency Converters - Textbook */
-  img[alt="basic-fc-2"] {
+  img[alt="doc-basic-fc-2"] {
     width: 80%;
     height: 80%;
   }
 
-  img[alt="rectification"] {
+  img[alt="doc-rectification"] {
     width: 80%;
     height: 80%;
   }
 
-  img[alt="pwm-voltage"] {
+  img[alt="doc-pwm-voltage"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="pwm-current"] {
+  img[alt="doc-pwm-current"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="afe-dc2l-dfe-ing"] {
+  img[alt="doc-afe-dc2l-dfe-ing"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="afe-dc2l-dfe"] {
+  img[alt="doc-afe-dc2l-dfe"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="afe-dc2l-dfe12-ing"] {
+  img[alt="doc-afe-dc2l-dfe12-ing"] {
     width: 90%;
     height: 90%;
   }
 
-  img[alt="afe-dc2l-dfe12"] {
+  img[alt="doc-afe-dc2l-dfe12"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="afe-dc2l-afe-ing"] {
+  img[alt="doc-afe-dc2l-afe-ing"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="afe-dc2l-afe"] {
+  img[alt="doc-afe-dc2l-afe"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="afe-dc3l-dfe12-ing"] {
+  img[alt="doc-afe-dc3l-dfe12-ing"] {
     width: 90%;
     height: 90%;
   }
 
-  img[alt="afe-dc3l-afe12"] {
+  img[alt="doc-afe-dc3l-afe12"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="afe-dc3l-afe-ing"] {
+  img[alt="doc-afe-dc3l-afe-ing"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="afe-dc3l-afe"] {
+  img[alt="doc-afe-dc3l-afe"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="schb-2"] {
+  img[alt="doc-schb-2"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="schb-dfe-cell"] {
+  img[alt="doc-schb-dfe-cell"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="sc-hb-simple2"] {
+  img[alt="doc-sc-hb-simple2"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="schb-afe-cell"] {
+  img[alt="doc-schb-afe-cell"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="sc-hb-simple3"] {
+  img[alt="doc-sc-hb-simple3"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="fc-lo-ho"] {
+  img[alt="doc-fc-lo-ho"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="fc-overloads"] {
+  img[alt="doc-fc-overloads"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="fc-cooling-air-nat"] {
+  img[alt="doc-fc-cooling-air-nat"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="fc-cooling-air-ac"] {
+  img[alt="doc-fc-cooling-air-ac"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="fc-cooling-air-wc"] {
+  img[alt="doc-fc-cooling-air-wc"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="sin-filter-topology"] {
+  img[alt="doc-sin-filter-topology"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="sin-filter"] {
+  img[alt="doc-sin-filter"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="pwm-measured"] {
+  img[alt="doc-pwm-measured"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="after-sin"] {
+  img[alt="doc-after-sin"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="dut-filter-topology"] {
+  img[alt="doc-dut-filter-topology"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="dut-filter"] {
+  img[alt="doc-dut-filter"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="before-dut"] {
+  img[alt="doc-before-dut"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="after-dut"] {
+  img[alt="doc-after-dut"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="6p-no-choke"] {
+  img[alt="doc-6p-no-choke"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="thdi80"] {
+  img[alt="doc-thdi80"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="6p-with-choke"] {
+  img[alt="doc-6p-with-choke"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="thdi40"] {
+  img[alt="doc-thdi40"] {
     width: 23%;
     height: 23%;
   }
 
-  img[alt="thdi28"] {
+  img[alt="doc-thdi28"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="fc-with-lcl"] {
+  img[alt="doc-fc-with-lcl"] {
     width: 85%;
     height: 85%;
   }
 
-  img[alt="thdi5"] {
+  img[alt="doc-thdi5"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="emc-filter-topology"] {
+  img[alt="doc-emc-filter-topology"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="emc-filter-ac"] {
+  img[alt="doc-emc-filter-ac"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="emc-with-without-filter"] {
+  img[alt="doc-emc-with-without-filter"] {
     width: 75%;
     height: 75%;
   }
 
   /* Gearboxes - Textbook */
-  img[alt="industrial-gearbox-free-image"] {
+  img[alt="doc-industrial-gearbox-free-image"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="gear-helical-stage3"] {
+  img[alt="doc-gear-helical-stage3"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="gear-worm3"] {
+  img[alt="doc-gear-worm3"] {
     width: 16%;
     height: 16%;
   }
 
-  img[alt="worm-helical-eff"] {
+  img[alt="doc-worm-helical-eff"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="gear-planetary-stage2"] {
+  img[alt="doc-gear-planetary-stage2"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="gear-bevel-stage2"] {
+  img[alt="doc-gear-bevel-stage2"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="hel-hel-hel-motor"] {
+  img[alt="doc-hel-hel-hel-motor"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="bel-3hel"] {
+  img[alt="doc-bel-3hel"] {
     width: 45%;
     height: 45%;
   }
 
-  img[alt="worm-hel-conv"] {
+  img[alt="doc-worm-hel-conv"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="wind-turbine-gear-plan-hel-hel"] {
+  img[alt="doc-wind-turbine-gear-plan-hel-hel"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="plan-plan-plan-hel"] {
+  img[alt="doc-plan-plan-plan-hel"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="gears-effs"] {
+  img[alt="doc-gears-effs"] {
     width: 70%;
     height: 70%;
   }
 
   /* Transformers - Textbook */
-  img[alt="trafo"] {
+  img[alt="doc-trafo"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="trafo-dry2"] {
+  img[alt="doc-trafo-dry2"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="trafo-oil2"] {
+  img[alt="doc-trafo-oil2"] {
     width: 35%;
     height: 35%;
   }
 
   /* Energy Saving - Textbook */
-  img[alt="pump"] {
+  img[alt="doc-pump"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-chars"] {
+  img[alt="doc-pump-chars"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-chars2"] {
+  img[alt="doc-pump-chars2"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-chars-energies"] {
+  img[alt="doc-pump-chars-energies"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-chars-efficiency"] {
+  img[alt="doc-pump-chars-efficiency"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-fc"] {
+  img[alt="doc-pump-fc"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-chars-fc"] {
+  img[alt="doc-pump-chars-fc"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-chars-energy"] {
+  img[alt="doc-pump-chars-energy"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-chars-efficiency-fc"] {
+  img[alt="doc-pump-chars-efficiency-fc"] {
     width: 40%;
     height: 40%;
   }
 
   /* Applications - Pumps */
-  img[alt="centrifugal-pump"] {
+  img[alt="doc-centrifugal-pump"] {
     width: 35%;
     height: 35%;
   }
 
-  img[alt="progressing-cavity-pump"] {
+  img[alt="doc-progressing-cavity-pump"] {
     width: 50%;
     height: 50%;
   }
 
   /* Applications - Turbines */
-  img[alt="wind-turbine-1"] {
+  img[alt="doc-wind-turbine-1"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="wt-nacelle"] {
+  img[alt="doc-wt-nacelle"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="tidal-turbine-1"] {
+  img[alt="doc-tidal-turbine-1"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="wt-gen-torque"] {
+  img[alt="doc-wt-gen-torque"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="wt-gen-power-speed"] {
+  img[alt="doc-wt-gen-power-speed"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="wind-curve-1"] {
+  img[alt="doc-wind-curve-1"] {
     width: 50%;
     height: 50%;
   }
 
   /* Applications - Winches */
-  img[alt="winch-1"] {
+  img[alt="doc-winch-1"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="marine-winch"] {
+  img[alt="doc-marine-winch"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="winder"] {
+  img[alt="doc-winder"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="winch2"] {
+  img[alt="doc-winch2"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="winch-curves"] {
+  img[alt="doc-winch-curves"] {
     width: 60%;
     height: 60%;
   }
 
   /* Applications - Conveyors */
-  img[alt="motor-gear-drum"] {
+  img[alt="doc-motor-gear-drum"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="conveyor"] {
+  img[alt="doc-conveyor"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="conveyor-curves"] {
+  img[alt="doc-conveyor-curves"] {
     width: 40%;
     height: 40%;
   }
 
   /* Drive Systems - Exercises */
-  img[alt="sys-3-table"] {
+  img[alt="doc-sys-3-table"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="sys4"] {
+  img[alt="doc-sys4"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="spider"] {
+  img[alt="doc-spider"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="sys5-wind-gear"] {
+  img[alt="doc-sys5-wind-gear"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="sys5-worm"] {
+  img[alt="doc-sys5-worm"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="sys6table"] {
+  img[alt="doc-sys6table"] {
     width: 90%;
     height: 90%;
   }
 
   /* Turbines - Exercises */
-  img[alt="wt2"] {
+  img[alt="doc-wt2"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="wt5"] {
+  img[alt="doc-wt5"] {
     width: 40%;
     height: 40%;
   }
 
   /* Protection - Textbook */
-  img[alt="em-protection"] {
+  img[alt="doc-em-protection"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="em-protection-table"] {
+  img[alt="doc-em-protection-table"] {
     width: 90%;
     height: 90%;
   }
 
-  img[alt="em-protection-ex"] {
+  img[alt="doc-em-protection-ex"] {
     width: 50%;
     height: 50%;
   }
 
   /* Duties and Overloads - Textbook */
-  img[alt="duty-cycles3"] {
+  img[alt="doc-duty-cycles3"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="duty-cycles2"] {
+  img[alt="doc-duty-cycles2"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="duty-cycles-temp"] {
+  img[alt="doc-duty-cycles-temp"] {
     width: 30%;
     height: 30%;
   }
 
-  img[alt="overloads"] {
+  img[alt="doc-overloads"] {
     width: 30%;
     height: 30%;
   }
 
   /* Additional images from other sections */
-  img[alt="pumps-classification"] {
+  img[alt="doc-pumps-classification"] {
     width: 75%;
     height: 75%;
   }
 
-  img[alt="pump-curve-qt"] {
+  img[alt="doc-pump-curve-qt"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-curve-ct"] {
+  img[alt="doc-pump-curve-ct"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-and-resistance-curve"] {
+  img[alt="doc-pump-and-resistance-curve"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="pump-curves-ct-bt"] {
+  img[alt="doc-pump-curves-ct-bt"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="pump-curves-stiction"] {
+  img[alt="doc-pump-curves-stiction"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="longest-circuit-2"] {
+  img[alt="doc-longest-circuit-2"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="mot-fc-grid"] {
+  img[alt="doc-mot-fc-grid"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="mot-fc-trf-grid"] {
+  img[alt="doc-mot-fc-trf-grid"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="mech-mot"] {
+  img[alt="doc-mech-mot"] {
     width: 20%;
     height: 20%;
   }
 
-  img[alt="mech-gear-mot"] {
+  img[alt="doc-mech-gear-mot"] {
     width: 25%;
     height: 25%;
   }
 
-  img[alt="pump-curves-vs-drive1"] {
+  img[alt="doc-pump-curves-vs-drive1"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="wind-curves-vs-drive3"] {
+  img[alt="doc-wind-curves-vs-drive3"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="conveyor-curves-vs-drive1"] {
+  img[alt="doc-conveyor-curves-vs-drive1"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="conveyor-curves-vs-drive3"] {
+  img[alt="doc-conveyor-curves-vs-drive3"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="winch-curves-vs-drive2"] {
+  img[alt="doc-winch-curves-vs-drive2"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="winch-curves-vs-drive1"] {
+  img[alt="doc-winch-curves-vs-drive1"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="emc-emissions"] {
+  img[alt="doc-emc-emissions"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="fc-input-i"] {
+  img[alt="doc-fc-input-i"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="fc-input-u"] {
+  img[alt="doc-fc-input-u"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="harmonics-c"] {
+  img[alt="doc-harmonics-c"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="harmonics-u"] {
+  img[alt="doc-harmonics-u"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="qualitative-comparison-1"] {
+  img[alt="doc-qualitative-comparison-1"] {
     width: 90%;
     height: 90%;
   }
 
-  img[alt="comparing-eff-curves"] {
+  img[alt="doc-comparing-eff-curves"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="benchmarking"] {
+  img[alt="doc-benchmarking"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="cost-of-ownership"] {
+  img[alt="doc-cost-of-ownership"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="four-applications"] {
+  img[alt="doc-four-applications"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="reflection"] {
+  img[alt="doc-reflection"] {
     width: 60%;
     height: 60%;
   }
 
-  img[alt="impuls-2signals"] {
+  img[alt="doc-impuls-2signals"] {
     width: 45%;
     height: 45%;
   }
 
-  img[alt="dudt-pulses"] {
+  img[alt="doc-dudt-pulses"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="dudt-effect"] {
+  img[alt="doc-dudt-effect"] {
     width: 65%;
     height: 65%;
   }
 
-  img[alt="ins-breakdown-e"] {
+  img[alt="doc-ins-breakdown-e"] {
     width: 45%;
     height: 45%;
   }
 
-  img[alt="common-mode-voltage"] {
+  img[alt="doc-common-mode-voltage"] {
     width: 80%;
     height: 80%;
   }
 
-  img[alt="bearing-currents"] {
+  img[alt="doc-bearing-currents"] {
     width: 90%;
     height: 90%;
   }
 
-  img[alt="tt-with-gear"] {
+  img[alt="doc-tt-with-gear"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="winch-with-gear"] {
+  img[alt="doc-winch-with-gear"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="tt-with-gear2"] {
+  img[alt="doc-tt-with-gear2"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="winch-with-gear3"] {
+  img[alt="doc-winch-with-gear3"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="winch-with-gear2"] {
+  img[alt="doc-winch-with-gear2"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="dc-main-picture"] {
+  img[alt="doc-dc-main-picture"] {
     width: 70%;
     height: 70%;
   }
 
-  img[alt="cable1"] {
+  img[alt="doc-cable1"] {
     width: 40%;
     height: 40%;
   }
 
-  img[alt="container"] {
+  img[alt="doc-container"] {
     width: 50%;
     height: 50%;
   }
 
-  img[alt="userman1a"] {
+  img[alt="doc-userman1a"] {
     width: 40%;
     height: 40%;
   }
