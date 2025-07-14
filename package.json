@@ -30,7 +30,7 @@
     "eslint-plugin-prettier": "5.5.1",
     "fumadocs-core": "15.6.1",
     "fumadocs-mdx": "11.6.10",
-    "fumadocs-ui": "15.6.1",
+    "fumadocs-ui": "15.6.3",
     "jest": "30.0.4",
     "jest-environment-jsdom": "30.0.4",
     "katex": "0.16.22",
