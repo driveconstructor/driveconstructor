@@ -16,10 +16,7 @@ types of negative influence of the converter on the surrounding equipment
 - through the converter housing
 - from power and control cables
 
-import Image from "next/image";
-import emc_emissionsImage from "./images/emc_emissions.png";
-
-<img src={emc_emissionsImage.src} width="50%" height="50%" />
+![Emissions from the drive system](./images/emc_emissions.png)
 
 _Fig. 1. Emissions from the drive system_.
 
@@ -31,23 +28,15 @@ forms of current and voltage at the input of the 400 V, 75 kW FC with an
 uncontrolled 6-pulse rectifier. The current wave is usually distorted much more
 than the voltage.
 
-import fc_input_iImage from "./images/fc_input_i.png";
+![Waveform of current](./images/fc_input_i.png) _(a)_
 
-<img src={fc_input_iImage.src} width="40%" height="40%" /> _(a)_
-
-import fc_input_uImage from "./images/fc_input_u.png";
-
-<img src={fc_input_uImage.src} width="40%" height="40%" /> _(b)_
+![Waveform of voltage](./images/fc_input_u.png) _(b)_
 
 _Fig. 2. Waveforms of current (a) and voltage (b)_.
 
-import harmonics_cImage from "./images/harmonics_c.png";
+![Fourier transformation of current](./images/harmonics_c.png) _(a)_
 
-<img src={harmonics_cImage.src} width="40%" height="40%" /> _(a)_
-
-import harmonics_uImage from "./images/harmonics_u.png";
-
-<img src={harmonics_uImage.src} width="40%" height="40%" /> _(b)_
+![Fourier transformation of voltage](./images/harmonics_u.png) _(b)_
 
 _Fig. 3. Fourier transformation of current (a) and voltage (b)_.
 
@@ -97,13 +86,9 @@ Influence of the topology and the filters is presented in a few diagrams below.
 Standard uncontrolled 6-pulse rectifier with a choke as the input filter
 (Fig.4,a) produced quite a lot of current distortion (Fig.4,b).
 
-import a6p_with_chokeImage from "./images/6p_with_choke.png";
+![6-pulse rectifier with a choke system topology](./images/6p_with_choke.png) _(a)_
 
-<img src={a6p_with_chokeImage.src} width="70%" height="70%" /> _(a)_
-
-import THDi28Image from "./images/THDi28.png";
-
-<img src={THDi28Image.src} width="25%" height="25%" /> _(b)_
+![Current waveform with THD(i)=28%](./images/THDi28.png) _(b)_
 
 _Fig. 4. 6-pulse rectifier with a choke; system topology (a) and current
 waveform with THD(i)=28% (b)._
@@ -111,13 +96,9 @@ waveform with THD(i)=28% (b)._
 12-pulse scheme with 3-winding transformer (Fig.5,a) reduces harmonics injected
 into the grid (Fig. 5,b) compared to 6-pulse scheme with 2-winding transformer.
 
-import a12pImage from "./images/12p.png";
+![Topology of the 12-pulse system](./images/12p.png) _(a)_
 
-<img src={a12pImage.src} width="70%" height="70%" /> _(a)_
-
-import THDi15Image from "./images/THDi15.png";
-
-<img src={THDi15Image.src} width="25%" height="25%" /> _(b)_
+![Current waveform with THD(i)=15%](./images/THDi15.png) _(b)_
 
 _Fig. 5. Topology of the 12-pulse system (a) and current waveform with
 THD(i)=15% (b)_.
@@ -125,13 +106,9 @@ THD(i)=15% (b)_.
 AFE converter provides lowest THD(i) (Fig. 6,b) but a bit higher THD(u) than
 12-pulse scheme.
 
-import fc_with_LCLImage from "./images/fc_with_LCL.png";
+![AFE converter with LCL filter](./images/fc_with_LCL.png) _(a)_
 
-<img src={fc_with_LCLImage.src} width="70%" height="70%" /> _(a)_
-
-import THDi5Image from "./images/THDi5.png";
-
-<img src={THDi5Image.src} width="25%" height="25%" /> _(b)_
+![Current waveform with THD(i)=5%](./images/THDi5.png) _(b)_
 
 _Fig. 6. AFE converter with LCL filter (a) and the current waveform with
 THD(i)=5% (b)_.
