@@ -8,7 +8,8 @@ A typical frequency converter (FC) nowadays is a so-called voltage-source type -
 over 95% of all FC are voltage-source converters (VSC). This FC type has a
 DC-link with a capacitor bank across (see Fig.1).
 
-![VSC topology](./images/basic_fc_2.png) _Fig.1. VSC topology._
+![VSC topology](./images/basic_fc_2.png)
+_Fig.1. VSC topology._
 
 The voltage of the supply network with a constant frequency and amplitude is
 first rectified into DC voltage though with some ripples (Fig.2), and then it is
@@ -16,12 +17,14 @@ converted into the voltage with the required frequency and amplitude (Fig. 3).
 Note that the voltage waveform is made of pulses of varying duration, wherein
 the "fundamental" voltage is sinusoidal.
 
-![Rectified current](./images/rectification.png) _Fig.2. Rectified current in
-the DC link._
+![Rectified current](./images/rectification.png)
+_Fig.2. Rectified current in the DC link._
 
-![PWM voltage](./images/pwm_voltage.png) _(a)_
+![PWM voltage](./images/pwm_voltage.png)
+_(a)_
 
-![PWM current](./images/pwm_current.png) _(b)_
+![PWM current](./images/pwm_current.png)
+_(b)_
 
 _Fig.3. Phase voltage (a) and current (b) at the converter output (machine
 side)._
@@ -82,20 +85,26 @@ and influence on the grid (THD). 4Q FC is larger, heavier, more expensive and
 has lower efficiency than 2Q FC. 4Q produce lower THD in the grid. 2-level FC
 are usually LV.
 
-![2Q-2L-VSC-6p](./images/afe_dc2l_dfe_Ing.png) _Fig.4a. 2Q-2L-VSC-6p_.
+![2Q-2L-VSC-6p](./images/afe_dc2l_dfe_Ing.png)
+_Fig.4a. 2Q-2L-VSC-6p_.
 
-![2Q-2L-VSC-6p icon](./images/afe_dc2l_dfe.png) _Fig.4b. Icon designation_.
+![2Q-2L-VSC-6p icon](./images/afe_dc2l_dfe.png)
+_Fig.4b. Icon designation_.
 
 Note that on Fig.4a motor side of the FC is the right side, while on Fig.4b -
 left side.
 
-![2Q-2L-VSC-12p](./images/afe_dc2l_dfe12_Ing.png) _Fig.5a. 2Q-2L-VSC-12p_.
+![2Q-2L-VSC-12p](./images/afe_dc2l_dfe12_Ing.png)
+_Fig.5a. 2Q-2L-VSC-12p_.
 
-![2Q-2L-VSC-12p icon](./images/afe_dc2l_dfe12.png) _Fig.5b. Icon designation_.
+![2Q-2L-VSC-12p icon](./images/afe_dc2l_dfe12.png)
+_Fig.5b. Icon designation_.
 
-![4Q-2L-VSC](./images/afe_dc2l_afe_Ing.png) _Fig.6a. 4Q-2L-VSC_.
+![4Q-2L-VSC](./images/afe_dc2l_afe_Ing.png)
+_Fig.6a. 4Q-2L-VSC_.
 
-![4Q-2L-VSC icon](./images/afe_dc2l_afe.png) _Fig.6b. Icon designation_.
+![4Q-2L-VSC icon](./images/afe_dc2l_afe.png)
+_Fig.6b. Icon designation_.
 
 ### Converters with 3- and multi-level topologies
 
@@ -103,30 +112,36 @@ left side.
 
 3-level FC are usually MV. NPC stands for Neutral-Point Clamped.
 
-![2Q-3L-NPC-VSC](./images/afe_dc3l_dfe12_Ing.png) _Fig.7a. 2Q-3L-NPC-VSC_.
+![2Q-3L-NPC-VSC](./images/afe_dc3l_dfe12_Ing.png)
+_Fig.7a. 2Q-3L-NPC-VSC_.
 
-![2Q-3L-NPC-VSC icon](./images/afe_dc3l_afe12.png) _Fig.7b. Icon designation_.
+![2Q-3L-NPC-VSC icon](./images/afe_dc3l_afe12.png)
+_Fig.7b. Icon designation_.
 
-![4Q-3L-NPC-VSC](./images/afe_dc3l_afe_Ing.png) _Fig.8a. 4Q-3L-NPC-VSC_.
+![4Q-3L-NPC-VSC](./images/afe_dc3l_afe_Ing.png)
+_Fig.8a. 4Q-3L-NPC-VSC_.
 
-![4Q-3L-NPC-VSC icon](./images/afe_dc3l_afe.png) _Fig.8b. Icon designation_.
+![4Q-3L-NPC-VSC icon](./images/afe_dc3l_afe.png)
+_Fig.8b. Icon designation_.
 
 ##### 2Q-ML-SCHB-VSC and 4Q-ML-SCHB-VSC
 
 SCHB stands for Series-Connected H-Bridge.
 
-![2Q-ML-SCHB-VSC topology](./images/SCHB_2.png) _Fig.9a. 2Q-ML-SCHB-VSC
-topology_.
+![2Q-ML-SCHB-VSC topology](./images/SCHB_2.png)
+_Fig.9a. 2Q-ML-SCHB-VSC topology_.
 
-![2Q-ML-SCHB-VSC cell](./images/SCHB_dfe_cell.png) _Fig.9b. 2Q-ML-SCHB-VSC
-cell_.
+![2Q-ML-SCHB-VSC cell](./images/SCHB_dfe_cell.png)
+_Fig.9b. 2Q-ML-SCHB-VSC cell_.
 
-![2Q-ML-SCHB-VSC icon](./images/sc_hb_simple2.png) _Fig.9c. Icon designation_.
+![2Q-ML-SCHB-VSC icon](./images/sc_hb_simple2.png)
+_Fig.9c. Icon designation_.
 
-![4Q-ML-SCHB-VSC cell](./images/SCHB_afe_cell.png) _Fig.9d. 4Q-ML-SCHB-VSC
-cell_.
+![4Q-ML-SCHB-VSC cell](./images/SCHB_afe_cell.png)
+_Fig.9d. 4Q-ML-SCHB-VSC cell_.
 
-![4Q-ML-SCHB-VSC icon](./images/sc_hb_simple3.png) _Fig.9e. Icon designation_.
+![4Q-ML-SCHB-VSC icon](./images/sc_hb_simple3.png)
+_Fig.9e. Icon designation_.
 
 ---
 
@@ -163,8 +178,8 @@ or winch, the variation can be significant, and, therefore can be called "high".
 Examples of what can be called "high overloads" and "low overloads" are
 presented in Fig.1.
 
-![High and low overloads](./images/fc_lo_ho.png) _Fig.1. "High overloads" and
-"low overloads"_.
+![High and low overloads](./images/fc_lo_ho.png)
+_Fig.1. "High overloads" and "low overloads"_.
 
 Choosing the FC the designer should take this aspect into account. Each FC has
 certain overload capability determined by several physical limitations such as
@@ -186,8 +201,8 @@ Explanation is presented in Fig.10. Note $$I_c$$ which is rated continuous
 current, which is not used in practice. Short-term (10 s) high current of up to
 200% of $$I_H$$ is acceptable for any converter.
 
-![FC overloads](./images/fc_overloads.png) _Fig.10. Current overloads of
-conventional FC_.
+![FC overloads](./images/fc_overloads.png)
+_Fig.10. Current overloads of conventional FC_.
 
 ---
 
@@ -203,11 +218,14 @@ _AC_ and _LC_(=_WC_) FCs are usually priced on the same level.
 Fig.1 depicts a 250 kW low-voltage FC mounted on the wall in an enclosed area
 such as an electrical room.
 
-![FC cooling air natural](./images/fc_cooling_air_nat.png) _(a)_
+![FC cooling air natural](./images/fc_cooling_air_nat.png)
+_(a)_
 
-![FC cooling air AC](./images/fc_cooling_air_AC.png) _(b)_
+![FC cooling air AC](./images/fc_cooling_air_AC.png)
+_(b)_
 
-![FC cooling air WC](./images/fc_cooling_air_WC.png) _(c)_
+![FC cooling air WC](./images/fc_cooling_air_WC.png)
+_(c)_
 
 _Fig.11. Cooling types._
 
@@ -290,15 +308,19 @@ described in chapter
 eliminated, since the machine is powered by voltage and current with a shape
 very close to sinusoidal.
 
-![Sin filter topology](./images/sin_filter_topology.png) _(a)_
+![Sin filter topology](./images/sin_filter_topology.png)
+_(a)_
 
-![Sin filter](./images/sin_filter.png) _(b)_
+![Sin filter](./images/sin_filter.png)
+_(b)_
 
 _Fig. 12. "Classical" sin-filter topology (a) and product example (b)_.
 
-![PWM measured](./images/pwm_measured.png) _(a)_
+![PWM measured](./images/pwm_measured.png)
+_(a)_
 
-![After sin filter](./images/after_sin.png) _(b)_
+![After sin filter](./images/after_sin.png)
+_(b)_
 
 _Fig. 13. The voltage waveforms at the input (a) and at the output (b) of the
 sin-filter. Note different time span on the oscillograms_.
@@ -324,9 +346,11 @@ resistance. The inclusion of inductance in the equivalent electrical circuit of
 the cable increases the wave resistance of the cable line and brings down the
 reflection coefficient. Thus, the voltage peaks at terminals decreases.
 
-![du/dt filter topology](./images/dut_filter_topology.png) _(a)_
+![du/dt filter topology](./images/dut_filter_topology.png)
+_(a)_
 
-![du/dt filter](./images/dut_filter.png) _(b)_
+![du/dt filter](./images/dut_filter.png)
+_(b)_
 
 _Fig. 14. "Classical" du/dt-filter topology (a) and product example (b)_.
 
@@ -336,9 +360,11 @@ properties of the inductance, the filter also reduces the voltage surge at the
 leading edge of the pulse (Fig.15). The length of the cable is 30 m. Note
 different rise time: dt=220 ns, dt=820 ns.
 
-![Before du/dt filter](./images/before_dut.png) _(a)_
+![Before du/dt filter](./images/before_dut.png)
+_(a)_
 
-![After du/dt filter](./images/after_dut.png) _(b)_
+![After du/dt filter](./images/after_dut.png)
+_(b)_
 
 _Fig. 15. Voltage pulses at the machine terminals without du/dt-filter (a) and
 with a filter (b)_.
@@ -366,18 +392,23 @@ Influence of presence of the choke and its size on the harmonics injected into
 the grid is presented in Fig.16 and 17. The graphs show current waveform and the
 value of current distortion THD(i) as % of nominal current at full load.
 
-![6p no choke](./images/6p_no_choke.png) _(a)_
+![6p no choke](./images/6p_no_choke.png)
+_(a)_
 
-![THDi 80%](./images/THDi80.png) _(b)_
+![THDi 80%](./images/THDi80.png)
+_(b)_
 
 _Fig. 16. 6-pulse rectifier without any choke (a) and current waveform for this
 topology (b)_.
 
-![6p with choke](./images/6p_with_choke.png) _(a)_
+![6p with choke](./images/6p_with_choke.png)
+_(a)_
 
-![THDi 40%](./images/THDi40.png) _(b)_
+![THDi 40%](./images/THDi40.png)
+_(b)_
 
-![THDi 28%](./images/THDi28.png) _(c)_
+![THDi 28%](./images/THDi28.png)
+_(c)_
 
 _Fig. 17. 6-pulse rectifier with a choke (a) and current waveforms for small
 choke (b) and big choke (c)_.
@@ -387,9 +418,11 @@ choke (b) and big choke (c)_.
 FC with LCL filter between FC and the grid is presented in Fig.7,a. Current
 waveform is very close to sinusoidal as can be seen in Fig. 7,b.
 
-![FC with LCL](./images/fc_with_LCL.png) _(a)_
+![FC with LCL](./images/fc_with_LCL.png)
+_(a)_
 
-![THDi 5%](./images/THDi5.png) _(b)_
+![THDi 5%](./images/THDi5.png)
+_(b)_
 
 _Fig. 18. Topology (a) and current waveform (b)_.
 
@@ -398,9 +431,11 @@ _Fig. 18. Topology (a) and current waveform (b)_.
 EMC filters (Fig.19) is destined for emission reduction in MHz range. Example of
 the effect is presented in Fig.20.
 
-![EMC filter topology](./images/emc_filter_topology.png) _(a)_
+![EMC filter topology](./images/emc_filter_topology.png)
+_(a)_
 
-![EMC filter AC](./images/emc_filter_ac.png) _(b)_
+![EMC filter AC](./images/emc_filter_ac.png)
+_(b)_
 
 _Fig. 19. EMC filters: topology (a), AC side filter product example (b)_.
 

@@ -9,16 +9,16 @@ _S3_ patterns contain only loads up to the rated load, while _S4_ patterns
 contains also overload, marked _"D"_ (when the load is above the rated value it
 is called _overload_).
 
-![Standard duty cycles](./images/duty_cycles3.png) _Fig.1. Standard duty
-cycles_.
+![Standard duty cycles](./images/duty_cycles3.png)
+_Fig.1. Standard duty cycles_.
 
 _Duty_ is the ratio of the time at full load to the total time. In
 _DriveConstructor_ the range to choose from is 50...100%. _Duty cycle period_ is
 the time before the load pattern repeats itself. In _DriveConstructor_ the range
 to choose from is 0,1...100 min.
 
-![Duties percentage](./images/duty_cycles2.png) _Fig.2. Duties of 25, 50 and
-75%_.
+![Duties percentage](./images/duty_cycles2.png)
+_Fig.2. Duties of 25, 50 and 75%_.
 
 Both _duties_ and _overloads_ have similar thermal effect. When the equipment is
 loaded (state "ON" in Fig.3) the temperature inside the component goes up. When
@@ -26,14 +26,15 @@ load is removed (state "OFF" in Fig.3) then the temperature decreases. The rate
 of the temperature increase or decrease is defined by thermal constant of this
 particular component.
 
-![Duties and temperature](./images/duty_cycles_temp.png) _Fig.3. Duties and
-temperature inside the loaded component_.
+![Duties and temperature](./images/duty_cycles_temp.png)
+_Fig.3. Duties and temperature inside the loaded component_.
 
 To illustrate how overloads are defined in _DriveConstructor_ Fig.4 presents
 overload of 100%. The reference is rated load which is taken as 100%. The
 overload of 100% means the overload amplitude is 200%.
 
-![Overload 100%](./images/overloads.png) _Fig.4. Overload of 100%_.
+![Overload 100%](./images/overloads.png)
+_Fig.4. Overload of 100%_.
 
 Different components have different tolerance to overloads. Even different
 electric machines have different overload tolerance; induction machines can
