@@ -18,15 +18,7 @@ second of cubic meter per hour). Rated flow is the key characteristic of any
 pump and is always specified by the pump manufacturer. In DriveConstructor this
 parameter is entered in $$m^3/h$$ or $$l/s$$.
 
-import Image from "next/image";
-import pmpresImage from "./images/pump-and-resistance-curve.png";
-
-<img
-  src={pmpresImage.src}
-  alt="Centrifugal pump and system resistance curves"
-  width="50%"
-  height="50%"
-/>
+![pump-and-resistance-curve](./images/pump-and-resistance-curve.png)
 
 _Fig.1. Centrifugal pump and system resistance curves._
 
@@ -45,20 +37,11 @@ Real pumps can have a significant static friction or breakaway torque (as shown
 in Fig. 2, 3), which must be overcome when starting. In some cituations starting
 torque can be higher than the rated torque even for centrifugal pumps.
 
-import pmpcCTBTImage from "./images/pump-curves-CT-BT.png";
+![pump-curves-ct-bt](./images/pump-curves-CT-BT.png) _Fig.2. Pump with CT load
+curve and starting curve._
 
-<img src={pmpcCTBTImage.src} alt="pump-curves-CT-BT" width="50%" height="50%" />
-*Fig.2. Pump with CT load curve and starting curve.*
-
-import pmpcCSImage from "./images/pump-curves-stiction.png";
-
-<img
-  src={pmpcCSImage.src}
-  alt="pump-curves-stiction"
-  width="50%"
-  height="50%"
-/>
-*Fig.3. Pump with QT load curve and starting curve.*
+![pump-curves-stiction](./images/pump-curves-stiction.png) _Fig.3. Pump with QT
+load curve and starting curve._
 
 In _DriveConstructor_ starting torque is defined as the fraction of rated torque
 $$T_r$$. The following values can be chosen: 0.0, 0.1, 0.2, 0.3, ..., 1.8,

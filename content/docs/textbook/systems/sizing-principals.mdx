@@ -14,10 +14,7 @@ Electric machine, being an electro-mechanical converter, must be selected based
 on both mechanical parameters (torques and speeds) and electrical parameters
 (voltages and currents) - see Fig.1.
 
-import Image from "next/image";
-import longest_circuit_2Image from "./images/longest_circuit_2.png";
-
-<img src={longest_circuit_2Image.src} width="70%" height="70%" /> _Fig.1_.
+![longest-circuit-2](./images/longest_circuit_2.png) _Fig.1_.
 
 For the system part between electric machine and the grid the components are
 selected according to the electrical parameter - voltages and currents.
@@ -27,9 +24,7 @@ selected according to the electrical parameter - voltages and currents.
   converter
 - frequency converter voltage must match voltage of the grid
 
-import mot_fc_gridImage from "./images/mot_fc_grid.png";
-
-<img src={mot_fc_gridImage.src} width="40%" height="40%" /> _Fig. 2_.
+![mot-fc-grid](./images/mot_fc_grid.png) _Fig. 2_.
 
 - For systems with transformer between the grid and the frequency converter:
 - electric machine's voltage and current must match voltage and current of the
@@ -38,10 +33,7 @@ import mot_fc_gridImage from "./images/mot_fc_grid.png";
   of the transformer
 - transformer HV-side voltage must match voltage of the grid
 
-import mot_fc_trf_gridImage from "./images/mot_fc_trf_grid.png";
-
-<img src={mot_fc_trf_gridImage.src} width="50%" height="50%" />
-_Fig. 3_.
+![mot-fc-trf-grid](./images/mot_fc_trf_grid.png) _Fig. 3_.
 
 For the system part between the electric machine and the mechanism the
 components are selected according to mechanical parameters - torques and speeds.
@@ -50,19 +42,13 @@ components are selected according to mechanical parameters - torques and speeds.
 - electric machine's torque and speed must match torque and speed of the
   mechanism
 
-import mech_motImage from "./images/mech_mot.png";
-
-<img src={mech_motImage.src} width="20%" height="20%" />
-_Fig. 4_.
+![mech-mot](./images/mech_mot.png) _Fig. 4_.
 
 - For systems with gearbox:
 - gearbox torque and speed must match torque and speed of the mechanism
 - electric machine's torque and speed must match torque and speed of the gearbox
 
-import mech_gear_motImage from "./images/mech_gear_mot.png";
-
-<img src={mech_gear_motImage.src} width="25%" height="25%" />
-_Fig. 5_.
+![mech-gear-mot](./images/mech_gear_mot.png) _Fig. 5_.
 
 ##### Matching the torques
 
@@ -72,35 +58,17 @@ of the driven mechanism as shown in Fig. 6 for the different mechanisms; pump
 6,e,f). Note than overload curves of the drive system should be above the
 overload curves of the mechanisms.
 
-import pump_curves_vs_drive1Image from "./images/pump_curves_vs_drive1.png";
+![pump-curves-vs-drive1](./images/pump_curves_vs_drive1.png) _(a)_
 
-<img src={pump_curves_vs_drive1Image.src} width="50%" height="50%" />
-_(a)_
+![wind-curves-vs-drive3](./images/wind_curves_vs_drive3.png) _(b)_
 
-import wind_curves_vs_drive3Image from "./images/wind_curves_vs_drive3.png";
+![conveyor-curves-vs-drive1](./images/conveyor_curves_vs_drive1.png) _(c)_
 
-<img src={wind_curves_vs_drive3Image.src} width="50%" height="50%" />
-_(b)_
+![conveyor-curves-vs-drive3](./images/conveyor_curves_vs_drive3.png) _(d)_
 
-import conveyor_curves_vs_drive1Image from "./images/conveyor_curves_vs_drive1.png";
+![winch-curves-vs-drive2](./images/winch_curves_vs_drive2.png) _(e)_
 
-<img src={conveyor_curves_vs_drive1Image.src} width="50%" height="50%" />
-_(c)_
-
-import conveyor_curves_vs_drive3Image from "./images/conveyor_curves_vs_drive3.png";
-
-<img src={conveyor_curves_vs_drive3Image.src} width="50%" height="50%" />
-_(d)_
-
-import winch_curves_vs_drive2Image from "./images/winch_curves_vs_drive2.png";
-
-<img src={winch_curves_vs_drive2Image.src} width="50%" height="50%" />
-_(e)_
-
-import winch_curves_vs_drive1Image from "./images/winch_curves_vs_drive1.png";
-
-<img src={winch_curves_vs_drive1Image.src} width="50%" height="50%" />
-_(f)_
+![winch-curves-vs-drive1](./images/winch_curves_vs_drive1.png) _(f)_
 
 _Fig. 6. System curves vs load curves for various mechanisms/application_.
 

@@ -8,10 +8,7 @@ Direct drives are usually bulky and heavy. There are, though, special designs
 usually based on integration with the turbine structure, in order to reduce
 weight.
 
-import Image from "next/image";
-import wt1Image from "./images/wind-turbine-1.png";
-
-<img src={wt1Image.src} alt="wind-turbine-1" width="40%" height="40%" />
+![wind-turbine-1](./images/wind-turbine-1.png)
 
 _Fig.1. Wind turbine with a gearbox and a generator._
 
@@ -19,15 +16,9 @@ The nacelle of a wind or a tidal turbine can contain not only the gearbox and
 the generator, but also other equipment (Fig. 2-3), like frequency converter and
 transformer.
 
-import wtnImage from "./images/wt-nacelle.png";
+![wt-nacelle](./images/wt-nacelle.png) _Fig.2. Equipment in the nacelle._
 
-<img src={wtnImage.src} alt="wt-nacelle" width="40%" height="40%" />
-*Fig.2. Equipment in the nacelle.*
-
-import tt1Image from "./images/tidal-turbine-1.png";
-
-<img src={tt1Image.src} alt="tidal-turbine-1" width="40%" height="40%" />
-*Fig.3. Tidal turbine.*
+![tidal-turbine-1](./images/tidal-turbine-1.png) _Fig.3. Tidal turbine._
 
 ### Load characteristics
 
@@ -35,28 +26,15 @@ There is theoretical maximum power which is possible to extract following the
 maximum torque curve shown in Fig. 3-4. It can be seen that generator speed
 increases in Region II and is kept almost constant in Region III.
 
-import wtgentorqueImage from "./images/wt-gen-torque.png";
+![wt-gen-torque](./images/wt-gen-torque.png) _Fig.4. Generator speed vs torque._
 
-<img src={wtgentorqueImage.src} alt="wt-gen-torque" width="60%" height="60%" />
-*Fig.4. Generator speed vs torque.*
-
-import wtgenpowerspeedImage from "./images/wt-gen-power-speed.png";
-
-<img
-  src={wtgenpowerspeedImage.src}
-  alt="wt-gen-power-speed"
-  width="60%"
-  height="60%"
-/>
-*Fig.5. Wind speed vs turbine speed and power.*
+![wt-gen-power-speed](./images/wt-gen-power-speed.png) _Fig.5. Wind speed vs
+turbine speed and power._
 
 There should be kept some safety torque margin (between $$n_1$$ and $$n_2$$ in
 Fig.6) due to possible wind gusts.
 
-import wtc1Image from "./images/wind-curve-1.png";
-
-<img src={wtc1Image.src} alt="wind-curve-1" width="50%" height="50%" />
-*Fig.6. Turbine load torque curve.*
+![wind-curve-1](./images/wind-curve-1.png) _Fig.6. Turbine load torque curve._
 
 ### Parameters of wind (or tidal) turbine
 
