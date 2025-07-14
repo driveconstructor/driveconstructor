@@ -22,6 +22,8 @@ code in this repository.
 - `npm run format` - Format all code with Prettier
 - `npm run verify` - Full verification pipeline (format, build, e2e tests)
 
+**Code Style**: Always use Prettier for code formatting. Run `npm run format` after making changes to ensure consistent code style across the project.
+
 ### Setup
 
 - `npm install` - Install dependencies
