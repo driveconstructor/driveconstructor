@@ -22,9 +22,9 @@ async function getLLMText(page: InferPageType<typeof source>) {
   return `# ${page.data.title}
 URL: ${page.url}
 
-${page.data.description}
+${page.data.description ?? ""}
 
-${processed.value}`;
+${processed.value ?? ""}`;
 }
 
 // cached forever
@@ -44,6 +44,16 @@ function walk(urls: string[], children: any[]) {
 export async function GET() {
   const urls: string[] = [];
   walk(urls, source.getPageTree().children);
+
+  const books = ["/docs/textbook", "/docs/exercises"];
+
+  // make sure text book goes first
+  urls.sort((a, b) => {
+    const aBookIndex = books.findIndex((x) => a.startsWith(x));
+    const bBookIndex = books.findIndex((x) => b.startsWith(x));
+
+    return aBookIndex - bBookIndex;
+  });
 
   // documentation preserving order
   const scan = source
