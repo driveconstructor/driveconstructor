@@ -1,0 +1,790 @@
+{
+  "centrifugal-pump.png": {
+    "summary": "3D cross-section of centrifugal pump",
+    "description": "A cross-sectional 3D illustration of a centrifugal pump showing the blue housing with a red impeller inside and green arrows indicating fluid flow direction. The pump has inlet and outlet ports with the characteristic volute casing design typical of centrifugal pumps."
+  },
+  "progressing-cavity-pump.png": {
+    "summary": "Cutaway view of progressing cavity pump",
+    "description": "A cutaway 3D view of a progressing cavity pump showing the helical rotor (red) inside the stator cavity with a blue motor attached. The image illustrates the positive displacement mechanism with green arrows showing the flow direction through the pump."
+  },
+  "pump-and-resistance-curve.png": {
+    "summary": "Pump and system resistance curve intersection",
+    "description": "A graph showing the intersection of a pump curve (green, declining line) and system resistance curve (orange, rising curve) to determine the operating point. The axes are labeled H (head) and Q (flow rate) with a dashed vertical line marking the operating point intersection."
+  },
+  "pump-curve-CT.png": {
+    "summary": "Constant torque characteristic graph",
+    "description": "A torque versus rotational speed graph showing a constant torque characteristic (Tpr) as a horizontal blue line up to speed n1. This represents the torque profile for a centrifugal pump operating at constant torque."
+  },
+  "pump-curve-QT.png": {
+    "summary": "Quadratic torque curve graph",
+    "description": "A torque versus rotational speed graph displaying a quadratic torque curve (Tpr) that increases exponentially with speed up to n1. This shows the typical torque characteristic for centrifugal pumps where torque increases with the square of speed."
+  },
+  "pump-curves-CT-BT.png": {
+    "summary": "Breakaway torque with constant torque profile",
+    "description": "A torque versus rotational speed graph showing a breakaway torque spike (Tps) at startup followed by constant torque (Tpr) operation. This illustrates the torque profile including the initial high torque needed to overcome static friction."
+  },
+  "pump-curves-stiction.png": {
+    "summary": "Combined breakaway and quadratic torque profile",
+    "description": "A torque versus rotational speed graph combining breakaway torque (Tps) at startup with a quadratic torque curve (Tpr) during operation. This shows the complete torque profile including both static friction effects and the speed-dependent torque characteristic."
+  },
+  "pumps-classification.png": {
+    "summary": "Hierarchical pump classification diagram",
+    "description": "A hierarchical classification diagram of pump types, dividing pumps into rotodynamic and positive displacement categories. The chart shows subcategories including centrifugal pumps by head type (low, median, high) and positive displacement pumps (reciprocating and rotary types)."
+  },
+  "C1.png": {
+    "summary": "Cable mounting configurations",
+    "description": "Technical drawing showing side view and front view of cable mounting configurations. The diagram illustrates cable installation methods with dimensional annotations and mounting hardware details."
+  },
+  "C5.png": {
+    "summary": "Cable system layout",
+    "description": "Installation diagram showing two motors connected by a 250m cable span with voltage specifications. The layout shows 690V and 6000V systems with cooling water requirements and clean power house specifications."
+  },
+  "EM3_1.png": {
+    "summary": "Motor duty cycle",
+    "description": "Bar chart showing motor load profile with 25% load for 70% of time and 100% load for 30% of time. The diagram illustrates typical industrial motor duty cycle patterns for sizing calculations."
+  },
+  "FC3.png": {
+    "summary": "Wind turbine nacelle",
+    "description": "Cross-sectional view of a wind turbine nacelle showing blue electrical machines, gearbox, and control systems. The diagram illustrates the complete drivetrain layout within the nacelle housing."
+  },
+  "FC6.png": {
+    "summary": "Industrial motor installation",
+    "description": "Photograph of an industrial motor coupled to a centrifugal blower or fan system. The image shows a concrete installation with motor mounting and coupling arrangement."
+  },
+  "P5_1.png": {
+    "summary": "System component blocks",
+    "description": "Block diagram showing system components labeled P, EM, FC, T, S, and H in different configurations. The diagram illustrates various electrical drive system topologies and component arrangements."
+  },
+  "P6_1.png": {
+    "summary": "Cable routing diagram",
+    "description": "Technical diagram showing cable routing paths with distances marked as 600m, 1000m, 1200m, and 2000m. The diagram includes question marks indicating decision points and a 10 kV power source."
+  },
+  "SYS4.png": {
+    "summary": "Multiple motor array",
+    "description": "Photograph showing a row of five identical blue industrial motors with brass fittings and piping connections. The motors are mounted on a concrete platform with connecting pipework above."
+  },
+  "SYS5_wind_gear.png": {
+    "summary": "Wind turbine gearbox",
+    "description": "3D exploded view of a wind turbine gearbox showing multiple gear stages and internal components. The diagram illustrates the complex gear train arrangement used in wind turbine drivetrains."
+  },
+  "SYS5_worm.png": {
+    "summary": "Worm gear mechanism",
+    "description": "Technical drawings showing worm gear assembly from multiple angles with detailed gear tooth profiles. The diagram illustrates both perspective and side view of the worm gear reduction mechanism."
+  },
+  "SYS5table.png": {
+    "summary": "Efficiency comparison table",
+    "description": "Data table comparing gear efficiency, overall efficiency, gearbox weight/cost, and electric machine weight/cost across different cases. The table provides quantitative analysis for system optimization."
+  },
+  "SYS_3_table.png": {
+    "summary": "THD standards table",
+    "description": "IEEE 519 standards table showing total harmonic voltage distortion limits for different application classes. The table specifies 3% THD for sensitive applications, 5% for general applications, and 10% for dedicated systems."
+  },
+  "Spider.png": {
+    "summary": "System comparison radar",
+    "description": "Spider/radar chart comparing two system variants across multiple parameters including efficiency, system weight, volume, and price. The chart shows performance trade-offs between different system configurations."
+  },
+  "W1.png": {
+    "summary": "Winch drive system",
+    "description": "Schematic diagram showing a winch drive system with motors, frequency converters, and mechanical connections. The diagram illustrates a dual-motor configuration for winch applications with control systems."
+  },
+  "W2.png": {
+    "summary": "Winch drum dimensions",
+    "description": "Technical drawing showing winch drum dimensional specifications with diameter measurements D1, D2, and length L. The diagram provides both side and front views of the drum configuration."
+  },
+  "WT2.png": {
+    "summary": "Wind turbine farm",
+    "description": "Simplified illustration showing three wind turbines with different nacelle configurations and height H marked. The diagram shows various electrical component arrangements within the nacelles."
+  },
+  "WT5.png": {
+    "summary": "Wind turbine configuration",
+    "description": "Simplified diagram of a single wind turbine showing rotor, nacelle components, and electrical connections with distance L marked. The illustration shows the basic electrical drivetrain layout."
+  },
+  "cn_em_fc.png": {
+    "summary": "Conveyor drive schematic",
+    "description": "Block diagram showing conveyor drive system with motor (M) and frequency converter connected to AC supply. The diagram illustrates the basic power flow in a variable speed conveyor drive."
+  },
+  "cn_gb_em_fc.png": {
+    "summary": "Geared conveyor drive",
+    "description": "Block diagram showing conveyor drive system with gearbox, motor (M), and frequency converter connected to AC supply. The diagram shows the power transmission path through gear reduction."
+  },
+  "pm_fc_tr.png": {
+    "summary": "Pump drive system",
+    "description": "Block diagram showing pump drive system with motor (M), frequency converter, and transformer connected to AC supply. The diagram illustrates a voltage step-down configuration for pump applications."
+  },
+  "pmp_fc_EM3_2.png": {
+    "summary": "Pump motor drive",
+    "description": "Block diagram showing pump motor drive system with frequency converter configuration. The diagram shows the electrical power flow from AC supply through power electronics to the pump motor."
+  },
+  "pump-with-motor.png": {
+    "summary": "Centrifugal pump assembly",
+    "description": "3D rendering of a centrifugal pump directly coupled to an electric motor. The image shows the typical industrial pump-motor configuration with volute casing and motor housing."
+  },
+  "sys6table.png": {
+    "summary": "Cable analysis table",
+    "description": "Comparison table showing cable losses, system efficiency, and costs for different cable lengths (40m, 250m, 1000m) and materials (MV/LV, Cu/Al). The table provides quantitative data for cable selection decisions."
+  },
+  "userman1.png": {
+    "summary": "Drive Constructor interface",
+    "description": "Screenshot of Drive Constructor welcome page with navigation instructions and application overview. The interface shows the main application areas including pumps, conveyors, wind/tidal mills, and winches with explanatory annotations."
+  },
+  "userman1a.png": {
+    "summary": "Browser context menu",
+    "description": "Screenshot showing browser context menu with various link options including 'Open Link in New Tab' and 'Inspect Element'. The image demonstrates typical web browser functionality for navigation."
+  },
+  "userman2.png": {
+    "summary": "System parameter interface",
+    "description": "Drive Constructor interface showing system parameter input with load curve visualization. The screenshot demonstrates how to define pump parameters and shows the resulting torque-speed characteristics with explanatory annotations."
+  },
+  "userman3.png": {
+    "summary": "Frequency converter selection",
+    "description": "Table showing frequency converter candidates with specifications including price, power ratings, voltages, and mounting options. The interface displays detailed technical parameters for component selection with wall and floor mounting variants highlighted."
+  },
+  "userman4.png": {
+    "summary": "Transformer configuration interface",
+    "description": "Drive Constructor interface showing transformer parameter settings with voltage step-down configuration. The screenshot demonstrates transformer sizing with explanatory annotations about voltage level definition."
+  },
+  "userman5.png": {
+    "summary": "Transformer tapping interface",
+    "description": "Drive Constructor interface showing transformer tapping options with voltage adjustment settings. The screenshot displays dropdown menus for tapping selection and explains how transformer parameters affect the drive system."
+  },
+  "userman6.png": {
+    "summary": "Transformer topology selection",
+    "description": "Drive Constructor interface showing different transformer winding configurations (3-winding, 2Q-2L-VSC-12p). The screenshot demonstrates various transformer types and their applications in drive systems."
+  },
+  "userman7.png": {
+    "summary": "System report generation",
+    "description": "Drive Constructor report page showing complete system specifications including transformer, frequency converter, and electric machine details. The interface displays comprehensive technical data and component images with save functionality highlighted."
+  },
+  "userman8.png": {
+    "summary": "System save dialog",
+    "description": "Drive Constructor save dialog showing system naming interface with save options. The screenshot demonstrates how to save designed systems for benchmarking and comparison purposes."
+  },
+  "userman9.png": {
+    "summary": "My systems overview",
+    "description": "Drive Constructor 'My systems' page showing saved system list with efficiency metrics and specifications. The interface displays system comparison data including price, efficiency at different loads, volume, and other key parameters."
+  },
+  "userman10.png": {
+    "summary": "System report view",
+    "description": "Drive Constructor report page showing complete system analysis with component specifications and technical details. The interface displays system parameters, transformer details, frequency converter specifications, and electric machine data with navigation highlighted."
+  },
+  "userman11.png": {
+    "summary": "System selection interface",
+    "description": "Drive Constructor interface showing system selection with checkboxes for multiple systems comparison. The screenshot demonstrates how to select systems for comparative analysis with comparison functionality highlighted."
+  },
+  "userman12.png": {
+    "summary": "System comparison table",
+    "description": "Drive Constructor comparison table showing two systems (system1 and system2) with detailed performance metrics. The table displays efficiency, price, volume, footprint, weight, and THD values for comprehensive system evaluation."
+  },
+  "userman13.png": {
+    "summary": "System comparison radar",
+    "description": "Drive Constructor radar chart comparing two systems across multiple parameters including price, efficiency, THD, weight, footprint, and volume. The chart provides visual representation of system performance trade-offs."
+  },
+  "userman14.png": {
+    "summary": "Feedback form interface",
+    "description": "Drive Constructor feedback form showing fields for problem reporting and file attachment capabilities. The interface allows users to submit bug reports and technical issues to the development team."
+  },
+  "userman15.png": {
+    "summary": "Complete system report",
+    "description": "Drive Constructor comprehensive system report showing all component specifications and system parameters. The report displays detailed technical data for transformer, frequency converter, and electric machine with highlighted system parameters."
+  },
+  "wt_gb_fc_tr.png": {
+    "summary": "Wind turbine drivetrain",
+    "description": "Schematic diagram showing wind turbine drivetrain with gearbox, motor, frequency converter, and transformer. The diagram illustrates the complete power transmission path from turbine rotor to electrical grid connection."
+  },
+  "conveyor-curves.png": {
+    "summary": "Conveyor torque characteristics",
+    "description": "Graph showing conveyor torque vs rotational speed with three curves: rated, overload, and start curves. The diagram illustrates the different operating regions and torque requirements for conveyor systems."
+  },
+  "conveyor.png": {
+    "summary": "Belt conveyor system",
+    "description": "3D rendering of a belt conveyor system showing the drive motor, belt, and support rollers. The image illustrates a typical industrial conveyor with red motor drive and black conveyor belt."
+  },
+  "motor-gear-drum.png": {
+    "summary": "Motor gearbox assembly",
+    "description": "Photograph of a blue electric motor coupled to a gearbox driving a large drum or roller. The image shows an industrial motor-gearbox combination typical in conveyor and material handling applications."
+  },
+  "four-applications.png": {
+    "summary": "Four application types",
+    "description": "Illustration showing four main application areas: winch, wind turbine, conveyor, and pump systems. The diagram provides a visual overview of the primary industrial applications covered in the drive system design tool."
+  },
+  "tidal-turbine-1.png": {
+    "summary": "Underwater tidal turbine",
+    "description": "Illustration of an underwater tidal turbine showing the rotor, nacelle, and electrical components submerged in water. The diagram shows the complete turbine system with support structure and electrical connections."
+  },
+  "wind-turbine-1.png": {
+    "summary": "Onshore wind turbine",
+    "description": "Photograph of a large onshore wind turbine with three-blade rotor and tall tower against a clear sky. The image shows a typical modern wind turbine installation in an open landscape."
+  },
+  "wind-turbine-2.png": {
+    "summary": "Wind turbine drivetrain",
+    "description": "Technical diagram showing wind turbine drivetrain components including rotor, gearbox, generator, and power electronics. The illustration shows the mechanical and electrical components within the nacelle."
+  },
+  "wind-curve-1.png": {
+    "summary": "Wind turbine power curve",
+    "description": "Graph showing wind turbine power output versus wind speed with typical cut-in, rated, and cut-out wind speeds. The curve demonstrates the characteristic power generation profile of a wind turbine."
+  },
+  "wt-gen-power-speed.png": {
+    "summary": "Generator power-speed curve",
+    "description": "Graph showing generator power versus rotational speed for a wind turbine application. The curve illustrates the relationship between generator speed and power output in wind turbine systems."
+  },
+  "wt-gen-torque.png": {
+    "summary": "Generator torque curve",
+    "description": "Graph showing generator torque versus rotational speed for wind turbine applications. The curve demonstrates the torque characteristics of wind turbine generators across different operating speeds."
+  },
+  "wt-nacelle.png": {
+    "summary": "Wind turbine nacelle",
+    "description": "Cross-sectional view of a wind turbine nacelle showing blue electrical machines, gearbox, and control systems. The diagram illustrates the complete drivetrain layout within the nacelle housing."
+  },
+  "marine-winch.png": {
+    "summary": "Marine winch system",
+    "description": "Photograph of a large marine winch system with multiple drums and cables on a ship deck. The image shows industrial maritime winch equipment with control systems and cable management."
+  },
+  "winch-1.png": {
+    "summary": "Industrial winch assembly",
+    "description": "3D rendering of an industrial winch showing the motor, gearbox, and drum assembly. The image illustrates a typical winch configuration with drive motor and reduction gearing."
+  },
+  "winch-curves.png": {
+    "summary": "Winch torque characteristics",
+    "description": "Graph showing winch torque versus rotational speed with different operating regions and load conditions. The curve illustrates the torque requirements for winch applications across various speeds."
+  },
+  "winch2.png": {
+    "summary": "Winch drum configuration",
+    "description": "Technical drawing showing winch drum arrangement with cable spooling and dimensional specifications. The diagram illustrates the mechanical configuration of a winch drum system."
+  },
+  "winder.png": {
+    "summary": "Industrial winder system",
+    "description": "Photograph of a large industrial winder with multiple reels and drive motors. The image shows a complex winding system with tension control and multiple drive zones."
+  },
+  "SCIM.png": {
+    "summary": "Induction motor cutaway",
+    "description": "Detailed cutaway drawing of a squirrel cage induction motor showing stator windings, rotor, and internal construction. The technical illustration reveals the electromagnetic components and mechanical structure of the motor."
+  },
+  "PMSM_rotor.png": {
+    "summary": "Permanent magnet rotor",
+    "description": "Technical drawing of a permanent magnet synchronous motor rotor showing the segmented permanent magnet arrangement. The illustration shows the rotor laminations and magnet placement in a typical PMSM design."
+  },
+  "SyRM.png": {
+    "summary": "Synchronous reluctance motor",
+    "description": "Cross-sectional view of a synchronous reluctance motor showing the rotor with flux barriers and magnetic poles. The technical drawing illustrates the distinctive rotor geometry that creates reluctance torque."
+  },
+  "EM_rated_powers.png": {
+    "summary": "Motor power rating chart",
+    "description": "Bar chart showing electric motor power ratings across different frame sizes and applications. The chart provides a comparison of motor power capabilities for various industrial applications."
+  },
+  "Shaft_height.png": {
+    "summary": "Motor shaft height dimensions",
+    "description": "Technical drawing showing motor shaft height measurements and dimensional specifications. The diagram illustrates standard motor mounting dimensions and shaft positioning."
+  },
+  "pm_motor_simple1.png": {
+    "summary": "Permanent magnet motor symbol",
+    "description": "Simplified electrical symbol for a permanent magnet motor showing the basic representation used in electrical schematics. The symbol includes the standard motor circle with PM designation."
+  },
+  "syrm_simple1.png": {
+    "summary": "Synchronous reluctance motor symbol",
+    "description": "Simplified electrical symbol for a synchronous reluctance motor showing the basic schematic representation. The symbol includes the standard motor circle with SyRM designation."
+  },
+  "scim_simple1.png": {
+    "summary": "Induction motor symbol",
+    "description": "Simplified electrical symbol for a squirrel cage induction motor showing the basic schematic representation. The symbol includes the standard motor circle with SCIM designation."
+  },
+  "Cooling1.png": {
+    "summary": "Motor cooling methods",
+    "description": "Illustration showing different motor cooling methods including air cooling, water cooling, and forced ventilation. The diagram compares various cooling approaches for electric motors."
+  },
+  "Cooling2.png": {
+    "summary": "Motor cooling systems",
+    "description": "Technical diagram showing motor cooling system configurations with airflow patterns and heat dissipation methods. The illustration demonstrates different cooling strategies for electric motors."
+  },
+  "Cooling3.png": {
+    "summary": "Motor cooling comparison",
+    "description": "Comparative illustration showing different motor cooling methods side by side with performance characteristics. The diagram helps in selecting appropriate cooling methods for specific applications."
+  },
+  "cooling_411_vs_416.png": {
+    "summary": "Cooling method comparison",
+    "description": "Comparison chart showing two different motor cooling methods (411 vs 416) with performance metrics. The chart illustrates the differences in cooling effectiveness and application suitability."
+  },
+  "EM_mounting1.png": {
+    "summary": "Motor mounting configurations",
+    "description": "Technical drawings showing various motor mounting arrangements including foot, flange, and face mounting options. The illustrations demonstrate different mechanical mounting methods for electric motors."
+  },
+  "EM_mountingB5.png": {
+    "summary": "B5 flange mounting",
+    "description": "Technical drawing showing B5 flange mounting configuration for electric motors with dimensional specifications. The diagram illustrates the standard flange mounting arrangement with bolt patterns."
+  },
+  "EM_mountingB35.png": {
+    "summary": "B35 combined mounting",
+    "description": "Technical drawing showing B35 combined foot and flange mounting for electric motors. The diagram illustrates the dual mounting arrangement with both foot and flange connections."
+  },
+  "Efficiency_class1.png": {
+    "summary": "Motor efficiency classification",
+    "description": "Chart showing motor efficiency classifications (IE1, IE2, IE3, IE4) with efficiency percentages across different power ratings. The graph illustrates the international efficiency standards for electric motors."
+  },
+  "Efficiency_class3.png": {
+    "summary": "Efficiency class comparison",
+    "description": "Comparative chart showing motor efficiency classes with performance curves and energy savings potential. The diagram demonstrates the benefits of higher efficiency motor classes."
+  },
+  "HV_slot.png": {
+    "summary": "High voltage motor slot",
+    "description": "Technical drawing showing high voltage motor stator slot design with insulation details. The illustration demonstrates the slot geometry and insulation requirements for HV motors."
+  },
+  "LV_slot.png": {
+    "summary": "Low voltage motor slot",
+    "description": "Technical drawing showing low voltage motor stator slot design with winding arrangement. The illustration demonstrates the slot geometry and conductor arrangement for LV motors."
+  },
+  "im.png": {
+    "summary": "Induction motor assembly",
+    "description": "3D rendering of a complete induction motor showing the external housing, terminal box, and mounting arrangement. The image illustrates a typical industrial induction motor configuration."
+  },
+  "basic_fc_2.png": {
+    "summary": "Frequency converter topology",
+    "description": "Schematic diagram showing basic frequency converter topology with rectifier, DC link, and inverter sections. The diagram illustrates the power flow direction and includes PWM waveforms and three-phase output connections."
+  },
+  "12p.png": {
+    "summary": "12-pulse rectifier waveform",
+    "description": "Waveform diagram showing 12-pulse rectifier current and voltage characteristics. The diagram illustrates the improved harmonic performance of 12-pulse rectifier systems."
+  },
+  "fc_cabinet_Vacon.png": {
+    "summary": "Frequency converter cabinet",
+    "description": "Photograph of a Vacon frequency converter cabinet showing the industrial enclosure and control interface. The image displays a typical industrial frequency converter installation with cooling and control systems."
+  },
+  "6p_no_choke.png": {
+    "summary": "6-pulse without choke",
+    "description": "Waveform diagram showing 6-pulse rectifier current without input choke showing high harmonic distortion. The diagram illustrates the poor harmonic performance of basic 6-pulse systems."
+  },
+  "6p_with_choke.png": {
+    "summary": "6-pulse with choke",
+    "description": "Waveform diagram showing 6-pulse rectifier current with input choke showing improved harmonic performance. The diagram demonstrates the harmonic reduction achieved with input chokes."
+  },
+  "THDi80.png": {
+    "summary": "80% THD current",
+    "description": "Waveform showing high total harmonic distortion (THDi = 80%) in rectifier input current. The diagram illustrates the severe harmonic distortion typical of unfiltered rectifier systems."
+  },
+  "THDi40.png": {
+    "summary": "40% THD current",
+    "description": "Waveform showing moderate total harmonic distortion (THDi = 40%) in rectifier input current. The diagram shows improved harmonic performance with basic filtering."
+  },
+  "THDi28.png": {
+    "summary": "28% THD current",
+    "description": "Waveform showing reduced total harmonic distortion (THDi = 28%) in rectifier input current. The diagram demonstrates further harmonic improvement with enhanced filtering."
+  },
+  "THDi5.png": {
+    "summary": "5% THD current",
+    "description": "Waveform showing very low total harmonic distortion (THDi = 5%) in rectifier input current. The diagram illustrates excellent harmonic performance with advanced filtering systems."
+  },
+  "rectification.png": {
+    "summary": "Rectification process diagram",
+    "description": "Schematic diagram showing the rectification process from AC to DC with diode bridge and filtering. The illustration demonstrates the conversion of alternating current to direct current in frequency converters."
+  },
+  "pwm_voltage.png": {
+    "summary": "PWM voltage waveform",
+    "description": "Waveform diagram showing pulse width modulation (PWM) voltage output with switching patterns. The diagram illustrates the high-frequency switching used to create sinusoidal output voltages."
+  },
+  "pwm_current.png": {
+    "summary": "PWM current waveform",
+    "description": "Waveform diagram showing pulse width modulation (PWM) current output with filtering effects. The diagram demonstrates how PWM switching creates smooth current waveforms in motor windings."
+  },
+  "fc_cooling_air_nat.png": {
+    "summary": "Natural air cooling",
+    "description": "Diagram showing natural air cooling for frequency converters with heat sink and airflow patterns. The illustration demonstrates passive cooling methods for low-power frequency converters."
+  },
+  "fc_cooling_air_AC.png": {
+    "summary": "Forced air cooling",
+    "description": "Diagram showing forced air cooling for frequency converters with fans and heat sinks. The illustration demonstrates active cooling methods for medium-power frequency converters."
+  },
+  "fc_cooling_air_WC.png": {
+    "summary": "Water cooling system",
+    "description": "Diagram showing water cooling for frequency converters with liquid cooling circuits. The illustration demonstrates liquid cooling methods for high-power frequency converters."
+  },
+  "fc_lo_ho.png": {
+    "summary": "Low/high overload capability",
+    "description": "Graph showing frequency converter overload capability with low overload and high overload characteristics. The diagram illustrates different overload ratings for various frequency converter applications."
+  },
+  "fc_overloads.png": {
+    "summary": "Overload characteristics chart",
+    "description": "Chart showing frequency converter overload characteristics with time-current curves. The diagram illustrates thermal protection and overload capabilities of frequency converters."
+  },
+  "fc_with_LCL.png": {
+    "summary": "LCL filter configuration",
+    "description": "Schematic diagram showing frequency converter with LCL filter for grid connection. The diagram illustrates the filter configuration used to reduce harmonic distortion in grid-connected applications."
+  },
+  "sin_filter_topology.png": {
+    "summary": "Sine filter topology",
+    "description": "Schematic diagram showing sine filter topology for frequency converter output filtering. The diagram illustrates the LC filter configuration used to create sinusoidal motor voltages."
+  },
+  "sin_filter.png": {
+    "summary": "Sine filter assembly",
+    "description": "Photograph of a sine filter assembly showing inductors and capacitors in industrial enclosure. The image displays the physical construction of output filters for frequency converters."
+  },
+  "dut_filter_topology.png": {
+    "summary": "dU/dt filter topology",
+    "description": "Schematic diagram showing dU/dt filter topology for motor protection against voltage spikes. The diagram illustrates the filter configuration used to protect motors from switching transients."
+  },
+  "dut_filter.png": {
+    "summary": "dU/dt filter assembly",
+    "description": "Photograph of a dU/dt filter assembly showing the physical construction and components. The image displays the industrial filter unit used for motor protection against voltage transients."
+  },
+  "before_dut.png": {
+    "summary": "Voltage before dU/dt filter",
+    "description": "Oscilloscope waveform showing voltage transients before dU/dt filter with sharp switching edges. The waveform demonstrates the harsh switching characteristics that can damage motor insulation."
+  },
+  "after_dut.png": {
+    "summary": "Voltage after dU/dt filter",
+    "description": "Oscilloscope waveform showing voltage transients after dU/dt filter with reduced switching rate. The waveform demonstrates the protective effect of the filter in reducing voltage stress on motors."
+  },
+  "emc_filter_topology.png": {
+    "summary": "EMC filter topology",
+    "description": "Schematic diagram showing EMC filter topology for electromagnetic compatibility. The diagram illustrates the filter configuration used to reduce electromagnetic interference from frequency converters."
+  },
+  "emc_filter_ac.png": {
+    "summary": "EMC filter assembly",
+    "description": "Photograph of an EMC filter assembly showing the physical construction and shielding. The image displays the industrial filter unit used for electromagnetic compatibility in frequency converter installations."
+  },
+  "EMC_with_without_filter.png": {
+    "summary": "EMC performance comparison",
+    "description": "Graph comparing electromagnetic emissions with and without EMC filter showing significant reduction. The chart demonstrates the effectiveness of EMC filters in reducing conducted and radiated emissions."
+  },
+  "SCHB_2.png": {
+    "summary": "Silicon carbide H-bridge",
+    "description": "Schematic diagram showing silicon carbide H-bridge configuration for high-efficiency power conversion. The diagram illustrates the advanced semiconductor technology used in modern frequency converters."
+  },
+  "SCHB_dfe_cell.png": {
+    "summary": "DFE cell configuration",
+    "description": "Schematic diagram showing diode front end (DFE) cell configuration for rectifier applications. The diagram illustrates the power semiconductor arrangement in rectifier circuits."
+  },
+  "SCHB_afe_cell.png": {
+    "summary": "AFE cell configuration",
+    "description": "Schematic diagram showing active front end (AFE) cell configuration for bidirectional power flow. The diagram illustrates the power semiconductor arrangement in regenerative frequency converters."
+  },
+  "sc_hb_simple2.png": {
+    "summary": "H-bridge symbol",
+    "description": "Simplified electrical symbol for H-bridge power semiconductor configuration. The symbol represents the basic switching arrangement used in frequency converter output stages."
+  },
+  "sc_hb_simple3.png": {
+    "summary": "H-bridge circuit symbol",
+    "description": "Simplified electrical symbol for H-bridge circuit showing switching elements and connections. The symbol represents the power switching configuration in frequency converter circuits."
+  },
+  "afe_dc2l_dfe.png": {
+    "summary": "Two-level DFE symbol",
+    "description": "Electrical symbol for two-level diode front end (DFE) showing the basic rectifier configuration. The symbol represents the input stage of frequency converters with diode rectification."
+  },
+  "afe_dc2l_afe.png": {
+    "summary": "Two-level AFE symbol",
+    "description": "Electrical symbol for two-level active front end (AFE) showing the bidirectional converter configuration. The symbol represents the input stage of regenerative frequency converters."
+  },
+  "afe_dc2l_dfe12.png": {
+    "summary": "12-pulse DFE symbol",
+    "description": "Electrical symbol for 12-pulse diode front end (DFE) showing the multi-pulse rectifier configuration. The symbol represents the advanced rectifier topology with reduced harmonics."
+  },
+  "afe_dc3l_afe.png": {
+    "summary": "Three-level AFE symbol",
+    "description": "Electrical symbol for three-level active front end (AFE) showing the multilevel converter configuration. The symbol represents the advanced input stage with improved harmonic performance."
+  },
+  "afe_dc3l_afe12.png": {
+    "summary": "12-pulse three-level AFE symbol",
+    "description": "Electrical symbol for 12-pulse three-level active front end (AFE) showing the advanced multilevel configuration. The symbol represents the high-performance input stage with excellent harmonic characteristics."
+  },
+  "pwm_measured.png": {
+    "summary": "Measured PWM waveform",
+    "description": "Oscilloscope measurement showing actual PWM waveform with switching transients and harmonics. The waveform demonstrates the real-world characteristics of pulse width modulation in frequency converters."
+  },
+  "after_sin.png": {
+    "summary": "Sinusoidal output after filtering",
+    "description": "Oscilloscope waveform showing sinusoidal voltage output after sine filter with clean waveform. The measurement demonstrates the effectiveness of output filtering in creating smooth motor voltages."
+  },
+  "gear_helical_stage3.png": {
+    "summary": "Three-stage helical gearbox",
+    "description": "Technical drawing of a three-stage helical gearbox showing the gear arrangement and housing. The illustration demonstrates the gear train configuration for high reduction ratios."
+  },
+  "gear_worm3.png": {
+    "summary": "Worm gear assembly",
+    "description": "Technical drawing of a worm gear showing the worm screw and gear wheel arrangement. The illustration demonstrates the perpendicular shaft arrangement and gear tooth engagement typical of worm gear systems."
+  },
+  "gear_bevel_stage2.png": {
+    "summary": "Two-stage bevel gearbox",
+    "description": "Technical drawing of a two-stage bevel gearbox showing the conical gear arrangement. The illustration demonstrates the gear configuration for right-angle power transmission."
+  },
+  "gear_planetary_stage2.png": {
+    "summary": "Two-stage planetary gearbox",
+    "description": "Technical drawing of a two-stage planetary gearbox showing the sun, planet, and ring gear arrangement. The illustration demonstrates the compact gear configuration for high torque applications."
+  },
+  "industrial-gearbox-free-image.png": {
+    "summary": "Industrial gearbox assembly",
+    "description": "Photograph of a large industrial gearbox showing the robust construction and mounting arrangement. The image displays a typical heavy-duty gearbox used in industrial applications."
+  },
+  "hel-hel-hel-motor.png": {
+    "summary": "Three-stage helical with motor",
+    "description": "3D rendering of a three-stage helical gearbox directly coupled to an electric motor. The image shows the complete motor-gearbox assembly typical in industrial drive applications."
+  },
+  "bel-3hel.png": {
+    "summary": "Bevel-helical gearbox combination",
+    "description": "3D rendering of a bevel-helical gearbox combination showing right-angle gear arrangement. The image illustrates the gear configuration for perpendicular shaft applications."
+  },
+  "worm-hel-conv.png": {
+    "summary": "Worm-helical conveyor gearbox",
+    "description": "3D rendering of a worm-helical gearbox designed for conveyor applications. The image shows the gear arrangement optimized for continuous duty in material handling systems."
+  },
+  "wind-turbine-gear-plan-hel-hel.png": {
+    "summary": "Wind turbine gearbox design",
+    "description": "Technical drawing showing wind turbine gearbox design with planetary and helical stages. The illustration demonstrates the gear arrangement optimized for wind turbine applications."
+  },
+  "plan-plan-plan-hel.png": {
+    "summary": "Multi-stage planetary gearbox",
+    "description": "Technical drawing of a multi-stage planetary gearbox with final helical stage. The illustration shows the complex gear arrangement for high reduction ratios in wind turbines."
+  },
+  "gears_effs.png": {
+    "summary": "Gear efficiency comparison",
+    "description": "Chart comparing efficiency of different gear types including helical, bevel, worm, and planetary gears. The graph shows the efficiency characteristics across different gear technologies."
+  },
+  "worm_helical_eff.png": {
+    "summary": "Worm vs helical efficiency",
+    "description": "Graph comparing efficiency of worm gears versus helical gears across different reduction ratios. The chart demonstrates the efficiency trade-offs between different gear types."
+  },
+  "power-cable.png": {
+    "summary": "Power cable cross-section",
+    "description": "Technical drawing showing power cable cross-section with conductor, insulation, and shielding layers. The illustration demonstrates the construction of medium voltage power cables."
+  },
+  "trafo.png": {
+    "summary": "Transformer core assembly",
+    "description": "3D rendering of a transformer showing the core, windings, and tank assembly. The image illustrates the basic construction of a power transformer."
+  },
+  "Trafo_dry2.png": {
+    "summary": "Dry-type transformer",
+    "description": "Photograph of a dry-type transformer showing the core, windings, and ventilation system. The image displays a typical dry-type transformer used in indoor applications."
+  },
+  "Trafo_oil2.png": {
+    "summary": "Oil-filled transformer",
+    "description": "Photograph of an oil-filled transformer showing the tank, bushings, and cooling system. The image displays a typical oil-immersed transformer used in utility applications."
+  },
+  "Trafo_next_to_fc.png": {
+    "summary": "Transformer with frequency converter",
+    "description": "Photograph showing a transformer installed next to a frequency converter cabinet. The image illustrates the typical installation arrangement for transformer-fed frequency converters."
+  },
+  "Trafo_with_WC.png": {
+    "summary": "Water-cooled transformer",
+    "description": "Photograph of a water-cooled transformer showing the cooling system and connections. The image displays a transformer with liquid cooling for high-power applications."
+  },
+  "SCHB_trafo.png": {
+    "summary": "Transformer schematic symbol",
+    "description": "Electrical schematic symbol for a transformer showing primary and secondary windings. The symbol represents the basic transformer configuration used in electrical diagrams."
+  },
+  "DC.png": {
+    "summary": "Drive Constructor logo",
+    "description": "Drive Constructor application logo showing stylized electrical drive components. The logo represents the educational tool for electrical drive system design."
+  },
+  "DC_main_picture.png": {
+    "summary": "Drive Constructor main illustration",
+    "description": "Main illustration for Drive Constructor showing various electrical drive components and applications. The image provides a visual overview of the tool's capabilities in drive system design."
+  },
+  "container.png": {
+    "summary": "Containerized drive system",
+    "description": "Photograph of a containerized electrical drive system showing the complete installation in a shipping container. The image displays a mobile drive solution for temporary or remote applications."
+  },
+  "EM_protection.png": {
+    "summary": "Motor protection diagram",
+    "description": "Schematic diagram showing motor protection systems including thermal, overcurrent, and voltage protection. The diagram illustrates the various protection methods used to safeguard electric motors."
+  },
+  "EM_protection_ex.png": {
+    "summary": "Explosion-proof motor protection",
+    "description": "Photograph of explosion-proof motor protection equipment showing the specialized enclosures and connections. The image displays the safety equipment required for hazardous area motor applications."
+  },
+  "EM_protection_table.png": {
+    "summary": "Motor protection classification",
+    "description": "Table showing motor protection classifications with IP ratings and temperature classes. The table provides the standardized protection levels for different motor applications."
+  },
+  "duty_cycles.png": {
+    "summary": "Motor duty cycle types",
+    "description": "Diagram showing different motor duty cycle types (S1, S2, S3, etc.) with load and time characteristics. The illustration demonstrates the standardized duty cycle classifications for motor applications."
+  },
+  "duty_cycles2.png": {
+    "summary": "Duty cycle load patterns",
+    "description": "Graph showing motor duty cycle load patterns with varying torque and speed over time. The diagram illustrates the load characteristics used for motor sizing and thermal analysis."
+  },
+  "duty_cycles3.png": {
+    "summary": "Duty cycle temperature effects",
+    "description": "Graph showing motor temperature rise during different duty cycles with thermal time constants. The diagram demonstrates the thermal behavior of motors under various operating conditions."
+  },
+  "duty_cycles_temp.png": {
+    "summary": "Temperature vs duty cycle",
+    "description": "Graph showing motor temperature rise versus duty cycle with thermal limits. The diagram illustrates the relationship between operating pattern and motor thermal stress."
+  },
+  "overloads.png": {
+    "summary": "Motor overload characteristics",
+    "description": "Graph showing motor overload characteristics with time-current curves and thermal limits. The diagram illustrates the overload capability and protection requirements for electric motors."
+  },
+  "four-components.png": {
+    "summary": "Four main components",
+    "description": "Illustration showing the four main components of electrical drive systems: motor, frequency converter, transformer, and gearbox. The diagram provides an overview of the key components in drive system design."
+  },
+  "Pump.png": {
+    "summary": "Pump characteristics",
+    "description": "Graph showing pump characteristics including head, flow, and efficiency curves. The diagram illustrates the performance characteristics used for pump selection and system design."
+  },
+  "Pump_chars.png": {
+    "summary": "Pump performance curves",
+    "description": "Graph showing pump performance curves with head, flow, and power characteristics. The diagram demonstrates the relationship between pump parameters and operating conditions."
+  },
+  "Pump_chars2.png": {
+    "summary": "Pump efficiency curves",
+    "description": "Graph showing pump efficiency curves across different flow rates and head conditions. The diagram illustrates the efficiency characteristics important for energy-efficient pump operation."
+  },
+  "Pump_chars_efficiency.png": {
+    "summary": "Pump efficiency analysis",
+    "description": "Graph showing detailed pump efficiency analysis with optimal operating regions highlighted. The diagram demonstrates the efficiency characteristics used for pump optimization."
+  },
+  "Pump_chars_efficiency_fc.png": {
+    "summary": "Pump efficiency with frequency control",
+    "description": "Graph showing pump efficiency with frequency converter control across different speeds. The diagram illustrates the efficiency benefits of variable speed pump operation."
+  },
+  "Pump_chars_energies.png": {
+    "summary": "Pump energy consumption",
+    "description": "Graph showing pump energy consumption characteristics with different control methods. The diagram demonstrates the energy savings potential of variable speed pump drives."
+  },
+  "Pump_chars_energy.png": {
+    "summary": "Pump energy analysis",
+    "description": "Graph showing pump energy analysis with consumption patterns and efficiency characteristics. The diagram illustrates the energy performance of pump systems."
+  },
+  "Pump_chars_fc.png": {
+    "summary": "Pump with frequency converter",
+    "description": "Graph showing pump characteristics with frequency converter control and speed variation. The diagram demonstrates the performance benefits of variable speed pump operation."
+  },
+  "Pump_fc.png": {
+    "summary": "Pump frequency control",
+    "description": "Graph showing pump frequency control characteristics with speed and flow relationships. The diagram illustrates the control methods used in variable speed pump systems."
+  },
+  "benchmarking.png": {
+    "summary": "System benchmarking chart",
+    "description": "Chart showing system benchmarking results with performance metrics and comparison data. The diagram provides a framework for comparing different drive system configurations."
+  },
+  "comparing_eff_curves.png": {
+    "summary": "Efficiency comparison curves",
+    "description": "Graph comparing efficiency curves of different drive system configurations. The diagram illustrates the efficiency characteristics across various operating conditions."
+  },
+  "cost_of_ownership.png": {
+    "summary": "Cost of ownership analysis",
+    "description": "Chart showing total cost of ownership analysis for different drive systems including initial and operating costs. The diagram demonstrates the economic comparison of drive system alternatives."
+  },
+  "qualitative_comparison_1.png": {
+    "summary": "Qualitative system comparison",
+    "description": "Table showing qualitative comparison of different drive system configurations with performance ratings. The comparison provides a framework for evaluating system alternatives."
+  },
+  "reflection.png": {
+    "summary": "System reflection analysis",
+    "description": "Diagram showing system reflection analysis with performance metrics and optimization strategies. The illustration provides guidance for system improvement and optimization."
+  },
+  "dudt_pulses.png": {
+    "summary": "dU/dt voltage pulses",
+    "description": "Oscilloscope waveform showing dU/dt voltage pulses with high switching rates. The waveform demonstrates the voltage stress that can damage motor insulation."
+  },
+  "fc_input_i.png": {
+    "summary": "Frequency converter input current",
+    "description": "Oscilloscope waveform showing frequency converter input current with harmonic distortion. The waveform demonstrates the current characteristics of rectifier input stages."
+  },
+  "fc_input_u.png": {
+    "summary": "Frequency converter input voltage",
+    "description": "Oscilloscope waveform showing frequency converter input voltage with supply characteristics. The waveform demonstrates the voltage conditions at the frequency converter input."
+  },
+  "harmonics_c.png": {
+    "summary": "Current harmonics analysis",
+    "description": "Frequency spectrum showing current harmonics analysis with THD measurements. The diagram illustrates the harmonic content in frequency converter input currents."
+  },
+  "harmonics_u.png": {
+    "summary": "Voltage harmonics analysis",
+    "description": "Frequency spectrum showing voltage harmonics analysis with distortion measurements. The diagram illustrates the harmonic content in electrical supply voltages."
+  },
+  "impuls_2signals.png": {
+    "summary": "Impulse signal comparison",
+    "description": "Oscilloscope waveform showing two impulse signals with different characteristics. The waveform demonstrates the comparison of switching transients in electrical systems."
+  },
+  "dudt_effect.png": {
+    "summary": "dU/dt effect on insulation",
+    "description": "Diagram showing the effect of dU/dt on motor insulation with stress distribution. The illustration demonstrates how voltage transients affect motor winding insulation."
+  },
+  "ins_breakdown_e.png": {
+    "summary": "Insulation breakdown field",
+    "description": "Graph showing insulation breakdown electric field strength versus time. The diagram illustrates the relationship between electric field stress and insulation failure."
+  },
+  "common_mode_voltage.png": {
+    "summary": "Common mode voltage effects",
+    "description": "Diagram showing common mode voltage effects in motor drives with ground currents. The illustration demonstrates the common mode voltage generation and its effects on motor systems."
+  },
+  "Bearing_currents.png": {
+    "summary": "Bearing current analysis",
+    "description": "Diagram showing bearing current analysis with current paths and damage mechanisms. The illustration demonstrates how bearing currents are generated and cause bearing damage."
+  },
+  "mech_mot.png": {
+    "summary": "Mechanical motor coupling",
+    "description": "Schematic diagram showing mechanical motor coupling with load characteristics. The diagram illustrates the mechanical connection between motor and driven load."
+  },
+  "mech_gear_mot.png": {
+    "summary": "Motor with gearbox coupling",
+    "description": "Schematic diagram showing motor with gearbox coupling and load characteristics. The diagram illustrates the mechanical connection through gear reduction."
+  },
+  "mot_fc_grid.png": {
+    "summary": "Motor frequency converter grid",
+    "description": "Schematic diagram showing motor, frequency converter, and grid connection. The diagram illustrates the basic electrical connection in variable speed drives."
+  },
+  "mot_fc_trf_grid.png": {
+    "summary": "Motor drive with transformer",
+    "description": "Schematic diagram showing motor, frequency converter, transformer, and grid connection. The diagram illustrates the complete electrical connection with voltage transformation."
+  },
+  "longest_circuit_2.png": {
+    "summary": "Longest circuit analysis",
+    "description": "Diagram showing electrical circuit analysis with the longest current path highlighted. The illustration demonstrates circuit analysis methods for protection coordination."
+  },
+  "pump_curves_vs_drive1.png": {
+    "summary": "Pump curves vs drive",
+    "description": "Graph comparing pump curves with different drive methods showing performance differences. The diagram illustrates the impact of drive type on pump performance."
+  },
+  "wind_curves_vs_drive3.png": {
+    "summary": "Wind curves vs drive",
+    "description": "Graph comparing wind turbine curves with different drive methods showing performance differences. The diagram illustrates the impact of drive type on wind turbine performance."
+  },
+  "conveyor_curves_vs_drive1.png": {
+    "summary": "Conveyor curves vs drive",
+    "description": "Graph comparing conveyor curves with different drive methods showing performance differences. The diagram illustrates the impact of drive type on conveyor performance."
+  },
+  "conveyor_curves_vs_drive3.png": {
+    "summary": "Conveyor drive comparison",
+    "description": "Graph comparing conveyor drive characteristics with different control methods. The diagram illustrates the performance differences between various conveyor drive systems."
+  },
+  "winch_curves_vs_drive2.png": {
+    "summary": "Winch curves vs drive",
+    "description": "Graph comparing winch curves with different drive methods showing performance differences. The diagram illustrates the impact of drive type on winch performance."
+  },
+  "winch_curves_vs_drive1.png": {
+    "summary": "Winch drive comparison",
+    "description": "Graph comparing winch drive characteristics with different control methods. The diagram illustrates the performance differences between various winch drive systems."
+  },
+  "TT_with_gear.png": {
+    "summary": "Turbine with gearbox",
+    "description": "Schematic diagram showing turbine with gearbox connection and electrical system. The diagram illustrates the mechanical and electrical interface in turbine applications."
+  },
+  "TT_with_gear2.png": {
+    "summary": "Turbine gearbox configuration",
+    "description": "Schematic diagram showing turbine gearbox configuration with drive system. The diagram illustrates the power transmission arrangement in turbine applications."
+  },
+  "TT_with_gear3.png": {
+    "summary": "Turbine drive system",
+    "description": "Schematic diagram showing complete turbine drive system with gearbox and electrical components. The diagram illustrates the integrated turbine drive configuration."
+  },
+  "winch_with_gear.png": {
+    "summary": "Winch with gearbox",
+    "description": "Schematic diagram showing winch with gearbox and motor drive system. The diagram illustrates the mechanical arrangement in winch applications."
+  },
+  "winch_with_gear2.png": {
+    "summary": "Winch gearbox configuration",
+    "description": "Schematic diagram showing winch gearbox configuration with motor drive. The diagram illustrates the power transmission arrangement in winch systems."
+  },
+  "winch_with_gear3.png": {
+    "summary": "Winch drive system",
+    "description": "Schematic diagram showing complete winch drive system with gearbox and electrical components. The diagram illustrates the integrated winch drive configuration."
+  },
+  "emc_emissions.png": {
+    "summary": "EMC emissions measurement",
+    "description": "Graph showing electromagnetic compatibility emissions measurement with frequency spectrum. The diagram illustrates the electromagnetic emissions from electrical drive systems."
+  },
+  "THDi15.png": {
+    "summary": "15% THD current",
+    "description": "Waveform showing total harmonic distortion (THDi = 15%) in rectifier input current. The diagram shows good harmonic performance with effective filtering."
+  }
+}

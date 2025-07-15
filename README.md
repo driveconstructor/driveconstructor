@@ -106,12 +106,13 @@ to unable syntax highlighting.
 To add images to MDX documentation files in `content/docs/`:
 
 1. Place image files in the `content/docs/` directory alongside your MDX files
-2. Reference images in MDX files using standard markdown syntax:
+1. Reference images in MDX files using standard markdown syntax:
    ```markdown
    ![Alt text description](./example.png)
    ```
-3. Use relative paths to reference images in the same directory
-4. To customize image sizing in the browser, add a CSS rule to `src/app/docs/images.css` using the alt text as a selector:
+1. Use relative paths to reference images in the same directory
+1. To customize image sizing in the browser, add a CSS rule to
+   `src/app/docs/images.css` using the alt text as a selector:
    ```css
    img[alt="your-alt-text"] {
      width: 50%;

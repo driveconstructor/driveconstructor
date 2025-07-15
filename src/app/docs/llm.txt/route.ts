@@ -1,9 +1,11 @@
 import type { InferPageType } from "fumadocs-core/source";
 import { remarkInclude } from "fumadocs-mdx/config";
+import path from "path";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import remarkMdx from "remark-mdx";
 import { source } from "../source";
+import json from "./image-descriptions.json";
 
 const processor = remark()
   .use(remarkMdx)
@@ -18,13 +20,35 @@ async function getLLMText(page: InferPageType<typeof source>) {
   });
 
   console.log(`Converting MDX to test: ${page.url}`);
+  const content =
+    typeof processed.value == "undefined" ? "" : processed.value.toString();
 
   return `# ${page.data.title}
 URL: ${page.url}
 
 ${page.data.description ?? ""}
 
-${processed.value ?? ""}`;
+${describeImages(content)}`;
+}
+
+const imageDescriptions: Record<
+  string,
+  { summary: string; description: string }
+> = json;
+
+// Regular expression to match markdown image syntax: ![alt text](image-path)
+const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+
+function describeImages(markdownContent: string) {
+  return markdownContent.replace(imageRegex, (_, altText, imagePath) => {
+    const filename = path.basename(imagePath);
+
+    // Look up description for this filename
+    const imageInfo = imageDescriptions[filename] ?? altText;
+
+    // Create replacement text with context
+    return `**Image: ${imageInfo.summary} Description: ${imageInfo.description}**`;
+  });
 }
 
 // cached forever
