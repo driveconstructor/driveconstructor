@@ -7,8 +7,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
-const { title, logo } = await import("./branding.mjs");
+import { logo, title } from "./branding.mjs";
 
 export const metadata = {
   title,
