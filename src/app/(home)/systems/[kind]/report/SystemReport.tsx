@@ -12,6 +12,7 @@ import { useContext } from "react";
 import Graph from "../Graph";
 import Schema from "../Schema";
 import { SystemContext } from "../System";
+import { ReportExtension } from "./ReportExtension";
 
 export default function SystemReport() {
   const context = useContext(SystemContext);
@@ -48,6 +49,7 @@ export default function SystemReport() {
       ) : (
         <div className="text-lg text-red-600">Sizing is incomplete!</div>
       )}
+      <ReportExtension />
     </>
   );
 }
