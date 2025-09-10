@@ -79,3 +79,11 @@ jobs:
           directory: staging
           repository: ${{ vars.STAGING_REPO }}
           force: true
+
+      - name: Wait for 60 seconds to deployment
+        run: sleep 60
+
+      - name: Run playwright for staging repository
+        run: npm run test:e2e
+        env:
+          STAGING_REPO: ${{ vars.STAGING_REPO }}
