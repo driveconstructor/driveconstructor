@@ -9,7 +9,7 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+const config = defineConfig({
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -79,3 +79,13 @@ export default defineConfig({
     stdout: "pipe",
   },
 });
+
+// adjust config for staging
+if (process.env.STAGING_REPO) {
+  const baseURL = "https://" + process.env.STAGING_REPO.split("/")[1];
+  (config.use as any).baseURL = baseURL;
+
+  delete config.webServer;
+}
+
+export default config;
