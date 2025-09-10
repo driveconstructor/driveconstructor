@@ -59,7 +59,9 @@ function walk(urls: string[], children: any[]) {
     if (c.type == "page") {
       urls.push(c.url);
     } else if (c.type == "folder") {
-      urls.push(c.index.url);
+      if (c.index) {
+        urls.push(c.index.url);
+      }
       walk(urls, c.children);
     }
   });
@@ -70,6 +72,8 @@ export async function GET() {
   walk(urls, source.getPageTree().children);
 
   const books = ["/docs/textbook", "/docs/exercises"];
+
+  urls.push(...books);
 
   // make sure text book goes first
   urls.sort((a, b) => {
