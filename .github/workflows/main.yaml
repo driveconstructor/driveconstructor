@@ -11,11 +11,6 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -61,16 +56,6 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        if: ${{ github.event_name != 'pull_request' }}
-        with:
-          path: out/
-
-      - name: Deploy to GitHub Pages
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/deploy-pages@v4
 
       - name: Checkout staging repo
         uses: actions/checkout@v4
