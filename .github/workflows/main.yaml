@@ -57,6 +57,16 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          path: out/
+
+      - name: Deploy to GitHub Pages
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/deploy-pages@v4
+
       - name: Checkout staging repo
         uses: actions/checkout@v4
         if: ${{ vars.STAGING_REPO && github.event_name != 'pull_request' }}
@@ -81,9 +91,11 @@ jobs:
           force: true
 
       - name: Wait for 60 seconds to deployment
+        if: ${{ vars.STAGING_REPO && github.event_name != 'pull_request' }}
         run: sleep 60
 
       - name: Run playwright for staging repository
+        if: ${{ vars.STAGING_REPO && github.event_name != 'pull_request' }}
         run: npm run test:e2e
         env:
           STAGING_REPO: ${{ vars.STAGING_REPO }}
