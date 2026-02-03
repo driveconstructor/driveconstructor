@@ -13,5 +13,5 @@ test("CSS is working", async ({ browserName, page }) => {
   const backgroundColor = await label.evaluate(
     (l) => getComputedStyle(l).backgroundColor,
   );
-  expect(backgroundColor).toBe("oklch(0.968 0.007 247.896)");
+  expect(backgroundColor).toBe("lab(96.286 -0.852436 -2.46847)");
 });
