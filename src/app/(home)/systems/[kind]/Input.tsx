@@ -3,6 +3,7 @@
 import { withCandidates } from "@/model/sizing";
 import { createSystem, updateParam } from "@/model/store";
 import { System } from "@/model/system";
+import { exportToCsv } from "@/model/system-export";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import Candidates from "./Candidates";
@@ -87,6 +88,18 @@ export default function Input({
             {showMore ? "Less..." : "More..."}
           </button>
           <div className="grow" />
+          <button
+            hidden={
+              system.params == null ||
+              system.components.emachine?.type != "DFIM"
+            }
+            className="btn flex-none"
+            onClick={() => {
+              exportToCsv(system.components.emachine, `${system.name}`, system);
+            }}
+          >
+            Expoort to MATLAB
+          </button>
           <button
             hidden={system.params == null}
             className="btn flex-none"

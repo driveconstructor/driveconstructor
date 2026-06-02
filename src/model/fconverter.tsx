@@ -17,6 +17,7 @@ import {
 } from "./cooling-protection";
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
+import { EMachineTypeAlias } from "./emachine";
 
 export const FConverterMounting = ["wall", "floor"] as const;
 
@@ -63,6 +64,13 @@ export const LowVoltageType: FConverterTypeAlias[] = [
   "2Q-2L-VSC-6p",
   "4Q-2L-VSC",
 ];
+
+export const converterOptionsList: Record<EMachineTypeAlias, FConverterTypeAlias[]> = {
+  DFIM: ["4Q-2L-VSC", "4Q-3L-NPC-VSC", "4Q-ML-SCHB-VSC", "4Q-2L-VSC"],
+  SCIM: [...FConverterType],
+  PMSM: [...FConverterType],
+  SyRM: [...FConverterType],
+};
 
 export const NoTrafoFConverterElement = FConverterElement(LowVoltageType);
 

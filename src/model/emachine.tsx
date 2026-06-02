@@ -1,3 +1,4 @@
+import iconDFIM from "../images/el-emachine-dfim.svg";
 import iconPMSM from "../images/el-emachine-pmsm.svg";
 import iconSCIM from "../images/el-emachine-scim.svg";
 import iconSyRM from "../images/el-emachine-syrm.svg";
@@ -11,11 +12,11 @@ import {
 import { Environment, EnvironmentModel } from "./environment";
 import { SystemElement } from "./system";
 
-export const EMachineType = ["SCIM", /*'DFIM',*/ "PMSM", "SyRM"] as const;
+export const EMachineType = ["SCIM", "DFIM", "PMSM", "SyRM"] as const;
 export const ERatedPower = [
   1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110,
   132, 160, 200, 250, 280, 315, 355, 400, 450, 500, 560, 630, 710, 800, 900,
-  1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000, 5000,
+  1000, 1250, 1400, 1600, 2000, 2500, 3150, 4000, 5000, 6000, 7100,
 ] as const;
 export const EfficiencyClass = ["IE2", "IE3", "IE4"] as const;
 export type EfficiencyClassType = (typeof EfficiencyClass)[number];
@@ -57,6 +58,13 @@ export const RatedPowerParam = {
     label: "Rated power, kW",
     precision: 1,
   },
+};
+
+const protectionOptionsList: Record<EMachineTypeAlias, EMachineProtectionType[]> = {
+  SCIM: [...EMachineProtection],
+  PMSM: [...EMachineProtection],
+  SyRM: [...EMachineProtection],
+  DFIM: [...EMachineProtection].filter((v) => v !== "IP21/23"),
 };
 
 export const EMachineElement: SystemElement<EMachine> = {
@@ -167,11 +175,26 @@ export const EMachineElement: SystemElement<EMachine> = {
     },
   },
   customize: (model, value) => {
+    let updatedModel = model;
     if (value.type == null) {
-      return model;
+      return { ...updatedModel, icon };
     }
 
-    return { ...model, icon: customizeIcon(value.type) };
+    // Update protection options based on type
+    const protectionOptions = protectionOptionsList[value.type] || [...EMachineProtection];
+    updatedModel = {
+      ...updatedModel,
+      params: {
+        ...updatedModel.params,
+        protection: {
+          ...updatedModel.params.protection,
+          options: protectionOptions,
+          value: protectionOptions.includes(value.protection) ? value.protection : protectionOptions[0] || "IP21/23",
+        },
+      },
+    };
+
+    return { ...updatedModel, icon: customizeIcon(value.type) };
   },
 };
 
@@ -183,6 +206,8 @@ function customizeIcon(type: (typeof EMachineType)[number]) {
       return iconPMSM;
     case "SyRM":
       return iconSyRM;
+    case "DFIM":
+      return iconDFIM;
   }
 }
 

@@ -40,8 +40,7 @@ export function findCableComponent(
             const pricePerMeter =
               K1 * (1 + voltage * 0.03) * Math.pow(crossSection, 0.8);
             const designation = getDesignation(material, crossSection, voltage);
-            const length = cable.length;
-            const price = length * numberOfRuns * pricePerMeter;
+            let length = cable.length;
             const voltageDrop = Math.sqrt(
               Math.pow(
                 emachine.workingCurrent * resistancePerMeter * length,
@@ -56,6 +55,10 @@ export function findCableComponent(
                   2,
                 ),
             );
+            if (emachine.type == "DFIM") {
+              length = length * 1.33;
+            }
+            const price = length * numberOfRuns * pricePerMeter;
             const losses =
               (((Math.pow(emachine.workingCurrent, 2) * resistancePerMeter) /
                 1000) *
@@ -162,6 +165,7 @@ function calculateCable(cable: Cable, emachine: EMachineComponent) {
       break;
   }
 
+  //const workingCurrent = emachine.type == "DFIM" ? emachine.workingCurrent * 1.1 : emachine.workingCurrent;
   const workingCurrent = emachine.workingCurrent;
   let result: {
     maxCurrentDensity: number;
@@ -186,6 +190,10 @@ function calculateCable(cable: Cable, emachine: EMachineComponent) {
       cable.numberOfRuns,
     );
     result = { maxCurrentDensity, numberOfRuns: cable.numberOfRuns };
+  }
+
+  if (result == null) {
+    return null;
   }
 
   let minCrossSection;

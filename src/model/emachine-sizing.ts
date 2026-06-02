@@ -21,6 +21,7 @@ import { EMachineComponent } from "./emachine-component";
 import { getEfficiency100, getPartialEfficiency } from "./emachine-efficiency";
 import { emachineDesignation, emachineTypeFilter } from "./emachine-utils";
 import { Mechanism } from "./sizing";
+import { System } from "./system";
 import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
@@ -81,6 +82,7 @@ export function findEmCandidates(
   typeSpeedTorqueList: TypeSpeedTorque[],
   ratedVoltageY: VoltageY,
   mechanismTorqueOverload: number | null,
+  system: System,
 ): EMachineComponent[] {
   return EMachineCooling.filter((c) => em.cooling == null || c == em.cooling)
     .flatMap((cooling) =>
@@ -111,10 +113,15 @@ export function findEmCandidates(
                     efficiencyClass,
                   );
                   const efficiency75 = getPartialEfficiency(
+                    typeSpeedTorque,
                     0.75,
                     efficiency100,
                   );
-                  const efficiency50 = getPartialEfficiency(0.5, efficiency100);
+                  const efficiency50 = getPartialEfficiency(
+                    typeSpeedTorque,
+                    0.5,
+                    efficiency100,
+                  );
                   const efficiency25 =
                     typeSpeedTorque.type == "PMSM"
                       ? 0.987 * efficiency100
@@ -214,7 +221,7 @@ export function findEmCandidates(
         ),
       ),
     )
-    .filter(emachineTypeFilter)
+    .filter((ec) => emachineTypeFilter(ec, system))
     .filter((ec) => em.ratedPower == null || ec.ratedPower == em.ratedPower)
     .filter((ec) => em.shaftHeight == null || ec.shaftHeight == em.shaftHeight)
     .filter(
@@ -229,8 +236,10 @@ function getCosFi(typeSpeedTorque: TypeSpeedTorque, k: number): number {
     const coeff = 0.09 * Math.pow(typeSpeedTorque.ratedSpeed, 0.28);
     const inpower = 114 * Math.pow(typeSpeedTorque.ratedSpeed, -1.19);
     return coeff * Math.pow(typeSpeedTorque.ratedPower, inpower) * (k ? k : 1);
-  } else if ((typeSpeedTorque.type = "PMSM")) {
+  } else if (typeSpeedTorque.type == "PMSM") {
     return 0.95;
+  } else if (typeSpeedTorque.type == "DFIM") {
+    return 0.9;
   }
 
   throw new Error("unsupported type");
@@ -272,6 +281,7 @@ function getWorkingCurrent(
 }
 
 function getK2(type: EMachineTypeAlias) {
+  // for weight calculation
   switch (type) {
     case "SCIM":
       return 1;
@@ -279,6 +289,8 @@ function getK2(type: EMachineTypeAlias) {
       return 0.8;
     case "SyRM":
       return 0.9;
+    case "DFIM":
+      return 1.5;
   }
 }
 
@@ -293,7 +305,7 @@ function getK8(
         case "IP54/55":
           return 1;
         case "IP21/23":
-          return 0.8;
+          return 0.9;
       }
     case "IC71W":
       return 0.7;
@@ -351,6 +363,7 @@ function getWeight(
 }
 
 function getK3(type: EMachineTypeAlias) {
+  // for price calculation
   switch (type) {
     case "SCIM":
       return 1;
@@ -358,6 +371,8 @@ function getK3(type: EMachineTypeAlias) {
       return 1.2;
     case "SyRM":
       return 1;
+    case "DFIM":
+      return 1.05;
   }
 }
 
@@ -420,7 +435,10 @@ function getPrice(
 ) {
   const K11 = ratedVoltageY.value > 1000 ? 30 : 20;
   const a = ratedVoltageY.value > 1000 ? 0.8 : 0.9;
-  const K9 = typeSpeedTorque.ratedSynchSpeed === 1500 ? 0.95 : 1;
+  const K9 =
+    //typeSpeedTorque.type === "DFIM" ? 1:
+    typeSpeedTorque.ratedSynchSpeed === 1500 ? 0.95 : 1;
+
   const price =
     ((1000 *
       K11 *
@@ -431,15 +449,18 @@ function getPrice(
       K9) /
       getK14(cooling, protection)) *
     Math.pow(weight / 1000, a);
-  return (
-    price +
-    (price *
-      Math.max(
-        0,
-        getPriceIncrease(typeSpeedTorque.ratedPower, efficiencyClass),
-      )) /
-      100
-  );
+
+  const finalPrice =
+    typeSpeedTorque.type === "SCIM"
+      ? price +
+        (price *
+          Math.max(
+            0,
+            getPriceIncrease(typeSpeedTorque.ratedPower, efficiencyClass),
+          )) /
+          100
+      : price;
+  return finalPrice;
 }
 
 // K14 = 0,975 for IC411 IP54/55,
@@ -456,14 +477,14 @@ function getK14(
     case "IC411":
       switch (protection) {
         case "IP54/55":
-          return 0.975;
+          return 1;
         case "IP21/23":
           return 0.9;
       }
     case "IC416":
       switch (protection) {
         case "IP54/55":
-          return 1;
+          return 0.975;
         case "IP21/23":
           return 0.925;
       }
@@ -474,6 +495,7 @@ function getK14(
 function getTorqueOverload(type: EMachineTypeAlias) {
   switch (type) {
     case "SCIM":
+    case "DFIM":
       return 2.4;
     case "PMSM":
     case "SyRM":

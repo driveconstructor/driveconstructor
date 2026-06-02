@@ -97,20 +97,20 @@ export const WindGbFcModel: Model<WindGbFc> = {
   ),
   input: {
     wind: {
-      ...WindElement,
+      ...WindElement,/*
       params: {
         ...WindElement.params,
         ratedSpeedOfBlades: {
           ...WindElement.params.ratedSpeedOfBlades,
           value: 20,
-          range: { min: 10, max: 400 },
+          range: { min: 10, max: 40 },
         },
         ratedTorque: {
           ...WindElement.params.ratedTorque,
           value: 200,
-          range: { min: 1, max: 2000 },
+          range: { min: 1, max: 3000 },
         },
-      },
+      },*/
     },
     gearbox: GearboxElement,
     emachine: { ...WindFcModel.input.emachine },

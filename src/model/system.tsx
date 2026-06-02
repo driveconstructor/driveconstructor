@@ -1,5 +1,10 @@
 import { StaticImageData } from "next/image";
 import React from "react";
+import dfimCableIcon from "../images/el-cable-dfim.svg";
+import dfimFConverter2LIcon from "../images/el-fconverter-2L-dfim.svg";
+import dfimFConverter3LIcon from "../images/el-fconverter-3L-dfim.svg";
+import dfimFConverterML2QIcon from "../images/el-fconverter-ML-2Q-dfim.svg";
+import dfimFConverterML4QIcon from "../images/el-fconverter-ML-4Q-dfim.svg";
 import applications from "./application";
 import { Cable } from "./cable";
 import {
@@ -152,5 +157,67 @@ function customizeSystemModel(
     };
   }
 
+  if (input.emachine.type == "DFIM") {
+    if (input.fconverter.type == "4Q-3L-NPC-VSC") {
+      return {
+        ...model,
+        input: {
+          ...model.input,
+          fconverter: {
+            ...model.input.fconverter,
+            icon: dfimFConverter3LIcon, // ← Change icon
+          },
+          cable: {
+            ...model.input.cable,
+            icon: dfimCableIcon, // ← Change icon
+          },
+        },
+      };
+    } else if (input.fconverter.type == "4Q-ML-SCHB-VSC") {
+      return {
+        ...model,
+        input: {
+          ...model.input,
+          fconverter: {
+            ...model.input.fconverter,
+            icon: dfimFConverterML4QIcon, // ← Change icon
+          },
+          cable: {
+            ...model.input.cable,
+            icon: dfimCableIcon, // ← Change icon
+          },
+        },
+      };
+    } else if (input.fconverter.type == "2Q-ML-SCHB-VSC") {
+      return {
+        ...model,
+        input: {
+          ...model.input,
+          fconverter: {
+            ...model.input.fconverter,
+            icon: dfimFConverterML2QIcon, // ← Change icon
+          },
+          cable: {
+            ...model.input.cable,
+            icon: dfimCableIcon, // ← Change icon
+          },
+        },
+      };
+    }
+    return {
+      ...model,
+      input: {
+        ...model.input,
+        fconverter: {
+          ...model.input.fconverter,
+          icon: dfimFConverter2LIcon, // ← Change icon
+        },
+        cable: {
+          ...model.input.cable,
+          icon: dfimCableIcon, // ← Change icon
+        },
+      },
+    };
+  }
   return model;
 }

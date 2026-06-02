@@ -5,7 +5,7 @@ import { SystemElement } from "./system";
 export const Material = ["copper", "aluminum"] as const;
 export const CrossSection = [
   1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 150, 185, 240, 300, 400, 500, 630,
-  800,
+  800, 
 ] as const satisfies number[];
 
 export const NumberOfRuns = [1, 2, 4, 6, 8] as const;
