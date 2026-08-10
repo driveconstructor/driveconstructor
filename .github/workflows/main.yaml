@@ -16,16 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           cache: npm
 
       - name: Restore cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             .next/cache
@@ -50,7 +50,7 @@ jobs:
         run: npm run test:e2e
 
       - name: Upload playwright report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report
@@ -58,7 +58,7 @@ jobs:
           retention-days: 30
 
       - name: Checkout staging repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         if: ${{ vars.STAGING_REPO && github.event_name != 'pull_request' }}
         with:
           repository: ${{ vars.STAGING_REPO }}
