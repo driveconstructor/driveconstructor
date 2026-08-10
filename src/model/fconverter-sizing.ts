@@ -26,6 +26,20 @@ function addFilter(
   return filter == null ? nullValue : func(filter);
 }
 
+export function isWithinFloorConverterOversizingLimit(
+  mounting: FConverterMountingType,
+  converterCurrent: number,
+  requiredCurrent: number,
+  emachineType: EMachineTypeAlias | null,
+): boolean {
+  if (mounting !== "floor") {
+    return true;
+  }
+
+  const maximumOversizing = emachineType === "DFIM" ? 4 : 2;
+  return converterCurrent <= requiredCurrent * maximumOversizing;
+}
+
 export function findFcConverters(
   systemVoltage: number,
   cableEfficiency100: number,
@@ -230,13 +244,17 @@ export function findFcConverters(
         dfimPowerDerating; // For DFIM, reduce required current to allow smaller converters
 
       if (currentK) {
-        console.log("Using currentK:", currentK);
         return fc.currentHO >= current * currentK;
       }
 
       return (
         fc.currentLO >= current &&
-        (fc.mounting != "floor" || fc.currentLO <= current * 4) // Allow 4x oversizing for floor-mounted
+        isWithinFloorConverterOversizingLimit(
+          fc.mounting,
+          fc.currentLO,
+          current,
+          emachineType,
+        )
       );
     });
 }

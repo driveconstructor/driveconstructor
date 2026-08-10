@@ -24,6 +24,8 @@ Integrate Stian's DFIM and wind-power work into the current `main` branch while:
 - Base branch: `main`
 - PR state observed on 2026-08-10: conflicting, with no reviews or CI results
 - Integration branch: `integrate/pr-78`
+- Supported verification runtime: **Node.js 24 only**, as declared by `.nvmrc`.
+  Results from other Node.js major versions are out of scope.
 - Conflict files retained from `main`: `package.json`, `package-lock.json`, and
   `next-env.d.ts`
 
@@ -93,14 +95,15 @@ Status: **Resolved in working tree; documented coefficients restored**
 #### 3. Selecting DFIM initially produces no converter candidates
 
 The default converter is a 2Q type, while the DFIM candidate filter accepts only
-4Q types. Changing the machine type to DFIM updates icons but does not update the
-converter options or selected value. The selected converter is consequently
+4Q types. Changing the machine type to DFIM updates icons but does not update
+the converter options or selected value. The selected converter is consequently
 rejected until the user manually chooses a supported type.
 
 Proposed resolution: when DFIM is selected, restrict converter options to the
 supported set and replace an invalid current selection with a valid default.
 
-Status: **Resolved in working tree; invalid selections are replaced and options restricted**
+Status: **Resolved in working tree; invalid selections are replaced and options
+restricted**
 
 #### 4. DFIM cable voltage drop uses a different length from losses and price
 
@@ -111,7 +114,8 @@ drop uses the original length.
 Proposed resolution: calculate one effective length before calculating any
 derived cable properties.
 
-Status: **Resolved in working tree; one effective length now drives all calculations**
+Status: **Resolved in working tree; one effective length now drives all
+calculations**
 
 #### 5. Existing saved wind systems have no migration path
 
@@ -122,18 +126,20 @@ which may produce `NaN` values during recalculation.
 Proposed resolution: introduce persisted-system schema versioning and a
 migration, or temporarily support both representations.
 
-Status: **Resolved in working tree; legacy speed and power are preserved by migration**
+Status: **Resolved in working tree; legacy speed and power are preserved by
+migration**
 
 #### 6. Direct-drive wind models expose a DFIM option that cannot produce a candidate
 
 DFIM candidates require at least 1,000 rpm, while direct-drive turbine speed is
-far below that range. The UI nevertheless exposes DFIM in wind systems without
-a gearbox.
+far below that range. The UI nevertheless exposes DFIM in wind systems without a
+gearbox.
 
 Proposed resolution: restrict DFIM to appropriate gearbox topologies, or define
 and validate a direct-drive DFIM model.
 
-Status: **Resolved in working tree; DFIM is offered only in gearbox wind models**
+Status: **Resolved in working tree; DFIM is offered only in gearbox wind
+models**
 
 #### 7. DFIM converter and filter currents are inconsistent
 
@@ -160,8 +166,8 @@ Status: **Requires engineering validation**
 
 The implementation uses `0.7 + 0.3 * converterEfficiency`, then multiplies that
 by the full machine, cable, gearbox, and transformer efficiencies. Whether this
-is correct depends on which physical path each modeled component represents.
-The implementation also uses `any` and truthiness-based fallbacks.
+is correct depends on which physical path each modeled component represents. The
+implementation also uses `any` and truthiness-based fallbacks.
 
 Status: **Requires engineering validation and refactoring**
 
@@ -197,7 +203,8 @@ Status: **Open**
 ### Cleanup findings
 
 - The DFIM converter option list contains `4Q-2L-VSC` twice.
-- A DFIM icon branch exists for a 2Q converter that the candidate filter rejects.
+- A DFIM icon branch exists for a 2Q converter that the candidate filter
+  rejects.
 - A debug `console.log` remains in converter sizing.
 - `emachine-utils.ts` imports `log` from `console` but does not use it.
 - Commented-out code and imports remain throughout the changes.
@@ -226,6 +233,229 @@ domain expert:
 10. Are `Cp = 0.45` and `TSR = 7` fixed design assumptions or user inputs?
 
 Record answers and sources in the decision log below.
+
+## DFIM engineering review
+
+Review date: 2026-08-10
+
+### Reference-backed design basis
+
+Primary references reviewed:
+
+- NREL, _Doubly Fed Induction Generator_ (`NREL/CP-5500-55573`): converter power
+  is proportional to slip and stator power; converter size is determined by the
+  permitted maximum slip.
+- NREL, _Short-Circuit Modeling of a Wind Power Plant_ (`NREL/CP-550-47193`): a
+  speed range corresponding to approximately `+/-0.3` slip permits a partial
+  converter rating of approximately 30% of generator rating.
+- IEEE Transactions on Industrial Electronics, DOI `10.1109/TIE.2012.2226417`:
+  DFIG converters are commonly rated at 25–30% and require additional
+  consideration for low-voltage ride-through currents.
+
+The one-third converter-power approximation is therefore acceptable as a
+declared nominal design assumption, provided it is explicitly tied to a `+/-30%`
+slip envelope. It must not be interpreted as meaning that every rotor voltage
+and current is 30% of its stator equivalent.
+
+### Confirmed modeling problems
+
+#### A. The DFIM slip envelope is not modeled
+
+Candidate selection inherits the generic machine limits: maximum speed is 120%
+of synchronous speed and the lower candidate bound permits operation down to 50%
+of synchronous speed. This does not match the 30% converter assumption, which
+implies an approximate 70–130% synchronous-speed envelope.
+
+Recommended correction:
+
+- introduce a named `DFIM_MAX_SLIP = 0.3`;
+- use it for both lower and upper DFIM speed constraints; and
+- derive the converter power fraction from the same constant.
+
+Status: **Confirmed correction required**
+
+#### B. Grid-side and rotor-side filter currents are conflated
+
+The converter candidate is selected using 30% of the machine working current,
+but both filters are constructed using 100% of machine current. For a simplified
+30% slip-power model:
+
+- the grid-side converter/filter operates at grid voltage and approximately 30%
+  of rated power/current;
+- the rotor-side converter/filter operates at slip voltage and can carry a rotor
+  current comparable, after turns-ratio referral, to machine current.
+
+Using one voltage/current pair for both sides cannot represent both correctly.
+
+Recommended correction: pass distinct grid-side and rotor-side electrical
+ratings into filter selection. As a minimum approximation, use 30% current for
+the grid-side filter and full referred current for the machine-side filter, and
+document that rotor voltage is not explicitly modeled.
+
+Status: **Confirmed correction required; rotor-voltage approximation must be
+documented**
+
+#### C. The cable multiplier is applied to electrical quantities incorrectly
+
+The added textbook says the `1.33` cable multiplier represents combined stator
+and rotor cable cost and weight. The code also applies it to voltage drop and
+losses. That is not physically equivalent:
+
+- stator voltage drop is based on the physical stator cable length;
+- rotor voltage drop belongs to a separate lower-voltage circuit;
+- if rotor current is approximated as 30%, its resistive loss contribution is
+  proportional to `0.3^2`, not `0.3`.
+
+Recommended correction: retain `1.33` only for the approximated installed cable
+quantity, price, weight, and volume. Keep stator voltage drop based on physical
+length. Either model rotor losses separately or document and use an explicit
+loss multiplier such as `1 + 0.3^2` under the equal-resistance approximation.
+
+Status: **Confirmed correction required**
+
+#### D. DFIM efficiency at 25% load is inconsistent
+
+DFIM has a dedicated partial-load curve at 50% and 75%, but at 25% it receives
+the SCIM constant (`0.931 * efficiency100`) instead of the DFIM curve. The DFIM
+curve evaluated at 25% gives a materially different result.
+
+Recommended correction: use the same typed partial-efficiency function at 25%,
+50%, and 75% load.
+
+Status: **Confirmed correction required**
+
+#### E. MATLAB base resistance contains a factor-of-three inconsistency
+
+The MATLAB script calculates line current as `P / (sqrt(3) * V)` but calculates
+three-phase base impedance as `V^2 / P / 3`. With line-to-line voltage and total
+three-phase power, the conventional base impedance is `V^2 / P`; the extra
+division by three makes every exported per-unit resistance and reactance three
+times too large.
+
+Recommended correction: confirm the Simulink block's expected base convention,
+then change `Rbase` to `Vm * Vm / Pm` if it uses conventional three-phase
+per-unit bases.
+
+Status: **Likely defect; verify against the Simulink block before changing**
+
+#### F. Converter floor oversizing was changed globally
+
+The PR changes the generic floor-mounted converter oversizing ceiling from two
+times to four times rated current. This is not conditional on DFIM and can
+therefore alter converter selection for every existing topology. No DFIM
+engineering requirement or source was found for this global change.
+
+Recommended correction: restore the existing two-times ceiling for generic
+converter selection. Following the integration decision, retain the PR's
+four-times ceiling as an explicit DFIM-only rule with focused regression tests.
+Its engineering basis remains to be documented.
+
+Status: **Implemented: two times generally, four times only for DFIM**
+
+### Acceptable approximations with limitations
+
+#### Fixed 30% converter rating
+
+Acceptable for a conceptual/catalog sizing tool if the design is explicitly a
+`+/-30%` slip machine. It should be a named parameter shared by speed and power
+calculations, not repeated literals.
+
+#### Rated system efficiency split
+
+At a fixed 70/30 power split, `0.7 + 0.3 * converterEfficiency` is a reasonable
+rated-point approximation for the two parallel power paths. It is not generally
+valid at every partial-load point because slip power varies with operating
+speed. Partial-load results should either derive the split from slip or be
+labelled as an approximation.
+
+#### Four-quadrant converters
+
+Restricting DFIM to 4Q converter types is consistent with bidirectional rotor
+power flow in sub-synchronous and super-synchronous operation.
+
+### Unsubstantiated coefficients
+
+The PR provides no cited basis for the following DFIM constants:
+
+- machine efficiency coefficients (`0.943`, `0.941`, and partial-load terms);
+- power factor `0.9`;
+- weight factor `1.5`;
+- price factor `1.05`;
+- torque overload `2.4`;
+- cable installed-quantity factor `1.33`; and
+- estimated machine resistance and inductance values for MATLAB.
+
+These may be thesis assumptions, but each should be linked to a thesis section,
+manufacturer data, or calibration case before being treated as validated
+engineering output.
+
+### Required DFIM reference tests
+
+Add at least one 1–3 MW reference system with a documented synchronous speed and
+verify:
+
+- accepted mechanical speed range is 70–130% of synchronous speed;
+- converter rated power is approximately 30% of machine power;
+- grid-side and rotor-side filter ratings use their intended currents;
+- cable price and electrical losses use separate assumptions;
+- rated and partial-load system efficiencies match hand calculations; and
+- exported per-unit MATLAB parameters match the Simulink base convention.
+
+### Proposed implementation scope
+
+The corrections must be scoped so that adding DFIM does not change results for
+existing machine types and topologies.
+
+#### DFIM-only behavior changes
+
+1. Define one named `DFIM_MAX_SLIP = 0.3` engineering assumption. Derive both
+   the DFIM converter power fraction and the DFIM 70–130% synchronous-speed
+   envelope from it. Other machine speed rules remain unchanged.
+2. Give DFIM grid-side and rotor-side filters separate electrical ratings. Use
+   approximately 30% current for the grid side and full referred current for the
+   rotor side as the initial approximation. Document that rotor voltage is not
+   modeled explicitly. Existing full-converter filter sizing remains unchanged.
+3. Apply the DFIM `1.33` cable factor only to installed quantity, price, weight,
+   and volume. Use physical stator length for voltage drop. Model rotor loss
+   separately or, until that is possible, use and clearly name the equal-
+   resistance approximation `1 + DFIM_MAX_SLIP^2 = 1.09`. Non-DFIM cable
+   calculations remain unchanged.
+4. Use the DFIM partial-load efficiency curve consistently at 25%, 50%, and 75%
+   load. Do not change SCIM, PMSM, or SynRM efficiency curves.
+5. Keep the fixed 70/30 rated-efficiency split as a declared DFIM-only
+   approximation. A future slip-derived partial-load split is an enhancement,
+   not required for the initial integration.
+
+#### Shared-code changes that must preserve non-DFIM behavior
+
+6. Filter- and converter-sizing APIs may need shared structural changes to pass
+   separate side ratings, but all non-DFIM inputs and outputs must remain
+   identical. Add regression tests to enforce this.
+7. Restore the generic floor-converter oversizing ceiling from the PR's four
+   times value to the pre-PR two times value. Retain four times only when the
+   machine type is DFIM. This preserves existing behavior while isolating the
+   new rule; its engineering basis still needs evidence.
+8. Remove the new converter-sizing debug log. This is global cleanup with no
+   engineering effect.
+
+#### Deferred pending verification
+
+9. Verify the Simulink block's per-unit base convention before removing `/ 3`
+   from MATLAB `Rbase`. This export correction would be DFIM-specific because
+   the script is DFIM-specific, but it must not be made from convention alone.
+10. Keep the PR's DFIM price, weight, power-factor, overload, efficiency, and
+    exported equivalent-circuit coefficients unchanged until their thesis or
+    manufacturer sources are found. Record them as assumptions rather than
+    validated values.
+
+#### Verification boundary
+
+Add a hand-calculated 1–3 MW DFIM reference case covering speed, converter,
+filters, cable, efficiency, and export. In parallel, snapshot representative
+existing non-DFIM systems before corrections and assert that their candidates,
+prices, losses, voltage drops, and efficiencies do not change. The only global
+numeric difference expected is restoration of converter selection where the PR's
+unintended four-times ceiling had changed a result.
 
 ## Proposed integration stages
 
@@ -325,10 +555,10 @@ git diff --check
 Add durable decisions here. Include the date, decision, rationale, source or
 evidence, and participants when relevant.
 
-| Date | Decision | Rationale / evidence | Status |
-| --- | --- | --- | --- |
-| 2026-08-10 | Keep current dependency versions rather than PR #78's versions | The dependency work is newer and independent of the feature | Proposed |
-| 2026-08-10 | Do not merge PR #78 unchanged | Static review found correctness defects and unvalidated shared-model changes | Proposed |
+| Date       | Decision                                                          | Rationale / evidence                                                                                                 | Status   |
+| ---------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------- |
+| 2026-08-10 | Keep current dependency versions rather than PR #78's versions    | The dependency work is newer and independent of the feature                                                          | Proposed |
+| 2026-08-10 | Do not merge PR #78 unchanged                                     | Static review found correctness defects and unvalidated shared-model changes                                         | Proposed |
 | 2026-08-10 | Preserve the original wind inputs, defaults, and topology results | Stian's scope is adding DFIM, not changing existing topologies; rotor diameter and wind speed are derived for export | Accepted |
 
 ## Session log
@@ -351,7 +581,8 @@ evidence, and participants when relevant.
 
 - Verified dependency-updated `main` with Node.js 24: 7 tests and the production
   build passed.
-- Created `integrate/pr-78` and imported `origin/StianMasterThesis` with a merge.
+- Created `integrate/pr-78` and imported `origin/StianMasterThesis` with a
+  merge.
 - Retained the current `main` versions of `package.json`, `package-lock.json`,
   and `next-env.d.ts`; no PR dependency changes were accepted.
 - Confirmed that the uncorrected imported source compiled with the current
@@ -378,10 +609,45 @@ evidence, and participants when relevant.
 - Left converter/filter current paths and the 70/30 efficiency model unresolved
   pending engineering validation.
 
+### 2026-08-10 — DFIM engineering review
+
+- Confirmed that a 30% converter rating is a defensible approximation when it is
+  tied to a `+/-30%` slip range.
+- Found that machine selection does not enforce that slip range.
+- Found that grid-side and rotor-side filter ratings are represented by one
+  conflated current/voltage model.
+- Superseded the earlier cable effective-length correction: `1.33` is an
+  installed-quantity approximation and must not be applied identically to
+  voltage drop and resistive loss.
+- Found an inconsistent DFIM efficiency calculation at 25% load.
+- Identified a likely factor-of-three error in the MATLAB per-unit base
+  resistance, pending verification of the Simulink block convention.
+- Found a global converter oversizing change that can affect non-DFIM topologies
+  and should be restored or isolated behind a documented DFIM rule.
+- No engineering behavior was changed during this review.
+
+### 2026-08-10 — DFIM-only converter oversizing
+
+- Restored the original two-times floor-converter oversizing ceiling for all
+  existing machine types and for calls without a selected machine type.
+- Retained the four-times ceiling only when the machine type is explicitly DFIM.
+- Preserved the existing behavior for wall-mounted converters, which are not
+  governed by the floor oversizing ceiling.
+- Removed the converter-sizing debug log.
+- Added boundary tests for DFIM, SCIM, PMSM, an unspecified machine type, and
+  wall mounting.
+- TypeScript compilation passes under Node.js 24. The automated agent shell
+  could not start Jest because its Next.js adapter received unparsable
+  TypeScript `--showConfig` output, although `npm run build` succeeds in the
+  maintainer's Node.js 24 terminal. Treat this as a session-specific
+  verification limitation, not a repository or test failure.
+
 ## Notes for future sessions
 
 - Start by reading this document and checking the current branch and working
   tree.
+- Run all project commands under Node.js 24 (`nvm use`); do not use results from
+  another Node.js major version as integration evidence.
 - Update statuses rather than deleting historical findings.
 - Add links to commits or tests as findings are resolved.
 - Keep engineering assumptions separate from confirmed software defects.

@@ -2,11 +2,36 @@ import { describe, expect, test } from "@jest/globals";
 import { findCableComponent } from "../cable-sizing";
 import type { EMachineComponent } from "../emachine-component";
 import { DFIMConverterType } from "../fconverter";
+import { isWithinFloorConverterOversizingLimit } from "../fconverter-sizing";
 import { createSystem, updateParam } from "../store";
 import { customizeModel, getModel } from "../system";
 import { migrateLegacyWindInput } from "../wind";
 
 describe("PR #78 integration", () => {
+  test("allows four-times floor converter oversizing only for DFIM", () => {
+    expect(
+      isWithinFloorConverterOversizingLimit("floor", 300, 100, "DFIM"),
+    ).toBe(true);
+    expect(
+      isWithinFloorConverterOversizingLimit("floor", 300, 100, "SCIM"),
+    ).toBe(false);
+    expect(isWithinFloorConverterOversizingLimit("floor", 300, 100, null)).toBe(
+      false,
+    );
+  });
+
+  test("preserves the two-times floor limit and wall behavior", () => {
+    expect(
+      isWithinFloorConverterOversizingLimit("floor", 200, 100, "PMSM"),
+    ).toBe(true);
+    expect(
+      isWithinFloorConverterOversizingLimit("floor", 201, 100, "PMSM"),
+    ).toBe(false);
+    expect(
+      isWithinFloorConverterOversizingLimit("wall", 500, 100, "PMSM"),
+    ).toBe(true);
+  });
+
   test("uses the DFIM effective cable length consistently", () => {
     const cable = {
       length: 100,
