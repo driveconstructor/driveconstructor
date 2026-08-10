@@ -2,6 +2,9 @@ import colors from "tailwindcss/colors";
 import { EMachineComponent } from "./emachine-component";
 import { TypeSpeedTorque } from "./emachine-sizing";
 import { VoltageY } from "./voltage";
+import { System } from "./system";
+import { ApplicationType, getApplicationType } from "./application";
+import { log } from "console";
 export function emachineDesignation(
   typeSpeedTorque: TypeSpeedTorque,
   ratedVoltageY: VoltageY,
@@ -22,6 +25,9 @@ export function emachineDesignation(
       break;
     case "SyRM":
       result.push("SR");
+      break;
+    case "DFIM":
+      result.push("DF");
       break;
     default:
       result.push("XXX");
@@ -78,7 +84,8 @@ export function emachineDesignation(
   return result.join("-");
 }
 
-export function emachineTypeFilter(em: EMachineComponent): boolean {
+export function emachineTypeFilter(em: EMachineComponent, system: System): boolean {
+  const applicationType: ApplicationType = getApplicationType(system.kind);
   switch (em.type) {
     case "SCIM": {
       if (
@@ -178,7 +185,7 @@ export function emachineTypeFilter(em: EMachineComponent): boolean {
 
       return false;
     }
-    case "SyRM":
+    case "SyRM": {
       if (em.efficiencyClass != "IE4" || em.frameMaterial == "steel") {
         return false;
       }
@@ -193,6 +200,24 @@ export function emachineTypeFilter(em: EMachineComponent): boolean {
         return true;
       }
       return false;
+    }
+    case "DFIM": {
+      if (applicationType != "wind") {
+
+        return false;
+      }
+      if (em.efficiencyClass != "IE4" || em.frameMaterial == "aluminum") {
+        return false;
+      }
+      if (em.ratedSpeed < 1000 || em.ratedSpeed >= 3000 || em.mounting != "B3") {
+        return false;
+      }
+
+      if (em.ratedPower >= 1000 && em.ratedPower <= 7000) {
+        return true;
+      }
+      return false;
+    }
   }
 }
 

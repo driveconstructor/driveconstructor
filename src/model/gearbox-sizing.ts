@@ -5,7 +5,9 @@ const Torque = [
   5, 10, 20, 30, 40, 60, 80, 100, 140, 180, 220, 270, 320, 370, 440, 500, 600,
   750, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7000, 9000, 12000, 15000,
   20000, 30000, 40000, 50000, 70000, 100000, 120000, 150000, 200000, 300000,
-  400000, 500000, 700000, 1000000, 1500000, 2000000, 2500000, 3000000,
+  400000, 500000, 700000, 1000000, 1500000, 2000000, 2500000, 3000000, 4000000,
+  5000000, 7000000, 10000000, 15000000, 20000000, 30000000, 40000000, 50000000,
+  70000000,
 ];
 export function findGearbox(
   gearbox: Gearbox,
@@ -13,11 +15,21 @@ export function findGearbox(
 ): GearboxComponent[] {
   const designation: string[] = [];
 
-  let stage = findStage(
+  const stage1 = findStage(
     gearbox.stage1Type,
     gearbox.stage1Ratio,
     mechanismRatedTorque,
   );
+
+  // If no usable stage can be found for the selected gearbox configuration and
+  // torque, we must return an empty candidate list instead of crashing. This
+  // can happen when the required torque is above the cataloged range for the
+  // selected stage type / ratio.
+  if (!stage1) {
+    return [];
+  }
+
+  let stage = stage1;
   designation.push(typeDesignation(gearbox.stage1Type));
 
   if (gearbox.numberOfStages > 1) {

@@ -17,5 +17,6 @@ out/
 
 # Generated content
 .source
+*.tsbuildinfo
 
 .claude/

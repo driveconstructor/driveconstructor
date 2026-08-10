@@ -1,5 +1,6 @@
 import { ApplicationType } from "./application";
 import { FcCooling, FcCoolingType, FcProtection } from "./cooling-protection";
+import { EMachineTypeAlias } from "./emachine";
 import {
   FConverter,
   FConverterMounting,
@@ -33,9 +34,13 @@ export function findFcConverters(
   trafoRatio: number,
   applicationType: ApplicationType,
   currentK: number | null,
+  emachineType: EMachineTypeAlias | null = null,
 ): FConverterComponent[] {
   const deratedVoltage =
     systemVoltage / fconverter.voltageDerating / trafoRatio;
+
+  // For DFIM, apply a power derating factor to allow smaller converters
+  const dfimPowerDerating = emachineType === "DFIM" ? 0.3 : 1;
 
   return FConverterType.filter((type) => type == fconverter.type)
     .flatMap((type) =>
@@ -219,17 +224,19 @@ export function findFcConverters(
       const efficiencyK =
         applicationType == "wind" ? 1 : cableEfficiency100 / 100;
       const current =
-        emachineWorkingCurrent /
-        fconverter.overallCurrentDerating /
-        efficiencyK;
+        (emachineWorkingCurrent /
+          fconverter.overallCurrentDerating /
+          efficiencyK) *
+        dfimPowerDerating; // For DFIM, reduce required current to allow smaller converters
 
       if (currentK) {
+        console.log("Using currentK:", currentK);
         return fc.currentHO >= current * currentK;
       }
 
       return (
         fc.currentLO >= current &&
-        (fc.mounting != "floor" || fc.currentLO <= current * 2)
+        (fc.mounting != "floor" || fc.currentLO <= current * 4) // Allow 4x oversizing for floor-mounted
       );
     });
 }

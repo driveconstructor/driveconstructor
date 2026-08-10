@@ -1,9 +1,9 @@
 {
   "pages": [
-    "electric-machines",
-    "frequency-converters",
-    "gearboxes",
-    "transformers",
+    "index_electric-machines",
+    "index_frequency-converters",
+    "index_gearboxes",
+    "index_transformers",
     "power-cables",
     "grid",
     "altitude-derating",

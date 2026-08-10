@@ -9,7 +9,58 @@ export type Wind = {
   // calculated
   ratedSpeed: number;
   powerOnShaft: number;
+  rotorDiameter: number;
+  ratedWindSpeed: number;
 };
+
+const Cp = 0.45;
+const TSR = 7;
+const airDensity = 1.225;
+
+function deriveWindDimensions(
+  ratedSpeedOfBlades: number,
+  powerOnShaft: number,
+) {
+  const speedFactor = (ratedSpeedOfBlades * Math.PI) / (TSR * 60);
+  const rotorDiameter = Math.pow(
+    (powerOnShaft * 1000 * 8) / (airDensity * Cp * Math.PI * speedFactor ** 3),
+    1 / 5,
+  );
+
+  return {
+    rotorDiameter,
+    ratedWindSpeed: speedFactor * rotorDiameter,
+  };
+}
+
+export function migrateLegacyWindInput(wind: Record<string, unknown>) {
+  if (
+    typeof wind.rotorDiameter == "number" &&
+    typeof wind.ratedWindSpeed == "number"
+  ) {
+    return wind;
+  }
+
+  if (
+    typeof wind.ratedSpeedOfBlades != "number" ||
+    typeof wind.ratedTorque != "number" ||
+    wind.ratedSpeedOfBlades <= 0 ||
+    wind.ratedTorque <= 0
+  ) {
+    return wind;
+  }
+
+  const powerOnShaft =
+    typeof wind.powerOnShaft == "number"
+      ? wind.powerOnShaft
+      : (wind.ratedSpeedOfBlades / 9.55) * wind.ratedTorque;
+  const { rotorDiameter, ratedWindSpeed } = deriveWindDimensions(
+    wind.ratedSpeedOfBlades,
+    powerOnShaft,
+  );
+
+  return { ...wind, rotorDiameter, ratedWindSpeed };
+}
 
 export const WindElement: SystemElement<Wind> = {
   icon,
@@ -51,6 +102,22 @@ export const WindElement: SystemElement<Wind> = {
     powerOnShaft: {
       ...PowerOnShaftParam,
       value: (wind) => (wind.ratedSpeed / 9.55) * wind.ratedTorque,
+    },
+    rotorDiameter: {
+      label: "Equivalent rotor diameter, m",
+      type: "number",
+      value: (wind) =>
+        deriveWindDimensions(wind.ratedSpeedOfBlades, wind.powerOnShaft)
+          .rotorDiameter,
+      advanced: true,
+    },
+    ratedWindSpeed: {
+      label: "Equivalent rated wind speed, m/s",
+      type: "number",
+      value: (wind) =>
+        deriveWindDimensions(wind.ratedSpeedOfBlades, wind.powerOnShaft)
+          .ratedWindSpeed,
+      advanced: true,
     },
   },
 };
