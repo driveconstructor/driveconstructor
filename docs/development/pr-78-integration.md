@@ -467,6 +467,125 @@ prices, losses, voltage drops, and efficiencies do not change. The only global
 numeric difference expected is restoration of converter selection where the PR's
 unintended four-times ceiling had changed a result.
 
+## MATLAB and Simulink expert-review observations
+
+Review date: 2026-08-11
+
+This section records a static inspection of `dfim_vindturbin_script.m`, the
+generated `Parameters.csv` contract, and the unpacked contents of
+`DFIM_vindturbin_model.slx`. MATLAB is not installed in the integration
+environment, so the model has not been loaded or simulated. These observations
+are questions for Stian and the domain experts; no code or model changes were
+made as part of this review.
+
+### Overall model structure
+
+The Simulink model has the expected high-level structure for a wind turbine
+using a doubly-fed induction machine as a generator: turbine input,
+gearbox-referred inertia, wound-rotor machine, rotor-side and grid-side
+converters, DC link, transformer, grid connection, controls, and measurements.
+The use of "DFIG" in the MathWorks block description is compatible with the
+application's "DFIM" machine terminology: DFIM describes the machine, while
+DFIG describes its generator operation.
+
+The model was saved with MATLAB/Simulink R2024b and uses Specialized Power
+Systems/Simscape Electrical blocks. The required MATLAB release, products, and
+any compatibility expectations should be documented for users.
+
+### Likely CSV import defect
+
+The application exports fifteen headerless `name,value` rows, while the MATLAB
+script calls `readtable('Parameters.csv')` without explicitly setting
+`ReadVariableNames=false` and then accesses `Var2` by row number. MATLAB may
+interpret the first row (`R_s,...`) as column headings. Depending on import
+detection, this can remove the first parameter from the data, make `Var2`
+unavailable, shift all assignments, or leave only fourteen data rows for the
+fifteen accesses.
+
+This should be reproduced in the supported MATLAB release before validation.
+The preferred eventual contract is an explicit header such as
+`Name,Value,Unit`, with parameters retrieved and validated by name. The minimum
+possible correction would be an explicit headerless import, but that would
+retain the fragile dependence on row order.
+
+### Units and parameter contract
+
+The exported `L_s`, `L_r`, and `L_m` formulas produce quantities dimensionally
+equivalent to impedance/reactance in ohms. The MATLAB script divides them by
+`Rbase`, while the Simulink mask calls the resulting inputs per-unit leakage and
+magnetizing inductances. This may be numerically intentional under the selected
+per-unit convention, but the names and units are ambiguous.
+
+The experts should decide whether the export represents:
+
+- reactances at 50 Hz, which should be named and documented accordingly; or
+- physical inductances in henries, which should be converted using angular
+  frequency and base impedance.
+
+The schema should eventually state a unit for every value, include a version,
+and reject missing, duplicated, nonfinite, or physically invalid parameters.
+
+### Engineering formulas requiring confirmation
+
+The following assumptions are structurally plausible but lack an adjacent
+source, derivation, calibration case, or applicability range:
+
+- the 1% copper-loss assumption and equal split between stator and rotor;
+- leakage and magnetizing coefficients used to estimate the machine model;
+- the `1.634` DC-link-voltage multiplier;
+- aerodynamic constants `Cp = 0.4` and air density `1.225 kg/m^3` in the
+  MATLAB cut-in calculation;
+- the empirical cut-out wind-speed formula;
+- the turbine-inertia scaling formula;
+- fixed machine friction `0.01 pu`;
+- fixed transformer resistance/reactance `[0.002, 0.08] pu`;
+- the `0.3 pu` converter rating, coupling inductor, DC capacitor, and fixed
+  controller gains embedded in the model.
+
+In particular, the cut-in wind-speed expression treats rated system losses,
+`(1 - efficiency) * Pm`, as the power threshold defining cut-in speed. The
+experts should confirm that this is the intended physical model rather than
+exporting a turbine cut-in speed directly.
+
+The inertia expression correctly appears to refer turbine inertia through the
+square of the gearbox ratio to the generator shaft. However, its inertia
+constant uses shaft power `Pw` as the denominator while the electrical machine
+uses rated power `Pm` as its nominal base. The intended power base for `H`
+requires confirmation.
+
+### Workflow and maintainability observations
+
+- `Parameters.csv` is resolved from MATLAB's current working directory, so the
+  workflow can fail when the three browser downloads are stored or opened from
+  different locations.
+- The MATLAB script uses `clear`, `clc`, and the base workspace, and prints the
+  imported table. A future loader function returning a parameter structure, or
+  a `Simulink.SimulationInput`, would be safer and testable.
+- The script only loads parameters; it does not locate, open, configure, or run
+  the Simulink model. The expected user sequence should be documented.
+- The model display labels `Te [kN]` and `Q [kW]` appear dimensionally wrong.
+  Given their signals and scaling, they likely should be `Te [kNm]` and
+  `Q [kvar]`, respectively.
+- The model's origin and any derivation from a MathWorks example should be
+  recorded so attribution and redistribution terms can be checked.
+
+### Suggested expert validation sequence
+
+1. Reproduce the CSV import using an actual browser export and MATLAB R2024b.
+2. Confirm every exported quantity's meaning, unit, and per-unit base.
+3. Confirm the cut-in-speed and inertia-constant derivations.
+4. Identify sources or calibration cases for the embedded empirical constants
+   and controller settings.
+5. Simulate representative DFIM systems from both supported application
+   topologies and compare steady-state power, speed, torque, DC voltage,
+   reactive power, and startup behavior with hand calculations or trusted
+   references.
+6. Confirm the MATLAB/Simulink product requirements, model provenance, and
+   corrected display units.
+
+Status: **Awaiting review by Stian and domain experts; code and model assets are
+unchanged**
+
 ## Proposed integration stages
 
 ### Stage 1: Establish a clean base
