@@ -4,12 +4,14 @@ import { findCableComponent } from "./cable-sizing";
 import { CandidatesType, ComponentsType } from "./component";
 import { Conveyor } from "./conveyor";
 import { ConveyorFc } from "./conveyor-system";
+import { DFIM_MAX_SLIP } from "./dfim";
 import { EfficiencyClass, EMachine } from "./emachine";
 import {
   EMachineComponent,
   EMachineComponentModel,
 } from "./emachine-component";
 import { findEmCandidates, findTypeSpeedTorque } from "./emachine-sizing";
+import { converterOptionsList } from "./fconverter";
 import {
   FConverterComponent,
   FConverterComponentModel,
@@ -80,10 +82,7 @@ function createMechanism(system: System): Mechanism {
     system.kind == "pump-gb-fc-tr"
   ) {
     const input = system.input as (
-      | PumpFc
-      | PumpFcTr
-      | PumpGbFc
-      | PumpGbFcTr
+      PumpFc | PumpFcTr | PumpGbFc | PumpGbFcTr
     )["input"];
     return {
       ratedSpeed: input.pump.ratedSpeed,
@@ -157,6 +156,7 @@ function findEMachineCandidates(
   grid: Grid,
   mechanism: Mechanism,
   trafoRatio: number,
+  system: System,
 ): EMachineComponent[] {
   const typeSpeedAndTorqueList = findTypeSpeedTorque(emachine.type, mechanism);
   const deratedVoltage = grid.voltage / emachine.voltageDerating / trafoRatio;
@@ -170,6 +170,7 @@ function findEMachineCandidates(
     typeSpeedAndTorqueList,
     voltageY,
     mechanism.torqueOverload,
+    system,
   );
 
   return distinctEmBySecondaryParams(catalog);
@@ -206,7 +207,11 @@ export function withCandidates(system: System): System {
     system.kind == "conveyor-gb-fc-tr"
   ) {
     required.push(GearboxComponentModel.kind);
-    const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
+    const gearbox = findGearbox(
+      system.input.gearbox,
+      mechanism.ratedTorque,
+      system.input.emachine.type == "DFIM",
+    );
     candidates = { ...candidates, gearbox };
 
     if (gearbox.length == 1) {
@@ -240,6 +245,7 @@ export function withCandidates(system: System): System {
     system.input.grid,
     mechanism,
     trafoRatio,
+    system,
   );
   if (emachine.length == 1) {
     components = { ...components, emachine: emachine[0] };
@@ -257,7 +263,7 @@ export function withCandidates(system: System): System {
 
   let fconverter: FConverterComponent[] = [];
   if (components.emachine && components.cable) {
-    fconverter = findFcConverters(
+    let candidates = findFcConverters(
       system.input.grid.voltage,
       components.cable.efficiency100,
       system.input.fconverter,
@@ -265,9 +271,13 @@ export function withCandidates(system: System): System {
       trafoRatio,
       applicationType,
       mechanism.currentK,
+      components.emachine.type,
     );
 
-    fconverter = distinctFcByMounting(fconverter);
+    const allowedTypes = converterOptionsList[components.emachine.type];
+    candidates = candidates.filter((fc) => allowedTypes.includes(fc.type));
+
+    fconverter = distinctFcByMounting(candidates);
     if (fconverter.length == 1) {
       components = { ...components, fconverter: fconverter[0] };
     }
@@ -330,27 +340,68 @@ function calculateParams(
     return apply(func).reduce((a, b) => a + b, 0);
   }
 
-  function multiply(func: (v: ComponentType) => number, base = 1) {
+  function getEfficiency(
+    component:
+      | {
+          efficiency100: number;
+          efficiency75?: number;
+          efficiency50?: number;
+          efficiency25?: number;
+        }
+      | undefined,
+    load: number,
+  ): number {
+    if (component == null) {
+      return 1;
+    }
+
+    const partialEfficiency =
+      load === 75
+        ? component.efficiency75
+        : load === 50
+          ? component.efficiency50
+          : load === 25
+            ? component.efficiency25
+            : component.efficiency100;
+    return (partialEfficiency ?? component.efficiency100) / 100;
+  }
+
+  function multiply(func: (v: ComponentType) => number, base = 1, load = 100) {
+    if (components.emachine?.type === "DFIM") {
+      const gbEff = getEfficiency(components.gearbox, load);
+      const emEff = getEfficiency(components.emachine, load);
+      const cbEff = getEfficiency(components.cable, 100);
+      const tfEff = getEfficiency(components.trafo, 100);
+      const fcEff =
+        1 -
+        DFIM_MAX_SLIP +
+        DFIM_MAX_SLIP * getEfficiency(components.fconverter, load);
+
+      return gbEff * fcEff * emEff * cbEff * tfEff * 100;
+    }
     return apply(func).reduce((a, b) => (a * b) / base, 1) * base;
   }
 
   return {
     price: sum((v) => v.price),
-    efficiency100: multiply((v) => v.efficiency100, 100),
+    efficiency100: multiply((v) => v.efficiency100, 100, 100),
     efficiency75: multiply(
       (v) =>
         typeof v.efficiency75 == "undefined" ? v.efficiency100 : v.efficiency75,
       100,
+      75,
     ),
     efficiency50: multiply(
       (v) =>
         typeof v.efficiency50 == "undefined" ? v.efficiency100 : v.efficiency50,
       100,
+      50,
     ),
     efficiency25: multiply(
       (v) =>
         typeof v.efficiency25 == "undefined" ? v.efficiency100 : v.efficiency25,
       100,
+      25,
     ),
     volume: sum((v) => (typeof v.volume == "undefined" ? 0 : v.volume)),
     footprint: sum((v) =>

@@ -1,5 +1,7 @@
 import { ApplicationType } from "./application";
 import { FcCooling, FcCoolingType, FcProtection } from "./cooling-protection";
+import { DFIM_MAX_SLIP } from "./dfim";
+import { EMachineTypeAlias } from "./emachine";
 import {
   FConverter,
   FConverterMounting,
@@ -25,6 +27,26 @@ function addFilter(
   return filter == null ? nullValue : func(filter);
 }
 
+export function isWithinFloorConverterOversizingLimit(
+  mounting: FConverterMountingType,
+  converterCurrent: number,
+  requiredCurrent: number,
+  emachineType: EMachineTypeAlias | null,
+): boolean {
+  if (mounting !== "floor") {
+    return true;
+  }
+
+  const maximumOversizing = emachineType === "DFIM" ? 4 : 2;
+  return converterCurrent <= requiredCurrent * maximumOversizing;
+}
+
+export function getConverterPowerFraction(
+  emachineType: EMachineTypeAlias | null,
+): number {
+  return emachineType === "DFIM" ? DFIM_MAX_SLIP : 1;
+}
+
 export function findFcConverters(
   systemVoltage: number,
   cableEfficiency100: number,
@@ -33,9 +55,13 @@ export function findFcConverters(
   trafoRatio: number,
   applicationType: ApplicationType,
   currentK: number | null,
+  emachineType: EMachineTypeAlias | null = null,
 ): FConverterComponent[] {
   const deratedVoltage =
     systemVoltage / fconverter.voltageDerating / trafoRatio;
+
+  // For DFIM, apply a power derating factor to allow smaller converters
+  const converterPowerFraction = getConverterPowerFraction(emachineType);
 
   return FConverterType.filter((type) => type == fconverter.type)
     .flatMap((type) =>
@@ -72,7 +98,7 @@ export function findFcConverters(
                       ? null
                       : findFiler(
                           fconverter.gridSideFilter,
-                          emachineWorkingCurrent,
+                          emachineWorkingCurrent * converterPowerFraction,
                           voltage.value,
                         );
                   const machineSideFilter = findFiler(
@@ -219,9 +245,10 @@ export function findFcConverters(
       const efficiencyK =
         applicationType == "wind" ? 1 : cableEfficiency100 / 100;
       const current =
-        emachineWorkingCurrent /
-        fconverter.overallCurrentDerating /
-        efficiencyK;
+        (emachineWorkingCurrent /
+          fconverter.overallCurrentDerating /
+          efficiencyK) *
+        converterPowerFraction;
 
       if (currentK) {
         return fc.currentHO >= current * currentK;
@@ -229,7 +256,12 @@ export function findFcConverters(
 
       return (
         fc.currentLO >= current &&
-        (fc.mounting != "floor" || fc.currentLO <= current * 2)
+        isWithinFloorConverterOversizingLimit(
+          fc.mounting,
+          fc.currentLO,
+          current,
+          emachineType,
+        )
       );
     });
 }

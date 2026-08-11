@@ -1,29 +1,63 @@
 import { Gearbox, StageTypeAlias } from "./gearbox";
 import { GearboxComponent, GearboxStageComponent } from "./gearbox-component";
 
-const Torque = [
+// Preferred gearbox-stage input torques in Nm. This is the complete pre-DFIM
+// catalogue and must remain the only catalogue used by existing machine types.
+const ExistingTorque = [
   5, 10, 20, 30, 40, 60, 80, 100, 140, 180, 220, 270, 320, 370, 440, 500, 600,
   750, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7000, 9000, 12000, 15000,
   20000, 30000, 40000, 50000, 70000, 100000, 120000, 150000, 200000, 300000,
   400000, 500000, 700000, 1000000, 1500000, 2000000, 2500000, 3000000,
 ];
+
+// PR #78 extends the same preferred-number progression from 4 MNm to 70 MNm so
+// large geared wind turbines can produce a gearbox candidate. These empirical
+// catalogue values are exposed only after DFIM is explicitly selected; their
+// engineering range remains part of the planned human validation.
+const DfimExtendedTorque = [
+  4000000, 5000000, 7000000, 10000000, 15000000, 20000000, 30000000, 40000000,
+  50000000, 70000000,
+];
+
 export function findGearbox(
   gearbox: Gearbox,
   mechanismRatedTorque: number,
+  allowDfimExtendedTorque = false,
 ): GearboxComponent[] {
+  // Selecting DFIM opts into the extension without changing candidate results
+  // for SCIM, PMSM, SyRM, or calls made without a machine type.
+  const torqueCatalog = allowDfimExtendedTorque
+    ? [...ExistingTorque, ...DfimExtendedTorque]
+    : ExistingTorque;
   const designation: string[] = [];
 
-  let stage = findStage(
+  const stage1 = findStage(
     gearbox.stage1Type,
     gearbox.stage1Ratio,
     mechanismRatedTorque,
+    torqueCatalog,
   );
+
+  // If no usable stage can be found for the selected gearbox configuration and
+  // torque, we must return an empty candidate list instead of crashing. This
+  // can happen when the required torque is above the cataloged range for the
+  // selected stage type / ratio.
+  if (!stage1) {
+    return [];
+  }
+
+  let stage = stage1;
   designation.push(typeDesignation(gearbox.stage1Type));
 
   if (gearbox.numberOfStages > 1) {
     stage = combine(
       stage,
-      findStage(gearbox.stage2Type, gearbox.stage2Ratio, stage.torque * 1000),
+      findStage(
+        gearbox.stage2Type,
+        gearbox.stage2Ratio,
+        stage.torque * 1000,
+        torqueCatalog,
+      ),
     );
     designation.push(typeDesignation(gearbox.stage2Type));
   }
@@ -31,7 +65,12 @@ export function findGearbox(
   if (gearbox.numberOfStages > 2) {
     stage = combine(
       stage,
-      findStage(gearbox.stage3Type, gearbox.stage3Ratio, stage.torque * 1000),
+      findStage(
+        gearbox.stage3Type,
+        gearbox.stage3Ratio,
+        stage.torque * 1000,
+        torqueCatalog,
+      ),
     );
     designation.push(typeDesignation(gearbox.stage3Type));
   }
@@ -82,38 +121,40 @@ function findStage(
   type: StageTypeAlias,
   gearRatio: number,
   inputTorque: number,
-): GearboxStageComponent {
-  return Torque.filter((torque) => {
-    if (type == "worm") {
-      if (torque <= 10000) {
+  torqueCatalog: readonly number[],
+): GearboxStageComponent | undefined {
+  return torqueCatalog
+    .filter((torque) => {
+      if (type == "worm") {
+        if (torque <= 10000) {
+          return true;
+        }
+
+        if (gearRatio >= 10 && gearRatio <= 40) {
+          return true;
+        }
+      }
+
+      if (type == "helical" && gearRatio >= 3 && gearRatio <= 8) {
         return true;
       }
 
-      if (gearRatio >= 10 && gearRatio <= 40) {
-        return true;
-      }
-    }
-
-    if (type == "helical" && gearRatio >= 3 && gearRatio <= 8) {
-      return true;
-    }
-
-    if (type == "planetary" && gearRatio >= 4 && gearRatio <= 8) {
-      return true;
-    }
-
-    if (type == "bevel") {
-      if (torque <= 100000) {
+      if (type == "planetary" && gearRatio >= 4 && gearRatio <= 8) {
         return true;
       }
 
-      if (gearRatio >= 2 && gearRatio <= 3) {
-        return true;
-      }
-    }
+      if (type == "bevel") {
+        if (torque <= 100000) {
+          return true;
+        }
 
-    return false;
-  })
+        if (gearRatio >= 2 && gearRatio <= 3) {
+          return true;
+        }
+      }
+
+      return false;
+    })
     .filter((torque) => inputTorque <= torque)
     .slice(0, 1)
     .map((torque) => {

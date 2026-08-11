@@ -6,6 +6,7 @@ import { System } from "@/model/system";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import Candidates from "./Candidates";
+import DfimExportActions from "./DfimExportActions";
 import Errors from "./Errors";
 import Graph from "./Graph";
 import Param from "./Param";
@@ -79,7 +80,11 @@ export default function Input({
               ))}
           </div>
         </div>
-        <div className="flex p-2 gap-2">
+        <DfimExportActions
+          system={system}
+          onError={(message) => setErrors([message])}
+        />
+        <div className="flex gap-2 p-2">
           <button
             className="btn flex-none"
             onClick={() => setShowMore(!showMore)}

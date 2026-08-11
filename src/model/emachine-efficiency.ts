@@ -15,7 +15,8 @@ export function getEfficiency100(
   if (
     efficiencyClass &&
     efficiencies[ratedPower] &&
-    efficiencies[ratedPower][efficiencyClass]
+    efficiencies[ratedPower][efficiencyClass] &&
+    typeSpeedTorque.ratedPower < 1000
   ) {
     const ratedSynchSpeed = Math.max(1000, typeSpeedTorque.ratedSynchSpeed);
     const ratedEfficiency =
@@ -42,11 +43,32 @@ export function getEfficiency100(
       (0.944 + (1 / 20) * Math.pow(K1, 0.2)) *
       (0.944 + (1 / 20) * Math.pow(K2, 0.2))
     );
+  } else if (typeSpeedTorque.type == "DFIM") {
+    return (
+      100 *
+      (0.943 + (1 / 20) * Math.pow(K1, 0.2)) *
+      (0.941 + (1 / 20) * Math.pow(K2, 0.2))
+    );
   }
   return 0;
 }
 
-export function getPartialEfficiency(load: number, efficiency100: number) {
+export function getPartialEfficiency(
+  typeSpeedTorque: TypeSpeedTorque,
+  load: number,
+  efficiency100: number,
+) {
+  if (typeSpeedTorque.type == "DFIM") {
+    return (
+      (-0.32 * Math.pow(load, 4) +
+        0.98 * Math.pow(load, 3) -
+        1.14 * Math.pow(load, 2) +
+        0.58 * load +
+        0.9 -
+        0.04 * Math.pow(1 - load, 2)) *
+      efficiency100
+    );
+  }
   return (
     (-0.32 * Math.pow(load, 4) +
       0.98 * Math.pow(load, 3) -

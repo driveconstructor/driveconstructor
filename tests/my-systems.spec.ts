@@ -77,7 +77,7 @@ test("Export and delete", async ({ page }) => {
   await expect(page.getByTestId("system[0].<name>")).toContainText(
     "Test pump system 1 copy",
   );
-  page.reload();
+  await page.reload();
   await expect(page.getByTestId("system[0].<name>")).toContainText(
     "Test pump system 1 copy",
   );
@@ -100,7 +100,7 @@ test("Export and delete", async ({ page }) => {
   await expect(page.getByTestId("system[0].<name>")).toContainText(
     "Test pump system 1",
   );
-  page.reload();
+  await page.reload();
   await expect(page.getByTestId("system[0].<name>")).toContainText(
     "Test pump system 1",
   );

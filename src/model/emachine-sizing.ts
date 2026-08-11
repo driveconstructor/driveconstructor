@@ -2,6 +2,7 @@ import {
   EMachineProtection,
   EMachineProtectionType,
 } from "./cooling-protection";
+import { DFIM_MAX_SLIP } from "./dfim";
 import {
   EfficiencyClass,
   EfficiencyClassType,
@@ -21,6 +22,7 @@ import { EMachineComponent } from "./emachine-component";
 import { getEfficiency100, getPartialEfficiency } from "./emachine-efficiency";
 import { emachineDesignation, emachineTypeFilter } from "./emachine-utils";
 import { Mechanism } from "./sizing";
+import { System } from "./system";
 import { VoltageY } from "./voltage";
 
 export const ERatedSynchSpeed = [
@@ -37,6 +39,16 @@ export type TypeSpeedTorque = {
   mechanism: Mechanism;
 };
 
+export function isWithinDfimSpeedRange(
+  mechanicalSpeed: number,
+  synchronousSpeed: number,
+): boolean {
+  return (
+    mechanicalSpeed >= synchronousSpeed * (1 - DFIM_MAX_SLIP) &&
+    mechanicalSpeed <= synchronousSpeed * (1 + DFIM_MAX_SLIP)
+  );
+}
+
 export function findTypeSpeedTorque(
   type: EMachineTypeAlias | null,
   mechanism: Mechanism,
@@ -48,7 +60,10 @@ export function findTypeSpeedTorque(
         const ratedSpeed =
           type == "SCIM" ? ratedSynchSpeed * (1 - slip) : ratedSynchSpeed;
         const ratedTorque = 1000 * (ratedPower / ratedSpeed) * 9.55;
-        const maximumSpeed = ratedSynchSpeed * 1.2;
+        const maximumSpeed =
+          type == "DFIM"
+            ? ratedSynchSpeed * (1 + DFIM_MAX_SLIP)
+            : ratedSynchSpeed * 1.2;
 
         return {
           type,
@@ -62,6 +77,8 @@ export function findTypeSpeedTorque(
       }).filter(
         (o) =>
           o.maximumSpeed >= mechanism.ratedSpeed &&
+          (o.type != "DFIM" ||
+            isWithinDfimSpeedRange(mechanism.ratedSpeed, o.ratedSynchSpeed)) &&
           o.ratedSpeed <= mechanism.ratedSpeed * 2 &&
           o.ratedTorque >= mechanism.ratedTorque &&
           o.ratedTorque < mechanism.ratedTorque / 0.6 &&
@@ -81,6 +98,7 @@ export function findEmCandidates(
   typeSpeedTorqueList: TypeSpeedTorque[],
   ratedVoltageY: VoltageY,
   mechanismTorqueOverload: number | null,
+  system: System,
 ): EMachineComponent[] {
   return EMachineCooling.filter((c) => em.cooling == null || c == em.cooling)
     .flatMap((cooling) =>
@@ -111,14 +129,25 @@ export function findEmCandidates(
                     efficiencyClass,
                   );
                   const efficiency75 = getPartialEfficiency(
+                    typeSpeedTorque,
                     0.75,
                     efficiency100,
                   );
-                  const efficiency50 = getPartialEfficiency(0.5, efficiency100);
+                  const efficiency50 = getPartialEfficiency(
+                    typeSpeedTorque,
+                    0.5,
+                    efficiency100,
+                  );
                   const efficiency25 =
                     typeSpeedTorque.type == "PMSM"
                       ? 0.987 * efficiency100
-                      : 0.931 * efficiency100;
+                      : typeSpeedTorque.type == "DFIM"
+                        ? getPartialEfficiency(
+                            typeSpeedTorque,
+                            0.25,
+                            efficiency100,
+                          )
+                        : 0.931 * efficiency100;
 
                   const ratedCurrent = getRatedCurrent(
                     typeSpeedTorque,
@@ -214,7 +243,7 @@ export function findEmCandidates(
         ),
       ),
     )
-    .filter(emachineTypeFilter)
+    .filter((ec) => emachineTypeFilter(ec, system))
     .filter((ec) => em.ratedPower == null || ec.ratedPower == em.ratedPower)
     .filter((ec) => em.shaftHeight == null || ec.shaftHeight == em.shaftHeight)
     .filter(
@@ -229,8 +258,10 @@ function getCosFi(typeSpeedTorque: TypeSpeedTorque, k: number): number {
     const coeff = 0.09 * Math.pow(typeSpeedTorque.ratedSpeed, 0.28);
     const inpower = 114 * Math.pow(typeSpeedTorque.ratedSpeed, -1.19);
     return coeff * Math.pow(typeSpeedTorque.ratedPower, inpower) * (k ? k : 1);
-  } else if ((typeSpeedTorque.type = "PMSM")) {
+  } else if (typeSpeedTorque.type == "PMSM") {
     return 0.95;
+  } else if (typeSpeedTorque.type == "DFIM") {
+    return 0.9;
   }
 
   throw new Error("unsupported type");
@@ -279,6 +310,8 @@ function getK2(type: EMachineTypeAlias) {
       return 0.8;
     case "SyRM":
       return 0.9;
+    case "DFIM":
+      return 1.5;
   }
 }
 
@@ -358,6 +391,8 @@ function getK3(type: EMachineTypeAlias) {
       return 1.2;
     case "SyRM":
       return 1;
+    case "DFIM":
+      return 1.05;
   }
 }
 
@@ -421,6 +456,7 @@ function getPrice(
   const K11 = ratedVoltageY.value > 1000 ? 30 : 20;
   const a = ratedVoltageY.value > 1000 ? 0.8 : 0.9;
   const K9 = typeSpeedTorque.ratedSynchSpeed === 1500 ? 0.95 : 1;
+
   const price =
     ((1000 *
       K11 *
@@ -431,6 +467,7 @@ function getPrice(
       K9) /
       getK14(cooling, protection)) *
     Math.pow(weight / 1000, a);
+
   return (
     price +
     (price *
@@ -474,6 +511,7 @@ function getK14(
 function getTorqueOverload(type: EMachineTypeAlias) {
   switch (type) {
     case "SCIM":
+    case "DFIM":
       return 2.4;
     case "PMSM":
     case "SyRM":

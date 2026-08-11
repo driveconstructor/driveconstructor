@@ -66,7 +66,7 @@ const applications: ApplicationModel[] = [
   {
     name: "wind",
     icon: appWind,
-    title: "Wind/tidal mill",
+    title: "Wind/tidal turbine",
     description: (
       <div>
         Experiment with different drive train topologies, design systems for

@@ -1,5 +1,9 @@
 import { StaticImageData } from "next/image";
 import React from "react";
+import dfimCableIcon from "../images/el-cable-dfim.svg";
+import dfimFConverter2LIcon from "../images/el-fconverter-2L-dfim.svg";
+import dfimFConverter3LIcon from "../images/el-fconverter-3L-dfim.svg";
+import dfimFConverterML4QIcon from "../images/el-fconverter-ML-4Q-dfim.svg";
 import applications from "./application";
 import { Cable } from "./cable";
 import {
@@ -9,7 +13,7 @@ import {
   ConveyorGbFcTr,
 } from "./conveyor-system";
 import { EMachine } from "./emachine";
-import { FConverter, LowVoltageType } from "./fconverter";
+import { DFIMConverterType, FConverter, LowVoltageType } from "./fconverter";
 import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { SystemParamsType } from "./system-params";
@@ -133,6 +137,27 @@ function customizeSystemModel(
   model: SystemModel,
   input: System["input"],
 ): SystemModel {
+  const supportsDFIM =
+    model.kind == "wind-gb-fc" || model.kind == "wind-gb-fc-tr";
+  model = {
+    ...model,
+    input: {
+      ...model.input,
+      emachine: {
+        ...model.input.emachine,
+        params: {
+          ...model.input.emachine.params,
+          type: {
+            ...model.input.emachine.params.type,
+            options: model.input.emachine.params.type.options?.filter(
+              (type) => supportsDFIM || type != "DFIM",
+            ),
+          },
+        },
+      },
+    },
+  };
+
   if (input.emachine.type == "SyRM") {
     return {
       ...model,
@@ -152,5 +177,63 @@ function customizeSystemModel(
     };
   }
 
+  if (input.emachine.type == "DFIM") {
+    const fconverter = {
+      ...model.input.fconverter,
+      params: {
+        ...model.input.fconverter.params,
+        type: {
+          ...model.input.fconverter.params.type,
+          options: [...DFIMConverterType],
+        },
+      },
+    };
+
+    if (input.fconverter.type == "4Q-3L-NPC-VSC") {
+      return {
+        ...model,
+        input: {
+          ...model.input,
+          fconverter: {
+            ...fconverter,
+            icon: dfimFConverter3LIcon,
+          },
+          cable: {
+            ...model.input.cable,
+            icon: dfimCableIcon,
+          },
+        },
+      };
+    } else if (input.fconverter.type == "4Q-ML-SCHB-VSC") {
+      return {
+        ...model,
+        input: {
+          ...model.input,
+          fconverter: {
+            ...fconverter,
+            icon: dfimFConverterML4QIcon,
+          },
+          cable: {
+            ...model.input.cable,
+            icon: dfimCableIcon,
+          },
+        },
+      };
+    }
+    return {
+      ...model,
+      input: {
+        ...model.input,
+        fconverter: {
+          ...fconverter,
+          icon: dfimFConverter2LIcon,
+        },
+        cable: {
+          ...model.input.cable,
+          icon: dfimCableIcon,
+        },
+      },
+    };
+  }
   return model;
 }

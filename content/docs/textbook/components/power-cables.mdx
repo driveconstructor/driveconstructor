@@ -55,3 +55,19 @@ densities than one big cable with lower current density. In _DriveConstructor_
 it is possible to choose number of runs from the following options: "auto", 1,
 2, 4. When "auto" is chosen, _DriveConstructor_ will calculate optimal number of
 runs automatically.
+
+#### DFIM cable-section approximation
+
+The power circuit of a DFIM wind-turbine system has two parallel paths: one
+connected to the stator winding and one connected to the rotor winding (Fig. 2).
+The cable length entered in DriveConstructor is the physical stator-cable route.
+The stator voltage drop is calculated using that physical length.
+
+To approximate the additional rotor-circuit cable, installed cable quantity and
+price are multiplied by 1.33. Resistive loss is not proportional to installed
+quantity: under the simplified equal-resistance assumption and 30% rotor-current
+fraction, combined stator and rotor loss is multiplied by $$1 + 0.3^2 = 1.09$$.
+The rotor circuit is not modeled as a separate cable candidate.
+
+![DFIM-system-cables](./images/dfim-dual-power-circuit.png) _Fig.2. Stator and
+rotor cable sections from DFIM system._

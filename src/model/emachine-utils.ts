@@ -1,7 +1,10 @@
 import colors from "tailwindcss/colors";
+import { ApplicationType, getApplicationType } from "./application";
 import { EMachineComponent } from "./emachine-component";
 import { TypeSpeedTorque } from "./emachine-sizing";
+import { System } from "./system";
 import { VoltageY } from "./voltage";
+
 export function emachineDesignation(
   typeSpeedTorque: TypeSpeedTorque,
   ratedVoltageY: VoltageY,
@@ -22,6 +25,9 @@ export function emachineDesignation(
       break;
     case "SyRM":
       result.push("SR");
+      break;
+    case "DFIM":
+      result.push("DF");
       break;
     default:
       result.push("XXX");
@@ -78,7 +84,11 @@ export function emachineDesignation(
   return result.join("-");
 }
 
-export function emachineTypeFilter(em: EMachineComponent): boolean {
+export function emachineTypeFilter(
+  em: EMachineComponent,
+  system: System,
+): boolean {
+  const applicationType: ApplicationType = getApplicationType(system.kind);
   switch (em.type) {
     case "SCIM": {
       if (
@@ -178,7 +188,7 @@ export function emachineTypeFilter(em: EMachineComponent): boolean {
 
       return false;
     }
-    case "SyRM":
+    case "SyRM": {
       if (em.efficiencyClass != "IE4" || em.frameMaterial == "steel") {
         return false;
       }
@@ -193,20 +203,29 @@ export function emachineTypeFilter(em: EMachineComponent): boolean {
         return true;
       }
       return false;
+    }
+    case "DFIM": {
+      if (applicationType != "wind") {
+        return false;
+      }
+      if (em.efficiencyClass != "IE4" || em.frameMaterial == "aluminum") {
+        return false;
+      }
+      if (
+        em.ratedSpeed < 1000 ||
+        em.ratedSpeed >= 3000 ||
+        em.mounting != "B3"
+      ) {
+        return false;
+      }
+
+      if (em.ratedPower >= 1000 && em.ratedPower <= 7100) {
+        return true;
+      }
+      return false;
+    }
   }
 }
-
-/*const colorMap = {
-  blue: "border-b-4 p-1 border-blue-500",
-  violet: "border-b-4 p-1 border-violet-500",
-  fuchsia: "border-b-4 p-1 border-fuchsia-500",
-  green: "border-b-4 p-1 border-green-500",
-  teal: "border-b-4 p-1 border-teal-500",
-  cyan: "border-b-4 p-1 border-cyan-500",
-  pink: "border-b-4 p-1 border-pink-500",
-  red: "border-b-4 p-1 border-red-500",
-  orange: "border-b-4 p-1 border-orange-500",
-};*/
 
 const colorMap = {
   "border-blue-500": colors.blue[500],
