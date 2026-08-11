@@ -196,11 +196,11 @@ function customizeSystemModel(
           ...model.input,
           fconverter: {
             ...fconverter,
-            icon: dfimFConverter3LIcon, // ← Change icon
+            icon: dfimFConverter3LIcon,
           },
           cable: {
             ...model.input.cable,
-            icon: dfimCableIcon, // ← Change icon
+            icon: dfimCableIcon,
           },
         },
       };
@@ -211,11 +211,11 @@ function customizeSystemModel(
           ...model.input,
           fconverter: {
             ...fconverter,
-            icon: dfimFConverterML4QIcon, // ← Change icon
+            icon: dfimFConverterML4QIcon,
           },
           cable: {
             ...model.input.cable,
-            icon: dfimCableIcon, // ← Change icon
+            icon: dfimCableIcon,
           },
         },
       };
@@ -226,11 +226,11 @@ function customizeSystemModel(
         ...model.input,
         fconverter: {
           ...fconverter,
-          icon: dfimFConverter2LIcon, // ← Change icon
+          icon: dfimFConverter2LIcon,
         },
         cable: {
           ...model.input.cable,
-          icon: dfimCableIcon, // ← Change icon
+          icon: dfimCableIcon,
         },
       },
     };

@@ -8,7 +8,7 @@ A typical frequency converter (FC) nowadays is a so-called voltage-source type -
 over 95% of all FC are voltage-source converters (VSC). This FC type has a
 DC-link with a capacitor bank across (see Fig.1).
 
-![doc-basic-fc-2](./images/frequency-converters/basic_fc_2.png) _Fig.1. VSC
+![doc-basic-fc-2](../images/frequency-converters/basic_fc_2.png) _Fig.1. VSC
 topology._
 
 The voltage of the supply network with a constant frequency and amplitude is
@@ -17,12 +17,12 @@ converted into the voltage with the required frequency and amplitude (Fig. 3).
 Note that the voltage waveform is made of pulses of varying duration, wherein
 the "fundamental" voltage is sinusoidal.
 
-![doc-rectification](./images/frequency-converters/rectification.png) _Fig.2.
+![doc-rectification](../images/frequency-converters/rectification.png) _Fig.2.
 Rectified current in the DC link._
 
-![doc-pwm-voltage](./images/frequency-converters/pwm_voltage.png) _(a)_
+![doc-pwm-voltage](../images/frequency-converters/pwm_voltage.png) _(a)_
 
-![doc-pwm-current](./images/frequency-converters/pwm_current.png) _(b)_
+![doc-pwm-current](../images/frequency-converters/pwm_current.png) _(b)_
 
 _Fig.3. Phase voltage (a) and current (b) at the converter output (machine
 side)._
@@ -56,7 +56,7 @@ FC can be 2-quadrant (2Q) and 4-quadrant (4Q):
 
 Usually the operational mode (motoring, generating or both) of the application
 defines what FC should be chosen, 2Q or 4Q. For example a wind turbine requires
-4Q FC with fully-controlled inventor scheme at the grid side. Sometimes
+4Q FC with fully-controlled inverter scheme at the grid side. Sometimes
 operational requirements in applications which typically require 2Q, may require
 4Q - for example large fan with high inertia may require considerable braking
 capability to slow down in reasonably short time.
@@ -73,41 +73,43 @@ Some FC require input transformer, some don't.
 As in _DriveConstructor_ we deal with VSC only, all the topologies included in
 the software and presented below have "VSC" in the designations.
 
-The FC in a DFIM system is located on the rotor circuit and is only rated for
-1/3rd of the rated system power. A schematic of thi system is shown in Fig. 4.
+The FC in a DFIM system is connected to the rotor circuit. DriveConstructor
+approximates its rating as 30% of rated machine power, corresponding to the
+modeled maximum absolute slip of 30%. A schematic of this system is shown in
+Fig. 4.
 
-![doc-dfim-fc-schematic](./images/frequency-converters/DFIM_FC_Schematic.png)
+![doc-dfim-fc-schematic](../images/frequency-converters/DFIM_FC_Schematic.png)
 _Fig.4. Frequency converter in DFIM system_.
 
 ### Converters of 2-level topology
 
 ##### 2Q-2L-VSC-6p, 2Q-2L-VSC-12p and 4Q-2L-VSC
 
-2Q FC inventor scheme at the grid side can be 6-pulse ("6p") and 12-pulse
+2Q FC inverter scheme at the grid side can be 6-pulse ("6p") and 12-pulse
 ("12p"). Difference between "6p" and "12p" is in size, weight, cost, efficiency
 and influence on the grid (THD). 4Q FC is larger, heavier, more expensive and
 has lower efficiency than 2Q FC. 4Q produce lower THD in the grid. 2-level FC
 are usually LV.
 
-![doc-afe-dc2l-dfe-ing](./images/frequency-converters/afe_dc2l_dfe_Ing.png)
+![doc-afe-dc2l-dfe-ing](../images/frequency-converters/afe_dc2l_dfe_Ing.png)
 _Fig.5a. 2Q-2L-VSC-6p_.
 
-![doc-afe-dc2l-dfe](./images/frequency-converters/afe_dc2l_dfe.png) _Fig.5b.
+![doc-afe-dc2l-dfe](../images/frequency-converters/afe_dc2l_dfe.png) _Fig.5b.
 Icon designation_.
 
-Note that on Fig.4a motor side of the FC is the right side, while on Fig.5b -
-left side.
+Note that in Fig.5a the machine side of the FC is the right side, while in
+Fig.5b - left side.
 
-![doc-afe-dc2l-dfe12-ing](./images/frequency-converters/afe_dc2l_dfe12_Ing.png)
+![doc-afe-dc2l-dfe12-ing](../images/frequency-converters/afe_dc2l_dfe12_Ing.png)
 _Fig.6a. 2Q-2L-VSC-12p_.
 
-![doc-afe-dc2l-dfe12](./images/frequency-converters/afe_dc2l_dfe12.png) _Fig.6b.
-Icon designation_.
+![doc-afe-dc2l-dfe12](../images/frequency-converters/afe_dc2l_dfe12.png)
+_Fig.6b. Icon designation_.
 
-![doc-afe-dc2l-afe-ing](./images/frequency-converters/afe_dc2l_afe_Ing.png)
+![doc-afe-dc2l-afe-ing](../images/frequency-converters/afe_dc2l_afe_Ing.png)
 _Fig.7a. 4Q-2L-VSC_.
 
-![doc-afe-dc2l-afe](./images/frequency-converters/afe_dc2l_afe.png) _Fig.7b.
+![doc-afe-dc2l-afe](../images/frequency-converters/afe_dc2l_afe.png) _Fig.7b.
 Icon designation_.
 
 ### Converters with 3- and multi-level topologies
@@ -116,35 +118,35 @@ Icon designation_.
 
 3-level FC are usually MV. NPC stands for Neutral-Point Clamped.
 
-![doc-afe-dc3l-dfe12-ing](./images/frequency-converters/afe_dc3l_dfe12_Ing.png)
+![doc-afe-dc3l-dfe12-ing](../images/frequency-converters/afe_dc3l_dfe12_Ing.png)
 _Fig.8a. 2Q-3L-NPC-VSC_.
 
-![doc-afe-dc3l-afe12](./images/frequency-converters/afe_dc3l_afe12.png) _Fig.8b.
-Icon designation_.
+![doc-afe-dc3l-afe12](../images/frequency-converters/afe_dc3l_afe12.png)
+_Fig.8b. Icon designation_.
 
-![doc-afe-dc3l-afe-ing](./images/frequency-converters/afe_dc3l_afe_Ing.png)
+![doc-afe-dc3l-afe-ing](../images/frequency-converters/afe_dc3l_afe_Ing.png)
 _Fig.9a. 4Q-3L-NPC-VSC_.
 
-![doc-afe-dc3l-afe](./images/frequency-converters/afe_dc3l_afe.png) _Fig.9b.
+![doc-afe-dc3l-afe](../images/frequency-converters/afe_dc3l_afe.png) _Fig.9b.
 Icon designation_.
 
 ##### 2Q-ML-SCHB-VSC and 4Q-ML-SCHB-VSC
 
 SCHB stands for Series-Connected H-Bridge.
 
-![doc-schb-2](./images/frequency-converters/SCHB_2.png) _Fig.10a. 2Q-ML-SCHB-VSC
-topology_.
+![doc-schb-2](../images/frequency-converters/SCHB_2.png) _Fig.10a.
+2Q-ML-SCHB-VSC topology_.
 
-![doc-schb-dfe-cell](./images/frequency-converters/SCHB_dfe_cell.png) _Fig.10b.
+![doc-schb-dfe-cell](../images/frequency-converters/SCHB_dfe_cell.png) _Fig.10b.
 2Q-ML-SCHB-VSC cell_.
 
-![doc-sc-hb-simple2](./images/frequency-converters/sc_hb_simple2.png) _Fig.10c.
+![doc-sc-hb-simple2](../images/frequency-converters/sc_hb_simple2.png) _Fig.10c.
 Icon designation_.
 
-![doc-schb-afe-cell](./images/frequency-converters/SCHB_afe_cell.png) _Fig.10d.
+![doc-schb-afe-cell](../images/frequency-converters/SCHB_afe_cell.png) _Fig.10d.
 4Q-ML-SCHB-VSC cell_.
 
-![doc-sc-hb-simple3](./images/frequency-converters/sc_hb_simple3.png) _Fig.10e.
+![doc-sc-hb-simple3](../images/frequency-converters/sc_hb_simple3.png) _Fig.10e.
 Icon designation_.
 
 ---
@@ -182,7 +184,7 @@ or winch, the variation can be significant, and, therefore can be called "high".
 Examples of what can be called "high overloads" and "low overloads" are
 presented in Fig.10.
 
-![doc-fc-lo-ho](./images/frequency-converters/fc_lo_ho.png) _Fig.10. "High
+![doc-fc-lo-ho](../images/frequency-converters/fc_lo_ho.png) _Fig.10. "High
 overloads" and "low overloads"_.
 
 Choosing the FC the designer should take this aspect into account. Each FC has
@@ -205,7 +207,7 @@ Explanation is presented in Fig.11. Note $$I_c$$ which is rated continuous
 current, which is not used in practice. Short-term (10 s) high current of up to
 200% of $$I_H$$ is acceptable for any converter.
 
-![doc-fc-overloads](./images/frequency-converters/fc_overloads.png) _Fig.11a.
+![doc-fc-overloads](../images/frequency-converters/fc_overloads.png) _Fig.11a.
 Current overloads of conventional FC_.
 
 ---
@@ -222,13 +224,13 @@ _AC_ and _LC_(=_WC_) FCs are usually priced on the same level.
 Fig.1 depicts a 250 kW low-voltage FC mounted on the wall in an enclosed area
 such as an electrical room.
 
-![doc-fc-cooling-air-nat](./images/frequency-converters/fc_cooling_air_nat.png)
+![doc-fc-cooling-air-nat](../images/frequency-converters/fc_cooling_air_nat.png)
 _(a)_
 
-![doc-fc-cooling-air-ac](./images/frequency-converters/fc_cooling_air_AC.png)
+![doc-fc-cooling-air-ac](../images/frequency-converters/fc_cooling_air_AC.png)
 _(b)_
 
-![doc-fc-cooling-air-wc](./images/frequency-converters/fc_cooling_air_WC.png)
+![doc-fc-cooling-air-wc](../images/frequency-converters/fc_cooling_air_WC.png)
 _(c)_
 
 _Fig.12. Cooling types._
@@ -312,16 +314,16 @@ described in chapter
 eliminated, since the machine is powered by voltage and current with a shape
 very close to sinusoidal.
 
-![doc-sin-filter-topology](./images/frequency-converters/sin_filter_topology.png)
+![doc-sin-filter-topology](../images/frequency-converters/sin_filter_topology.png)
 _(a)_
 
-![doc-sin-filter](./images/frequency-converters/sin_filter.png) _(b)_
+![doc-sin-filter](../images/frequency-converters/sin_filter.png) _(b)_
 
 _Fig. 13. "Classical" sin-filter topology (a) and product example (b)_.
 
-![doc-pwm-measured](./images/frequency-converters/pwm_measured.png) _(a)_
+![doc-pwm-measured](../images/frequency-converters/pwm_measured.png) _(a)_
 
-![doc-after-sin](./images/frequency-converters/after_sin.png) _(b)_
+![doc-after-sin](../images/frequency-converters/after_sin.png) _(b)_
 
 _Fig. 14. The voltage waveforms at the input (a) and at the output (b) of the
 sin-filter. Note different time span on the oscillograms_.
@@ -347,10 +349,10 @@ resistance. The inclusion of inductance in the equivalent electrical circuit of
 the cable increases the wave resistance of the cable line and brings down the
 reflection coefficient. Thus, the voltage peaks at terminals decreases.
 
-![doc-dut-filter-topology](./images/frequency-converters/dut_filter_topology.png)
+![doc-dut-filter-topology](../images/frequency-converters/dut_filter_topology.png)
 _(a)_
 
-![doc-dut-filter](./images/frequency-converters/dut_filter.png) _(b)_
+![doc-dut-filter](../images/frequency-converters/dut_filter.png) _(b)_
 
 _Fig. 15. "Classical" du/dt-filter topology (a) and product example (b)_.
 
@@ -360,9 +362,9 @@ properties of the inductance, the filter also reduces the voltage surge at the
 leading edge of the pulse (Fig.16). The length of the cable is 30 m. Note
 different rise time: dt=220 ns, dt=820 ns.
 
-![doc-before-dut](./images/frequency-converters/before_dut.png) _(a)_
+![doc-before-dut](../images/frequency-converters/before_dut.png) _(a)_
 
-![doc-after-dut](./images/frequency-converters/after_dut.png) _(b)_
+![doc-after-dut](../images/frequency-converters/after_dut.png) _(b)_
 
 _Fig. 16. Voltage pulses at the machine terminals without du/dt-filter (a) and
 with a filter (b)_.
@@ -390,18 +392,18 @@ Influence of presence of the choke and its size on the harmonics injected into
 the grid is presented in Fig.17 and 18. The graphs show current waveform and the
 value of current distortion THD(i) as % of nominal current at full load.
 
-![doc-6p-no-choke](./images/frequency-converters/6p_no_choke.png) _(a)_
+![doc-6p-no-choke](../images/frequency-converters/6p_no_choke.png) _(a)_
 
-![doc-thdi80](./images/frequency-converters/THDi80.png) _(b)_
+![doc-thdi80](../images/frequency-converters/THDi80.png) _(b)_
 
 _Fig. 17. 6-pulse rectifier without any choke (a) and current waveform for this
 topology (b)_.
 
-![doc-6p-with-choke](./images/frequency-converters/6p_with_choke.png) _(a)_
+![doc-6p-with-choke](../images/frequency-converters/6p_with_choke.png) _(a)_
 
-![doc-thdi40](./images/frequency-converters/THDi40.png) _(b)_
+![doc-thdi40](../images/frequency-converters/THDi40.png) _(b)_
 
-![doc-thdi28](./images/frequency-converters/THDi28.png) _(c)_
+![doc-thdi28](../images/frequency-converters/THDi28.png) _(c)_
 
 _Fig. 18. 6-pulse rectifier with a choke (a) and current waveforms for small
 choke (b) and big choke (c)_.
@@ -411,9 +413,9 @@ choke (b) and big choke (c)_.
 FC with LCL filter between FC and the grid is presented in Fig.8,a. Current
 waveform is very close to sinusoidal as can be seen in Fig. 8,b.
 
-![doc-fc-with-lcl](./images/frequency-converters/fc_with_LCL.png) _(a)_
+![doc-fc-with-lcl](../images/frequency-converters/fc_with_LCL.png) _(a)_
 
-![doc-thdi5](./images/frequency-converters/THDi5.png) _(b)_
+![doc-thdi5](../images/frequency-converters/THDi5.png) _(b)_
 
 _Fig. 19. Topology (a) and current waveform (b)_.
 
@@ -422,13 +424,13 @@ _Fig. 19. Topology (a) and current waveform (b)_.
 EMC filters (Fig.20) is destined for emission reduction in MHz range. Example of
 the effect is presented in Fig.21.
 
-![doc-emc-filter-topology](./images/frequency-converters/emc_filter_topology.png)
+![doc-emc-filter-topology](../images/frequency-converters/emc_filter_topology.png)
 _(a)_
 
-![doc-emc-filter-ac](./images/frequency-converters/emc_filter_ac.png) _(b)_
+![doc-emc-filter-ac](../images/frequency-converters/emc_filter_ac.png) _(b)_
 
 _Fig. 20. EMC filters: topology (a), AC side filter product example (b)_.
 
-![doc-emc-with-without-filter](./images/frequency-converters/EMC_with_without_filter.png)
+![doc-emc-with-without-filter](../images/frequency-converters/EMC_with_without_filter.png)
 
 _Fig. 21. Effect of use of EMC-filter_.

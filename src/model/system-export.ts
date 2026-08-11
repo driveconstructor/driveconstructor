@@ -6,7 +6,6 @@ import { WindFc } from "./wind-system";
 function calcMachineResistance(
   emachine: System["components"]["emachine"],
   system: System,
-  fileName: string,
 ): string[][] {
   if (emachine == null) {
     throw new Error("EMachine component is required to calculate resistance.");
@@ -84,10 +83,8 @@ function calcMachineResistance(
   //gearbox ratio
   const gearboxRatio: string[] = [
     "Gearbox ratio",
-    String(system.components.gearbox?.gearRatio),
+    String(system.components.gearbox?.gearRatio ?? 1),
   ];
-
-  const systemName: string[] = ["System name", String(fileName)];
 
   const emachineParameters: string[][] = [
     Rs,
@@ -105,64 +102,39 @@ function calcMachineResistance(
     rotorDiameter,
     genMomentOfInertia,
     gearboxRatio,
-    //systemName,
   ];
 
   return emachineParameters;
 }
 
-export const exportToCsv = (
-  emachine: System["components"]["emachine"],
-  fileName: string,
-  system: System,
-): void => {
-  const data = calcMachineResistance(emachine, system, fileName);
-
-  const csvData = data.map((row) => row.join(",")).join("\n");
-  //const filePath = "output.csv";
-
-  // Create a Blob from the CSV string
-  const blob = new Blob([csvData], { type: "text/csv" });
-  // Generate a download link and initiate the download
+function downloadBlob(blob: Blob, fileName: string): void {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "Parameters.csv";
+  link.download = fileName;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+}
 
-  //Download matlab and simulink files
-  fetch("/matlabFiles/DFIM_vindturbin_model.slx")
-    .then((response) => response.blob())
-    .then((blob) => {
-      const simulinkUrl = URL.createObjectURL(blob);
-      const simulinkLink = document.createElement("a");
-      simulinkLink.href = simulinkUrl;
-      simulinkLink.download = "DFIM_vindturbin_model.slx";
-      document.body.appendChild(simulinkLink);
-      simulinkLink.click(); //Comment this line to block download
-      document.body.removeChild(simulinkLink);
-      URL.revokeObjectURL(simulinkUrl);
-    })
-    .catch((error) => {
-      console.error("Error downloading file:", error);
-    });
+export const exportDfimParameters = (
+  emachine: System["components"]["emachine"],
+  system: System,
+): void => {
+  const data = calcMachineResistance(emachine, system);
 
-  fetch("/matlabFiles/dfim_vindturbin_script.m")
-    .then((response) => response.blob())
-    .then((blob) => {
-      const matlabUrl = URL.createObjectURL(blob);
-      const matlabLink = document.createElement("a");
-      matlabLink.href = matlabUrl;
-      matlabLink.download = "dfim_vindturbin_script.m";
-      document.body.appendChild(matlabLink);
-      matlabLink.click(); //Comment this line to block download
-      document.body.removeChild(matlabLink);
-      URL.revokeObjectURL(matlabUrl);
-    })
-    .catch((error) => {
-      console.error("Error downloading file:", error);
-    });
+  const csvData = data.map((row) => row.join(",")).join("\n");
+  downloadBlob(new Blob([csvData], { type: "text/csv" }), "Parameters.csv");
 };
+
+export async function downloadDfimModelFile(
+  path: string,
+  fileName: string,
+): Promise<void> {
+  const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error(`Failed to download ${fileName}: HTTP ${response.status}`);
+  }
+  downloadBlob(await response.blob(), fileName);
+}

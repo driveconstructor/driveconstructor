@@ -12,7 +12,7 @@ export function getSystem(id: string): System {
   }
 
   const system = JSON.parse(json) as System;
-  if (system.input.wind) {
+  if (system.input?.wind) {
     system.input.wind = migrateLegacyWindInput(system.input.wind);
   }
   return system;

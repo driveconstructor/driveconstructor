@@ -58,16 +58,7 @@ export function getPartialEfficiency(
   load: number,
   efficiency100: number,
 ) {
-  if (typeSpeedTorque.type == "PMSM") {
-    return (
-      (-0.32 * Math.pow(load, 4) +
-        0.98 * Math.pow(load, 3) -
-        1.14 * Math.pow(load, 2) +
-        0.58 * load +
-        0.9) *
-      efficiency100
-    );
-  } else if (typeSpeedTorque.type == "DFIM") {
+  if (typeSpeedTorque.type == "DFIM") {
     return (
       (-0.32 * Math.pow(load, 4) +
         0.98 * Math.pow(load, 3) -

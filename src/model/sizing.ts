@@ -4,12 +4,14 @@ import { findCableComponent } from "./cable-sizing";
 import { CandidatesType, ComponentsType } from "./component";
 import { Conveyor } from "./conveyor";
 import { ConveyorFc } from "./conveyor-system";
+import { DFIM_MAX_SLIP } from "./dfim";
 import { EfficiencyClass, EMachine } from "./emachine";
 import {
   EMachineComponent,
   EMachineComponentModel,
 } from "./emachine-component";
 import { findEmCandidates, findTypeSpeedTorque } from "./emachine-sizing";
+import { converterOptionsList } from "./fconverter";
 import {
   FConverterComponent,
   FConverterComponentModel,
@@ -30,7 +32,6 @@ import { findVoltageY } from "./voltage";
 import { Winch } from "./winch";
 import { WinchFc } from "./winch-system";
 import { WindFc } from "./wind-system";
-import { converterOptionsList } from "./fconverter";
 
 export type Mechanism = {
   ratedSpeed: number;
@@ -81,10 +82,7 @@ function createMechanism(system: System): Mechanism {
     system.kind == "pump-gb-fc-tr"
   ) {
     const input = system.input as (
-      | PumpFc
-      | PumpFcTr
-      | PumpGbFc
-      | PumpGbFcTr
+      PumpFc | PumpFcTr | PumpGbFc | PumpGbFcTr
     )["input"];
     return {
       ratedSpeed: input.pump.ratedSpeed,
@@ -209,7 +207,11 @@ export function withCandidates(system: System): System {
     system.kind == "conveyor-gb-fc-tr"
   ) {
     required.push(GearboxComponentModel.kind);
-    const gearbox = findGearbox(system.input.gearbox, mechanism.ratedTorque);
+    const gearbox = findGearbox(
+      system.input.gearbox,
+      mechanism.ratedTorque,
+      system.input.emachine.type == "DFIM",
+    );
     candidates = { ...candidates, gearbox };
 
     if (gearbox.length == 1) {
@@ -272,11 +274,8 @@ export function withCandidates(system: System): System {
       components.emachine.type,
     );
 
-    // Filter based on machine type
-    if (components.emachine.type) {
-      const allowedTypes = converterOptionsList[components.emachine.type];
-      candidates = candidates.filter(fc => allowedTypes.includes(fc.type));
-    }
+    const allowedTypes = converterOptionsList[components.emachine.type];
+    candidates = candidates.filter((fc) => allowedTypes.includes(fc.type));
 
     fconverter = distinctFcByMounting(candidates);
     if (fconverter.length == 1) {
@@ -341,20 +340,43 @@ function calculateParams(
     return apply(func).reduce((a, b) => a + b, 0);
   }
 
+  function getEfficiency(
+    component:
+      | {
+          efficiency100: number;
+          efficiency75?: number;
+          efficiency50?: number;
+          efficiency25?: number;
+        }
+      | undefined,
+    load: number,
+  ): number {
+    if (component == null) {
+      return 1;
+    }
+
+    const partialEfficiency =
+      load === 75
+        ? component.efficiency75
+        : load === 50
+          ? component.efficiency50
+          : load === 25
+            ? component.efficiency25
+            : component.efficiency100;
+    return (partialEfficiency ?? component.efficiency100) / 100;
+  }
+
   function multiply(func: (v: ComponentType) => number, base = 1, load = 100) {
     if (components.emachine?.type === "DFIM") {
-      // Helper to get efficiency at a specific load (with fallback to 100% if property missing)
-      const getEff = (comp: any, effLoad: number) =>
-        comp ? (comp[`efficiency${effLoad}`] || comp.efficiency100) / 100 : 1;
+      const gbEff = getEfficiency(components.gearbox, load);
+      const emEff = getEfficiency(components.emachine, load);
+      const cbEff = getEfficiency(components.cable, 100);
+      const tfEff = getEfficiency(components.trafo, 100);
+      const fcEff =
+        1 -
+        DFIM_MAX_SLIP +
+        DFIM_MAX_SLIP * getEfficiency(components.fconverter, load);
 
-      // Calculate efficiencies for each component
-      const gbEff = getEff(components.gearbox, load);
-      const emEff = getEff(components.emachine, load);
-      const cbEff = getEff(components.cable, 100); // Cable always uses 100% load
-      const tfEff = getEff(components.trafo, 100); // Transformer always uses 100% load
-      const fcEff = 0.7 + 0.3 * getEff(components.fconverter, load); // Special weighting for frequency converter
-
-      // Return the product as a percentage
       return gbEff * fcEff * emEff * cbEff * tfEff * 100;
     }
     return apply(func).reduce((a, b) => (a * b) / base, 1) * base;

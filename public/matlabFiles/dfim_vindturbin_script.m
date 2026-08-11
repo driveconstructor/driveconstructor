@@ -25,7 +25,7 @@ rpm_n = 60*f/PairsOfPoles;
 
 Tbase = Pm/(rpm_n*2*pi/60);
 Ibase = Pm /(sqrt(3)*Vm);
-Rbase = Vm*Vm/Pm/3;
+Rbase = Vm*Vm/Pm;
 
 
 Rs = R_s/Rbase;

@@ -2,6 +2,7 @@ import {
   EMachineProtection,
   EMachineProtectionType,
 } from "./cooling-protection";
+import { DFIM_MAX_SLIP } from "./dfim";
 import {
   EfficiencyClass,
   EfficiencyClassType,
@@ -38,6 +39,16 @@ export type TypeSpeedTorque = {
   mechanism: Mechanism;
 };
 
+export function isWithinDfimSpeedRange(
+  mechanicalSpeed: number,
+  synchronousSpeed: number,
+): boolean {
+  return (
+    mechanicalSpeed >= synchronousSpeed * (1 - DFIM_MAX_SLIP) &&
+    mechanicalSpeed <= synchronousSpeed * (1 + DFIM_MAX_SLIP)
+  );
+}
+
 export function findTypeSpeedTorque(
   type: EMachineTypeAlias | null,
   mechanism: Mechanism,
@@ -49,7 +60,10 @@ export function findTypeSpeedTorque(
         const ratedSpeed =
           type == "SCIM" ? ratedSynchSpeed * (1 - slip) : ratedSynchSpeed;
         const ratedTorque = 1000 * (ratedPower / ratedSpeed) * 9.55;
-        const maximumSpeed = ratedSynchSpeed * 1.2;
+        const maximumSpeed =
+          type == "DFIM"
+            ? ratedSynchSpeed * (1 + DFIM_MAX_SLIP)
+            : ratedSynchSpeed * 1.2;
 
         return {
           type,
@@ -63,6 +77,8 @@ export function findTypeSpeedTorque(
       }).filter(
         (o) =>
           o.maximumSpeed >= mechanism.ratedSpeed &&
+          (o.type != "DFIM" ||
+            isWithinDfimSpeedRange(mechanism.ratedSpeed, o.ratedSynchSpeed)) &&
           o.ratedSpeed <= mechanism.ratedSpeed * 2 &&
           o.ratedTorque >= mechanism.ratedTorque &&
           o.ratedTorque < mechanism.ratedTorque / 0.6 &&
@@ -125,7 +141,13 @@ export function findEmCandidates(
                   const efficiency25 =
                     typeSpeedTorque.type == "PMSM"
                       ? 0.987 * efficiency100
-                      : 0.931 * efficiency100;
+                      : typeSpeedTorque.type == "DFIM"
+                        ? getPartialEfficiency(
+                            typeSpeedTorque,
+                            0.25,
+                            efficiency100,
+                          )
+                        : 0.931 * efficiency100;
 
                   const ratedCurrent = getRatedCurrent(
                     typeSpeedTorque,
@@ -281,7 +303,6 @@ function getWorkingCurrent(
 }
 
 function getK2(type: EMachineTypeAlias) {
-  // for weight calculation
   switch (type) {
     case "SCIM":
       return 1;
@@ -363,7 +384,6 @@ function getWeight(
 }
 
 function getK3(type: EMachineTypeAlias) {
-  // for price calculation
   switch (type) {
     case "SCIM":
       return 1;
@@ -435,9 +455,7 @@ function getPrice(
 ) {
   const K11 = ratedVoltageY.value > 1000 ? 30 : 20;
   const a = ratedVoltageY.value > 1000 ? 0.8 : 0.9;
-  const K9 =
-    //typeSpeedTorque.type === "DFIM" ? 1:
-    typeSpeedTorque.ratedSynchSpeed === 1500 ? 0.95 : 1;
+  const K9 = typeSpeedTorque.ratedSynchSpeed === 1500 ? 0.95 : 1;
 
   const price =
     ((1000 *

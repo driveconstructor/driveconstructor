@@ -105,17 +105,17 @@ supported set and replace an invalid current selection with a valid default.
 Status: **Resolved in working tree; invalid selections are replaced and options
 restricted**
 
-#### 4. DFIM cable voltage drop uses a different length from losses and price
+#### 4. DFIM cable quantity is conflated with electrical cable length
 
-`src/model/cable-sizing.ts` calculates voltage drop before multiplying DFIM
-cable length by `1.33`. Price and losses use the adjusted length, while voltage
-drop uses the original length.
+The imported implementation applies the `1.33` installed-quantity factor
+inconsistently and treats installed quantity as equivalent to electrical length.
 
-Proposed resolution: calculate one effective length before calculating any
-derived cable properties.
+Final resolution: use physical stator length for voltage drop, `1.33` for
+installed quantity and price, and the explicit equal-resistance loss
+approximation `1 + 0.3^2 = 1.09`. Cable weight and volume are not calculated by
+the current cable model.
 
-Status: **Resolved in working tree; one effective length now drives all
-calculations**
+Status: **Resolved in working tree and documented**
 
 #### 5. Existing saved wind systems have no migration path
 
@@ -150,7 +150,9 @@ price, weight, volume, and losses inconsistent with the converter model.
 Proposed resolution: model stator, rotor, and grid-side currents explicitly and
 use the appropriate current for each component.
 
-Status: **Open**
+Status: **Resolved in working tree; the grid-side filter uses 30% current and
+the rotor-side filter retains full referred machine current. Rotor voltage
+remains an explicitly documented approximation.**
 
 ### Other functional findings
 
@@ -160,7 +162,8 @@ The converter sizing assumes that the rotor converter always carries 30% of
 machine current. It does not derive that fraction from maximum slip, operating
 speed, reactive-power requirements, or topology.
 
-Status: **Requires engineering validation**
+Status: **Resolved in working tree; `DFIM_MAX_SLIP = 0.3` is the shared source
+for converter power fraction and the 70–130% synchronous-speed envelope.**
 
 #### 9. DFIM system efficiency uses an implicit two-path approximation
 
@@ -169,7 +172,9 @@ by the full machine, cable, gearbox, and transformer efficiencies. Whether this
 is correct depends on which physical path each modeled component represents. The
 implementation also uses `any` and truthiness-based fallbacks.
 
-Status: **Requires engineering validation and refactoring**
+Status: **Resolved as a documented DFIM-only rated-point approximation; typed
+efficiency access replaced `any` and truthiness fallbacks. A slip-derived
+partial-load split remains a future refinement.**
 
 #### 10. Direct-drive MATLAB export writes an invalid gearbox ratio
 
@@ -179,14 +184,16 @@ gearbox ratio.
 Proposed resolution: export `1` for direct drive or omit the field according to
 the MATLAB input contract.
 
-Status: **Open**
+Status: **Resolved in working tree; direct drive exports a ratio of `1`.**
 
 #### 11. Export naming does not match its interface
 
 The export accepts a system filename and constructs a system-name row, but the
 row is unused and the file is always named `Parameters.csv`.
 
-Status: **Open**
+Status: **Resolved in working tree; the unused filename argument and dead
+system-name row were removed. `Parameters.csv` remains the explicit MATLAB
+contract.**
 
 #### 12. Multiple automatic downloads may be unreliable
 
@@ -198,21 +205,22 @@ occur directly within the user gesture. Fetch responses are not checked with
 Proposed resolution: provide explicit download controls or package the files
 together, and validate HTTP responses.
 
-Status: **Open**
+Status: **Resolved in working tree; parameters, MATLAB script, and Simulink
+model now have separate user-initiated controls, and fetched responses are
+validated before download.**
 
 ### Cleanup findings
 
-- The DFIM converter option list contains `4Q-2L-VSC` twice.
-- A DFIM icon branch exists for a 2Q converter that the candidate filter
-  rejects.
-- A debug `console.log` remains in converter sizing.
-- `emachine-utils.ts` imports `log` from `console` but does not use it.
-- Commented-out code and imports remain throughout the changes.
-- DFIM partial-efficiency behavior is special at 50% and 75% load, while 25%
-  load uses a separate inherited constant.
-- The machine weight coefficient for IP21/23 changes from `0.8` to `0.9` for all
-  machine types without an explanation.
-- No automated tests were added for the new behavior.
+- The duplicate DFIM converter option was removed.
+- Unsupported DFIM converter icon branches were removed or made unreachable by
+  the supported converter list.
+- PR debug logs, unused imports, and obsolete commented code were removed from
+  the touched sizing paths.
+- DFIM now uses its partial-efficiency curve consistently at 25%, 50%, and 75%.
+- The pre-PR IP21/23 coefficient was restored.
+- Focused model and documentation regression tests were added.
+
+Status: **Resolved**
 
 ## Engineering questions
 
@@ -272,7 +280,7 @@ Recommended correction:
 - use it for both lower and upper DFIM speed constraints; and
 - derive the converter power fraction from the same constant.
 
-Status: **Confirmed correction required**
+Status: **Resolved in working tree and covered by boundary tests**
 
 #### B. Grid-side and rotor-side filter currents are conflated
 
@@ -292,8 +300,7 @@ ratings into filter selection. As a minimum approximation, use 30% current for
 the grid-side filter and full referred current for the machine-side filter, and
 document that rotor voltage is not explicitly modeled.
 
-Status: **Confirmed correction required; rotor-voltage approximation must be
-documented**
+Status: **Resolved in working tree; rotor-voltage limitation documented**
 
 #### C. The cable multiplier is applied to electrical quantities incorrectly
 
@@ -307,11 +314,12 @@ losses. That is not physically equivalent:
   proportional to `0.3^2`, not `0.3`.
 
 Recommended correction: retain `1.33` only for the approximated installed cable
-quantity, price, weight, and volume. Keep stator voltage drop based on physical
-length. Either model rotor losses separately or document and use an explicit
-loss multiplier such as `1 + 0.3^2` under the equal-resistance approximation.
+quantity and price. Keep stator voltage drop based on physical length. Either
+model rotor losses separately or document and use an explicit loss multiplier
+such as `1 + 0.3^2` under the equal-resistance approximation. Weight and volume
+can use installed quantity if those cable properties are introduced later.
 
-Status: **Confirmed correction required**
+Status: **Resolved in working tree and documented in the cable chapter**
 
 #### D. DFIM efficiency at 25% load is inconsistent
 
@@ -322,7 +330,7 @@ curve evaluated at 25% gives a materially different result.
 Recommended correction: use the same typed partial-efficiency function at 25%,
 50%, and 75% load.
 
-Status: **Confirmed correction required**
+Status: **Resolved in working tree with a PMSM compatibility regression test**
 
 #### E. MATLAB base resistance contains a factor-of-three inconsistency
 
@@ -336,7 +344,8 @@ Recommended correction: confirm the Simulink block's expected base convention,
 then change `Rbase` to `Vm * Vm / Pm` if it uses conventional three-phase
 per-unit bases.
 
-Status: **Likely defect; verify against the Simulink block before changing**
+Status: **Resolved in working tree using the conventional line-to-line voltage
+and total three-phase power base, `Rbase = Vm^2 / Pm`**
 
 #### F. Converter floor oversizing was changed globally
 
@@ -415,11 +424,11 @@ existing machine types and topologies.
    approximately 30% current for the grid side and full referred current for the
    rotor side as the initial approximation. Document that rotor voltage is not
    modeled explicitly. Existing full-converter filter sizing remains unchanged.
-3. Apply the DFIM `1.33` cable factor only to installed quantity, price, weight,
-   and volume. Use physical stator length for voltage drop. Model rotor loss
-   separately or, until that is possible, use and clearly name the equal-
-   resistance approximation `1 + DFIM_MAX_SLIP^2 = 1.09`. Non-DFIM cable
-   calculations remain unchanged.
+3. Apply the DFIM `1.33` cable factor only to installed quantity and price. Use
+   physical stator length for voltage drop. Model rotor loss separately or,
+   until that is possible, use and clearly name the equal-resistance
+   approximation `1 + DFIM_MAX_SLIP^2 = 1.09`. Non-DFIM cable calculations
+   remain unchanged.
 4. Use the DFIM partial-load efficiency curve consistently at 25%, 50%, and 75%
    load. Do not change SCIM, PMSM, or SynRM efficiency curves.
 5. Keep the fixed 70/30 rated-efficiency split as a declared DFIM-only
@@ -473,7 +482,13 @@ Status: **Complete**
 - Verify all MDX routes and image references.
 - Review newly added images and their attribution/licensing where applicable.
 
-Status: **Imported; link and content review pending**
+Status: **Functionally complete; canonical directory routes and navigation are
+working, all local links/assets were checked, and five affected chapters render
+in Chromium and Firefox. The former flat `index_*` URLs do not require backward
+compatibility. An asset-provenance audit found that all new files originate in
+Stian's authored PR commit, but the raster diagrams contain no source/license
+metadata; their originality or reuse permission still requires confirmation
+from the contributor.**
 
 ### Stage 3: Introduce the DFIM domain model
 
@@ -482,7 +497,7 @@ Status: **Imported; link and content review pending**
 - Restrict DFIM availability to supported system topologies.
 - Preserve existing-machine behavior with regression tests.
 
-Status: **In progress**
+Status: **Complete**
 
 ### Stage 4: Add DFIM sizing
 
@@ -491,7 +506,8 @@ Status: **In progress**
 - Implement cable and system-efficiency calculations from explicit power paths.
 - Validate calculations against reference designs.
 
-Status: **Pending**
+Status: **Implemented; coefficient provenance and a manufacturer-calibrated
+reference design remain validation follow-ups**
 
 ### Stage 5: Integrate revised wind inputs
 
@@ -500,7 +516,8 @@ Status: **Pending**
 - Implement migration for saved systems.
 - Add formula and boundary tests.
 
-Status: **Pending**
+Status: **Complete; existing speed/torque behavior is preserved, derived wind
+dimensions are additive, and saved inputs are migrated**
 
 ### Stage 6: Add MATLAB/Simulink export
 
@@ -509,7 +526,8 @@ Status: **Pending**
 - Validate generated parameters against the MATLAB model.
 - Implement reliable file delivery.
 
-Status: **Pending**
+Status: **Implemented; schema, units, and Simulink numerical validation remain
+follow-ups requiring the external model/tool**
 
 ### Stage 7: Final verification
 
@@ -520,9 +538,21 @@ Status: **Pending**
 - Run new DFIM and wind scenarios.
 - Manually verify reports, save/load behavior, downloads, and textbook pages.
 
-Status: **Pending**
+Status: **In progress; Node.js 24 type checks and the complete current-source E2E
+suite pass. The maintainer reports that the production build passes under the
+supported Node.js 24 environment. Numerical reference tests and MATLAB/Simulink
+validation are intentionally deferred until the engineering model has been
+validated by humans.**
 
 ## Required automated coverage
+
+The boundary, isolation, migration, candidate-generation, documentation, and
+responsive-layout tests added during integration are useful software regression
+coverage. The following list remains the target for final engineering coverage.
+Golden numerical assertions and additional export tests will be added only after
+human validation establishes trusted expected values; unvalidated formulas must
+not be frozen into tests merely because the current implementation produces
+them.
 
 - DFIM candidate generation for valid and invalid topologies.
 - DFIM converter option customization and candidate selection.
@@ -560,6 +590,10 @@ evidence, and participants when relevant.
 | 2026-08-10 | Keep current dependency versions rather than PR #78's versions    | The dependency work is newer and independent of the feature                                                          | Proposed |
 | 2026-08-10 | Do not merge PR #78 unchanged                                     | Static review found correctness defects and unvalidated shared-model changes                                         | Proposed |
 | 2026-08-10 | Preserve the original wind inputs, defaults, and topology results | Stian's scope is adding DFIM, not changing existing topologies; rotor diameter and wind speed are derived for export | Accepted |
+| 2026-08-11 | Apply a complete DFIM starter case when DFIM is selected           | This follows the existing dependent-default pattern and gives both supported topologies valid candidates             | Accepted |
+| 2026-08-11 | Keep the planned 7100 kW DFIM catalogue rating                     | The rating was intentionally added; the candidate boundary was aligned from 7000 to 7100 kW                         | Implemented |
+| 2026-08-11 | Defer numerical golden and export tests until human validation     | Current empirical coefficients and the external MATLAB/Simulink contract do not yet provide trusted expected values | Accepted |
+| 2026-08-11 | Do not preserve the former flat component-documentation URLs       | The canonical directory routes are working and backward-compatible redirects are not required                       | Accepted |
 
 ## Session log
 
@@ -641,6 +675,109 @@ evidence, and participants when relevant.
   TypeScript `--showConfig` output, although `npm run build` succeeds in the
   maintainer's Node.js 24 terminal. Treat this as a session-specific
   verification limitation, not a repository or test failure.
+
+### 2026-08-11 — Engineering, compatibility, and documentation correction batch
+
+- Introduced `DFIM_MAX_SLIP = 0.3` and used it for both converter sizing and the
+  70–130% DFIM synchronous-speed envelope.
+- Sized the DFIM grid-side filter at the simplified 30% current while retaining
+  full referred current for the rotor-side filter.
+- Separated cable installed quantity and price (`1.33`) from stator voltage drop
+  (physical length) and the documented equal-resistance loss approximation
+  (`1.09`).
+- Applied the DFIM partial-efficiency curve consistently at 25%, 50%, and 75%.
+- Replaced the DFIM efficiency calculation's `any` and truthiness fallbacks with
+  typed, nullish-safe access.
+- Detected and restored the pre-PR PMSM partial-efficiency behavior.
+- Scoped the extended gearbox torque catalog to explicitly selected DFIM
+  systems; existing systems retain the original catalog.
+- Retained four-times floor-converter oversizing only for DFIM and two-times for
+  all existing machine types.
+- Restored the four canonical component chapter routes and navigation entries;
+  checked all local MDX links and assets with zero missing targets.
+- Corrected new DFIM chapter prose, cable assumptions, and figure references.
+- Split CSV, MATLAB, and Simulink downloads into explicit controls with HTTP
+  response validation; direct drive exports gearbox ratio `1`.
+- Corrected MATLAB base impedance to `Vm^2 / Pm` for line-to-line voltage and
+  total three-phase power.
+- Node.js 24 TypeScript compilation and formatting checks pass.
+- Current-source Playwright verification passes all 12 focused checks in
+  Chromium and Firefox: two existing wind-default scenarios and ten chapter
+  render scenarios covering electric machines, frequency converters, gearboxes,
+  transformers, and power cables.
+- The full current-source Playwright run exposed a saved-system migration crash
+  when a matching local-storage entry lacked `input`. Wind migration now guards
+  that boundary, and the regression test covers non-system storage data.
+- Added missing `await` operations to two existing reload steps in the
+  saved-system browser tests.
+- Final full current-source Playwright result: **43 passed, 3 intentionally
+  skipped, 0 failed** across Chromium and Firefox.
+- Selecting DFIM in either supported geared-wind topology now applies a
+  DFIM-only starter case: `400 kNm` turbine torque, two `8:1` helical stages,
+  `IP54/55` machine protection, and a compatible `4Q-2L-VSC` filter setup.
+  Existing defaults are unchanged until DFIM is explicitly selected.
+- Browser verification confirms both `wind-gb-fc` and `wind-gb-fc-tr` produce
+  matching gearbox, DFIM machine, cable, converter, and (where applicable)
+  transformer candidates in Chromium and Firefox: **4 passed, 0 failed**.
+- Moved the three DFIM export actions out of the crowded general action row and
+  into a labelled responsive panel. They render as three equal columns where
+  space permits and stack vertically below the small-screen breakpoint.
+- Desktop and `390 x 844` phone-layout checks pass in Chromium and Firefox; all
+  export controls remain visible and inside their panel and viewport: **6
+  passed, 0 failed**.
+
+### 2026-08-11 — Full change and documentation review
+
+- Compared the complete integration working tree with dependency-updated
+  `main` (`1f4ebd5`) and with Stian's PR source.
+- Found no evident unintended numerical change in the existing SCIM, PMSM, or
+  SyRM sizing paths. DFIM-only gearbox torque, cable factors, converter power
+  fraction, and four-times floor-converter oversizing remain correctly scoped.
+- Confirmed that the multi-parameter DFIM starter case is consistent with the
+  application's existing dependent-default behavior. It is accepted behavior,
+  not an open defect: it runs only after an explicit DFIM selection and only in
+  the two supported geared-wind topologies.
+- Found one concrete catalogue inconsistency: `7100 kW` was present in the
+  machine catalogue and textbook while the DFIM candidate filter stopped at
+  `7000 kW`. The planned rating remains, and the candidate filter has now been
+  corrected to include `7100 kW`.
+- Reviewed the relocated component chapters, navigation metadata, internal
+  links, and assets. The new directory routes render correctly and the internal
+  navigation targets them.
+- Confirmed that the former flat routes (`index_electric-machines`,
+  `index_frequency-converters`, `index_gearboxes`, and `index_transformers`) do
+  not require redirects or compatibility pages.
+- Identified two legacy wording errors (`inventor scheme` should be `inverter
+  scheme`) in the frequency-converter chapter and corrected both occurrences.
+- Audited the new DFIM asset provenance. All new DFIM PNG, SVG, MATLAB, and
+  Simulink files first appear in Stian Skevig's single authored PR commit
+  `d19dd3423`. The Simulink package metadata identifies `stianske` as creator and
+  `stian` as last modifier, while the SVG headers identify Microsoft Visio as the
+  export tool. The PNG files contain no useful creator, copyright, source, or
+  license metadata, and neither the commit nor PR description provides separate
+  attribution. The repository is Apache-2.0 licensed, but this audit cannot
+  establish whether the raster diagrams are original work or cleared third-party
+  material. Obtain a brief contributor confirmation before publication; add
+  source attribution only if that confirmation identifies external material.
+- Confirmed that numerical validation remains outside the current software-only
+  review: coefficient provenance, a trusted complete DFIM reference case, CSV
+  schema/units, and the Simulink per-unit convention require human or external
+  tool validation. Additional golden tests will follow that validation.
+- Noted that the relocated documentation directories, DFIM helper, and new test
+  files are still untracked in the current working tree. They must be staged
+  together with deletion of the old flat chapter files to avoid an incomplete
+  commit.
+
+## Next-session checklist
+
+1. Ask Stian to confirm that the newly added raster diagrams are original work
+   or otherwise licensed for inclusion under the repository's terms; record any
+   external sources he identifies.
+2. After human engineering validation, add a trusted end-to-end numerical DFIM
+   reference case and validate the CSV/MATLAB/Simulink contract.
+3. Before committing, review `git status`, stage tracked deletions and all
+   replacement/untracked files together, run `git diff --check`, and perform the
+   supported Node.js 24 verification set.
 
 ## Notes for future sessions
 

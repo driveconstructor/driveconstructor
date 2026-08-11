@@ -1,5 +1,6 @@
 import { ApplicationType } from "./application";
 import { FcCooling, FcCoolingType, FcProtection } from "./cooling-protection";
+import { DFIM_MAX_SLIP } from "./dfim";
 import { EMachineTypeAlias } from "./emachine";
 import {
   FConverter,
@@ -40,6 +41,12 @@ export function isWithinFloorConverterOversizingLimit(
   return converterCurrent <= requiredCurrent * maximumOversizing;
 }
 
+export function getConverterPowerFraction(
+  emachineType: EMachineTypeAlias | null,
+): number {
+  return emachineType === "DFIM" ? DFIM_MAX_SLIP : 1;
+}
+
 export function findFcConverters(
   systemVoltage: number,
   cableEfficiency100: number,
@@ -54,7 +61,7 @@ export function findFcConverters(
     systemVoltage / fconverter.voltageDerating / trafoRatio;
 
   // For DFIM, apply a power derating factor to allow smaller converters
-  const dfimPowerDerating = emachineType === "DFIM" ? 0.3 : 1;
+  const converterPowerFraction = getConverterPowerFraction(emachineType);
 
   return FConverterType.filter((type) => type == fconverter.type)
     .flatMap((type) =>
@@ -91,7 +98,7 @@ export function findFcConverters(
                       ? null
                       : findFiler(
                           fconverter.gridSideFilter,
-                          emachineWorkingCurrent,
+                          emachineWorkingCurrent * converterPowerFraction,
                           voltage.value,
                         );
                   const machineSideFilter = findFiler(
@@ -241,7 +248,7 @@ export function findFcConverters(
         (emachineWorkingCurrent /
           fconverter.overallCurrentDerating /
           efficiencyK) *
-        dfimPowerDerating; // For DFIM, reduce required current to allow smaller converters
+        converterPowerFraction;
 
       if (currentK) {
         return fc.currentHO >= current * currentK;

@@ -7,6 +7,7 @@ import {
   NumberOfRunsType,
 } from "./cable";
 import { CableComponent } from "./cable-component";
+import { DFIM_CABLE_LOSS_FACTOR, DFIM_CABLE_QUANTITY_FACTOR } from "./dfim";
 import { EMachineComponent } from "./emachine-component";
 
 const Voltage = [1, 3, 6, 10, 15];
@@ -40,35 +41,37 @@ export function findCableComponent(
             const pricePerMeter =
               K1 * (1 + voltage * 0.03) * Math.pow(crossSection, 0.8);
             const designation = getDesignation(material, crossSection, voltage);
-            const length =
-              emachine.type == "DFIM" ? cable.length * 1.33 : cable.length;
+            const isDfim = emachine.type == "DFIM";
+            const installedLength =
+              cable.length * (isDfim ? DFIM_CABLE_QUANTITY_FACTOR : 1);
             const voltageDrop = Math.sqrt(
               Math.pow(
-                emachine.workingCurrent * resistancePerMeter * length,
+                emachine.workingCurrent * resistancePerMeter * cable.length,
                 2,
               ) +
                 Math.pow(
                   (emachine.workingCurrent *
                     reactancePerHz *
-                    length *
+                    cable.length *
                     50) /*Gz*/ /
                     1000,
                   2,
                 ),
             );
-            const price = length * numberOfRuns * pricePerMeter;
-            const losses =
-              (((Math.pow(emachine.workingCurrent, 2) * resistancePerMeter) /
-                1000) *
-                length *
+            const price = installedLength * numberOfRuns * pricePerMeter;
+            const statorLosses =
+              (Math.pow(emachine.workingCurrent, 2) *
+                resistancePerMeter *
+                cable.length *
                 3) /
-              numberOfRuns;
+              (1000 * numberOfRuns);
+            const losses = statorLosses * (isDfim ? DFIM_CABLE_LOSS_FACTOR : 1);
 
             const efficiency100 =
               ((emachine.ratedPower - losses) / emachine.ratedPower) * 100;
 
             return {
-              length,
+              length: installedLength,
               material,
               crossSection,
               numberOfRuns,
@@ -163,7 +166,6 @@ function calculateCable(cable: Cable, emachine: EMachineComponent) {
       break;
   }
 
-  //const workingCurrent = emachine.type == "DFIM" ? emachine.workingCurrent * 1.1 : emachine.workingCurrent;
   const workingCurrent = emachine.workingCurrent;
   let result: {
     maxCurrentDensity: number;
