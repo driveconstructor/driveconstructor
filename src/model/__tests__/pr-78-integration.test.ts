@@ -10,19 +10,10 @@ import {
 } from "../fconverter-sizing";
 import { findGearbox } from "../gearbox-sizing";
 import { withCandidates } from "../sizing";
-import { createSystem, getSystem, updateParam } from "../store";
+import { createSystem, updateParam } from "../store";
 import { customizeModel, getModel } from "../system";
-import { migrateLegacyWindInput } from "../wind";
 
 describe("PR #78 integration", () => {
-  test("does not apply wind migration to non-system storage data", () => {
-    localStorage.setItem("dc-v1.system.metadata", JSON.stringify({ id: null }));
-
-    expect(getSystem("metadata")).toEqual({ id: null });
-
-    localStorage.removeItem("dc-v1.system.metadata");
-  });
-
   test("ties DFIM converter rating and speed range to 30% slip", () => {
     expect(getConverterPowerFraction("DFIM")).toBe(0.3);
     expect(getConverterPowerFraction("SCIM")).toBe(1);
@@ -113,26 +104,6 @@ describe("PR #78 integration", () => {
     expect(dfim.voltageDrop).toBeCloseTo(scim.voltageDrop);
     expect(dfim.losses).toBeCloseTo(scim.losses * 1.09);
     expect(dfim.price).toBeCloseTo(scim.price * 1.33);
-  });
-
-  test("migrates legacy wind inputs without changing speed or power", () => {
-    const legacy = {
-      ratedSpeedOfBlades: 20,
-      ratedTorque: 200,
-      powerOnShaft: (20 / 9.55) * 200,
-      overSpeed: 1.2,
-    };
-
-    const migrated = migrateLegacyWindInput(legacy);
-    const diameter = migrated.rotorDiameter as number;
-    const windSpeed = migrated.ratedWindSpeed as number;
-    const migratedSpeed = (windSpeed * 7 * 60) / (Math.PI * diameter);
-    const migratedPower =
-      (((0.45 * 1.225) / 2) * windSpeed ** 3 * Math.PI * (diameter / 2) ** 2) /
-      1000;
-
-    expect(migratedSpeed).toBeCloseTo(legacy.ratedSpeedOfBlades);
-    expect(migratedPower).toBeCloseTo(legacy.powerOnShaft);
   });
 
   test("restricts DFIM to supported wind topologies", () => {

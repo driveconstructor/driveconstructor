@@ -3,13 +3,10 @@
 import { withCandidates } from "@/model/sizing";
 import { createSystem, updateParam } from "@/model/store";
 import { System } from "@/model/system";
-import {
-  downloadDfimModelFile,
-  exportDfimParameters,
-} from "@/model/system-export";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import Candidates from "./Candidates";
+import DfimExportActions from "./DfimExportActions";
 import Errors from "./Errors";
 import Graph from "./Graph";
 import Param from "./Param";
@@ -83,65 +80,10 @@ export default function Input({
               ))}
           </div>
         </div>
-        {system.params != null &&
-          system.components.emachine?.type == "DFIM" && (
-            <section
-              className="m-2 rounded border p-2"
-              data-testid="dfim-export-actions"
-              aria-labelledby="dfim-export-heading"
-            >
-              <div
-                id="dfim-export-heading"
-                className="mb-2 text-sm font-medium text-gray-600"
-              >
-                DFIM model export
-              </div>
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                <button
-                  className="btn w-full whitespace-normal"
-                  onClick={() =>
-                    exportDfimParameters(system.components.emachine, system)
-                  }
-                >
-                  Parameters CSV
-                </button>
-                <button
-                  className="btn w-full whitespace-normal"
-                  onClick={() =>
-                    downloadDfimModelFile(
-                      "/matlabFiles/dfim_vindturbin_script.m",
-                      "dfim_vindturbin_script.m",
-                    ).catch((error: unknown) =>
-                      setErrors([
-                        error instanceof Error
-                          ? error.message
-                          : "MATLAB script download failed",
-                      ]),
-                    )
-                  }
-                >
-                  MATLAB script
-                </button>
-                <button
-                  className="btn w-full whitespace-normal"
-                  onClick={() =>
-                    downloadDfimModelFile(
-                      "/matlabFiles/DFIM_vindturbin_model.slx",
-                      "DFIM_vindturbin_model.slx",
-                    ).catch((error: unknown) =>
-                      setErrors([
-                        error instanceof Error
-                          ? error.message
-                          : "Simulink model download failed",
-                      ]),
-                    )
-                  }
-                >
-                  Simulink model
-                </button>
-              </div>
-            </section>
-          )}
+        <DfimExportActions
+          system={system}
+          onError={(message) => setErrors([message])}
+        />
         <div className="flex gap-2 p-2">
           <button
             className="btn flex-none"

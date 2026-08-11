@@ -1,6 +1,5 @@
 import { withCandidates } from "./sizing";
 import { System, SystemModel } from "./system";
-import { migrateLegacyWindInput } from "./wind";
 
 const prefix = "dc-v1.system.";
 const draft_prefix = "draft_";
@@ -11,11 +10,7 @@ export function getSystem(id: string): System {
     throw new Error("System is not found: " + id);
   }
 
-  const system = JSON.parse(json) as System;
-  if (system.input?.wind) {
-    system.input.wind = migrateLegacyWindInput(system.input.wind);
-  }
-  return system;
+  return JSON.parse(json);
 }
 
 export function updateSystem(system: System): System {

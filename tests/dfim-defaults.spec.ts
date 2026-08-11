@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { readFile } from "node:fs/promises";
 
 for (const topology of ["wind-gb-fc", "wind-gb-fc-tr"] as const) {
   test(`DFIM defaults produce matches in ${topology}`, async ({ page }) => {
@@ -65,5 +66,34 @@ test("DFIM export actions fit a narrow viewport", async ({ page }) => {
     expect(buttonBox!.x + buttonBox!.width).toBeLessThanOrEqual(
       panelBox!.x + panelBox!.width,
     );
+  }
+});
+
+test("DFIM export actions return the requested files", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("wind").click();
+  await page.getByTestId("wind-gb-fc").click();
+  await page.getByTestId("emachine.<icon>").click();
+  await page.getByLabel("Type:").selectOption("DFIM");
+  await page.getByTestId("emachine[0].<selected>").check();
+  await page.getByTestId("fconverter[0].<selected>").check();
+
+  const panel = page.getByTestId("dfim-export-actions");
+  const exports = [
+    ["Parameters CSV", "Parameters.csv"],
+    ["MATLAB script", "dfim_vindturbin_script.m"],
+    ["Simulink model", "DFIM_vindturbin_model.slx"],
+  ] as const;
+
+  for (const [buttonName, fileName] of exports) {
+    const downloadPromise = page.waitForEvent("download");
+    await panel.getByRole("button", { name: buttonName }).click();
+    const download = await downloadPromise;
+
+    expect(download.suggestedFilename()).toBe(fileName);
+    expect(await download.failure()).toBeNull();
+    const downloadedPath = await download.path();
+    expect(downloadedPath).not.toBeNull();
+    expect((await readFile(downloadedPath!)).byteLength).toBeGreaterThan(0);
   }
 });

@@ -123,11 +123,12 @@ The wind model replaces entered blade speed and torque with rotor diameter and
 rated wind speed. Previously saved systems do not contain the new input fields,
 which may produce `NaN` values during recalculation.
 
-Proposed resolution: introduce persisted-system schema versioning and a
-migration, or temporarily support both representations.
+Final resolution: preserve the existing speed and torque inputs and make rotor
+diameter and rated wind speed additive calculated fields. Compatibility with
+pre-integration saved-system formats is explicitly out of scope, so no
+topology-specific load migration is required.
 
-Status: **Resolved in working tree; legacy speed and power are preserved by
-migration**
+Status: **Resolved by retaining the existing input model; migration removed**
 
 #### 6. Direct-drive wind models expose a DFIM option that cannot produce a candidate
 
@@ -487,8 +488,8 @@ working, all local links/assets were checked, and five affected chapters render
 in Chromium and Firefox. The former flat `index_*` URLs do not require backward
 compatibility. An asset-provenance audit found that all new files originate in
 Stian's authored PR commit, but the raster diagrams contain no source/license
-metadata; their originality or reuse permission still requires confirmation
-from the contributor.**
+metadata; their originality or reuse permission still requires confirmation from
+the contributor.**
 
 ### Stage 3: Introduce the DFIM domain model
 
@@ -513,11 +514,11 @@ reference design remain validation follow-ups**
 
 - Add rotor diameter and rated wind speed.
 - Decide whether old speed/torque inputs remain supported.
-- Implement migration for saved systems.
+- Decide whether migration of previously saved systems is required.
 - Add formula and boundary tests.
 
 Status: **Complete; existing speed/torque behavior is preserved, derived wind
-dimensions are additive, and saved inputs are migrated**
+dimensions are additive, and legacy saved-format compatibility is out of scope**
 
 ### Stage 6: Add MATLAB/Simulink export
 
@@ -538,15 +539,15 @@ follow-ups requiring the external model/tool**
 - Run new DFIM and wind scenarios.
 - Manually verify reports, save/load behavior, downloads, and textbook pages.
 
-Status: **In progress; Node.js 24 type checks and the complete current-source E2E
-suite pass. The maintainer reports that the production build passes under the
-supported Node.js 24 environment. Numerical reference tests and MATLAB/Simulink
-validation are intentionally deferred until the engineering model has been
-validated by humans.**
+Status: **In progress; Node.js 24 type checks and the complete current-source
+E2E suite pass. The maintainer reports that the production build passes under
+the supported Node.js 24 environment. Numerical reference tests and
+MATLAB/Simulink validation are intentionally deferred until the engineering
+model has been validated by humans.**
 
 ## Required automated coverage
 
-The boundary, isolation, migration, candidate-generation, documentation, and
+The boundary, isolation, candidate-generation, documentation, and
 responsive-layout tests added during integration are useful software regression
 coverage. The following list remains the target for final engineering coverage.
 Golden numerical assertions and additional export tests will be added only after
@@ -585,15 +586,15 @@ git diff --check
 Add durable decisions here. Include the date, decision, rationale, source or
 evidence, and participants when relevant.
 
-| Date       | Decision                                                          | Rationale / evidence                                                                                                 | Status   |
-| ---------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------- |
-| 2026-08-10 | Keep current dependency versions rather than PR #78's versions    | The dependency work is newer and independent of the feature                                                          | Proposed |
-| 2026-08-10 | Do not merge PR #78 unchanged                                     | Static review found correctness defects and unvalidated shared-model changes                                         | Proposed |
-| 2026-08-10 | Preserve the original wind inputs, defaults, and topology results | Stian's scope is adding DFIM, not changing existing topologies; rotor diameter and wind speed are derived for export | Accepted |
-| 2026-08-11 | Apply a complete DFIM starter case when DFIM is selected           | This follows the existing dependent-default pattern and gives both supported topologies valid candidates             | Accepted |
-| 2026-08-11 | Keep the planned 7100 kW DFIM catalogue rating                     | The rating was intentionally added; the candidate boundary was aligned from 7000 to 7100 kW                         | Implemented |
-| 2026-08-11 | Defer numerical golden and export tests until human validation     | Current empirical coefficients and the external MATLAB/Simulink contract do not yet provide trusted expected values | Accepted |
-| 2026-08-11 | Do not preserve the former flat component-documentation URLs       | The canonical directory routes are working and backward-compatible redirects are not required                       | Accepted |
+| Date       | Decision                                                          | Rationale / evidence                                                                                                 | Status      |
+| ---------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 2026-08-10 | Keep current dependency versions rather than PR #78's versions    | The dependency work is newer and independent of the feature                                                          | Proposed    |
+| 2026-08-10 | Do not merge PR #78 unchanged                                     | Static review found correctness defects and unvalidated shared-model changes                                         | Proposed    |
+| 2026-08-10 | Preserve the original wind inputs, defaults, and topology results | Stian's scope is adding DFIM, not changing existing topologies; rotor diameter and wind speed are derived for export | Accepted    |
+| 2026-08-11 | Apply a complete DFIM starter case when DFIM is selected          | This follows the existing dependent-default pattern and gives both supported topologies valid candidates             | Accepted    |
+| 2026-08-11 | Keep the planned 7100 kW DFIM catalogue rating                    | The rating was intentionally added; the candidate boundary was aligned from 7000 to 7100 kW                          | Implemented |
+| 2026-08-11 | Defer numerical golden and export tests until human validation    | Current empirical coefficients and the external MATLAB/Simulink contract do not yet provide trusted expected values  | Accepted    |
+| 2026-08-11 | Do not preserve the former flat component-documentation URLs      | The canonical directory routes are working and backward-compatible redirects are not required                        | Accepted    |
 
 ## Session log
 
@@ -626,8 +627,9 @@ evidence, and participants when relevant.
 - Made DFIM converter options self-consistent and restricted DFIM to supported
   gearbox wind topologies.
 - Corrected DFIM cable calculations to use one effective length.
-- Added migration of persisted legacy wind inputs while preserving their blade
-  speed and shaft power.
+- Initially added migration of persisted legacy wind inputs while preserving
+  their blade speed and shaft power; this was later removed when legacy-format
+  compatibility was declared out of scope.
 - Added four focused integration tests. Current result: 11 tests pass and the
   production build succeeds.
 - Ran the 36-test Playwright suite. Thirty-three tests passed. The wind default
@@ -705,9 +707,10 @@ evidence, and participants when relevant.
   Chromium and Firefox: two existing wind-default scenarios and ten chapter
   render scenarios covering electric machines, frequency converters, gearboxes,
   transformers, and power cables.
-- The full current-source Playwright run exposed a saved-system migration crash
-  when a matching local-storage entry lacked `input`. Wind migration now guards
-  that boundary, and the regression test covers non-system storage data.
+- The full current-source Playwright run exposed a crash in the interim
+  saved-system migration when a matching local-storage entry lacked `input`.
+  That topology-specific migration was subsequently removed from the generic
+  store after legacy-format compatibility was declared out of scope.
 - Added missing `await` operations to two existing reload steps in the
   saved-system browser tests.
 - Final full current-source Playwright result: **43 passed, 3 intentionally
@@ -728,8 +731,8 @@ evidence, and participants when relevant.
 
 ### 2026-08-11 — Full change and documentation review
 
-- Compared the complete integration working tree with dependency-updated
-  `main` (`1f4ebd5`) and with Stian's PR source.
+- Compared the complete integration working tree with dependency-updated `main`
+  (`1f4ebd5`) and with Stian's PR source.
 - Found no evident unintended numerical change in the existing SCIM, PMSM, or
   SyRM sizing paths. DFIM-only gearbox torque, cable factors, converter power
   fraction, and four-times floor-converter oversizing remain correctly scoped.
@@ -747,18 +750,20 @@ evidence, and participants when relevant.
 - Confirmed that the former flat routes (`index_electric-machines`,
   `index_frequency-converters`, `index_gearboxes`, and `index_transformers`) do
   not require redirects or compatibility pages.
-- Identified two legacy wording errors (`inventor scheme` should be `inverter
-  scheme`) in the frequency-converter chapter and corrected both occurrences.
+- Identified two legacy wording errors (`inventor scheme` should be
+  `inverter scheme`) in the frequency-converter chapter and corrected both
+  occurrences.
 - Audited the new DFIM asset provenance. All new DFIM PNG, SVG, MATLAB, and
   Simulink files first appear in Stian Skevig's single authored PR commit
-  `d19dd3423`. The Simulink package metadata identifies `stianske` as creator and
-  `stian` as last modifier, while the SVG headers identify Microsoft Visio as the
-  export tool. The PNG files contain no useful creator, copyright, source, or
-  license metadata, and neither the commit nor PR description provides separate
-  attribution. The repository is Apache-2.0 licensed, but this audit cannot
-  establish whether the raster diagrams are original work or cleared third-party
-  material. Obtain a brief contributor confirmation before publication; add
-  source attribution only if that confirmation identifies external material.
+  `d19dd3423`. The Simulink package metadata identifies `stianske` as creator
+  and `stian` as last modifier, while the SVG headers identify Microsoft Visio
+  as the export tool. The PNG files contain no useful creator, copyright,
+  source, or license metadata, and neither the commit nor PR description
+  provides separate attribution. The repository is Apache-2.0 licensed, but this
+  audit cannot establish whether the raster diagrams are original work or
+  cleared third-party material. Obtain a brief contributor confirmation before
+  publication; add source attribution only if that confirmation identifies
+  external material.
 - Confirmed that numerical validation remains outside the current software-only
   review: coefficient provenance, a trusted complete DFIM reference case, CSV
   schema/units, and the Simulink per-unit convention require human or external
@@ -767,6 +772,26 @@ evidence, and participants when relevant.
   files are still untracked in the current working tree. They must be staged
   together with deletion of the old flat chapter files to avoid an incomplete
   commit.
+
+### 2026-08-11 — Export component and download coverage
+
+- Extracted the DFIM export panel from the general system `Input` component into
+  a focused `DfimExportActions` client component. The parent now supplies only
+  the current system and an error callback; visibility rules, filenames, and
+  download handlers remain encapsulated with the panel.
+- Added a browser test that clicks all three DFIM export actions in Chromium and
+  Firefox. It verifies the expected CSV, MATLAB, and Simulink filenames,
+  successful browser downloads, and non-empty files without asserting
+  unvalidated numerical values.
+- Documented the units, compatibility boundary, and validation status of the
+  extended DFIM gearbox torque catalogue in `gearbox-sizing.ts`.
+- Removed `migrateLegacyWindInput` and its focused tests. The shared store is
+  topology-agnostic again, and compatibility with pre-integration saved-system
+  formats is explicitly out of scope. New and updated systems calculate the two
+  additive wind export fields through the normal model lifecycle.
+- Node.js 24 TypeScript compilation and the direct Next.js production build
+  pass. The focused DFIM browser suite passes all **8 tests** across Chromium
+  and Firefox, including both download tests.
 
 ## Next-session checklist
 

@@ -1,6 +1,8 @@
 import { Gearbox, StageTypeAlias } from "./gearbox";
 import { GearboxComponent, GearboxStageComponent } from "./gearbox-component";
 
+// Preferred gearbox-stage input torques in Nm. This is the complete pre-DFIM
+// catalogue and must remain the only catalogue used by existing machine types.
 const ExistingTorque = [
   5, 10, 20, 30, 40, 60, 80, 100, 140, 180, 220, 270, 320, 370, 440, 500, 600,
   750, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7000, 9000, 12000, 15000,
@@ -8,6 +10,10 @@ const ExistingTorque = [
   400000, 500000, 700000, 1000000, 1500000, 2000000, 2500000, 3000000,
 ];
 
+// PR #78 extends the same preferred-number progression from 4 MNm to 70 MNm so
+// large geared wind turbines can produce a gearbox candidate. These empirical
+// catalogue values are exposed only after DFIM is explicitly selected; their
+// engineering range remains part of the planned human validation.
 const DfimExtendedTorque = [
   4000000, 5000000, 7000000, 10000000, 15000000, 20000000, 30000000, 40000000,
   50000000, 70000000,
@@ -18,6 +24,8 @@ export function findGearbox(
   mechanismRatedTorque: number,
   allowDfimExtendedTorque = false,
 ): GearboxComponent[] {
+  // Selecting DFIM opts into the extension without changing candidate results
+  // for SCIM, PMSM, SyRM, or calls made without a machine type.
   const torqueCatalog = allowDfimExtendedTorque
     ? [...ExistingTorque, ...DfimExtendedTorque]
     : ExistingTorque;
