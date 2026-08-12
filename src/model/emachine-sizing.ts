@@ -178,7 +178,7 @@ export function findEmCandidates(
                   if (typeof shaftHeight == "undefined") {
                     throw new Error("shaftHeight not found");
                   }
-                  const price = getPrice(
+                  const price = calculateEMachinePrice(
                     ratedVoltageY,
                     typeSpeedTorque,
                     weight,
@@ -443,7 +443,7 @@ function getPriceIncrease(
   }
 }
 
-function getPrice(
+export function calculateEMachinePrice(
   ratedVoltageY: VoltageY,
   typeSpeedTorque: TypeSpeedTorque,
   weight: number,
@@ -465,8 +465,14 @@ function getPrice(
       getK6(frameMaterial) *
       getK7(mounting) *
       K9) /
-      getK14(cooling, protection)) *
+      getK14(typeSpeedTorque.type, cooling, protection)) *
     Math.pow(weight / 1000, a);
+
+  // The DFIM price model does not apply the efficiency-class premium.
+  // Keep the established premium for every pre-existing machine type.
+  if (typeSpeedTorque.type == "DFIM") {
+    return price;
+  }
 
   return (
     price +
@@ -486,6 +492,7 @@ function getPrice(
 // K14 = 0,85 for IC71W
 
 function getK14(
+  type: EMachineTypeAlias,
   cooling: EMachineCoolingType,
   protection: EMachineProtectionType,
 ) {
@@ -493,14 +500,17 @@ function getK14(
     case "IC411":
       switch (protection) {
         case "IP54/55":
-          return 0.975;
+          // The DFIM model uses 1 for self-ventilation. The established
+          // coefficient remains unchanged for all pre-existing machine types.
+          return type == "DFIM" ? 1 : 0.975;
         case "IP21/23":
           return 0.9;
       }
     case "IC416":
       switch (protection) {
         case "IP54/55":
-          return 1;
+          // The DFIM model uses 0.975 for forced ventilation.
+          return type == "DFIM" ? 0.975 : 1;
         case "IP21/23":
           return 0.925;
       }

@@ -42,6 +42,37 @@ for (const topology of ["wind-gb-fc", "wind-gb-fc-tr"] as const) {
   });
 }
 
+test("DFIM matches the thesis 2.1 MW reference system", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByTestId("wind").click();
+  await page.getByTestId("wind-gb-fc-tr").click();
+
+  await page.getByTestId("emachine.<icon>").click();
+  await page.getByLabel("Type:").selectOption("DFIM");
+  await page.getByTestId("wind.<icon>").click();
+
+  await expect(page.getByLabel("Rotor diameter, m:")).toHaveValue("75");
+  await expect(page.getByLabel("Rated wind speed, m/s:")).toHaveValue("12");
+
+  await page.getByLabel("Rotor diameter, m:").fill("75");
+  await page.getByLabel("Rotor diameter, m:").press("Tab");
+  await page.getByLabel("Rated wind speed, m/s:").fill("12");
+  await page.getByLabel("Rated wind speed, m/s:").press("Tab");
+  await page.getByRole("button", { name: "More..." }).first().click();
+
+  await expect(page.getByLabel("Power on shaft, kW:")).toHaveValue("2104.1");
+  await expect(page.getByLabel("Rated speed of the blades, rpm:")).toHaveValue(
+    "21",
+  );
+  await expect(page.getByLabel("Overspeed, rpm:")).toHaveValue("26");
+  await expect(page.getByLabel("Rated torque, kNm:")).toHaveValue("939");
+  await expect(page.getByTestId("emachine[0].ratedPower")).toContainText(
+    "2500",
+  );
+});
+
 test("DFIM export actions fit a narrow viewport", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");

@@ -97,7 +97,8 @@ export const EMachineElement: SystemElement<EMachine> = {
               ? {
                   wind: {
                     ...system.input.wind,
-                    ratedTorque: 400,
+                    rotorDiameter: 75,
+                    ratedWindSpeed: 12,
                   },
                   gearbox: {
                     ...system.input.gearbox,

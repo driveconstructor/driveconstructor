@@ -2,7 +2,10 @@ import { describe, expect, test } from "@jest/globals";
 import { findCableComponent } from "../cable-sizing";
 import type { EMachineComponent } from "../emachine-component";
 import { getPartialEfficiency } from "../emachine-efficiency";
-import { isWithinDfimSpeedRange } from "../emachine-sizing";
+import {
+  calculateEMachinePrice,
+  isWithinDfimSpeedRange,
+} from "../emachine-sizing";
 import { DFIMConverterType } from "../fconverter";
 import {
   getConverterPowerFraction,
@@ -12,8 +15,17 @@ import { findGearbox } from "../gearbox-sizing";
 import { withCandidates } from "../sizing";
 import { createSystem, updateParam } from "../store";
 import { customizeModel, getModel } from "../system";
+import { calculateDfimWindPerformance } from "../wind";
 
 describe("PR #78 integration", () => {
+  test("reproduces the 2.1 MW DFIM wind calculation", () => {
+    const wind = calculateDfimWindPerformance(75, 12);
+
+    expect(wind.powerOnShaft).toBeCloseTo(2104.14, 2);
+    expect(wind.ratedSpeedOfBlades).toBeCloseTo(21.39, 2);
+    expect(wind.ratedTorque).toBeCloseTo(939.42, 2);
+  });
+
   test("ties DFIM converter rating and speed range to 30% slip", () => {
     expect(getConverterPowerFraction("DFIM")).toBe(0.3);
     expect(getConverterPowerFraction("SCIM")).toBe(1);
@@ -39,6 +51,46 @@ describe("PR #78 integration", () => {
       95;
 
     expect(getPartialEfficiency(pmsm, 0.5, 95)).toBeCloseTo(expectedAtHalfLoad);
+  });
+
+  test("scopes the machine pricing rules to DFIM", () => {
+    const machine = {
+      type: "SCIM",
+      ratedPower: 1000,
+      ratedSynchSpeed: 1500,
+    } as Parameters<typeof calculateEMachinePrice>[1];
+    const voltage = {
+      value: 660,
+      min: 594,
+      max: 726,
+      type: "LV",
+    } as const;
+    const price = (
+      type: "SCIM" | "DFIM",
+      efficiencyClass: "IE2" | "IE3",
+      cooling: "IC411" | "IC416",
+    ) =>
+      calculateEMachinePrice(
+        voltage,
+        { ...machine, type },
+        10_000,
+        "IP54/55",
+        "cast iron",
+        "B3",
+        efficiencyClass,
+        cooling,
+      );
+
+    expect(price("DFIM", "IE3", "IC411")).toBe(price("DFIM", "IE2", "IC411"));
+    expect(price("SCIM", "IE3", "IC411")).toBeGreaterThan(
+      price("SCIM", "IE2", "IC411"),
+    );
+    expect(price("DFIM", "IE2", "IC416")).toBeGreaterThan(
+      price("DFIM", "IE2", "IC411"),
+    );
+    expect(price("SCIM", "IE2", "IC411")).toBeGreaterThan(
+      price("SCIM", "IE2", "IC416"),
+    );
   });
 
   test("extends the gearbox torque catalog only for DFIM", () => {
@@ -131,13 +183,16 @@ describe("PR #78 integration", () => {
       system,
       "type",
       "DFIM",
+      (nextSystem) => customizeModel(getModel(nextSystem.kind), nextSystem),
     );
     const customized = customizeModel(model, updated);
 
     expect(updated.input.fconverter.type).toBe(DFIMConverterType[0]);
     expect(updated.input.fconverter.gridSideFilter).toBe("sin");
     expect(updated.input.emachine.protection).toBe("IP54/55");
-    expect(updated.input.wind.ratedTorque).toBe(400);
+    expect(updated.input.wind.rotorDiameter).toBe(75);
+    expect(updated.input.wind.ratedWindSpeed).toBe(12);
+    expect(updated.input.wind.ratedTorque).toBeCloseTo(939.42, 2);
     expect(updated.input.gearbox).toMatchObject({
       numberOfStages: 2,
       stage1Type: "helical",
@@ -148,6 +203,63 @@ describe("PR #78 integration", () => {
     expect(customized.input.fconverter.params.type.options).toEqual(
       DFIMConverterType,
     );
+    expect(typeof customized.input.wind.params.rotorDiameter.value).toBe(
+      "number",
+    );
+    expect(typeof customized.input.wind.params.ratedWindSpeed.value).toBe(
+      "number",
+    );
+    expect(typeof customized.input.wind.params.ratedSpeedOfBlades.value).toBe(
+      "function",
+    );
+    expect(typeof customized.input.wind.params.ratedTorque.value).toBe(
+      "function",
+    );
+  });
+
+  test("uses the DFIM wind inputs only after DFIM is selected", () => {
+    const model = getModel("wind-gb-fc");
+    let system = createSystem(model);
+
+    const originalModel = customizeModel(model, system);
+    expect(typeof originalModel.input.wind.params.ratedTorque.value).toBe(
+      "number",
+    );
+    expect(typeof originalModel.input.wind.params.rotorDiameter.value).toBe(
+      "function",
+    );
+
+    system.element = "emachine";
+    system = updateParam(originalModel, system, "type", "DFIM", (nextSystem) =>
+      customizeModel(getModel(nextSystem.kind), nextSystem),
+    );
+
+    expect(system.input.wind.rotorDiameter).toBe(75);
+    expect(system.input.wind.ratedWindSpeed).toBe(12);
+    expect(system.input.wind.powerOnShaft).toBeCloseTo(2104.14, 2);
+    expect(system.input.wind.ratedTorque).toBeCloseTo(939.42, 2);
+
+    const torqueAfterSelection = system.input.wind.ratedTorque;
+    system.element = "gearbox";
+    const dfimModelAfterSelection = customizeModel(model, system);
+    system = updateParam(
+      dfimModelAfterSelection,
+      system,
+      "stage1Ratio",
+      8,
+      (nextSystem) => customizeModel(getModel(nextSystem.kind), nextSystem),
+    );
+    expect(system.input.wind.ratedTorque).toBeCloseTo(torqueAfterSelection);
+
+    system.element = "wind";
+    let dfimModel = customizeModel(model, system);
+    system = updateParam(dfimModel, system, "rotorDiameter", 75);
+    dfimModel = customizeModel(model, system);
+    system = updateParam(dfimModel, system, "ratedWindSpeed", 12);
+
+    expect(system.input.wind.powerOnShaft).toBeCloseTo(2104.14, 2);
+    expect(system.input.wind.ratedSpeedOfBlades).toBeCloseTo(21.39, 2);
+    expect(system.input.wind.ratedTorque).toBeCloseTo(939.42, 2);
   });
 
   test.each(["wind-gb-fc", "wind-gb-fc-tr"] as const)(
@@ -162,6 +274,7 @@ describe("PR #78 integration", () => {
         system,
         "type",
         "DFIM",
+        (nextSystem) => customizeModel(getModel(nextSystem.kind), nextSystem),
       );
       const emachineCandidates = updated.candidates.emachine ?? [];
       const withMachine = withCandidates({
