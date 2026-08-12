@@ -42,12 +42,12 @@ for (const topology of ["wind-gb-fc", "wind-gb-fc-tr"] as const) {
   });
 }
 
-test("DFIM derives the 2.1 MW operating point from turbine inputs", async ({
+test("DFIM matches the thesis 2.1 MW reference system", async ({
   page,
 }) => {
   await page.goto("/");
   await page.getByTestId("wind").click();
-  await page.getByTestId("wind-gb-fc").click();
+  await page.getByTestId("wind-gb-fc-tr").click();
 
   await page.getByTestId("emachine.<icon>").click();
   await page.getByLabel("Type:").selectOption("DFIM");
@@ -66,6 +66,7 @@ test("DFIM derives the 2.1 MW operating point from turbine inputs", async ({
   await expect(page.getByLabel("Rated speed of the blades, rpm:")).toHaveValue(
     "21",
   );
+  await expect(page.getByLabel("Overspeed, rpm:")).toHaveValue("26");
   await expect(page.getByLabel("Rated torque, kNm:")).toHaveValue("939");
   await expect(page.getByTestId("emachine[0].ratedPower")).toContainText(
     "2500",

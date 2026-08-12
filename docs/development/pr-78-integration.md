@@ -937,6 +937,14 @@ evidence, and participants when relevant.
   kW shaft power, 21.39 rpm blade speed, and 939.42 kNm rated torque.
 - Added a browser regression that verifies the same values through the user
   interface in Chromium and Firefox.
+- Extended the browser regression to the complete thesis rotor reference in the
+  transformer topology: 75 m rotor, 12 m/s rated wind, 1.2 overspeed, 2104.1 kW,
+  21 rpm rated speed, 26 rpm overspeed, 939 kNm, and a 2.5 MW DFIM candidate.
+- The aggregate values in thesis Figure 6.6.2 are not used as golden assertions.
+  The figure comes from a saved system whose component selections are not
+  recorded in the thesis or final PR; selecting the current matching candidates
+  does not reproduce its price, efficiency, volume, footprint, or weight. Do not
+  change calculations to fit those totals without the original saved system.
 - Node.js 24 TypeScript validation and all 20 Jest tests pass. All 12 focused
   wind and DFIM browser tests pass across Chromium and Firefox.
 
