@@ -18,6 +18,6 @@ test("Defaults", async ({ page }) => {
     "CU-3x003-01kV",
   );
   await expect(page.getByTestId("fconverter[0].designation")).toContainText(
-    "2Q-2L-400-15-IP2x-AC-W-6p",
+    "2Q-2L-400-11-IP2x-AC-W-6p",
   );
 });

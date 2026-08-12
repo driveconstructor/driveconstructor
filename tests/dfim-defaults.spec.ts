@@ -42,9 +42,7 @@ for (const topology of ["wind-gb-fc", "wind-gb-fc-tr"] as const) {
   });
 }
 
-test("DFIM matches the thesis 2.1 MW reference system", async ({
-  page,
-}) => {
+test("DFIM matches the thesis 2.1 MW reference system", async ({ page }) => {
   await page.goto("/");
   await page.getByTestId("wind").click();
   await page.getByTestId("wind-gb-fc-tr").click();

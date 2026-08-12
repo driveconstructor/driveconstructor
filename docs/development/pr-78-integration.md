@@ -127,12 +127,13 @@ The wind model replaces entered blade speed and torque with rotor diameter and
 rated wind speed. Previously saved systems do not contain the new input fields,
 which may produce `NaN` values during recalculation.
 
-Final resolution: preserve the existing speed and torque inputs and make rotor
-diameter and rated wind speed additive calculated fields. Compatibility with
-pre-integration saved-system formats is explicitly out of scope, so no
-topology-specific load migration is required.
+Final resolution: use one static turbine-driven wind model for every wind
+topology. Rotor diameter and rated wind speed are inputs; shaft power, blade
+speed, maximum speed, and torque are calculated, while the overspeed factor
+remains an input. Compatibility with pre-integration saved-system formats is
+explicitly out of scope, so no load migration is required.
 
-Status: **Resolved by retaining the existing input model; migration removed**
+Status: **Resolved with the global static wind model; migration removed**
 
 #### 6. Direct-drive wind models expose a DFIM option that cannot produce a candidate
 
@@ -640,8 +641,9 @@ reference design remain validation follow-ups**
 - Decide whether migration of previously saved systems is required.
 - Add formula and boundary tests.
 
-Status: **Complete; existing speed/torque behavior is preserved, derived wind
-dimensions are additive, and legacy saved-format compatibility is out of scope**
+Status: **Complete; the static wind model uses rotor diameter and rated wind
+speed as inputs for all wind topologies, and legacy saved-format compatibility
+is out of scope**
 
 ### Stage 6: Add MATLAB/Simulink export
 
@@ -709,16 +711,16 @@ git diff --check
 Add durable decisions here. Include the date, decision, rationale, source or
 evidence, and participants when relevant.
 
-| Date       | Decision                                                          | Rationale / evidence                                                                                                        | Status              |
-| ---------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 2026-08-10 | Keep current dependency versions rather than PR #78's versions    | The dependency work is newer and independent of the feature                                                                 | Proposed            |
-| 2026-08-10 | Do not merge PR #78 unchanged                                     | Static review found correctness defects and unvalidated shared-model changes                                                | Proposed            |
-| 2026-08-10 | Preserve the original wind inputs, defaults, and topology results | Existing machine types retain this behavior; superseded for explicitly selected DFIM by the 2026-08-12 decision             | Superseded for DFIM |
-| 2026-08-11 | Apply a complete DFIM starter case when DFIM is selected          | This follows the existing dependent-default pattern and gives both supported topologies valid candidates                    | Accepted            |
-| 2026-08-11 | Keep the planned 7100 kW DFIM catalogue rating                    | The rating was intentionally added; the candidate boundary was aligned from 7000 to 7100 kW                                 | Implemented         |
-| 2026-08-11 | Defer numerical golden and export tests until human validation    | Current empirical coefficients and the external MATLAB/Simulink contract do not yet provide trusted expected values         | Accepted            |
-| 2026-08-11 | Do not preserve the former flat component-documentation URLs      | The canonical directory routes are working and backward-compatible redirects are not required                               | Accepted            |
-| 2026-08-12 | Use Stian's aerodynamic wind calculation direction for DFIM       | The thesis simulation starts from rotor diameter and rated wind speed; a 75 m, 12 m/s turbine produces approximately 2.1 MW | Implemented         |
+| Date       | Decision                                                          | Rationale / evidence                                                                                                                 | Status      |
+| ---------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| 2026-08-10 | Keep current dependency versions rather than PR #78's versions    | The dependency work is newer and independent of the feature                                                                          | Proposed    |
+| 2026-08-10 | Do not merge PR #78 unchanged                                     | Static review found correctness defects and unvalidated shared-model changes                                                         | Proposed    |
+| 2026-08-10 | Preserve the original wind inputs, defaults, and topology results | Superseded by the decision to use the turbine-driven model consistently across all wind topologies                                   | Superseded  |
+| 2026-08-11 | Apply a complete DFIM starter case when DFIM is selected          | This follows the existing dependent-default pattern and gives both supported topologies valid candidates                             | Accepted    |
+| 2026-08-11 | Keep the planned 7100 kW DFIM catalogue rating                    | The rating was intentionally added; the candidate boundary was aligned from 7000 to 7100 kW                                          | Implemented |
+| 2026-08-11 | Defer numerical golden and export tests until human validation    | Current empirical coefficients and the external MATLAB/Simulink contract do not yet provide trusted expected values                  | Accepted    |
+| 2026-08-11 | Do not preserve the former flat component-documentation URLs      | The canonical directory routes are working and backward-compatible redirects are not required                                        | Accepted    |
+| 2026-08-12 | Use the aerodynamic wind calculation direction globally           | A wind element has one definition regardless of machine selection; rotor diameter and rated wind speed determine its operating point | Implemented |
 
 ## Session log
 
@@ -917,22 +919,27 @@ evidence, and participants when relevant.
   pass. The focused DFIM browser suite passes all **8 tests** across Chromium
   and Firefox, including both download tests.
 
-### 2026-08-12 — Restore Stian's DFIM wind calculation direction
+### 2026-08-12 — Restore the turbine-driven wind calculation direction
 
 - Traced the quoted thesis 2.1 MW simulation case to the wind calculation
   direction introduced by Stian's PR.
-- Added a DFIM-specific wind model that accepts rotor diameter and rated wind
-  speed, then derives shaft power, blade speed, overspeed, and rated torque
-  using Stian's formulas and constants.
-- Kept the original blade-speed and torque inputs unchanged for SCIM, PMSM,
-  SyRM, and every topology where DFIM is unavailable.
+- Replaced the temporary DFIM-specific customization with one static wind model
+  used by every wind topology and machine type. It accepts rotor diameter and
+  rated wind speed, then derives shaft power, blade speed, overspeed, and rated
+  torque using the PR formulas and constants.
 - Scoped Stian's DFIM machine-price rules to DFIM: its base price omits the
   efficiency-class premium and uses the PR's IC411/IP54 and IC416/IP54 cooling
   coefficients. Existing machine types retain their previous pricing rules.
-- Made parameter updates resolve the model for the new state before evaluating
-  calculated fields. Selecting DFIM now installs the 75 m, 12 m/s reference
-  case atomically, and later gearbox or converter edits do not change its wind
-  torque.
+- Removed the model-transition resolver that was only needed by the temporary
+  DFIM-specific wind customization.
+- Chose rounded turbine defaults that reproduce the former mechanical sizing
+  points: 10.3 m, 7.7 m/s, and 1.2 overspeed for direct-drive topologies; 56.5
+  m, 8.5 m/s, and 1.2 overspeed for geared topologies. Selecting DFIM applies
+  its 75 m, 12 m/s, and 1.2 overspeed reference defaults without changing the
+  shared wind model.
+- Updated the direct-drive regression for the corrected 10.48 kW shaft power;
+  its existing machine and cable matches remain unchanged, while the correctly
+  sized frequency converter changes from 15 kW to 11 kW.
 - Added a reference regression for a 75 m rotor at 12 m/s: approximately 2104.1
   kW shaft power, 21.39 rpm blade speed, and 939.42 kNm rated torque.
 - Added a browser regression that verifies the same values through the user

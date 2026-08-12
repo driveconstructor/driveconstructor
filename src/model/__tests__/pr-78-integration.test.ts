@@ -15,11 +15,11 @@ import { findGearbox } from "../gearbox-sizing";
 import { withCandidates } from "../sizing";
 import { createSystem, updateParam } from "../store";
 import { customizeModel, getModel } from "../system";
-import { calculateDfimWindPerformance } from "../wind";
+import { calculateWindPerformance } from "../wind";
 
 describe("PR #78 integration", () => {
   test("reproduces the 2.1 MW DFIM wind calculation", () => {
-    const wind = calculateDfimWindPerformance(75, 12);
+    const wind = calculateWindPerformance(75, 12);
 
     expect(wind.powerOnShaft).toBeCloseTo(2104.14, 2);
     expect(wind.ratedSpeedOfBlades).toBeCloseTo(21.39, 2);
@@ -183,7 +183,6 @@ describe("PR #78 integration", () => {
       system,
       "type",
       "DFIM",
-      (nextSystem) => customizeModel(getModel(nextSystem.kind), nextSystem),
     );
     const customized = customizeModel(model, updated);
 
@@ -217,22 +216,24 @@ describe("PR #78 integration", () => {
     );
   });
 
-  test("uses the DFIM wind inputs only after DFIM is selected", () => {
+  test("uses one turbine-driven wind model for every machine type", () => {
     const model = getModel("wind-gb-fc");
     let system = createSystem(model);
 
     const originalModel = customizeModel(model, system);
     expect(typeof originalModel.input.wind.params.ratedTorque.value).toBe(
-      "number",
-    );
-    expect(typeof originalModel.input.wind.params.rotorDiameter.value).toBe(
       "function",
     );
+    expect(typeof originalModel.input.wind.params.rotorDiameter.value).toBe(
+      "number",
+    );
+    expect(system.input.wind.rotorDiameter).toBe(56.5);
+    expect(system.input.wind.ratedWindSpeed).toBe(8.5);
+    expect(system.input.wind.powerOnShaft).toBeCloseTo(424.39, 2);
+    expect(system.input.wind.ratedTorque).toBeCloseTo(201.51, 2);
 
     system.element = "emachine";
-    system = updateParam(originalModel, system, "type", "DFIM", (nextSystem) =>
-      customizeModel(getModel(nextSystem.kind), nextSystem),
-    );
+    system = updateParam(originalModel, system, "type", "DFIM");
 
     expect(system.input.wind.rotorDiameter).toBe(75);
     expect(system.input.wind.ratedWindSpeed).toBe(12);
@@ -242,13 +243,7 @@ describe("PR #78 integration", () => {
     const torqueAfterSelection = system.input.wind.ratedTorque;
     system.element = "gearbox";
     const dfimModelAfterSelection = customizeModel(model, system);
-    system = updateParam(
-      dfimModelAfterSelection,
-      system,
-      "stage1Ratio",
-      8,
-      (nextSystem) => customizeModel(getModel(nextSystem.kind), nextSystem),
-    );
+    system = updateParam(dfimModelAfterSelection, system, "stage1Ratio", 8);
     expect(system.input.wind.ratedTorque).toBeCloseTo(torqueAfterSelection);
 
     system.element = "wind";
@@ -274,7 +269,6 @@ describe("PR #78 integration", () => {
         system,
         "type",
         "DFIM",
-        (nextSystem) => customizeModel(getModel(nextSystem.kind), nextSystem),
       );
       const emachineCandidates = updated.candidates.emachine ?? [];
       const withMachine = withCandidates({
