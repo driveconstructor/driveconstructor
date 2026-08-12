@@ -98,6 +98,7 @@ export function updateParam(
   system: System,
   paramName: string,
   value: any,
+  resolveModel?: (system: System) => SystemModel,
 ): System {
   const withParamValue: System = {
     ...system,
@@ -117,7 +118,12 @@ export function updateParam(
     ) ?? withParamValue;
   const withModelUpdate = model.update?.(withParamUpdate) ?? withParamUpdate;
 
-  const input = updateSystemInput(model, withModelUpdate.input);
+  // A parameter update can change which customized model applies (for example,
+  // selecting DFIM changes the wind calculation direction). Resolve that model
+  // before evaluating calculated fields so the transition is completed in one
+  // update rather than after the user's next edit.
+  const calculationModel = resolveModel?.(withModelUpdate) ?? model;
+  const input = updateSystemInput(calculationModel, withModelUpdate.input);
   const withCalculatedParams = {
     ...withModelUpdate,
     input,

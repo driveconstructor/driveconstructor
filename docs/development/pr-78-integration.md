@@ -79,7 +79,9 @@ changes PMSM and SyRM prices and is not inherently related to adding DFIM.
 Proposed resolution: restore existing behavior for current machine types and
 introduce an explicit DFIM rule if its pricing differs.
 
-Status: **Resolved in working tree; existing behavior restored**
+Status: **Resolved in working tree; existing behavior is retained for SCIM,
+PMSM, and SyRM, while DFIM retains Stian's base-price rule without the
+efficiency-class premium**
 
 #### 2. Cooling price coefficients contradict their documentation
 
@@ -90,7 +92,9 @@ prices.
 Proposed resolution: restore the old values unless an engineering source
 supports changing both the values and documentation.
 
-Status: **Resolved in working tree; documented coefficients restored**
+Status: **Resolved in working tree; documented coefficients are retained for
+existing machine types, while Stian's IC411/IP54 and IC416/IP54 coefficients are
+scoped to DFIM**
 
 #### 3. Selecting DFIM initially produces no converter candidates
 
@@ -485,8 +489,8 @@ using a doubly-fed induction machine as a generator: turbine input,
 gearbox-referred inertia, wound-rotor machine, rotor-side and grid-side
 converters, DC link, transformer, grid connection, controls, and measurements.
 The use of "DFIG" in the MathWorks block description is compatible with the
-application's "DFIM" machine terminology: DFIM describes the machine, while
-DFIG describes its generator operation.
+application's "DFIM" machine terminology: DFIM describes the machine, while DFIG
+describes its generator operation.
 
 The model was saved with MATLAB/Simulink R2024b and uses Specialized Power
 Systems/Simscape Electrical blocks. The required MATLAB release, products, and
@@ -502,11 +506,11 @@ detection, this can remove the first parameter from the data, make `Var2`
 unavailable, shift all assignments, or leave only fourteen data rows for the
 fifteen accesses.
 
-This should be reproduced in the supported MATLAB release before validation.
-The preferred eventual contract is an explicit header such as
-`Name,Value,Unit`, with parameters retrieved and validated by name. The minimum
-possible correction would be an explicit headerless import, but that would
-retain the fragile dependence on row order.
+This should be reproduced in the supported MATLAB release before validation. The
+preferred eventual contract is an explicit header such as `Name,Value,Unit`,
+with parameters retrieved and validated by name. The minimum possible correction
+would be an explicit headerless import, but that would retain the fragile
+dependence on row order.
 
 ### Units and parameter contract
 
@@ -533,8 +537,8 @@ source, derivation, calibration case, or applicability range:
 - the 1% copper-loss assumption and equal split between stator and rotor;
 - leakage and magnetizing coefficients used to estimate the machine model;
 - the `1.634` DC-link-voltage multiplier;
-- aerodynamic constants `Cp = 0.4` and air density `1.225 kg/m^3` in the
-  MATLAB cut-in calculation;
+- aerodynamic constants `Cp = 0.4` and air density `1.225 kg/m^3` in the MATLAB
+  cut-in calculation;
 - the empirical cut-out wind-speed formula;
 - the turbine-inertia scaling formula;
 - fixed machine friction `0.01 pu`;
@@ -559,8 +563,8 @@ requires confirmation.
   workflow can fail when the three browser downloads are stored or opened from
   different locations.
 - The MATLAB script uses `clear`, `clc`, and the base workspace, and prints the
-  imported table. A future loader function returning a parameter structure, or
-  a `Simulink.SimulationInput`, would be safer and testable.
+  imported table. A future loader function returning a parameter structure, or a
+  `Simulink.SimulationInput`, would be safer and testable.
 - The script only loads parameters; it does not locate, open, configure, or run
   the Simulink model. The expected user sequence should be documented.
 - The model display labels `Te [kN]` and `Q [kW]` appear dimensionally wrong.
@@ -705,15 +709,16 @@ git diff --check
 Add durable decisions here. Include the date, decision, rationale, source or
 evidence, and participants when relevant.
 
-| Date       | Decision                                                          | Rationale / evidence                                                                                                 | Status      |
-| ---------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 2026-08-10 | Keep current dependency versions rather than PR #78's versions    | The dependency work is newer and independent of the feature                                                          | Proposed    |
-| 2026-08-10 | Do not merge PR #78 unchanged                                     | Static review found correctness defects and unvalidated shared-model changes                                         | Proposed    |
-| 2026-08-10 | Preserve the original wind inputs, defaults, and topology results | Stian's scope is adding DFIM, not changing existing topologies; rotor diameter and wind speed are derived for export | Accepted    |
-| 2026-08-11 | Apply a complete DFIM starter case when DFIM is selected          | This follows the existing dependent-default pattern and gives both supported topologies valid candidates             | Accepted    |
-| 2026-08-11 | Keep the planned 7100 kW DFIM catalogue rating                    | The rating was intentionally added; the candidate boundary was aligned from 7000 to 7100 kW                          | Implemented |
-| 2026-08-11 | Defer numerical golden and export tests until human validation    | Current empirical coefficients and the external MATLAB/Simulink contract do not yet provide trusted expected values  | Accepted    |
-| 2026-08-11 | Do not preserve the former flat component-documentation URLs      | The canonical directory routes are working and backward-compatible redirects are not required                        | Accepted    |
+| Date       | Decision                                                          | Rationale / evidence                                                                                                        | Status              |
+| ---------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| 2026-08-10 | Keep current dependency versions rather than PR #78's versions    | The dependency work is newer and independent of the feature                                                                 | Proposed            |
+| 2026-08-10 | Do not merge PR #78 unchanged                                     | Static review found correctness defects and unvalidated shared-model changes                                                | Proposed            |
+| 2026-08-10 | Preserve the original wind inputs, defaults, and topology results | Existing machine types retain this behavior; superseded for explicitly selected DFIM by the 2026-08-12 decision             | Superseded for DFIM |
+| 2026-08-11 | Apply a complete DFIM starter case when DFIM is selected          | This follows the existing dependent-default pattern and gives both supported topologies valid candidates                    | Accepted            |
+| 2026-08-11 | Keep the planned 7100 kW DFIM catalogue rating                    | The rating was intentionally added; the candidate boundary was aligned from 7000 to 7100 kW                                 | Implemented         |
+| 2026-08-11 | Defer numerical golden and export tests until human validation    | Current empirical coefficients and the external MATLAB/Simulink contract do not yet provide trusted expected values         | Accepted            |
+| 2026-08-11 | Do not preserve the former flat component-documentation URLs      | The canonical directory routes are working and backward-compatible redirects are not required                               | Accepted            |
+| 2026-08-12 | Use Stian's aerodynamic wind calculation direction for DFIM       | The thesis simulation starts from rotor diameter and rated wind speed; a 75 m, 12 m/s turbine produces approximately 2.1 MW | Implemented         |
 
 ## Session log
 
@@ -911,6 +916,29 @@ evidence, and participants when relevant.
 - Node.js 24 TypeScript compilation and the direct Next.js production build
   pass. The focused DFIM browser suite passes all **8 tests** across Chromium
   and Firefox, including both download tests.
+
+### 2026-08-12 — Restore Stian's DFIM wind calculation direction
+
+- Traced the quoted thesis 2.1 MW simulation case to the wind calculation
+  direction introduced by Stian's PR.
+- Added a DFIM-specific wind model that accepts rotor diameter and rated wind
+  speed, then derives shaft power, blade speed, overspeed, and rated torque
+  using Stian's formulas and constants.
+- Kept the original blade-speed and torque inputs unchanged for SCIM, PMSM,
+  SyRM, and every topology where DFIM is unavailable.
+- Scoped Stian's DFIM machine-price rules to DFIM: its base price omits the
+  efficiency-class premium and uses the PR's IC411/IP54 and IC416/IP54 cooling
+  coefficients. Existing machine types retain their previous pricing rules.
+- Made parameter updates resolve the model for the new state before evaluating
+  calculated fields. Selecting DFIM now installs the 75 m, 12 m/s reference
+  case atomically, and later gearbox or converter edits do not change its wind
+  torque.
+- Added a reference regression for a 75 m rotor at 12 m/s: approximately 2104.1
+  kW shaft power, 21.39 rpm blade speed, and 939.42 kNm rated torque.
+- Added a browser regression that verifies the same values through the user
+  interface in Chromium and Firefox.
+- Node.js 24 TypeScript validation and all 20 Jest tests pass. All 12 focused
+  wind and DFIM browser tests pass across Chromium and Firefox.
 
 ## Next-session checklist
 
