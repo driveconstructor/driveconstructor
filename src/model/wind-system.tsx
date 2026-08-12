@@ -8,7 +8,26 @@ import { SwitchElement } from "./switch";
 import { BaseSystem, Model } from "./system";
 import { Trafo, TrafoElement } from "./trafo";
 import { updateTrSystem } from "./trafo-system-utils";
-import { Wind, WindElement } from "./wind";
+import { gearedWindDefaults, Wind, WindElement } from "./wind";
+
+const GearedWindElement = {
+  ...WindElement,
+  params: {
+    ...WindElement.params,
+    rotorDiameter: {
+      ...WindElement.params.rotorDiameter,
+      value: gearedWindDefaults.rotorDiameter,
+    },
+    ratedWindSpeed: {
+      ...WindElement.params.ratedWindSpeed,
+      value: gearedWindDefaults.ratedWindSpeed,
+    },
+    overSpeed: {
+      ...WindElement.params.overSpeed,
+      value: gearedWindDefaults.overSpeed,
+    },
+  },
+};
 
 export type WindFc = BaseSystem & {
   kind: "wind-fc";
@@ -96,22 +115,7 @@ export const WindGbFcModel: Model<WindGbFc> = {
     </div>
   ),
   input: {
-    wind: {
-      ...WindElement,
-      params: {
-        ...WindElement.params,
-        ratedSpeedOfBlades: {
-          ...WindElement.params.ratedSpeedOfBlades,
-          value: 20,
-          range: { min: 10, max: 400 },
-        },
-        ratedTorque: {
-          ...WindElement.params.ratedTorque,
-          value: 200,
-          range: { min: 1, max: 2000 },
-        },
-      },
-    },
+    wind: GearedWindElement,
     gearbox: GearboxElement,
     emachine: { ...WindFcModel.input.emachine },
     cable: CableElement,

@@ -18,7 +18,6 @@ import { Grid } from "./grid";
 import { PumpFc, PumpFcTr, PumpGbFc, PumpGbFcTr } from "./pump-system";
 import { SystemParamsType } from "./system-params";
 import { WinchFc, WinchFcTr, WinchGbFc, WinchGbFcTr } from "./winch-system";
-import { DfimWindElement } from "./wind";
 import { WindFc, WindFcTr, WindGbFc, WindGbFcTr } from "./wind-system";
 
 export type ParamType = "text" | "number";
@@ -195,7 +194,6 @@ function customizeSystemModel(
         ...model,
         input: {
           ...model.input,
-          wind: DfimWindElement,
           fconverter: {
             ...fconverter,
             icon: dfimFConverter3LIcon,
@@ -211,7 +209,6 @@ function customizeSystemModel(
         ...model,
         input: {
           ...model.input,
-          wind: DfimWindElement,
           fconverter: {
             ...fconverter,
             icon: dfimFConverterML4QIcon,
@@ -227,7 +224,6 @@ function customizeSystemModel(
       ...model,
       input: {
         ...model.input,
-        wind: DfimWindElement,
         fconverter: {
           ...fconverter,
           icon: dfimFConverter2LIcon,

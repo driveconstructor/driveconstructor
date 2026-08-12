@@ -2,7 +2,7 @@
 
 import { withCandidates } from "@/model/sizing";
 import { createSystem, updateParam } from "@/model/store";
-import { customizeModel, getModel, System } from "@/model/system";
+import { System } from "@/model/system";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import Candidates from "./Candidates";
@@ -65,14 +65,7 @@ export default function Input({
                   key={`${system.element}.${k}.${k == update.exclude ? "" : update.count}}`}
                   name={k}
                   handleChange={(v) => {
-                    const updated = updateParam(
-                      model,
-                      system,
-                      k,
-                      v,
-                      (nextSystem) =>
-                        customizeModel(getModel(nextSystem.kind), nextSystem),
-                    );
+                    const updated = updateParam(model, system, k, v);
                     const errors = model.validate
                       ? model.validate(updated)
                       : [];
