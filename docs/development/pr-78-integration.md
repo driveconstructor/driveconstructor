@@ -5,6 +5,15 @@ This document tracks the review and integration of
 It is intended to remain useful across multiple working sessions. Update the
 status, decisions, findings, and session log as the integration progresses.
 
+## Acknowledgment
+
+Special thanks to [@Skevig](https://github.com/Skevig) for his valuable
+contribution through
+[PR #78](https://github.com/driveconstructor/driveconstructor/pull/78). The
+DFIM functionality and its engineering model are based on the work developed
+and documented in his master's thesis. His research provided the foundation
+for this integration.
+
 ## Objective
 
 Integrate Stian's DFIM and wind-power work into the current `main` branch while:
