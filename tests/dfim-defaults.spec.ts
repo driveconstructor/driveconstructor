@@ -1,14 +1,37 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+async function configureDfimReference(page: Page) {
+  await page.getByTestId("wind.<icon>").click();
+  await page.getByLabel("Rotor diameter, m:").fill("75");
+  await page.getByLabel("Rotor diameter, m:").press("Tab");
+  await page.getByLabel("Rated wind speed, m/s:").fill("12");
+  await page.getByLabel("Rated wind speed, m/s:").press("Tab");
+
+  await page.getByTestId("gearbox.<icon>").click();
+  await page.getByLabel("Number of stages:").selectOption("2");
+  await page.getByLabel("Stage 1 ratio:").fill("8");
+  await page.getByLabel("Stage 1 ratio:").press("Tab");
+  await page.getByLabel("Stage 2 ratio:").fill("8");
+  await page.getByLabel("Stage 2 ratio:").press("Tab");
+
+  await page.getByTestId("emachine.<icon>").click();
+  await page.getByLabel("Type:").selectOption("DFIM");
+  await page.getByLabel("Protection:").selectOption("IP54/55");
+
+  await page.getByTestId("fconverter.<icon>").click();
+  await page.getByLabel("Type:").selectOption("4Q-2L-VSC");
+}
+
 for (const topology of ["wind-gb-fc", "wind-gb-fc-tr"] as const) {
-  test(`DFIM defaults produce matches in ${topology}`, async ({ page }) => {
+  test(`DFIM reference parameters produce matches in ${topology}`, async ({
+    page,
+  }) => {
     await page.goto("/");
     await page.getByTestId("wind").click();
     await page.getByTestId(topology).click();
 
-    await page.getByTestId("emachine.<icon>").click();
-    await page.getByLabel("Type:").selectOption("DFIM");
+    await configureDfimReference(page);
 
     await expect(page.getByTestId("gearbox[0].numberOfStages")).toContainText(
       "2",
@@ -47,17 +70,8 @@ test("DFIM matches the thesis 2.1 MW reference system", async ({ page }) => {
   await page.getByTestId("wind").click();
   await page.getByTestId("wind-gb-fc-tr").click();
 
-  await page.getByTestId("emachine.<icon>").click();
-  await page.getByLabel("Type:").selectOption("DFIM");
+  await configureDfimReference(page);
   await page.getByTestId("wind.<icon>").click();
-
-  await expect(page.getByLabel("Rotor diameter, m:")).toHaveValue("75");
-  await expect(page.getByLabel("Rated wind speed, m/s:")).toHaveValue("12");
-
-  await page.getByLabel("Rotor diameter, m:").fill("75");
-  await page.getByLabel("Rotor diameter, m:").press("Tab");
-  await page.getByLabel("Rated wind speed, m/s:").fill("12");
-  await page.getByLabel("Rated wind speed, m/s:").press("Tab");
   await page.getByRole("button", { name: "More..." }).first().click();
 
   await expect(page.getByLabel("Power on shaft, kW:")).toHaveValue("2104.1");
@@ -76,8 +90,7 @@ test("DFIM export actions fit a narrow viewport", async ({ page }) => {
   await page.goto("/");
   await page.getByTestId("wind").click();
   await page.getByTestId("wind-gb-fc").click();
-  await page.getByTestId("emachine.<icon>").click();
-  await page.getByLabel("Type:").selectOption("DFIM");
+  await configureDfimReference(page);
   await page.getByTestId("emachine[0].<selected>").check();
   await page.getByTestId("fconverter[0].<selected>").check();
 
@@ -102,8 +115,7 @@ test("DFIM export actions return the requested files", async ({ page }) => {
   await page.goto("/");
   await page.getByTestId("wind").click();
   await page.getByTestId("wind-gb-fc").click();
-  await page.getByTestId("emachine.<icon>").click();
-  await page.getByLabel("Type:").selectOption("DFIM");
+  await configureDfimReference(page);
   await page.getByTestId("emachine[0].<selected>").check();
   await page.getByTestId("fconverter[0].<selected>").check();
 

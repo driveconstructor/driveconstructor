@@ -173,102 +173,69 @@ describe("PR #78 integration", () => {
     expect(gearboxOptions).toContain("DFIM");
   });
 
-  test("selecting DFIM replaces an unsupported converter selection", () => {
-    const model = getModel("wind-gb-fc");
-    const system = createSystem(model);
-    system.element = "emachine";
-
-    const updated = updateParam(
-      customizeModel(model, system),
-      system,
-      "type",
-      "DFIM",
-    );
-    const customized = customizeModel(model, updated);
-
-    expect(updated.input.fconverter.type).toBe(DFIMConverterType[0]);
-    expect(updated.input.fconverter.gridSideFilter).toBe("sin");
-    expect(updated.input.emachine.protection).toBe("IP54/55");
-    expect(updated.input.wind.rotorDiameter).toBe(75);
-    expect(updated.input.wind.ratedWindSpeed).toBe(12);
-    expect(updated.input.wind.ratedTorque).toBeCloseTo(939.42, 2);
-    expect(updated.input.gearbox).toMatchObject({
-      numberOfStages: 2,
-      stage1Type: "helical",
-      stage1Ratio: 8,
-      stage2Type: "helical",
-      stage2Ratio: 8,
-    });
-    expect(customized.input.fconverter.params.type.options).toEqual(
-      DFIMConverterType,
-    );
-    expect(typeof customized.input.wind.params.rotorDiameter.value).toBe(
-      "number",
-    );
-    expect(typeof customized.input.wind.params.ratedWindSpeed.value).toBe(
-      "number",
-    );
-    expect(typeof customized.input.wind.params.ratedSpeedOfBlades.value).toBe(
-      "function",
-    );
-    expect(typeof customized.input.wind.params.ratedTorque.value).toBe(
-      "function",
-    );
-  });
-
-  test("uses one turbine-driven wind model for every machine type", () => {
+  test("selecting DFIM preserves all other input parameters", () => {
     const model = getModel("wind-gb-fc");
     let system = createSystem(model);
 
-    const originalModel = customizeModel(model, system);
-    expect(typeof originalModel.input.wind.params.ratedTorque.value).toBe(
-      "function",
-    );
-    expect(typeof originalModel.input.wind.params.rotorDiameter.value).toBe(
-      "number",
-    );
-    expect(system.input.wind.rotorDiameter).toBe(56.5);
-    expect(system.input.wind.ratedWindSpeed).toBe(8.5);
-    expect(system.input.wind.powerOnShaft).toBeCloseTo(424.39, 2);
-    expect(system.input.wind.ratedTorque).toBeCloseTo(201.51, 2);
-
-    system.element = "emachine";
-    system = updateParam(originalModel, system, "type", "DFIM");
-
-    expect(system.input.wind.rotorDiameter).toBe(75);
-    expect(system.input.wind.ratedWindSpeed).toBe(12);
-    expect(system.input.wind.powerOnShaft).toBeCloseTo(2104.14, 2);
-    expect(system.input.wind.ratedTorque).toBeCloseTo(939.42, 2);
-
-    const torqueAfterSelection = system.input.wind.ratedTorque;
-    system.element = "gearbox";
-    const dfimModelAfterSelection = customizeModel(model, system);
-    system = updateParam(dfimModelAfterSelection, system, "stage1Ratio", 8);
-    expect(system.input.wind.ratedTorque).toBeCloseTo(torqueAfterSelection);
-
     system.element = "wind";
-    let dfimModel = customizeModel(model, system);
-    system = updateParam(dfimModel, system, "rotorDiameter", 75);
-    dfimModel = customizeModel(model, system);
-    system = updateParam(dfimModel, system, "ratedWindSpeed", 12);
+    system = updateParam(
+      customizeModel(model, system),
+      system,
+      "rotorDiameter",
+      60,
+    );
+    system = updateParam(
+      customizeModel(model, system),
+      system,
+      "ratedWindSpeed",
+      10,
+    );
+    system = updateParam(
+      customizeModel(model, system),
+      system,
+      "overSpeed",
+      1.3,
+    );
 
-    expect(system.input.wind.powerOnShaft).toBeCloseTo(2104.14, 2);
-    expect(system.input.wind.ratedSpeedOfBlades).toBeCloseTo(21.39, 2);
-    expect(system.input.wind.ratedTorque).toBeCloseTo(939.42, 2);
+    const inputBeforeSelection = JSON.parse(JSON.stringify(system.input));
+    system.element = "emachine";
+    system = updateParam(customizeModel(model, system), system, "type", "DFIM");
+
+    expect(system.input).toEqual({
+      ...inputBeforeSelection,
+      emachine: {
+        ...inputBeforeSelection.emachine,
+        type: "DFIM",
+      },
+    });
   });
 
   test.each(["wind-gb-fc", "wind-gb-fc-tr"] as const)(
-    "DFIM defaults produce candidates for %s",
+    "DFIM reference parameters produce candidates for %s",
     (kind) => {
       const model = getModel(kind);
-      const system = createSystem(model);
-      system.element = "emachine";
+      const updated = createSystem(
+        model,
+        (element, parameter, defaultValue) => {
+          const referenceValues: Record<string, Record<string, unknown>> = {
+            wind: { rotorDiameter: 75, ratedWindSpeed: 12 },
+            gearbox: {
+              numberOfStages: 2,
+              stage1Type: "helical",
+              stage1Ratio: 8,
+              stage2Type: "helical",
+              stage2Ratio: 8,
+            },
+            emachine: { type: "DFIM", protection: "IP54/55" },
+            fconverter: {
+              type: DFIMConverterType[0],
+              gridSideFilter: "sin",
+              machineSideFilter: "no",
+            },
+          };
 
-      const updated = updateParam(
-        customizeModel(model, system),
-        system,
-        "type",
-        "DFIM",
+          return referenceValues[element]?.[parameter] ?? defaultValue;
+        },
       );
       const emachineCandidates = updated.candidates.emachine ?? [];
       const withMachine = withCandidates({
