@@ -10,8 +10,7 @@ import {
   ProtectionParam,
 } from "./cooling-protection";
 import { Environment, EnvironmentModel } from "./environment";
-import { DFIMConverterType } from "./fconverter";
-import { SystemElement, type System } from "./system";
+import { SystemElement } from "./system";
 
 export const EMachineType = ["SCIM", "DFIM", "PMSM", "SyRM"] as const;
 export const ERatedPower = [
@@ -79,51 +78,6 @@ export const EMachineElement: SystemElement<EMachine> = {
       type: "text",
       value: "SCIM",
       options: [null, ...EMachineType],
-      update: (system, value) => {
-        if (value != "DFIM") {
-          return system;
-        }
-
-        const supportsDfimDefaults =
-          (system.kind == "wind-gb-fc" || system.kind == "wind-gb-fc-tr") &&
-          system.input.wind != null &&
-          system.input.gearbox != null;
-
-        return {
-          ...system,
-          input: {
-            ...system.input,
-            ...(supportsDfimDefaults
-              ? {
-                  wind: {
-                    ...system.input.wind,
-                    rotorDiameter: 75,
-                    ratedWindSpeed: 12,
-                    overSpeed: 1.2,
-                  },
-                  gearbox: {
-                    ...system.input.gearbox,
-                    numberOfStages: 2,
-                    stage1Type: "helical",
-                    stage1Ratio: 8,
-                    stage2Type: "helical",
-                    stage2Ratio: 8,
-                  },
-                }
-              : {}),
-            emachine: {
-              ...system.input.emachine,
-              protection: "IP54/55",
-            },
-            fconverter: {
-              ...system.input.fconverter,
-              type: DFIMConverterType[0],
-              gridSideFilter: "sin",
-              machineSideFilter: "no",
-            },
-          },
-        } as System;
-      },
     },
     ratedPower: {
       ...RatedPowerParam.ratedPower,
