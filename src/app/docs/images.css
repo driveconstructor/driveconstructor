@@ -127,6 +127,16 @@
     height: 15%;
   }
 
+  img[alt="doc-dfim-figure-textbook"] {
+    width: 40%;
+    height: 40%;
+  }
+
+  img[alt="doc-dfim-simple1"] {
+    width: 15%;
+    height: 15%;
+  }
+
   img[alt="doc-lv-slot"] {
     width: 30%;
     height: 30%;
@@ -206,6 +216,11 @@
   img[alt="doc-pwm-current"] {
     width: 20%;
     height: 20%;
+  }
+
+  img[alt="doc-dfim-fc-schematic"] {
+    width: 60%;
+    height: 60%;
   }
 
   img[alt="doc-afe-dc2l-dfe-ing"] {
