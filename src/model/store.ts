@@ -1,5 +1,5 @@
 import { withCandidates } from "./sizing";
-import { System, SystemModel } from "./system";
+import { customizeModel, getModel, System, SystemModel } from "./system";
 
 const prefix = "dc-v1.system.";
 const draft_prefix = "draft_";
@@ -73,22 +73,92 @@ function initSystemInput(model: SystemModel, override?: OverrideFunction) {
   }, {});
 }
 
+export function reconcileOptions(model: SystemModel, system: System): System {
+  let input = system.input;
+
+  for (const [elementName, elementModel] of Object.entries(model.input)) {
+    const elementInput = input[elementName];
+    if (elementInput == null) {
+      continue;
+    }
+
+    let updatedElementInput = elementInput;
+    for (const [paramName, paramModel] of Object.entries(elementModel.params)) {
+      const options = paramModel.options;
+      if (
+        options == null ||
+        options.length == 0 ||
+        options.includes(elementInput[paramName])
+      ) {
+        continue;
+      }
+
+      if (updatedElementInput === elementInput) {
+        updatedElementInput = { ...elementInput };
+      }
+      updatedElementInput[paramName] = options[0];
+    }
+
+    if (updatedElementInput !== elementInput) {
+      if (input === system.input) {
+        input = { ...system.input };
+      }
+      input[elementName] = updatedElementInput;
+    }
+  }
+
+  return input === system.input ? system : ({ ...system, input } as System);
+}
+
+function reconcileCustomizedOptions(
+  baseModel: SystemModel,
+  initialSystem: System,
+): System {
+  let system = initialSystem;
+
+  for (let pass = 0; pass < 10; pass++) {
+    const reconciled = reconcileOptions(
+      customizeModel(baseModel, system),
+      system,
+    );
+    if (reconciled === system) {
+      return system;
+    }
+    system = reconciled;
+  }
+
+  throw new Error("Input option reconciliation did not stabilize");
+}
+
 export function createSystem(
   model: SystemModel,
   override?: OverrideFunction,
 ): System {
-  const kind = model.kind;
-  const input = updateSystemInput(model, initSystemInput(model, override));
+  const baseModel = getModel(model.kind);
+  const kind = baseModel.kind;
+  const input = updateSystemInput(
+    baseModel,
+    initSystemInput(baseModel, override),
+  );
 
   const id = draft_prefix + kind;
   const result = {
     id,
     kind,
     input,
-    element: Object.keys(model.input)[0],
+    element: Object.keys(baseModel.input)[0],
     name: "Unsaved draft",
   } as System;
-  const system = withCandidates(model.update?.(result) ?? result);
+  const updated = baseModel.update?.(result) ?? result;
+  const reconciled = reconcileCustomizedOptions(baseModel, updated);
+  const inputWithCalculatedParams = updateSystemInput(
+    customizeModel(baseModel, reconciled),
+    reconciled.input,
+  );
+  const system = withCandidates({
+    ...reconciled,
+    input: inputWithCalculatedParams,
+  } as System);
   saveSystem(system);
   return system;
 }
@@ -117,9 +187,14 @@ export function updateParam(
     ) ?? withParamValue;
   const withModelUpdate = model.update?.(withParamUpdate) ?? withParamUpdate;
 
-  const input = updateSystemInput(model, withModelUpdate.input);
+  const baseModel = getModel(system.kind);
+  const reconciled = reconcileCustomizedOptions(baseModel, withModelUpdate);
+  const input = updateSystemInput(
+    customizeModel(baseModel, reconciled),
+    reconciled.input,
+  );
   const withCalculatedParams = {
-    ...withModelUpdate,
+    ...reconciled,
     input,
   } as any;
 

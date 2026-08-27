@@ -173,7 +173,7 @@ describe("PR #78 integration", () => {
     expect(gearboxOptions).toContain("DFIM");
   });
 
-  test("selecting DFIM preserves all other input parameters", () => {
+  test("selecting DFIM preserves unrelated parameters and reconciles dependent options", () => {
     const model = getModel("wind-gb-fc");
     let system = createSystem(model);
 
@@ -206,7 +206,72 @@ describe("PR #78 integration", () => {
       emachine: {
         ...inputBeforeSelection.emachine,
         type: "DFIM",
+        protection: "IP54/55",
       },
+      fconverter: {
+        ...inputBeforeSelection.fconverter,
+        type: "4Q-2L-VSC",
+        gridSideFilter: "sin",
+      },
+    });
+  });
+
+  test("reconciles filters when the DFIM converter type changes", () => {
+    const model = getModel("wind-gb-fc-tr");
+    let system = createSystem(model);
+
+    system.element = "emachine";
+    system = updateParam(customizeModel(model, system), system, "type", "DFIM");
+    expect(system.input.fconverter).toMatchObject({
+      type: "4Q-2L-VSC",
+      gridSideFilter: "sin",
+      machineSideFilter: "no",
+    });
+
+    system.element = "fconverter";
+    system = updateParam(
+      customizeModel(model, system),
+      system,
+      "type",
+      "4Q-3L-NPC-VSC",
+    );
+    expect(system.input.fconverter).toMatchObject({
+      type: "4Q-3L-NPC-VSC",
+      gridSideFilter: "sin",
+      machineSideFilter: "sin",
+    });
+
+    system = updateParam(
+      customizeModel(model, system),
+      system,
+      "type",
+      "4Q-2L-VSC",
+    );
+    expect(system.input.fconverter).toMatchObject({
+      type: "4Q-2L-VSC",
+      gridSideFilter: "sin",
+      machineSideFilter: "sin",
+    });
+  });
+
+  test("reconciles an incompatible converter when SyRM is selected", () => {
+    const model = getModel("wind-gb-fc-tr");
+    let system = createSystem(model);
+
+    system.element = "fconverter";
+    system = updateParam(
+      customizeModel(model, system),
+      system,
+      "type",
+      "4Q-3L-NPC-VSC",
+    );
+    system.element = "emachine";
+    system = updateParam(customizeModel(model, system), system, "type", "SyRM");
+
+    expect(system.input.fconverter).toMatchObject({
+      type: "2Q-2L-VSC-6p",
+      gridSideFilter: "choke",
+      machineSideFilter: "sin",
     });
   });
 

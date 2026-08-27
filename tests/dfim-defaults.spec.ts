@@ -65,6 +65,32 @@ for (const topology of ["wind-gb-fc", "wind-gb-fc-tr"] as const) {
   });
 }
 
+test("selecting DFIM reconciles the converter and filter defaults", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByTestId("wind").click();
+  await page.getByTestId("wind-gb-fc-tr").click();
+
+  await page.getByTestId("emachine.<icon>").click();
+  await page.getByLabel("Type:").selectOption("DFIM");
+  await expect(page.getByLabel("Protection:")).toHaveValue("IP54/55");
+
+  await page.getByTestId("fconverter.<icon>").click();
+  await expect(page.getByLabel("Type:")).toHaveValue("4Q-2L-VSC");
+  await page.getByRole("button", { name: "More..." }).first().click();
+  await expect(page.getByLabel("Grid side filter:")).toHaveValue("sin");
+  await expect(page.getByLabel("Machine side filter:")).toHaveValue("no");
+
+  await page.getByLabel("Type:").selectOption("4Q-3L-NPC-VSC");
+  await expect(page.getByLabel("Grid side filter:")).toHaveValue("sin");
+  await expect(page.getByLabel("Machine side filter:")).toHaveValue("sin");
+
+  await page.getByLabel("Type:").selectOption("4Q-2L-VSC");
+  await expect(page.getByLabel("Grid side filter:")).toHaveValue("sin");
+  await expect(page.getByLabel("Machine side filter:")).toHaveValue("sin");
+});
+
 test("DFIM matches the thesis 2.1 MW reference system", async ({ page }) => {
   await page.goto("/");
   await page.getByTestId("wind").click();
